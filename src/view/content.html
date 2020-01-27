@@ -1,0 +1,31 @@
+{extend name="$admin_layout"/}
+
+{block name="style"}
+
+{/block}
+
+{block name="content"}
+{notempty name="rows"}
+<div class="content">
+    {volist name="rows" id="row"}
+      <div class="row">
+        {notempty name="row.cols"}
+          {volist name="row.cols" id="col"}
+          <div class="col-md-{$col.size}}">
+            {notempty name="col.elms"}
+
+            {/notempty}
+          </div>
+          {/volist}
+        {/notempty}
+      </div>
+    {/volist}
+</div>
+{/notempty}
+{/block}
+
+{block name="script"}
+
+{/block}
+</body>
+</html>
