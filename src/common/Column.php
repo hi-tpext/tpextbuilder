@@ -2,11 +2,14 @@
 
 namespace tpext\builder\common;
 
-class Column implements Renderable
-{
-    protected $size = 12;
+use tpext\builder\common\Form;
+use tpext\builder\common\Table;
 
-    protected $elms = [];
+class Column
+{
+    public $size = 12;
+
+    public $elms = [];
 
     public function __construct($size = 12)
     {
@@ -15,16 +18,20 @@ class Column implements Renderable
 
     public function form()
     {
-        return 0;
+        $form = new Form();
+        $this->elms[] = $form;
+        return $form;
     }
 
     public function table()
     {
-        return 0;
+        $table = new Table();
+        $this->elms[] = $table;
+        return $table;
     }
 
-    public function render()
+    public function getElms()
     {
-        
+        return $this->elms;
     }
 }

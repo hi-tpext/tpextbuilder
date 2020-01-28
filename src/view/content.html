@@ -5,23 +5,26 @@
 {/block}
 
 {block name="content"}
-{notempty name="rows"}
-<div class="content">
-    {volist name="rows" id="row"}
-      <div class="row">
-        {notempty name="row.cols"}
-          {volist name="row.cols" id="col"}
-          <div class="col-md-{$col.size}}">
-            {notempty name="col.elms"}
-
-            {/notempty}
-          </div>
-          {/volist}
-        {/notempty}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header"><h4>{$title}<small>{$desc}</small></h4></div>
+      <div class="card-body">
+        {volist name="rows" id="row"}
+        <div class="row">
+            {volist name="row->cols" id="col"}
+            <div class="col-md-{$col->size}">
+              {volist name="col->elms" id="elm"}
+                {:$elm->render()}
+              {/volist}
+            </div>
+            {/volist}
+        </div>
+      {/volist}
       </div>
-    {/volist}
+    </div>
+  </div>
 </div>
-{/notempty}
 {/block}
 
 {block name="script"}

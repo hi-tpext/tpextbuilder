@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "tpext\\builder": "src/"
+            "tpext\\builder\\": "src/"
         },
         "files": [
             "src/helper.php"

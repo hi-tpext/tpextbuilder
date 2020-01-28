@@ -2,18 +2,14 @@
 
 namespace tpext\builder\common;
 
-class Row implements Renderable
+class Row
 {
-
-    protected $cols = [];
-
-    protected $__col__ = null;
+    public $cols = [];
 
     public function column($size = 12)
     {
         $col = new Column($size);
         $this->cols[] = $col;
-        $this->__col__ = $col;
         return $col;
     }
 
@@ -27,8 +23,8 @@ class Row implements Renderable
         return $this->column($size)->table();
     }
 
-    public function render()
+    public function getCols()
     {
-        
+        return $this->cols;
     }
 }

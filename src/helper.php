@@ -12,7 +12,7 @@ use tpext\common\ExtLoader;
 
 $classMap = [
     //'tpext\\lyatadmin\\common\\Module',
-    //'tpext\\lyatadmin\common\\Plugin',
+    'tpext\\builder\common\\Plugin',
 ];
 
-ExtLoader::watch('app_init',tpext\behavior\AppInit::class);
+ExtLoader::addClassMap($classMap);

@@ -2,33 +2,24 @@
 
 namespace tpext\builder\common;
 
-class Row implements Renderable
+use tpext\builder\common\Plugin;
+use think\response\View as ViewShow;
+
+class Form
 {
 
     protected $cols = [];
 
-    protected $__col__ = null;
-
-    public function column($size = 12)
-    {
-        $col = new Column($size);
-        $this->cols[] = $col;
-        $this->__col__ = $col;
-        return $col;
-    }
-
-    public function form($size = 12)
-    {
-        return $this->column($size)->form();
-    }
-
-    public function table($size = 12)
-    {
-        return $this->column($size)->table();
-    }
-
     public function render()
     {
+
+        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+
+        $config = [];
         
+        $view = new ViewShow($this->view);
+
+        return $view->assign([])->config($config)->isContent(false)->getContent();
     }
+
 }

@@ -4,7 +4,7 @@ namespace tpext\builder\common;
 
 use tpext\builder\table\Column;
 
-class Row implements Renderable
+class Table
 {
     protected $headers = [];
 
@@ -40,6 +40,6 @@ class Row implements Renderable
 
     public function render()
     {
-
+        return 'xxx';
     }
 }

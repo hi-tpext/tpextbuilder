@@ -4,7 +4,7 @@ namespace tpext\builder\displayer;
 
 use tpext\builder\common\Renderable;
 
-class Field implements Renderable
+class Field
 {
     protected $view = '';
 
@@ -26,11 +26,13 @@ class Field implements Renderable
     public function options($options)
     {
         $this->options = $options;
+        return $this;
     }
 
     public function value($val)
     {
         $this->value = $val;
+        return $this;
     }
 
     public function setEditable($editable = true)
