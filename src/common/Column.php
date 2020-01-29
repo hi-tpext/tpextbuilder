@@ -9,12 +9,18 @@ class Column
 {
     public $size = 12;
 
-    public $elms = [];
+    protected $elms = [];
 
     public function __construct($size = 12)
     {
         $this->size = $size;
     }
+
+     /**
+     * 获取一个form
+     *
+     * @return Form
+     */
 
     public function form()
     {
@@ -23,6 +29,11 @@ class Column
         return $form;
     }
 
+    /**
+     * 获取一个表格
+     *
+     * @return Table
+     */
     public function table()
     {
         $table = new Table();
@@ -33,5 +44,10 @@ class Column
     public function getElms()
     {
         return $this->elms;
+    }
+
+    public function getSize()
+    {
+        return $this->size;
     }
 }

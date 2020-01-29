@@ -4,7 +4,7 @@ namespace tpext\builder\common;
 
 use tpext\builder\table\Column;
 
-class Table
+class Table implements Renderable
 {
     protected $headers = [];
 

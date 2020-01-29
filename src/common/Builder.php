@@ -2,8 +2,8 @@
 
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use think\facade\View;
+use think\response\View as ViewShow;
 use tpext\builder\common\Plugin;
 use tpext\myadmin\common\Module;
 
@@ -11,13 +11,17 @@ class Builder implements Renderable
 {
     private $view = '';
 
-    public $title = '';
+    protected $title = '';
 
-    public $desc = null;
+    protected $desc = null;
 
-    public $rows = [];
+    protected $rows = [];
 
     protected $__row__ = null;
+
+    protected $js = [];
+
+    protected $css = [];
 
     public function __construct($title = 'tpext-builder', $desc = '')
     {
@@ -43,11 +47,23 @@ class Builder implements Renderable
         return $this->__row__->column($size);
     }
 
+    /**
+     * 获取一个form
+     *
+     * @param integer col大小
+     * @return Form
+     */
     public function form($size = 12)
     {
         return $this->column($size)->form();
     }
 
+    /**
+     * 获取一个表格
+     *
+     * @param integer col大小
+     * @return Table
+     */
     public function table($size = 12)
     {
         return $this->column($size)->table();
@@ -62,7 +78,7 @@ class Builder implements Renderable
         ];
 
         $config = [];
-        
+
         $view = new ViewShow($this->view);
 
         $instance = Module::getInstance();

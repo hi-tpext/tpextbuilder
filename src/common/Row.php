@@ -4,7 +4,7 @@ namespace tpext\builder\common;
 
 class Row
 {
-    public $cols = [];
+    protected $cols = [];
 
     public function column($size = 12)
     {

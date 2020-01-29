@@ -12,9 +12,9 @@
       <div class="card-body">
         {volist name="rows" id="row"}
         <div class="row">
-            {volist name="row->cols" id="col"}
-            <div class="col-md-{$col->size}">
-              {volist name="col->elms" id="elm"}
+            {volist name="row->getCols()" id="col"}
+            <div class="col-md-{$col->getSize()}">
+              {volist name="col->getElms()" id="elm"}
                 {:$elm->render()}
               {/volist}
             </div>
@@ -28,7 +28,9 @@
 {/block}
 
 {block name="script"}
-
+  <script src="js/jquery-tags-input/jquery.tagsinput.min.js"></script>
+  <script type="text/javascript" src="js/jquery-validate/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="js/jquery-validate/messages_zh.min.js"></script>
 {/block}
 </body>
 </html>

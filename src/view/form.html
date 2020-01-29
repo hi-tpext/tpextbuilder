@@ -1,0 +1,9 @@
+<form action="{$action}" class="form-horizontal" method="post" enctype="multipart/form-data" id="thefrom">
+    <div class="row">
+        {volist name="rows" id="row"}
+        <div class="form-group col-md-{$row->getSize()}{$row->getClass()}{$row->getError()}"{$row->getAttr()|raw}>
+            {:$row->render()}
+        </div>
+        {/volist}
+    </div>
+</form>
