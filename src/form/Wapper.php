@@ -49,12 +49,18 @@ class Wapper
 {
     protected static $displayers = [];
 
-    public static $displayerMap = [
+    protected static $displayerMap = [
         'text' => \tpext\builder\displayer\Text::class,
         'textarea' => \tpext\builder\displayer\Textarea::class,
         'html' => \tpext\builder\displayer\Html::class,
         'divider' => \tpext\builder\displayer\Divider::class,
         'raw' => \tpext\builder\displayer\Raw::class,
+        'checkbox' => \tpext\builder\displayer\Checkbox::class,
+    ];
+
+    protected static $defaultFieldClass = [
+        'checkbox' => 'checkbox-primary',
+        'radio' => 'radio-primary',
     ];
 
     public static function isDisplayer($name)
@@ -66,8 +72,22 @@ class Wapper
         return in_array($name, static::$displayers);
     }
 
+    public static function hasDefaultFieldClass($type)
+    {
+        if (isset(static::$defaultFieldClass[$type])) {
+            return static::$defaultFieldClass[$type];
+        }
+
+        return '';
+    }
+
     public static function extend($pair)
     {
         static::$displayerMap = array_merge(static::$displayerMap, $pair);
+    }
+
+    public static function setdefaultFieldClass($pair)
+    {
+        static::$defaultFieldClass = array_merge(static::$defaultFieldClass, $pair);
     }
 }

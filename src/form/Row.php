@@ -19,7 +19,7 @@ class Row extends Wapper implements Renderable
 
     protected $attr = '';
 
-    protected $error = '';
+    protected $errorClass = '';
 
     /**
      * Displayer
@@ -68,9 +68,9 @@ class Row extends Wapper implements Renderable
         return $this;
     }
 
-    public function error($val)
+    public function errorClass($val)
     {
-        $this->error = $val;
+        $this->errorClass = $val;
         return $this;
     }
 
@@ -84,9 +84,9 @@ class Row extends Wapper implements Renderable
         return empty($this->class) ? '' : ' ' . $this->class;
     }
 
-    public function getError()
+    public function getErrorClass()
     {
-        return empty($this->error) ? '' : ' ' . $this->error;
+        return empty($this->errorClass) ? '' : ' ' . $this->errorClass;
     }
 
     public function getAttr()

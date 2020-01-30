@@ -4,12 +4,15 @@ namespace tpext\builder\displayer;
 
 use think\response\View as ViewShow;
 use tpext\builder\common\Plugin;
+use tpext\builder\form\Wapper;
 
 class Field
 {
     protected $name = '';
 
     protected $label = '';
+
+    protected $options = [];
 
     protected $js = [];
 
@@ -23,8 +26,6 @@ class Field
 
     protected $rules = '';
 
-    protected $options = [];
-
     protected $editable = true;
 
     protected $class = '';
@@ -35,6 +36,8 @@ class Field
 
     protected $labelArrt = '';
 
+    protected $errorClass = '';
+
     protected $error = '';
 
     protected $size = [2, 9];
@@ -42,6 +45,8 @@ class Field
     protected $help = '';
 
     protected $wapper = null;
+
+    protected $useDefauleFieldClass = true;
 
     protected static $helptempl;
 
@@ -55,18 +60,6 @@ class Field
 
         $this->name = $name;
         $this->label = $label;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function options($options)
-    {
-        $this->options = $options;
-        return $this;
     }
 
     /**
@@ -186,8 +179,32 @@ class Field
     public function error($val)
     {
         $this->error = $val;
-        $this->row->error($val);
+        $this->errorClass($val ? 'has-error' : '');
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function errorClass($val)
+    {
+        $this->errorClass = $val;
+        $this->wapper->errorClass($val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return void
+     */
+    public function useDefauleFieldClass($val)
+    {
+        $this->useDefauleFieldClass = $val;
     }
 
     /**
@@ -250,6 +267,16 @@ class Field
     public function getLabelAttr()
     {
         return $this->labelArrt;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 
     /**
@@ -328,11 +355,15 @@ class Field
             static::$labeltempl = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
+        $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
+
+        $fieldType = lcfirst($fieldType);
+
         $vars = [
             'label' => $this->label,
             'name' => $this->name,
             'value' => $this->value,
-            'class' => $this->class,
+            'class' => Wapper::hasDefaultFieldClass($fieldType) . ' ' . $this->class,
             'attr' => $this->attr,
             'error' => $this->error,
             'size' => $this->size,
@@ -340,6 +371,7 @@ class Field
             'labelAttr' => empty($this->labelAttr) ? '' : ' ' . $this->labelAttr,
             'options' => $this->options,
             'help' => $this->help,
+            'error' => $this->error,
             'helptempl' => static::$helptempl,
             'labeltempl' => static::$labeltempl,
         ];
