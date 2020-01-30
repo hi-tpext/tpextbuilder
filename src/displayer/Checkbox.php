@@ -6,9 +6,17 @@ class Checkbox extends Field
 {
     protected $view = 'checkbox';
 
+    protected $class = 'checkbox-default';
+
+    protected $js = [
+        '/assets/tpextbuilder/js/checkbox.js',
+    ];
+
     protected $inline = true;
 
     protected $checkallBtn = false;
+
+    protected $default = [];
 
     protected $checked = [];
 
@@ -54,9 +62,8 @@ class Checkbox extends Field
      * @param array $val
      * @return $this
      */
-    public function checked($val = [])
-    {
-        $this->checked = $val;
+    function default($val = []) {
+        $this->default = $val;
         return $this;
     }
 
@@ -64,8 +71,10 @@ class Checkbox extends Field
     {
         $vars = $this->commonVars();
 
-        if (empty($this->checked) && !empty($this->value)) {
+        if (!empty($this->value)) {
             $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
+        } else if (!empty($this->default)) {
+            $this->checked = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 
         $vars = array_merge($vars, [

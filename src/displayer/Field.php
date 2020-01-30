@@ -3,6 +3,7 @@
 namespace tpext\builder\displayer;
 
 use think\response\View as ViewShow;
+use tpext\builder\common\Builder;
 use tpext\builder\common\Plugin;
 use tpext\builder\form\Wapper;
 
@@ -18,7 +19,7 @@ class Field
 
     protected $css = [];
 
-    protected $view = '';
+    protected $view = 'field';
 
     protected $value = '';
 
@@ -27,6 +28,8 @@ class Field
     protected $rules = '';
 
     protected $editable = true;
+
+    protected $showLabel = true;
 
     protected $class = '';
 
@@ -44,6 +47,10 @@ class Field
 
     protected $help = '';
 
+    protected $readonly = '';
+
+    protected $disabled = '';
+
     protected $wapper = null;
 
     protected $useDefauleFieldClass = true;
@@ -60,6 +67,21 @@ class Field
 
         $this->name = $name;
         $this->label = $label;
+
+        $this->publishAssets();
+    }
+
+    public function created()
+    {
+        $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
+
+        $fieldType = lcfirst($fieldType);
+
+        $defaultClass = Wapper::hasDefaultFieldClass($fieldType);
+
+        if (!empty($defaultClass)) {
+            $this->class = $defaultClass;
+        }
     }
 
     /**
@@ -202,6 +224,39 @@ class Field
      * @param boolean $val
      * @return void
      */
+    public function readonly($val = true)
+    {
+        $this->readonly = $val;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return void
+     */
+    public function disabled($val = true)
+    {
+        $this->disabled = $val;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return void
+     */
+    protected function showLabel($val)
+    {
+        $this->showLabel = $val;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return void
+     */
     public function useDefauleFieldClass($val)
     {
         $this->useDefauleFieldClass = $val;
@@ -328,7 +383,13 @@ class Field
      */
     public function render()
     {
-        return $this->value;
+        $vars = $this->commonVars();
+
+        $config = [];
+
+        $viewshow = $this->getViewInstance();
+
+        return $viewshow->assign($vars)->config($config)->getContent();
     }
 
     protected function getViewInstance()
@@ -338,6 +399,22 @@ class Field
         $viewshow = new ViewShow($template);
 
         return $viewshow;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function publishAssets()
+    {
+        if (!empty($this->js)) {
+            Builder::getInstance()->addJs($this->js);
+        }
+
+        if (!empty($this->css)) {
+            Builder::getInstance()->addCss($this->css);
+        }
     }
 
     /**
@@ -355,23 +432,20 @@ class Field
             static::$labeltempl = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
-        $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
-
-        $fieldType = lcfirst($fieldType);
-
         $vars = [
             'label' => $this->label,
             'name' => $this->name,
             'value' => $this->value,
-            'class' => Wapper::hasDefaultFieldClass($fieldType) . ' ' . $this->class,
-            'attr' => $this->attr,
+            'class' => ' ' . $this->class,
+            'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : ''),
             'error' => $this->error,
             'size' => $this->size,
-            'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label' : $this->labelClass,
+            'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label text-right' : $this->labelClass,
             'labelAttr' => empty($this->labelAttr) ? '' : ' ' . $this->labelAttr,
             'options' => $this->options,
             'help' => $this->help,
             'error' => $this->error,
+            'showLabel' => $this->showLabel,
             'helptempl' => static::$helptempl,
             'labeltempl' => static::$labeltempl,
         ];

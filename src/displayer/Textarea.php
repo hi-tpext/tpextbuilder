@@ -2,7 +2,7 @@
 
 namespace tpext\builder\displayer;
 
-class Textarea extends Text
+class Textarea extends Field
 {
     protected $view = 'textarea';
 }

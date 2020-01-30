@@ -8,6 +8,7 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\Text           text($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Checkbox       checkbox($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Radio          radio($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Button         button($type, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Select         select($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MultipleSelect multipleSelect($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Textarea       textarea($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -34,10 +35,10 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\SwitchField    switch($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Display        display($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Rate           rate($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Divider        divider($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Divider        divider($text, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Password       password($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Decimal        decimal($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Html           html(name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Html           html($html, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Raw            raw($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Tags           tags($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Icon           icon($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -56,12 +57,13 @@ class Wapper
         'divider' => \tpext\builder\displayer\Divider::class,
         'raw' => \tpext\builder\displayer\Raw::class,
         'checkbox' => \tpext\builder\displayer\Checkbox::class,
+        'radio' => \tpext\builder\displayer\Radio::class,
+        'button' => \tpext\builder\displayer\Button::class,
+        'select' => \tpext\builder\displayer\Select::class,
+        'multipleSelect' => \tpext\builder\displayer\MultipleSelect::class,
     ];
 
-    protected static $defaultFieldClass = [
-        'checkbox' => 'checkbox-primary',
-        'radio' => 'radio-primary',
-    ];
+    protected static $defaultFieldClass = [];
 
     public static function isDisplayer($name)
     {

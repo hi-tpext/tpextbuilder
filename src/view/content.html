@@ -1,7 +1,13 @@
 {extend name="$admin_layout"/}
 
 {block name="style"}
-
+  {volist name="css" id="item"}
+  <link href="{$item}" rel="stylesheet">
+  {/volist}
+  
+  {volist name="style" id="item"}
+    {$item}
+  {/volist}
 {/block}
 
 {block name="content"}
@@ -28,9 +34,15 @@
 {/block}
 
 {block name="script"}
-  <script src="js/jquery-tags-input/jquery.tagsinput.min.js"></script>
-  <script type="text/javascript" src="js/jquery-validate/jquery.validate.min.js"></script>
-  <script type="text/javascript" src="js/jquery-validate/messages_zh.min.js"></script>
+  {volist name="js" id="item"}
+  <script type="text/javascript" src="{$item}" charset="utf-8"></script>
+  {/volist}
+  
+  {volist name="script" id="item"}
+  <script type="text/javascript">
+    {$item}
+  </script>
+  {/volist}
 {/block}
 </body>
 </html>

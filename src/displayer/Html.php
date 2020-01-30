@@ -2,14 +2,16 @@
 
 namespace tpext\builder\displayer;
 
-class Html extends Text
+class Html extends Field
 {
     protected $view = 'html';
 
-    public function __construct($html = '')
+    public function created()
     {
+        parent::created();
+        
         $this->size([0, 12]);
 
-        $this->value = $html;
+        $this->value = $this->name;
     }
 }

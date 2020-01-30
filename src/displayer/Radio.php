@@ -6,7 +6,11 @@ class Radio extends Field
 {
     protected $view = 'radio';
 
+    protected $class = 'radio-default';
+
     protected $inline = true;
+
+    protected $default = '';
 
     protected $checked = '';
 
@@ -40,9 +44,8 @@ class Radio extends Field
      * @param string|int|mixed $val
      * @return $this
      */
-    public function checked($val = '')
-    {
-        $this->checked = $val;
+    function default($val = '') {
+        $this->default = $val;
         return $this;
     }
 
@@ -50,8 +53,10 @@ class Radio extends Field
     {
         $vars = $this->commonVars();
 
-        if (empty($this->checked) && !empty($this->value)) {
-            $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
+        if (!empty($this->value)) {
+            $this->checked = $this->value;
+        } else {
+            $this->checked = $this->default;
         }
 
         $vars = array_merge($vars, [

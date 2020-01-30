@@ -41,11 +41,21 @@ class Column
         return $table;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
     public function getElms()
     {
         return $this->elms;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return integer
+     */
     public function getSize()
     {
         return $this->size;

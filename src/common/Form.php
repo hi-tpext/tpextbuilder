@@ -15,8 +15,14 @@ class Form extends Wapper implements Renderable
 
     protected $rows = [];
 
+    protected $botttomButtonsCalled = false;
+
     public function render()
     {
+        if (!$this->botttomButtonsCalled) {
+            $this->bottomButtons(true);
+        }
+
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
 
         $config = [];
@@ -36,9 +42,75 @@ class Form extends Wapper implements Renderable
         $this->rows[] = $row;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return void
+     */
     public function action($val)
     {
         $this->action = $val;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $create
+     * @return $this
+     */
+    public function bottomButtons($create = true)
+    {
+        if ($create) {
+            $this->divider('', '', 12);
+            $this->html('', '', 5);
+            $this->button('submit', '提&nbsp;&nbsp;交', 1)->class('btn-success');
+            $this->button('reset', '重&nbsp;&nbsp;置', 1)->class('btn-warning');
+            $this->button('button', '返&nbsp;&nbsp;回', 1)->class('btn-default btn-go-back')->attr('onclick="history.go(-1);"');
+        }
+
+        $this->botttomButtonsCalled = true;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $label
+     * @param integer $size
+     * @param string $label
+     * @return void
+     */
+    public function submitBtn($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
+    {
+        $this->button('submit', $label, $size)->class($class);
+    }
+
+     /**
+     * Undocumented function
+     *
+     * @param string $label
+     * @param integer $size
+     * @param string $label
+     * @return void
+     */
+    public function resetBtn($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning')
+    {
+        $this->button('submit', $label, $size)->class($class);
+    }
+
+     /**
+     * Undocumented function
+     *
+     * @param string $label
+     * @param integer $size
+     * @param string $label
+     * @param string $attr
+     * @return void
+     */
+    public function backBtn($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
+    {
+        $this->button('submit', $label, $size)->class($class)->attr($attr);
     }
 
     public function __call($name, $arguments)

@@ -3,7 +3,6 @@
 namespace tpext\builder\form;
 
 use tpext\builder\common\Renderable;
-use tpext\builder\displayer\Field;
 
 class Row extends Wapper implements Renderable
 {
@@ -42,18 +41,20 @@ class Row extends Wapper implements Renderable
         $this->class = $colClass;
         $this->attr = $colAttr;
 
-        $this->displayer = new Field($name, $label);
-        $this->displayer->setWapper($this);
+        $this->createDisplayer(\tpext\builder\displayer\Field::class, [$name, $label]);
 
         return $this;
     }
 
     public function createDisplayer($class, $arguments)
     {
-        $this->displayer = new $class($arguments[0], $arguments[1]);
-        $this->displayer->setWapper($this);
+        $displayer = new $class($arguments[0], $arguments[1]);
+        $displayer->setWapper($this);
+        $displayer->created();
 
-        return $this->displayer;
+        $this->displayer = $displayer;
+
+        return $displayer;
     }
 
     public function options($options)
@@ -106,9 +107,19 @@ class Row extends Wapper implements Renderable
         return $this;
     }
 
+    public function getDisplayer()
+    {
+        return $this->displayer();
+    }
+
     public function render()
     {
         return $this->displayer->render();
+    }
+
+    public function publishAssets()
+    {
+        $this->displayer->publishAssets();
     }
 
     public function __call($name, $arguments)

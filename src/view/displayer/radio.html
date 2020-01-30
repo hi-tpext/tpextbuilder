@@ -2,9 +2,9 @@
 <div class="col-md-{$size[1]} clearfix">
     {volist name="options" id="option"}
     <label class="lyear-radio {$inline} {$class}">
-        <input type="radio" value="{$key}" class="check-{$name}" {$attr} {if
-            condition="$key eq checked" }checked{/if} id="fomm-{$name}-{$key}"
-            name="{$name}" {$attr}><span>{$option}</span>
+        <input type="radio" value="{$key}" class="check-{$name}" {if
+            condition="$key eq $checked"}checked{/if} id="fomm-{$name}-{$key}"
+            name="{$name}" {$attr|raw}><span>{$option}</span>
     </label>
     {/volist}
     {include file="$helptempl" /}

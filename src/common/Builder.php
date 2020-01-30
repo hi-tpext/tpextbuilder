@@ -23,13 +23,63 @@ class Builder implements Renderable
 
     protected $css = [];
 
-    public function __construct($title = 'tpext-builder', $desc = '')
+    protected $style = [];
+
+    protected $script = [];
+
+    protected static $instance = null;
+
+    protected function __construct($title, $desc)
     {
         $this->title = $title;
         $this->desc = $desc;
-        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $title
+     * @param string $desc
+     * @return $this
+     */
+    public static function getInstance($title = 'tpext-builder', $desc = '')
+    {
+        if (static::$instance == null) {
+            static::$instance = new static($title, $desc);
+        }
+
+        return static::$instance;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $val
+     * @return $this
+     */
+    public function addJs($val)
+    {
+        $this->js = array_merge($this->js, $val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $val
+     * @return $this
+     */
+    public function addCss($val)
+    {
+        $this->css = array_merge($this->css, $val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Row
+     */
     public function row()
     {
         $row = new Row();
@@ -38,6 +88,12 @@ class Builder implements Renderable
         return $row;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param integer $size
+     * @return Column
+     */
     public function column($size = 12)
     {
         if (!$this->__row__) {
@@ -69,12 +125,23 @@ class Builder implements Renderable
         return $this->column($size)->table();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return mixed
+     */
     public function render()
     {
+        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+
         $vars = [
             'title' => $this->title,
             'desc' => $this->desc,
             'rows' => $this->rows,
+            'js' => array_unique($this->js),
+            'css' => array_unique($this->css),
+            'style' => $this->style,
+            'script' => $this->script,
         ];
 
         $config = [];

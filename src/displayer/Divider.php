@@ -2,10 +2,16 @@
 
 namespace tpext\builder\displayer;
 
-class Divider extends Html
+class Divider extends Field
 {
-    public function render()
+    protected $view = 'divider';
+
+    public function created()
     {
-        return "<div class='divider'>{$this->value}</div>";
+        parent::created();
+
+        $this->value = $this->name;
+
+        $this->label = '';
     }
 }
