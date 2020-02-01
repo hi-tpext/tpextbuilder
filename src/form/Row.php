@@ -109,7 +109,7 @@ class Row extends Wapper implements Renderable
 
     public function getDisplayer()
     {
-        return $this->displayer();
+        return $this->displayer;
     }
 
     public function render()
@@ -117,9 +117,9 @@ class Row extends Wapper implements Renderable
         return $this->displayer->render();
     }
 
-    public function publishAssets()
+    public function beforRender()
     {
-        $this->displayer->publishAssets();
+        return $this->displayer->beforRender();
     }
 
     public function __call($name, $arguments)

@@ -9,6 +9,8 @@ use tpext\builder\form\Wapper;
 
 class Field
 {
+    protected $id = '';
+
     protected $name = '';
 
     protected $label = '';
@@ -19,9 +21,15 @@ class Field
 
     protected $css = [];
 
+    protected $script = [];
+
+    protected $style = [];
+
     protected $view = 'field';
 
     protected $value = '';
+
+    protected $default = '';
 
     protected $icon = '';
 
@@ -67,8 +75,6 @@ class Field
 
         $this->name = $name;
         $this->label = $label;
-
-        $this->publishAssets();
     }
 
     public function created()
@@ -84,6 +90,11 @@ class Field
         }
     }
 
+    protected function getId()
+    {
+        return 'form-' . $this->name;
+    }
+
     /**
      * Undocumented function
      *
@@ -93,6 +104,17 @@ class Field
     public function value($val)
     {
         $this->value = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string|int|mixed $val
+     * @return $this
+     */
+    function default($val = '') {
+        $this->default = $val;
         return $this;
     }
 
@@ -359,6 +381,16 @@ class Field
     /**
      * Undocumented function
      *
+     * @return string
+     */
+    protected function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function getJs()
@@ -385,11 +417,9 @@ class Field
     {
         $vars = $this->commonVars();
 
-        $config = [];
-
         $viewshow = $this->getViewInstance();
 
-        return $viewshow->assign($vars)->config($config)->getContent();
+        return $viewshow->assign($vars)->getContent();
     }
 
     protected function getViewInstance()
@@ -401,12 +431,7 @@ class Field
         return $viewshow;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
-    public function publishAssets()
+    public function beforRender()
     {
         if (!empty($this->js)) {
             Builder::getInstance()->addJs($this->js);
@@ -415,6 +440,16 @@ class Field
         if (!empty($this->css)) {
             Builder::getInstance()->addCss($this->css);
         }
+
+        if (!empty($this->script)) {
+            Builder::getInstance()->addScript($this->script);
+        }
+
+        if (!empty($this->style)) {
+            Builder::getInstance()->addStyle($this->style);
+        }
+
+        return $this;
     }
 
     /**
@@ -433,9 +468,10 @@ class Field
         }
 
         $vars = [
+            'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->name,
-            'value' => $this->value,
+            'value' => $this->value ? $this->value : $this->default,
             'class' => ' ' . $this->class,
             'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : ''),
             'error' => $this->error,

@@ -17,24 +17,15 @@ class Select extends Radio
 
     protected $attr = 'size="1"';
 
-    protected $emptyTip = true;
-
     protected $group = false;
 
     protected $select2 = true;
 
-    protected $select2Options = [];
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $use
-     * @return void
-     */
-    public function emptyTip($show)
-    {
-        $this->emptyTip = $show;
-    }
+    protected $select2Options = [
+        'placeholder' => '请选择',
+        'allowClear' => true,
+        'minimumInputLength' => 0,
+    ];
 
     /**
      * Undocumented function
@@ -47,12 +38,12 @@ class Select extends Radio
         $this->select2 = $use;
     }
 
-    public function dataUrl($url,$options=['delay'=>250,'key'=>'id','text'=>'text'],$loadmore=true)
+    public function dataUrl($url, $options = ['delay' => 250, 'id' => 'id', 'text' => 'text'], $loadmore = true)
     {
         $this->select2Options['ajax'] = [
-            'url' =>$url,
+            'url' => $url,
             'options' => $options,
-            'loadmore' => $loadmore
+            'loadmore' => $loadmore,
         ];
     }
 
@@ -64,49 +55,82 @@ class Select extends Radio
      */
     public function select2Options($options)
     {
-        $this->select2Options = array_merge($this->select2Options,$options);
+        $this->select2Options = array_merge($this->select2Options, $options);
     }
 
     protected function select2Script()
     {
-        if(isset(''))
-        $script = <<<EOT
-        var fields = '$fieldsStr'.split('.');
-        var urls = '$urlsStr'.split('^');
-        
-        var refreshOptions = function(url, target) {
-            $.get(url).then(function(data) {
-                target.find("option").remove();
-                $(target).select2({
-                    placeholder: $placeholder,
-                    allowClear: $allowClear,        
-                    data: $.map(data, function (d) {
-                        d.id = d.$idField;
-                        d.text = d.$textField;
-                        return d;
-                    })
-                }).trigger('change');
+        $script = '';
+        $id = $this->getId();
+
+        if (isset($this->select2Options['ajax'])) {
+            $ajax = $this->select2Options['ajax'];
+            unset($this->select2Options['ajax']);
+            $url = $ajax['url'];
+            $id = isset($ajax['id']) ? $ajax['id'] : 'id';
+            $text = isset($ajax['text']) ? $ajax['text'] : 'text';
+            $delay = isset($ajax['delay']) ? $ajax['delay'] : 250;
+            $loadmore = $ajax['loadmore'];
+
+            $configs = json_encode($this->select2Options);
+
+            $configs = substr($configs, 1, strlen($configs) - 2);
+
+            $script = <<<EOT
+            $("#{$id}").select2({
+              {$configs},
+              ajax: {
+                url: '{$url}',
+                dataType: 'json',
+                delay: {$delay},
+                data: function (params) {
+                  return {
+                    q: params.term,
+                    page: params.page,
+                    eleid : '{$id}'
+                  };
+                },
+                processResults: function (data, params) {
+                  params.page = params.page || 1;
+                  return {
+                    results: $.map(data.data, function (d) {
+                               d.id = d.{$id};
+                               d.text = d.{$text};
+                               return d;
+                            }),
+                    pagination: {
+                      more: {$loadmore} ? data.next_page_url : ''
+                    }
+                  };
+                },
+                cache: true
+              },
+              escapeMarkup: function (markup) {
+                  return markup;
+              }
             });
-        };
-        EOT;
+
+EOT;
+        } else {
+            $configs = json_encode($this->select2Options);
+
+            $configs = substr($configs, 1, strlen($configs) - 2);
+
+            $script = <<<EOT
+            $('#{$id}').select2({
+                {$configs}
+            });
+
+EOT;
+        }
+
+        $this->script[] = $script;
 
         return $script;
     }
 
-    public function render()
+    protected function isGroup()
     {
-        if($this->select2)
-        {
-            $this->script[] = 
-        }
-        $vars = $this->commonVars();
-
-        if (!empty($this->value)) {
-            $this->checked = $this->value;
-        } else {
-            $this->checked = $this->default;
-        }
-
         foreach ($this->options as $option) {
 
             if (isset($option['options']) && isset($option['label'])) {
@@ -115,16 +139,40 @@ class Select extends Radio
             }
         }
 
+        return $this->group;
+    }
+
+    public function beforRender()
+    {
+        if ($this->select2) {
+            $this->select2Script();
+        }
+
+        $this->style[] = 'body{widht:100%}';
+
+        return parent::beforRender();
+    }
+
+    public function render()
+    {
+        $vars = $this->commonVars();
+
+        if (!empty($this->value)) {
+            $this->checked = $this->value;
+        } else {
+            $this->checked = $this->default;
+        }
+
+        $this->isGroup();
+
         $vars = array_merge($vars, [
             'checked' => $this->checked,
-            'emptyTip' => $this->emptyTip,
+            'select2' => $this->select2,
             'group' => $this->group,
         ]);
 
-        $config = [];
-
         $viewshow = $this->getViewInstance();
 
-        return $viewshow->assign($vars)->config($config)->getContent();
+        return $viewshow->assign($vars)->getContent();
     }
 }

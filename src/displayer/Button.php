@@ -6,6 +6,10 @@ class Button extends Field
 {
     protected $view = 'button';
 
+    protected $js = [
+        '/assets/tpextbuilder/js/jquery.lyear.loading.js'
+    ];
+
     protected $bottom = false;
 
     protected $size = [0, 12];
@@ -14,25 +18,19 @@ class Button extends Field
 
     protected $class = 'btn-default';
 
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return void
-     */
-    public function bottom($val = true)
+    protected $loading = false;
+
+    public function loading($val = true)
     {
-        $this->bottom = $val;
-        return $this;
+        $this->loading = $val;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return boolean
-     */
-    public function isBottom()
+    public function render()
     {
-        return $this->bottom;
+        if ($this->loading) {
+            $this->class .= ' btn-loading';
+        }
+
+        return parent::render();
     }
 }

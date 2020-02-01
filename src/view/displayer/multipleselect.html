@@ -1,19 +1,20 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]} clearfix">
-    <select class="form-control {$class}" name="{$name}" id="form-{$name}"
+    <select class="form-control {$class}" name="{$name}" id="{$id}"
         multiple="multiple" {$attr|raw}>
         {if condition="$group"}
         {volist name="options" id="group"}
         <optgroup label="{$group.label}">
             {volist name="group.options" id="option"}
-            <option value="{$key}" {if condition="$key eq $checked"
-                }selected{/if}>{$option}</option>
+            <option value="{$key}" {in
+                name="$key" value="$checked" }selected{/in}>{$option}</option>
             {/volist}
         </optgroup>
         {/volist}
         {else/}
         {volist name="options" id="option"}
-        <option value="{$key}" {if condition="$key eq $checked" }selected{/if}>{$option}</option>
+        <option value="{$key}" {in
+            name="$key" value="$checked" }selected{/in}>{$option}</option>
         {/volist}
         {/if}
     </select>

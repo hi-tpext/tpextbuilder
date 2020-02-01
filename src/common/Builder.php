@@ -15,6 +15,11 @@ class Builder implements Renderable
 
     protected $desc = null;
 
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
     protected $rows = [];
 
     protected $__row__ = null;
@@ -78,6 +83,30 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
+     * @param array $val
+     * @return $this
+     */
+    public function addScript($val)
+    {
+        $this->script = array_merge($this->script, $val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $val
+     * @return $this
+     */
+    public function addStyle($val)
+    {
+        $this->style = array_merge($this->style, $val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return Row
      */
     public function row()
@@ -125,6 +154,13 @@ class Builder implements Renderable
         return $this->column($size)->table();
     }
 
+    public function beforRender()
+    {
+        foreach ($this->rows as $row) {
+            $row->beforRender();
+        }
+    }
+
     /**
      * Undocumented function
      *
@@ -132,7 +168,11 @@ class Builder implements Renderable
      */
     public function render()
     {
+        $this->beforRender();
+
         $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+
+        $this->js[] = '/assets/tpextbuilder/js/tpextbuilder.js';
 
         $vars = [
             'title' => $this->title,
@@ -140,8 +180,8 @@ class Builder implements Renderable
             'rows' => $this->rows,
             'js' => array_unique($this->js),
             'css' => array_unique($this->css),
-            'style' => $this->style,
-            'script' => $this->script,
+            'style' => implode('', array_unique($this->style)),
+            'script' => implode('', array_unique($this->script)),
         ];
 
         $config = [];

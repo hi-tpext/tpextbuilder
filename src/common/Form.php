@@ -19,10 +19,6 @@ class Form extends Wapper implements Renderable
 
     public function render()
     {
-        if (!$this->botttomButtonsCalled) {
-            $this->bottomButtons(true);
-        }
-
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
 
         $config = [];
@@ -64,7 +60,7 @@ class Form extends Wapper implements Renderable
         if ($create) {
             $this->divider('', '', 12);
             $this->html('', '', 5);
-            $this->button('submit', '提&nbsp;&nbsp;交', 1)->class('btn-success');
+            $this->button('submit', '提&nbsp;&nbsp;交', 1)->class('btn-success')->loading();
             $this->button('reset', '重&nbsp;&nbsp;置', 1)->class('btn-warning');
             $this->button('button', '返&nbsp;&nbsp;回', 1)->class('btn-default btn-go-back')->attr('onclick="history.go(-1);"');
         }
@@ -83,10 +79,10 @@ class Form extends Wapper implements Renderable
      */
     public function submitBtn($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
     {
-        $this->button('submit', $label, $size)->class($class);
+        $this->button('submit', $label, $size)->class($class)->loading();
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @param string $label
@@ -99,7 +95,7 @@ class Form extends Wapper implements Renderable
         $this->button('submit', $label, $size)->class($class);
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @param string $label
@@ -111,6 +107,18 @@ class Form extends Wapper implements Renderable
     public function backBtn($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
         $this->button('submit', $label, $size)->class($class)->attr($attr);
+    }
+
+    public function beforRender()
+    {
+        if (!$this->botttomButtonsCalled) {
+            $this->bottomButtons(true);
+        }
+
+        foreach ($this->rows as $row) {
+
+            $row->beforRender();
+        }
     }
 
     public function __call($name, $arguments)

@@ -1,13 +1,13 @@
 {extend name="$admin_layout"/}
 
 {block name="style"}
-  {volist name="css" id="item"}
-  <link href="{$item}" rel="stylesheet">
-  {/volist}
-  
-  {volist name="style" id="item"}
-    {$item}
-  {/volist}
+{volist name="css" id="item"}
+<link href="{$item}" rel="stylesheet">
+{/volist}
+<style>
+  {$style|raw}
+
+</style>
 {/block}
 
 {block name="content"}
@@ -34,15 +34,16 @@
 {/block}
 
 {block name="script"}
-  {volist name="js" id="item"}
-  <script type="text/javascript" src="{$item}" charset="utf-8"></script>
-  {/volist}
-  
-  {volist name="script" id="item"}
-  <script type="text/javascript">
-    {$item}
-  </script>
-  {/volist}
+{volist name="js" id="item"}
+<script type="text/javascript" src="{$item}" charset="utf-8"></script>
+{/volist}
+<script type="text/javascript">
+    $(function(){
+
+      {$script|raw}
+      
+    });
+</script>
 {/block}
 </body>
 </html>

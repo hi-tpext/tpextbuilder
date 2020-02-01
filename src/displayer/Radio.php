@@ -10,8 +10,6 @@ class Radio extends Field
 
     protected $inline = true;
 
-    protected $default = '';
-
     protected $checked = '';
 
     /**
@@ -38,17 +36,6 @@ class Radio extends Field
         return $this;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param string|int|mixed $val
-     * @return $this
-     */
-    function default($val = '') {
-        $this->default = $val;
-        return $this;
-    }
-
     public function render()
     {
         $vars = $this->commonVars();
@@ -64,10 +51,8 @@ class Radio extends Field
             'checked' => $this->checked,
         ]);
 
-        $config = [];
-
         $viewshow = $this->getViewInstance();
 
-        return $viewshow->assign($vars)->config($config)->getContent();
+        return $viewshow->assign($vars)->getContent();
     }
 }

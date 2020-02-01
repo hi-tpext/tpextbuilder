@@ -8,10 +8,6 @@ class Checkbox extends Field
 
     protected $class = 'checkbox-default';
 
-    protected $js = [
-        '/assets/tpextbuilder/js/checkbox.js',
-    ];
-
     protected $inline = true;
 
     protected $checkallBtn = false;
@@ -83,10 +79,8 @@ class Checkbox extends Field
             'checked' => $this->checked,
         ]);
 
-        $config = [];
-
         $viewshow = $this->getViewInstance();
 
-        return $viewshow->assign($vars)->config($config)->getContent();
+        return $viewshow->assign($vars)->getContent();
     }
 }

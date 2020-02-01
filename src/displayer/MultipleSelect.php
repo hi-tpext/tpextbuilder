@@ -2,79 +2,51 @@
 
 namespace tpext\builder\displayer;
 
-class MultipleSelect extends Checkbox
+class MultipleSelect extends Select
 {
     protected $view = 'multipleselect';
 
-    protected $js = [
-        '/assets/tpextbuilder/js/select2/select2.min.js',
-        '/assets/tpextbuilder/js/select2/i18n/zh-CN.js',
-    ];
+    protected $attr = 'size="1"';
 
-    protected $css = [
-        '/assets/tpextbuilder/js/select2/select2.min.css',
-    ];
+    protected $default = [];
 
-    protected $attr = 'size="5"';
-
-    protected $group = false;
-
-    protected $select2 = true;
-
-    protected $select2Options = [
-        'placeholder' => '请选择',
-        'allowClear' => true,
-    ];
+    protected $checked = [];
 
     /**
      * Undocumented function
      *
-     * @param array $options
-     * @return void
+     * @param array $val
+     * @return $this
      */
-    public function select2Options($options)
-    {
-        $this->select2Options = $options;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $use
-     * @return void
-     */
-    public function select2($use)
-    {
-        $this->select2 = $use;
+    function default($val = []) {
+        $this->default = $val;
+        return $this;
     }
 
     public function render()
     {
+        if ($this->select2) {
+            $this->select2Script();
+        }
+
         $vars = $this->commonVars();
 
         if (!empty($this->value)) {
-            $this->checked = $this->value;
-        } else {
-            $this->checked = $this->default;
+            $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
+        } else if (!empty($this->default)) {
+            $this->checked = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 
-        foreach ($this->options as $option) {
-
-            if (isset($option['options']) && isset($option['label'])) {
-                $this->group = true;
-                break;
-            }
-        }
+        $this->isGroup();
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,
+            'select2' => $this->select2,
             'group' => $this->group,
         ]);
 
-        $config = [];
-
         $viewshow = $this->getViewInstance();
 
-        return $viewshow->assign($vars)->config($config)->getContent();
+        return $viewshow->assign($vars)->getContent();
     }
 }

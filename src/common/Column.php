@@ -16,7 +16,7 @@ class Column
         $this->size = $size;
     }
 
-     /**
+    /**
      * 获取一个form
      *
      * @return Form
@@ -59,5 +59,12 @@ class Column
     public function getSize()
     {
         return $this->size;
+    }
+
+    public function beforRender()
+    {
+        foreach ($this->elms as $elm) {
+            $elm->beforRender();
+        }
     }
 }

@@ -50,4 +50,11 @@ class Row
     {
         return $this->cols;
     }
+
+    public function beforRender()
+    {
+        foreach ($this->cols as $col) {
+            $col->beforRender();
+        }
+    }
 }

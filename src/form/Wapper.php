@@ -12,7 +12,7 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\Select         select($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MultipleSelect multipleSelect($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Textarea       textarea($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Hidden         hidden($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Hidden         hidden($name, $value = '')
  * @method \tpext\builder\displayer\Id             id($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Ip             ip($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Url            url($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -32,8 +32,7 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\TimeRange      timeRange($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Number         number($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Currency       currency($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\SwitchField    switch($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Display        display($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\SwitchBtn      switchBtn($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Rate           rate($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Divider        divider($text, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Password       password($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -61,6 +60,9 @@ class Wapper
         'button' => \tpext\builder\displayer\Button::class,
         'select' => \tpext\builder\displayer\Select::class,
         'multipleSelect' => \tpext\builder\displayer\MultipleSelect::class,
+        'hidden' => \tpext\builder\displayer\Hidden::class,
+        'switchBtn' => \tpext\builder\displayer\SwitchBtn::class,
+        'tags' => \tpext\builder\displayer\Tags::class,
     ];
 
     protected static $defaultFieldClass = [];
