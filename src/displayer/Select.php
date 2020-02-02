@@ -21,7 +21,7 @@ class Select extends Radio
 
     protected $select2 = true;
 
-    protected $select2Options = [
+    protected $jsOptions = [
         'placeholder' => '请选择',
         'allowClear' => true,
         'minimumInputLength' => 0,
@@ -40,7 +40,7 @@ class Select extends Radio
 
     public function dataUrl($url, $options = ['delay' => 250, 'id' => 'id', 'text' => 'text'], $loadmore = true)
     {
-        $this->select2Options['ajax'] = [
+        $this->jsOptions['ajax'] = [
             'url' => $url,
             'options' => $options,
             'loadmore' => $loadmore,
@@ -53,31 +53,31 @@ class Select extends Radio
      * @param array $options
      * @return void
      */
-    public function select2Options($options)
+    public function jsOptions($options)
     {
-        $this->select2Options = array_merge($this->select2Options, $options);
+        $this->jsOptions = array_merge($this->jsOptions, $options);
     }
 
     protected function select2Script()
     {
         $script = '';
-        $id = $this->getId();
+        $selectId = $this->getId();
 
-        if (isset($this->select2Options['ajax'])) {
-            $ajax = $this->select2Options['ajax'];
-            unset($this->select2Options['ajax']);
+        if (isset($this->jsOptions['ajax'])) {
+            $ajax = $this->jsOptions['ajax'];
+            unset($this->jsOptions['ajax']);
             $url = $ajax['url'];
             $id = isset($ajax['id']) ? $ajax['id'] : 'id';
             $text = isset($ajax['text']) ? $ajax['text'] : 'text';
             $delay = isset($ajax['delay']) ? $ajax['delay'] : 250;
             $loadmore = $ajax['loadmore'];
 
-            $configs = json_encode($this->select2Options);
+            $configs = json_encode($this->jsOptions);
 
             $configs = substr($configs, 1, strlen($configs) - 2);
 
             $script = <<<EOT
-            $("#{$id}").select2({
+            $('#{$selectId}').select2({
               {$configs},
               ajax: {
                 url: '{$url}',
@@ -87,19 +87,20 @@ class Select extends Radio
                   return {
                     q: params.term,
                     page: params.page,
-                    eleid : '{$id}'
+                    eleid : '{$selectId}'
                   };
                 },
                 processResults: function (data, params) {
                   params.page = params.page || 1;
+                  var list = data.data ? data.data : data;
                   return {
-                    results: $.map(data.data, function (d) {
+                    results: $.map(list, function (d) {
                                d.id = d.{$id};
                                d.text = d.{$text};
                                return d;
                             }),
                     pagination: {
-                      more: {$loadmore} ? data.next_page_url : ''
+                      more: {$loadmore} ? data.more_url : ''
                     }
                   };
                 },
@@ -112,12 +113,12 @@ class Select extends Radio
 
 EOT;
         } else {
-            $configs = json_encode($this->select2Options);
+            $configs = json_encode($this->jsOptions);
 
             $configs = substr($configs, 1, strlen($configs) - 2);
 
             $script = <<<EOT
-            $('#{$id}').select2({
+            $('#{$selectId}').select2({
                 {$configs}
             });
 
@@ -147,8 +148,6 @@ EOT;
         if ($this->select2) {
             $this->select2Script();
         }
-
-        $this->style[] = 'body{widht:100%}';
 
         return parent::beforRender();
     }

@@ -1,0 +1,92 @@
+<?php
+
+namespace tpext\builder\displayer;
+
+class DateTime extends Text
+{
+    protected $js = [
+        '/assets/tpextbuilder/js/moment/moment.min.js',
+        '/assets/tpextbuilder/js/moment/locale/zh-cn.js',
+        '/assets/tpextbuilder/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js',
+        '/assets/tpextbuilder/js/bootstrap-datetimepicker/locale/zh-cn.js',
+    ];
+
+    protected $css = [
+        '/assets/tpextbuilder/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css',
+    ];
+
+    protected $format = 'YYYY-MM-DD HH:mm:ss';
+
+    protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-clock"></i></span>';
+
+    protected $jsOptions = [
+        'useCurrent' => false,
+        'locale' => 'zh-cn',
+        'showTodayButton' => false,
+        'showClear' => true,
+        'showClose' => true,
+        'sideBySide' => true,
+        'inline' => false,
+    ];
+
+    /**
+     * Undocumented function
+     *
+     * @param array $options
+     * @return void
+     */
+    public function jsOptions($options)
+    {
+        $this->jsOptions = array_merge($this->jsOptions, $options);
+    }
+
+    protected function dateTimeScript()
+    {
+        $script = '';
+        $inputId = $this->getId();
+
+        $str = preg_replace('/\W/', '', $this->name);
+
+        $this->jsOptions['format'] = $this->format;
+
+        $locale = isset($this->jsOptions['locale']) ? $this->jsOptions['locale'] : 'zh-cn';
+
+        unset($this->jsOptions['locale']);
+
+        $configs = json_encode($this->jsOptions);
+
+        $configs = substr($configs, 1, strlen($configs) - 2);
+
+        $script = <<<EOT
+        var locale{$str} = moment.locale('{$locale}');
+
+        $('#{$inputId}').datetimepicker({
+            "locale" : locale{$str},
+            {$configs}
+        });
+
+EOT;
+        $this->script[] = $script;
+
+        return $script;
+    }
+
+    /**
+     * Undocumented function
+     * YYYY-MM-DD HH:mm:ss
+     * @param string $val
+     * @return $this
+     */
+    public function format($val)
+    {
+        $this->format = $val;
+        return $this;
+    }
+
+    public function beforRender()
+    {
+        $this->dateTimeScript();
+
+        return parent::beforRender();
+    }
+}

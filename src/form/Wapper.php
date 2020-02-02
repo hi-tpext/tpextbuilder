@@ -63,6 +63,12 @@ class Wapper
         'hidden' => \tpext\builder\displayer\Hidden::class,
         'switchBtn' => \tpext\builder\displayer\SwitchBtn::class,
         'tags' => \tpext\builder\displayer\Tags::class,
+        'datetime' => \tpext\builder\displayer\DateTime::class,
+        'date' => \tpext\builder\displayer\Date::class,
+        'time' => \tpext\builder\displayer\Time::class,
+        'datetimeRange' => \tpext\builder\displayer\DateTimeRange::class,
+        'dateRange' => \tpext\builder\displayer\DateRange::class,
+        'timeRange' => \tpext\builder\displayer\TimeRange::class,
     ];
 
     protected static $defaultFieldClass = [];
