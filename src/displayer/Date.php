@@ -19,4 +19,16 @@ class Date extends DateTime
         $this->format = $val;
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function timespan($val = 'Y-m-d')
+    {
+        $this->timespan = $val;
+        return $this;
+    }
 }

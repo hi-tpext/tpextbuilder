@@ -20,12 +20,13 @@ class DateTimeRange extends Text
 
     protected $timePicker = true;
 
+    protected $separator = ' ~ ';
+
     protected $jsOptions = [
         'opens' => 'right',
         'showDropdowns' => true,
         'timePicker24Hour' => true, //设置小时为24小时制
         'locale' => [
-            'separator' => ' ~ ',
         ],
     ];
 
@@ -45,11 +46,14 @@ class DateTimeRange extends Text
         $script = '';
         $inputId = $this->getId();
 
-        $str = preg_replace('/\W/', '', $this->name);
-
         $this->jsOptions['timePicker'] = $this->timePicker;
 
-        $this->jsOptions['locale'] = array_merge($this->jsOptions['locale'], ['format' => $this->format]);
+        $this->jsOptions['locale'] = array_merge(
+            $this->jsOptions['locale'],
+            [
+                'format' => $this->format,
+                'separator' => $this->separator,
+            ]);
 
         $configs = json_encode($this->jsOptions);
 
@@ -76,6 +80,18 @@ EOT;
     public function format($val)
     {
         $this->format = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * ' ~ '
+     * @param string $val
+     * @return $this
+     */
+    public function separator($val = ' ~ ')
+    {
+        $this->separator = $val;
         return $this;
     }
 

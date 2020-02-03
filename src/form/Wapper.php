@@ -69,6 +69,9 @@ class Wapper
         'datetimeRange' => \tpext\builder\displayer\DateTimeRange::class,
         'dateRange' => \tpext\builder\displayer\DateRange::class,
         'timeRange' => \tpext\builder\displayer\TimeRange::class,
+        'color' => \tpext\builder\displayer\Color::class,
+        'number' => \tpext\builder\displayer\Number::class,
+        'icon' => \tpext\builder\displayer\Icon::class,
     ];
 
     protected static $defaultFieldClass = [];

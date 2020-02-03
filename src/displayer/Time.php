@@ -19,4 +19,16 @@ class Time extends DateTime
         $this->format = $val;
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function timespan($val = 'H:i:s')
+    {
+        $this->timespan = $val;
+        return $this;
+    }
 }

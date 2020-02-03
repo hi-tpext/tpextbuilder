@@ -19,6 +19,8 @@ class DateTime extends Text
 
     protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-clock"></i></span>';
 
+    protected $timespan = '';
+
     protected $jsOptions = [
         'useCurrent' => false,
         'locale' => 'zh-cn',
@@ -83,10 +85,31 @@ EOT;
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function timespan($val = 'Y-m-d H:i:s')
+    {
+        $this->timespan = $val;
+        return $this;
+    }
+
     public function beforRender()
     {
         $this->dateTimeScript();
 
         return parent::beforRender();
+    }
+
+    public function render()
+    {
+        if ($this->timespan) {
+            $this->value = date($this->timespan, $this->value);
+        }
+
+        return parent::render();
     }
 }
