@@ -43,6 +43,7 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\Icon           icon($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MultipleImage  multipleImage($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MultipleFile   multipleFile($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\WagnEditor     wangEditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  */
 
 class Wapper
@@ -72,6 +73,7 @@ class Wapper
         'color' => \tpext\builder\displayer\Color::class,
         'number' => \tpext\builder\displayer\Number::class,
         'icon' => \tpext\builder\displayer\Icon::class,
+        'wangEditor' => \tpext\builder\displayer\WangEditor::class,
     ];
 
     protected static $defaultFieldClass = [];

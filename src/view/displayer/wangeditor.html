@@ -1,0 +1,10 @@
+
+{include file="$labeltempl" /}
+<div class="col-md-{$size[1]}">
+    <div id="{$id}-div" style="width: 100%; height: 100%;">
+        <p>{$value|raw}</p>
+    </div>
+    <input type="hidden" name="{$name}" id="{$id}" {$attr|raw}
+        value="{$value|raw}">
+    {include file="$helptempl" /}
+</div>

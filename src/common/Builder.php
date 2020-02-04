@@ -15,6 +15,8 @@ class Builder implements Renderable
 
     protected $desc = null;
 
+    protected $csrf_token = '';
+
     /**
      * Undocumented variable
      *
@@ -51,9 +53,21 @@ class Builder implements Renderable
     {
         if (static::$instance == null) {
             static::$instance = new static($title, $desc);
+            static::$instance->csrf_token = csrf_token();
+            View::share(['__token__' => static::$instance->csrf_token]);
         }
 
         return static::$instance;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getCsrfToken()
+    {
+        return $this->csrf_token;
     }
 
     /**

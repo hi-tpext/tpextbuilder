@@ -28,7 +28,7 @@ class Icon extends Text
         $this->jsOptions = array_merge($this->jsOptions, $options);
     }
 
-    protected function NumberScript()
+    protected function iconScript()
     {
         $script = '';
         $inputId = $this->getId();
@@ -69,7 +69,7 @@ EOT;
 
     public function beforRender()
     {
-        $this->NumberScript();
+        $this->iconScript();
 
         return parent::beforRender();
     }

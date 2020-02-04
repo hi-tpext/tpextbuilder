@@ -3,6 +3,7 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
+use tpext\builder\common\Builder;
 use tpext\builder\common\Plugin;
 use tpext\builder\form\Row;
 use tpext\builder\form\Wapper;
@@ -11,7 +12,9 @@ class Form extends Wapper implements Renderable
 {
     protected $view = '';
 
-    public $action = '';
+    protected $action = '';
+
+    protected $method = 'post';
 
     protected $rows = [];
 
@@ -36,17 +39,31 @@ class Form extends Wapper implements Renderable
     public function addRow($row)
     {
         $this->rows[] = $row;
+        return $this;
     }
 
     /**
      * Undocumented function
      *
      * @param string $val
-     * @return void
+     * @return $this
      */
     public function action($val)
     {
         $this->action = $val;
+        return $this;
+    }
+
+/**
+ * Undocumented function
+ *
+ * @param string $val
+ * @return $this
+ */
+    public function method($val)
+    {
+        $this->method = $val;
+        return $this;
     }
 
     /**
@@ -111,6 +128,10 @@ class Form extends Wapper implements Renderable
 
     public function beforRender()
     {
+        $token = Builder::getInstance()->getCsrfToken();
+
+        $this->hidden('__token__', $token);
+
         if (!$this->botttomButtonsCalled) {
             $this->bottomButtons(true);
         }

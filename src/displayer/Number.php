@@ -2,7 +2,7 @@
 
 namespace tpext\builder\displayer;
 
-class Number extends Text
+class Number extends Field
 {
     protected $view = 'number';
 
@@ -35,7 +35,7 @@ class Number extends Text
         $this->jsOptions = array_merge($this->jsOptions, $options);
     }
 
-    protected function NumberScript()
+    protected function numberScript()
     {
         $script = '';
         $inputId = $this->getId();
@@ -58,7 +58,7 @@ EOT;
 
     public function beforRender()
     {
-        $this->NumberScript();
+        $this->numberScript();
 
         return parent::beforRender();
     }
