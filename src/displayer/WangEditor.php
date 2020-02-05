@@ -32,13 +32,13 @@ class WangEditor extends Field
     {
         $script = '';
         $inputId = $this->getId();
-
-        $token = md5('uploadtoken' . time() . uniqid());
-
-        session('uploadtoken', $token);
-
+      
         if (!isset($this->jsOptions['uploadImgServer']) || empty($this->jsOptions['uploadImgServer'])) {
-            $this->jsOptions['uploadImgServer'] = url('tpextbuilder/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token]);
+            $token = md5('uploadtoken' . time() . uniqid());
+
+            session('uploadtoken', $token);
+    
+            $this->jsOptions['uploadImgServer'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token]);
         }
 
         $this->jsOptions['uploadImgParams'] = [];
@@ -53,18 +53,6 @@ class WangEditor extends Field
         editor.customConfig = {$configs};
 
         editor.customConfig.uploadImgHooks = {
-            fail: function (xhr, editor, result) {
-                // 图片上传并返回结果，但图片插入错误时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-                alert("失败");
-            },
-            error: function (xhr, editor) {
-                // 图片上传出错时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
-                alert("错误");
-            },
-            // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
-            // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
             customInsert: function (insertImg, result, editor) {
                 // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
                 // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果

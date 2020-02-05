@@ -6,11 +6,9 @@ use tpext\common\Module as baseModule;
 
 class Module extends baseModule
 {
-    protected $name = 'tpext.builder.module';
+    protected $name = 'tpext.builder';
 
     protected $__root__ = __DIR__ . '/../../';
-
-    protected $assets = 'assets';
 
     protected $modules = [
         'admin' => ['upload'],

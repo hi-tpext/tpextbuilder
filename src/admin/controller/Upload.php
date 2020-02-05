@@ -11,11 +11,11 @@ class Upload extends Controller
     public function upfiles($type = '', $token = '')
     {
         if (empty($token)) {
-            exit;
+            exit('no token');
         }
 
         if (session('uploadtoken') != $token) {
-            exit;
+            exit('token error');
         }
 
         switch ($type) {
@@ -77,10 +77,18 @@ class Upload extends Controller
         }
     }
 
-    public function ueditor()
+    public function ueditor($token = '')
     {
+        if (empty($token)) {
+            exit('no token');
+        }
+
+        if (session('uploadtoken') != $token) {
+            exit('token error');
+        }
+
         $action = $_GET['action'];
-        $config_file = './js/ueditor/config.json';
+        $config_file = app()->getRootPath() . 'public/assets/tpextbuilder/js/ueditor/config.json';
         $config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
             /* 获取配置信息 */
@@ -157,6 +165,9 @@ class Upload extends Controller
         //匹配出图片的格式
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $type = $result[2];
+            if (!preg_match('/^(png|jpg|jpeg|bmp|gif|webpg)$/i', $type)) {
+                return false;
+            }
             $new_file = $path . "/" . date('Ymd', time()) . "/";
 
             if (!file_exists($new_file)) {
@@ -177,13 +188,29 @@ class Upload extends Controller
 
     private function saveFile($type = '')
     {
-        // 假装上传成功(可根据type存到不同的目录)
-        return json_encode([
-            "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
-            "url" => './upload/images/lyear_5de21f46cd8ba.jpg', // 返回的地址
-            "title" => 'lyear_5de21f46cd8ba', // 附件名
-        ]);
+        $file_input_name = 'upfile';
 
+        $up = new UploadTool(['path' => "./upload/{$type}/"]);
+
+        $newPath = $up->uploadFile($file_input_name);
+        if ($newPath === false) {
+            //var_dump($up->errorNumber);
+            //echo json_encode(['status' => 500, 'info' => '上传失败，没有权限', 'class' => 'error']);
+            // 失败跟成功同样的方式返回
+            return json_encode([
+                "state" => "", // 上传状态，上传成功时必须返回"SUCCESS"
+                "url" => '', // 返回的地址
+                "title" => $up->errorInfo,
+            ]);
+        } else {
+            $newPath = preg_replace('/^\.?(\/.+)$/', '$1', $newPath);
+
+            return json_encode([
+                "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
+                "url" => $newPath, // 返回的地址
+                "title" => $newPath, // 附件名
+            ]);
+        }
     }
 
     private function catchFile()

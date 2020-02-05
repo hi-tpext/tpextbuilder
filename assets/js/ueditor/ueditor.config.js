@@ -30,7 +30,7 @@
         UEDITOR_HOME_URL: URL
 
         // 服务器统一请求接口路径
-        , serverUrl: "upload_ueditor.php"  // 自定义上传的处理入口
+        , serverUrl: window.uploadUrl  // 自定义上传的处理入口
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
         , toolbars: [[

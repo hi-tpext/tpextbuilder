@@ -17,6 +17,8 @@ class Builder implements Renderable
 
     protected $csrf_token = '';
 
+    protected $minify = false;
+
     /**
      * Undocumented variable
      *
@@ -26,7 +28,9 @@ class Builder implements Renderable
 
     protected $__row__ = null;
 
-    protected $js = [];
+    protected $js = [
+        '/assets/tpextbuilder/js/tpextbuilder.js',
+    ];
 
     protected $css = [];
 
@@ -186,14 +190,12 @@ class Builder implements Renderable
 
         $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
 
-        $this->js[] = '/assets/tpextbuilder/js/tpextbuilder.js';
-
         $vars = [
             'title' => $this->title,
             'desc' => $this->desc,
             'rows' => $this->rows,
-            'js' => array_unique($this->js),
-            'css' => array_unique($this->css),
+            'js' => $this->minify ? [] : array_unique($this->js),
+            'css' => $this->minify ? [] : array_unique($this->css),
             'style' => implode('', array_unique($this->style)),
             'script' => implode('', array_unique($this->script)),
         ];

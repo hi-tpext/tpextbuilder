@@ -6,10 +6,6 @@ class Button extends Field
 {
     protected $view = 'button';
 
-    protected $js = [
-        '/assets/tpextbuilder/js/jquery.lyear.loading.js'
-    ];
-
     protected $bottom = false;
 
     protected $size = [0, 12];

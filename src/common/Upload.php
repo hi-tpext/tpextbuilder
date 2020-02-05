@@ -7,7 +7,12 @@ class Upload
     //文件上传保存路径
     protected $path = './upload/images/';
     //允许文件上传的后缀
-    protected $allowSuffix = ['jpg', 'jpeg', 'gif', 'wbmp', 'png', 'zip'];
+    public static $allowSuffix = ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 
+        'zip', "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg",
+        "ogg", "ogv", "mov", "wmv", "mp4", "webm", "mp3", "wav", "mid",
+        "rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso",
+        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md", "xml"];
+
     //允许文件上传的 Mime 类型
     protected $allowMime = ['image/jpeg', 'image/gif', 'image/wbmp', 'image/png', 'application/x-zip-compressed'];
     //允许文件上传的文件最大大小
@@ -15,7 +20,7 @@ class Upload
     //是否启用随机名
     protected $isRandName = true;
     //加上文件前缀
-    protected $prefix = 'lyear_';
+    protected $prefix = 'file';
 
     //自定义的错误号码和错误信息
     protected $errorNumber;
@@ -198,7 +203,7 @@ class Upload
      */
     protected function checkSuffix()
     {
-        if (!in_array($this->suffix, $this->allowSuffix)) {
+        if (!in_array($this->suffix, static::$allowSuffix)) {
             $this->setOption('errorNumber', -5);
             return false;
         }
