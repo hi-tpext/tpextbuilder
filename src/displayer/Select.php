@@ -25,17 +25,19 @@ class Select extends Radio
         'placeholder' => '请选择',
         'allowClear' => true,
         'minimumInputLength' => 0,
+        'language'=> 'zh-CN',  
     ];
 
     /**
      * Undocumented function
      *
      * @param boolean $show
-     * @return void
+     * @return $this
      */
     public function select2($use)
     {
         $this->select2 = $use;
+        return $this;
     }
 
     public function dataUrl($url, $options = ['delay' => 250, 'id' => 'id', 'text' => 'text'], $loadmore = true)
@@ -51,11 +53,12 @@ class Select extends Radio
      * Undocumented function
      *
      * @param array $options
-     * @return void
+     * @return $this
      */
     public function jsOptions($options)
     {
         $this->jsOptions = array_merge($this->jsOptions, $options);
+        return $this;
     }
 
     protected function select2Script()

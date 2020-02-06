@@ -16,7 +16,7 @@ class Textarea extends Field
      * Undocumented function
      *
      * @param integer $val
-     * @return void
+     * @return $this
      */
     public function maxlength($val = 0)
     {

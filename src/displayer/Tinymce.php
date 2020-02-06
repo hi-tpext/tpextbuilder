@@ -15,7 +15,7 @@ class Tinymce extends Field
         'directionality' => 'ltl',
         'browser_spellcheck' => true,
         'contextmenu' => false,
-        'height' => 480,
+        'height' => 600,
         'plugins' => [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
@@ -29,11 +29,12 @@ class Tinymce extends Field
      * Undocumented function
      *
      * @param array $options
-     * @return void
+     * @return $this
      */
     public function jsOptions($options)
     {
         $this->jsOptions = array_merge($this->jsOptions, $options);
+        return $this;
     }
 
     protected function editorScript()
@@ -45,7 +46,7 @@ class Tinymce extends Field
             $token = md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
-            
+
             $this->jsOptions['images_upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'tinymce', 'token' => $token]);
         }
 

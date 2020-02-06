@@ -37,7 +37,7 @@ class Upload extends Controller
             //echo json_encode(['status' => 500, 'info' => '上传失败，没有权限', 'class' => 'error']);
             // 失败跟成功同样的方式返回
         } else {
-            $newPath = preg_replace('/^\.?(\/.+)$/', '$1', $newPath);
+            $newPath = preg_replace('/^.+?\/public(\/.+)$/i', '$1', $newPath);
             switch ($type) {
                 case 'wangeditor':
                     echo json_encode(['url' => $newPath]);
@@ -152,7 +152,7 @@ class Upload extends Controller
         if (empty($picdata)) {
             echo json_encode(['state' => 400, 'message' => '上传数据为空']);exit;
         }
-        $picurl = $this->base64_image_content($picdata, 'upload/images');
+        $picurl = $this->base64_image_content($picdata, app()->getRootPath() . 'public/upload/images/' . date('Ym') . '/');
         if ($picurl) {
             echo json_encode(['state' => 200, 'picurl' => $picurl]);exit;
         } else {
@@ -172,7 +172,7 @@ class Upload extends Controller
 
             if (!file_exists($new_file)) {
                 //检查是否有该文件夹，如果没有就创建，并给予最高权限
-                mkdir($new_file, 0750);
+                mkdir($new_file, 0755, true);
             }
 
             $new_file = $new_file . md5(microtime(true)) . ".{$type}";
@@ -190,7 +190,7 @@ class Upload extends Controller
     {
         $file_input_name = 'upfile';
 
-        $up = new UploadTool(['path' => "./upload/{$type}/"]);
+        $up = new UploadTool(['path' => app()->getRootPath() . "/public/upload/{$type}/" . date('Ym') . '/']);
 
         $newPath = $up->uploadFile($file_input_name);
         if ($newPath === false) {
@@ -203,7 +203,7 @@ class Upload extends Controller
                 "title" => $up->errorInfo,
             ]);
         } else {
-            $newPath = preg_replace('/^\.?(\/.+)$/', '$1', $newPath);
+            $newPath = preg_replace('/^.+?\/public(\/.+)$/i', '$1', $newPath);
 
             return json_encode([
                 "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"

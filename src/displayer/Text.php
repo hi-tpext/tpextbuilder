@@ -20,7 +20,7 @@ class Text extends Field
      * Undocumented function
      *
      * @param integer $val
-     * @return void
+     * @return $this
      */
     public function maxlength($val = 0)
     {
@@ -32,7 +32,7 @@ class Text extends Field
      * Undocumented function
      *
      * @param string $html
-     * @return void
+     * @return $this
      */
     public function befor($html)
     {
@@ -43,12 +43,36 @@ class Text extends Field
     /**
      * Undocumented function
      *
-     * @param string $html
-     * @return void
+     * @param string $text
+     * @return $this
      */
     public function after($html)
     {
         $this->after = $html;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $text
+     * @return $this
+     */
+    public function beforSymbol($text)
+    {
+        $this->befor = '<span class="input-group-addon">' . $text . '</span>';
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $html
+     * @return $this
+     */
+    public function afterSymbol($text)
+    {
+        $this->after = '<span class="input-group-addon">' . $text . '</span>';
         return $this;
     }
 

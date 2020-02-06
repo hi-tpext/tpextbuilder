@@ -21,23 +21,24 @@ class WangEditor extends Field
      * Undocumented function
      *
      * @param array $options
-     * @return void
+     * @return $this
      */
     public function jsOptions($options)
     {
         $this->jsOptions = array_merge($this->jsOptions, $options);
+        return $this;
     }
 
     protected function editorScript()
     {
         $script = '';
         $inputId = $this->getId();
-      
+
         if (!isset($this->jsOptions['uploadImgServer']) || empty($this->jsOptions['uploadImgServer'])) {
             $token = md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
-    
+
             $this->jsOptions['uploadImgServer'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token]);
         }
 

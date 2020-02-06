@@ -15,6 +15,8 @@ class DateTime extends Text
         '/assets/tpextbuilder/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css',
     ];
 
+    protected $size = [2, 3];
+    
     protected $format = 'YYYY-MM-DD HH:mm:ss';
 
     protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-clock"></i></span>';
@@ -35,11 +37,12 @@ class DateTime extends Text
      * Undocumented function
      *
      * @param array $options
-     * @return void
+     * @return $this
      */
     public function jsOptions($options)
     {
         $this->jsOptions = array_merge($this->jsOptions, $options);
+        return $this;
     }
 
     protected function dateTimeScript()

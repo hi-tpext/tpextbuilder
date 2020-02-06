@@ -14,6 +14,8 @@ class DateTimeRange extends Text
         '/assets/tpextbuilder/js/bootstrap-daterangepicker/daterangepicker.css',
     ];
 
+    protected $size = [2, 6];
+
     protected $format = 'YYYY-MM-DD HH:mm:ss';
 
     protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-multiple"></i></span>';
@@ -34,11 +36,12 @@ class DateTimeRange extends Text
      * Undocumented function
      *
      * @param array $options
-     * @return void
+     * @return $this
      */
     public function jsOptions($options)
     {
         $this->jsOptions = array_merge($this->jsOptions, $options);
+        return $this;
     }
 
     protected function dateTimeRangeScript()

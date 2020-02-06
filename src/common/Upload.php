@@ -5,16 +5,18 @@ namespace tpext\builder\common;
 class Upload
 {
     //文件上传保存路径
-    protected $path = './upload/images/';
+    protected $path = '';
     //允许文件上传的后缀
-    public static $allowSuffix = ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 
+    public static $allowSuffix = ['jpg', 'jpeg', 'gif', 'png', 'wbmp', 'webpg',
         'zip', "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg",
         "ogg", "ogv", "mov", "wmv", "mp4", "webm", "mp3", "wav", "mid",
         "rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso",
-        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md", "xml"];
+        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md", "xml", "json"];
 
     //允许文件上传的 Mime 类型
-    protected $allowMime = ['image/jpeg', 'image/gif', 'image/wbmp', 'image/png', 'application/x-zip-compressed'];
+    protected $allowMime = ['image/jpeg', 'image/gif', 'image/wbmp', 'image/wbmp', 'image/png',
+        'application/x-zip-compressed'];
+
     //允许文件上传的文件最大大小
     protected $maxSize = 2000000;
     //是否启用随机名
@@ -36,6 +38,8 @@ class Upload
 
     public function __construct($arr = [])
     {
+        $this->path = app()->getRootPath() . 'public/upload/images/' . date('Ym') . '/';
+
         foreach ($arr as $key => $value) {
             $this->setOption($key, $value);
         }
@@ -95,7 +99,7 @@ class Upload
             $this->getFileInfo($key);
         }
         //判断文件的大小、mime、后缀是否符合
-        if (!$this->checkSize() || !$this->checkMime() || !$this->checkSuffix()) {
+        if (!$this->checkSize() /*|| !$this->checkMime() */ || !$this->checkSuffix()) {
             return false;
         }
         //得到新的文件名字
@@ -139,11 +143,11 @@ class Upload
     {
         //文件夹不存在或者不是目录。创建文件夹
         if (!file_exists($this->path) || !is_dir($this->path)) {
-            return mkdir($this->path, 0777, true);
+            return mkdir($this->path, 0755, true);
         }
         //判断文件是否可写
         if (!is_writeable($this->path)) {
-            return chmod($this->path, 0777);
+            return chmod($this->path, 0755);
         }
         return true;
     }

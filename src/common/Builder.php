@@ -28,9 +28,7 @@ class Builder implements Renderable
 
     protected $__row__ = null;
 
-    protected $js = [
-        '/assets/tpextbuilder/js/tpextbuilder.js',
-    ];
+    protected $js = [];
 
     protected $css = [];
 
@@ -177,6 +175,8 @@ class Builder implements Renderable
         foreach ($this->rows as $row) {
             $row->beforRender();
         }
+
+        $this->js[] = '/assets/tpextbuilder/js/tpextbuilder.js';
     }
 
     /**

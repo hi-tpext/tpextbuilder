@@ -43,9 +43,12 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\Icon           icon($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MultipleImage  multipleImage($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MultipleFile   multipleFile($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\WagnEditor     wangEditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\WangEditor     wangEditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Tinymce        tinymce($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Ueditor        ueditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\UEditor        ueditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\WangEditor     editor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\CKEditor       ckeditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\MDEditor       mdeditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  */
 
 class Wapper
@@ -77,7 +80,15 @@ class Wapper
         'icon' => \tpext\builder\displayer\Icon::class,
         'wangEditor' => \tpext\builder\displayer\WangEditor::class,
         'tinymce' => \tpext\builder\displayer\Tinymce::class,
-        'ueditor' => \tpext\builder\displayer\Ueditor::class,
+        'ueditor' => \tpext\builder\displayer\UEditor::class,
+        'ckeditor' => \tpext\builder\displayer\CKEditor::class,
+        'mdeditor' => \tpext\builder\displayer\MDEditor::class,
+        'editor' => \tpext\builder\displayer\WangEditor::class,
+        'rate' => \tpext\builder\displayer\Rate::class,
+        'month' => \tpext\builder\displayer\Month::class,
+        'year' => \tpext\builder\displayer\Year::class,
+        'multipleFile' => \tpext\builder\displayer\MultipleFile::class,
+        'file' => \tpext\builder\displayer\File::class,
     ];
 
     protected static $defaultFieldClass = [];

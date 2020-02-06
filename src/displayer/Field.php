@@ -90,7 +90,7 @@ class Field
         }
     }
 
-    protected function getId()
+    public function getId()
     {
         return 'form-' . $this->name;
     }
@@ -127,6 +127,18 @@ class Field
     public function name($val)
     {
         $this->name = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function rules($val)
+    {
+        $this->rules = $val;
         return $this;
     }
 
@@ -244,44 +256,48 @@ class Field
      * Undocumented function
      *
      * @param boolean $val
-     * @return void
+     * @return $this
      */
     public function readonly($val = true)
     {
         $this->readonly = $val;
+        return $this;
     }
 
     /**
      * Undocumented function
      *
      * @param boolean $val
-     * @return void
+     * @return $this
      */
     public function disabled($val = true)
     {
         $this->disabled = $val;
+        return $this;
     }
 
     /**
      * Undocumented function
      *
      * @param boolean $val
-     * @return void
+     * @return $this
      */
     protected function showLabel($val)
     {
         $this->showLabel = $val;
+        return $this;
     }
 
     /**
      * Undocumented function
      *
      * @param boolean $val
-     * @return void
+     * @return $this
      */
     public function useDefauleFieldClass($val)
     {
         $this->useDefauleFieldClass = $val;
+        return $this;
     }
 
     /**
