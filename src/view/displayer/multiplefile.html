@@ -3,15 +3,17 @@
     <div class="js-upload-files">
         <input type="hidden" name="{$name}" class="form-control {$class}"
             value="{$value}" id="{$id}" {$attr|raw}>
-        <div id="picker_{$name}">上传{if condition="$jsOptions.multiple"}多{else/}单{/if}个文件</div>
-        <!--ul用来撒谎功能预览-->
-
-        <ul id="file_list_{$name}" class="list-inline clearfix lyear-uploads-pic">
-            <!--初始化一个已上传成功的-->
+        <div id="picker_{$name}"><i class="mdi mdi-cloud-upload"></i>&nbsp;上传{if
+            condition="$jsOptions.multiple"}多{else/}单{/if}个文件</div>
+        <ul id="file_list_{$name}" class="list-inline clearfix
+            lyear-uploads-pic">
             {volist name="files" id="file"}
             <li class="col-xs-6 col-sm-3 col-md-2 pic-item" id="flie{$key}">
                 <figure>
-                    <img style="display: none;" class="preview-img" src="{$file}" />
+                    <div>
+                        <img style="display: none;" class="preview-img"
+                        src="{$file}" />
+                    </div>
                     <figcaption>
                         <a class="btn btn-round btn-square btn-primary
                             btn-link-pic" data-id="file{$key}"

@@ -18,7 +18,7 @@ class File extends MultipleFile
     public function render()
     {
         $this->jsOptions = array_merge($this->jsOptions, [
-            'limit' => 1,
+            'fileNumLimit' => 1,
             'multiple' => false,
         ]);
 

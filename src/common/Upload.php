@@ -7,11 +7,19 @@ class Upload
     //文件上传保存路径
     protected $path = '';
     //允许文件上传的后缀
-    public static $allowSuffix = ['jpg', 'jpeg', 'gif', 'png', 'wbmp', 'webpg',
-        'zip', "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg",
-        "ogg", "ogv", "mov", "wmv", "mp4", "webm", "mp3", "wav", "mid",
+    public static $allowSuffix = [
+        //
+        'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp',
+        //
+        "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
+        //
+        "ogg", "mp3", "wav", "mid",
+        //
         "rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso",
-        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md", "xml", "json"];
+        //
+        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md",
+        //
+        "xml", "json"];
 
     //允许文件上传的 Mime 类型
     protected $allowMime = ['image/jpeg', 'image/gif', 'image/wbmp', 'image/wbmp', 'image/png',

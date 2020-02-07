@@ -80,7 +80,7 @@ $(function () {
 
         var $multiple = jsOptions.multiple, // 是否选择多个文件
             $ext = jsOptions.ext.join(','), // 支持的文件后缀
-            $size = jsOptions.size; // 支持最大的文件大小
+            $size = jsOptions.fileSingleSizeLimit; // 支持最大的文件大小
 
         var $file_list = $('#file_list_' + $input_file_name);
         var ratio = window.devicePixelRatio || 1;
@@ -100,8 +100,12 @@ $(function () {
                 } else {
                     $img.css({
                         'display': 'block',
-                        'max-height': +thumbnailHeight + 'px',
-                        'max-width': thumbnailWidth + 'px'
+                        'max-height': 'auto',
+                        'max-width': thumbnailWidth + 'px',
+                        'margin': '0 auto'
+                    }).parent('div').css({
+                        'height': thumbnailHeight + 'px',
+                        'width': thumbnailWidth + 'px',
                     });
                 }
             }
@@ -109,6 +113,8 @@ $(function () {
 
         var uploader = WebUploader.create({
             auto: true,
+            chunked: true,
+            prepareNextFile: true,
             duplicate: jsOptions.duplicate ? true : false,
             resize: jsOptions.resize ? true : false,
             swf: jsOptions.swf_url,
@@ -118,23 +124,38 @@ $(function () {
                 multiple: $multiple
             },
             fileSingleSizeLimit: $size,
+            fileNumLimit: jsOptions.fileNumLimit,
+            fileSizeLimit: jsOptions.fileSizeLimit,
             accept: {
                 title: '文件',
                 extensions: $ext,
                 mimeTypes: jsOptions.mimeTypes || '*/*'
+            },
+            thumb: {
+                // 图片质量，只有type为`image/jpeg`的时候才有效。
+                quality: 70,
+                // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+                allowMagnify: false,
+                // 是否允许裁剪。
+                crop: true,
+                // 为空的话则保留原有图片格式。
+                // 否则强制转换成指定的类型。
+                type: 'image/jpeg'
             }
         });
 
-        uploader.on('fileQueued', function (file) {
-
-            if ($file_list.find('li.pic-item').size() >= jsOptions.limit) {
-                lightyear.notify('最多允许上传' + jsOptions.limit + '个文件', 'danger');
-
+        uploader.on('beforeFileQueued', function (file) {
+            if ($multiple && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
+                lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
                 return false;
             }
+        });
+        uploader.on('fileQueued', function (file) {
             var $li = $('<li class="col-xs-6 col-sm-3 col-md-2 pic-item" id="' + file.id + '">' +
                     '  <figure>' +
+                    '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
                     '    <img>' +
+                    '</div>' +
                     '    <figcaption>' +
                     '      <a class="btn btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
                     '      <a class="btn btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
@@ -158,8 +179,9 @@ $(function () {
                 $img.attr('src', src);
                 $img.css({
                     'display': 'block',
-                    'max-height': +thumbnailHeight + 'px',
-                    'max-width': thumbnailWidth + 'px'
+                    'min-height': 'auto',
+                    'max-width': thumbnailWidth + 'px',
+                    'margin': '0 auto'
                 });
             }, thumbnailWidth, thumbnailHeight);
             $('<div class="progress progress-sm"><div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div></div>').appendTo($li);
@@ -182,7 +204,7 @@ $(function () {
                     $input_file.val(response.id);
                 }
             }
-            $('<div class="' + response.class + '"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.limit + ')').appendTo($li);
+            $('<div class="' + response.class + '"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.fileNumLimit + ')').appendTo($li);
             if ($li.find('.cantpreview').size() > 0) {
                 $li.find('a.btn-link-pic').attr('href', response.picurl).removeClass('btn-link-pic').attr('target', '_blank');
                 $li.find('.filename').text(response.picurl);
@@ -197,12 +219,10 @@ $(function () {
         uploader.on('error', function (type) {
             switch (type) {
                 case 'Q_TYPE_DENIED':
-                    //alert('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！');
-                    lightyear.notify('图片类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger');
+                    lightyear.notify('文件类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger');
                     break;
                 case 'F_EXCEED_SIZE':
-                    alert('图片不得超过' + ($size / 1024) + 'kb，请重新上传！');
-                    lightyear.notify('图片不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger');
+                    lightyear.notify('文件不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger');
                     break;
             }
         });

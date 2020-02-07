@@ -483,6 +483,10 @@ class Field
             static::$labeltempl = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
+        if (is_array($this->default)) {
+            $this->default = implode(',', $this->default);
+        }
+
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,

@@ -2,6 +2,14 @@
 
 namespace tpext\builder\displayer;
 
+/**
+ * MultipleFile class
+ * @method MultipleFile   image()
+ * @method MultipleFile   office()
+ * @method MultipleFile   video()
+ * @method MultipleFile   audio()
+ * @method MultipleFile   pkg()
+ */
 class MultipleFile extends Field
 {
     protected $view = 'multiplefile';
@@ -17,22 +25,39 @@ class MultipleFile extends Field
         '/assets/tpextbuilder/css/uploadfiles.css',
     ];
 
+    protected $files = [];
+
     protected $jsOptions = [
         'resize' => false,
-        'duplicate' => false,
-        'ext' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png',
-            'zip', "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg",
-            "ogg", "ogv", "mov", "wmv", "mp4", "webm", "mp3", "wav", "mid",
+        'duplicate' => true,
+        'ext' => [
+            //
+            'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp',
+            //
+            "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
+            //
+            "ogg", "mp3", "wav", "mid",
+            //
             "rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso",
-            "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md", "xml", "json"],
-        'size' => 20 * 1024 * 1024,
+            //
+            "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md",
+            //
+            "xml", "json"],
         'multiple' => true,
         'mimeTypes' => '*/*',
         'swf_url' => '/assets/tpextbuilder/js/webuploader/Uploader.swf',
-        'limit' => 10,
+        'fileSingleSizeLimit' => 5 * 1024 * 1024,
+        'fileNumLimit' => 5,
+        'fileSizeLimit' => 0,
     ];
 
-    protected $files = [];
+    protected $extTypes = [
+        'image' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp'],
+        'office' => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf"],
+        'video' => ["flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm"],
+        'audio' => ["ogg", "mp3", "wav", "mid"],
+        'pkg' => ["rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso"],
+    ];
 
     /**
      * Undocumented function
@@ -42,6 +67,18 @@ class MultipleFile extends Field
      */
     function default($val = []) {
         $this->default = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * fileNumLimit
+     * @param int $val
+     * @return $this
+     */
+    public function limit($val)
+    {
+        $this->jsOptions['fileNumLimit'] = $val;
         return $this;
     }
 
@@ -83,5 +120,15 @@ class MultipleFile extends Field
         $viewshow = $this->getViewInstance();
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (isset($this->extTypes[$name])) {
+            $this->jsOptions['ext'] = $this->extTypes[$name];
+            return $this;
+        }
+
+        throw new \UnexpectedValueException('未知调用');
     }
 }

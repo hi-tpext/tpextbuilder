@@ -13,13 +13,8 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\MultipleSelect multipleSelect($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Textarea       textarea($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Hidden         hidden($name, $value = '')
- * @method \tpext\builder\displayer\Id             id($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Ip             ip($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Url            url($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Color          color($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Email          email($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Mobile         mobile($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Slider         slider($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\RangeSlider    rangeSlider($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\File           file($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Image          image($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Date           date($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -31,7 +26,6 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\DateTimeRange  datetimeRange($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\TimeRange      timeRange($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Number         number($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Currency       currency($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\SwitchBtn      switchBtn($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Rate           rate($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Divider        divider($text, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -89,6 +83,9 @@ class Wapper
         'year' => \tpext\builder\displayer\Year::class,
         'multipleFile' => \tpext\builder\displayer\MultipleFile::class,
         'file' => \tpext\builder\displayer\File::class,
+        'multipleImage' => \tpext\builder\displayer\MultipleImage::class,
+        'image' => \tpext\builder\displayer\Image::class,
+        'rangeSlider' => \tpext\builder\displayer\RangeSlider::class,
     ];
 
     protected static $defaultFieldClass = [];
