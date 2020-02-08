@@ -1,0 +1,27 @@
+<table class="table {$class}" {$attr|raw}>
+    {notempty name="$headers"}
+    <thead>
+        <tr>
+            {volist name="headers" id="header"}
+            <th>{$header}</th>
+            {/volist}
+        </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+        {volist name="list" id="row" key="rowKey"}
+        <tr>
+            {volist name="row" id="col"}
+            <td {:$col.displayer->getAttr()}>
+                {:$col.displayer->value($col.value)->extKey('-'.$rowKey)->render()}
+            </td>
+            {/volist}
+        </tr>
+        {/volist}
+        {empty name="$data"}
+        <tr>
+            <td>{$emptyText}</td>
+        </tr>
+        {/empty}
+    </tbody>
+</table>

@@ -5,6 +5,7 @@ namespace tpext\builder\form;
 /**
  * Class Wapper.
  *
+ * @method \tpext\builder\displayer\Field          field($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Text           text($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Checkbox       checkbox($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Radio          radio($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -50,6 +51,7 @@ class Wapper
     protected static $displayers = [];
 
     protected static $displayerMap = [
+        'field' => \tpext\builder\displayer\Field::class,
         'text' => \tpext\builder\displayer\Text::class,
         'textarea' => \tpext\builder\displayer\Textarea::class,
         'html' => \tpext\builder\displayer\Html::class,

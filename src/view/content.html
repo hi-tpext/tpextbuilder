@@ -14,7 +14,9 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header"><h4>{$title}<small>{$desc}</small></h4></div>
+      {notempty name="$title"}
+      <div class="card-header"><h4>{$title}<small> - {$desc}</small></h4></div>
+      {/notempty}
       <div class="card-body">
         {volist name="rows" id="row"}
         <div class="row">

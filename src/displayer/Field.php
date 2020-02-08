@@ -11,6 +11,8 @@ class Field
 {
     protected $id = '';
 
+    protected $extKey = '';
+
     protected $name = '';
 
     protected $label = '';
@@ -90,9 +92,36 @@ class Field
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     public function getId()
     {
-        return 'form-' . $this->name;
+        return 'form-' . $this->name . $this->extKey;
+    }
+
+     /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name . $this->extKey;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function extKey($val)
+    {
+        $this->extKey = $val;
+        return $this;
     }
 
     /**
@@ -196,6 +225,30 @@ class Field
      * @param string $val
      * @return $this
      */
+    public function addClass($val)
+    {
+        $this->class .= ' ' . $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addAttr($val)
+    {
+        $this->attr .= ' ' . $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
     public function labelAttr($val)
     {
         $this->labelAttr = $val;
@@ -282,7 +335,7 @@ class Field
      * @param boolean $val
      * @return $this
      */
-    protected function showLabel($val)
+    public function showLabel($val)
     {
         $this->showLabel = $val;
         return $this;
@@ -490,7 +543,8 @@ class Field
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,
-            'name' => $this->name,
+            'name' => $this->getName(),
+            'extKey' => $this->extKey,
             'value' => $this->value ? $this->value : $this->default,
             'class' => ' ' . $this->class,
             'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : ''),

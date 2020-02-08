@@ -51,7 +51,7 @@ class Builder implements Renderable
      * @param string $desc
      * @return $this
      */
-    public static function getInstance($title = 'tpext-builder', $desc = '')
+    public static function getInstance($title = 'Page', $desc = '')
     {
         if (static::$instance == null) {
             static::$instance = new static($title, $desc);
@@ -200,16 +200,14 @@ class Builder implements Renderable
             'script' => implode('', array_unique($this->script)),
         ];
 
-        $config = [];
-
         $view = new ViewShow($this->view);
 
         $instance = Module::getInstance();
 
-        $config = $instance->setConfig(['page_title' => $this->title, 'position' => '编辑']);
+        $config = $instance->setConfig(['page_title' => $this->desc, 'position' => $this->title]);
 
         View::share(['admin' => $config]);
 
-        return $view->assign($vars)->config($config);
+        return $view->assign($vars);
     }
 }

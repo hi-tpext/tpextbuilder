@@ -27,8 +27,6 @@ class Row extends Wapper implements Renderable
      */
     protected $displayer;
 
-    protected $options = [];
-
     public function __construct($name, $label = '', $colSize = 12, $colClass = '', $colAttr = '')
     {
         if (empty($label)) {
@@ -55,12 +53,6 @@ class Row extends Wapper implements Renderable
         $this->displayer = $displayer;
 
         return $displayer;
-    }
-
-    public function options($options)
-    {
-        $this->options = array_merge($this->options, $options);
-        return $this;
     }
 
     public function size($val)

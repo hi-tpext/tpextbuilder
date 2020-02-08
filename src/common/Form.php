@@ -14,6 +14,8 @@ class Form extends Wapper implements Renderable
 
     protected $action = '';
 
+    protected $class = '';
+
     protected $method = 'post';
 
     protected $rows = [];
@@ -24,16 +26,16 @@ class Form extends Wapper implements Renderable
     {
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
 
-        $config = [];
-
         $viewshow = new ViewShow($template);
 
         $vars = [
             'rows' => $this->rows,
             'action' => $this->action,
+            'method' => $this->method,
+            'class' => $this->class,
         ];
 
-        return $viewshow->assign($vars)->config($config)->getContent();
+        return $viewshow->assign($vars)->getContent();
     }
 
     public function addRow($row)
@@ -54,15 +56,27 @@ class Form extends Wapper implements Renderable
         return $this;
     }
 
-/**
- * Undocumented function
- *
- * @param string $val
- * @return $this
- */
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
     public function method($val)
     {
         $this->method = $val;
+        return $this;
+    }
+
+     /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function class($val)
+    {
+        $this->class = $val;
         return $this;
     }
 
