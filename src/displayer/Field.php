@@ -300,9 +300,9 @@ class Field implements Renderable
      * @param array $val
      * @return $this
      */
-    public function size($val)
+    public function size($label = 2, $element = 9)
     {
-        $this->size = $val;
+        $this->size = [$label, $element];
         return $this;
     }
 
@@ -546,7 +546,7 @@ class Field implements Renderable
 
         $script = <<<EOT
 
-        window.autoPost('{$inputId}', '{$this->autoPost}');
+        tpextbuilder.autoPost('{$inputId}', '{$this->autoPost}');
 
 EOT;
         $this->script[] = $script;

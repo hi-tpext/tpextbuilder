@@ -54,6 +54,18 @@ class Column
     }
 
     /**
+     * 获取一新行
+     *
+     * @return Row
+     */
+    public function row()
+    {
+        $row = new Row();
+        $this->elms[] = $row;
+        return $row;
+    }
+
+    /**
      * Undocumented function
      *
      * @return array

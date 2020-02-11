@@ -14,7 +14,7 @@ class Form extends Wapper implements Renderable
 
     protected $action = '';
 
-    protected $class = '';
+    protected $class = 'form-horizontal';
 
     protected $attr = '';
 

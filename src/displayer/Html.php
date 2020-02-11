@@ -10,7 +10,7 @@ class Html extends Field
     {
         parent::created();
         
-        $this->size([0, 12]);
+        $this->size(0, 12);
 
         $this->value = $this->name;
     }

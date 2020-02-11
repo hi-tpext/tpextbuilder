@@ -25,7 +25,7 @@ class Select extends Radio
         'placeholder' => '请选择',
         'allowClear' => true,
         'minimumInputLength' => 0,
-        'language'=> 'zh-CN',  
+        'language' => 'zh-CN',
     ];
 
     /**
@@ -40,6 +40,12 @@ class Select extends Radio
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param boolean $show
+     * @return $this
+     */
     public function dataUrl($url, $options = ['delay' => 250, 'id' => 'id', 'text' => 'text'], $loadmore = true)
     {
         $this->jsOptions['ajax'] = [
@@ -47,6 +53,8 @@ class Select extends Radio
             'options' => $options,
             'loadmore' => $loadmore,
         ];
+
+        return $this;
     }
 
     /**

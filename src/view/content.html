@@ -19,16 +19,8 @@
       {/notempty}
       <div class="card-body">
         {volist name="rows" id="row"}
-        <div class="row">
-            {volist name="row->getCols()" id="col"}
-            <div class="col-md-{$col->getSize()}">
-              {volist name="col->getElms()" id="elm"}
-                {:$elm->render()}
-              {/volist}
-            </div>
-            {/volist}
-        </div>
-      {/volist}
+        {:$row->render()}
+        {/volist}
       </div>
     </div>
   </div>

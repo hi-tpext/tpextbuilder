@@ -2,6 +2,8 @@
 
 namespace tpext\builder\common;
 
+use think\response\View as ViewShow;
+
 class Row
 {
     protected $cols = [];
@@ -66,5 +68,19 @@ class Row
         foreach ($this->cols as $col) {
             $col->beforRender();
         }
+    }
+
+
+    public function render()
+    {
+        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'row.html']);
+
+        $viewshow = new ViewShow($template);
+
+        $vars = [
+            'cols' => $this->cols,
+        ];
+
+        return $viewshow->assign($vars)->getContent();
     }
 }

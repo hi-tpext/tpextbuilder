@@ -53,7 +53,7 @@ class LinkBtn extends Bar
 
         $script = <<<EOT
 
-        window.postChecked('{$inputId}', '{$this->postChecked}', {$this->confirm});
+        tpextbuilder.postChecked('{$inputId}', '{$this->postChecked}', {$this->confirm});
 
 EOT;
         $this->script[] = $script;

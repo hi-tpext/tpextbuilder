@@ -285,142 +285,153 @@ $(function () {
 
 });
 
-window.autoPost = function (id, url) {
-    var obj = $('#' + id);
-    if (!obj.size()) {
-        return;
-    }
-    if (obj.is('div')) {
-        $('body').on('change', '#' + id + ' :radio,#' + id + ' :checkbox', function () {
-            var name = $(this).attr('name');
-            var val = '';
-            if ($(this).is(':radio')) {
-                val = $("input[name='" + name + "']:checked").val();
-            } else {
-                var values = [];
-                $("input[name='" + name + "']:checked").each(function (i, e) {
-                    values.push($(e).val());
-                });
-                val = values.join(',');
-            }
+(function (w) {
 
-            window.autoSendData(name, val, url);
-        });
-    } else {
-        if (/^(input|textarea|select)$/i.test(obj.get(0).tagName)) {
-            $('body').on('change', '#' + id, function () {
-
-                $('#' + id).toolbar({
-                    content: '#edit-options',
-                    position: 'left',
-                    style: 'success',
-                });
-
+    var tpextbuilder = function () {};
+    tpextbuilder.autoPost = function (id, url) {
+        var obj = $('#' + id);
+        if (!obj.size()) {
+            return;
+        }
+        if (obj.is('div')) {
+            $('body').on('change', '#' + id + ' :radio,#' + id + ' :checkbox', function () {
                 var name = $(this).attr('name');
                 var val = '';
-                if (/^(input|textarea|select)$/i.test(this.tagName)) {
-                    val = $(this).val();
+                if ($(this).is(':radio')) {
+                    val = $("input[name='" + name + "']:checked").val();
+                } else {
+                    var values = [];
+                    $("input[name='" + name + "']:checked").each(function (i, e) {
+                        values.push($(e).val());
+                    });
+                    val = values.join(',');
                 }
 
-                window.autoSendData(name, val, url);
-            });
-        }
-    }
-};
-
-window.postChecked = function (id, url, confirm) {
-    var obj = $('#' + id);
-    if (!obj.size()) {
-        return;
-    }
-    $('body').on('click', '#' + id, function () {
-        var name = 'rows';
-        var val = '';
-
-        var values = [];
-
-        $("input.table-row:checked").each(function (i, e) {
-            values.push($(e).val());
-        });
-
-        if (values.length == 0) {
-
-            lightyear.notify('未选中任何数据', 'warning');
-
-            return false;
-        }
-
-        val = values.join(',');
-
-        if (confirm) {
-            var text = $('#' + id).text();
-            $.alert({
-                title: '操作提示',
-                content: '确定要执行批量<strong>' + text + '</strong>操作吗？',
-                buttons: {
-                    confirm: {
-                        text: '确认',
-                        btnClass: 'btn-primary',
-                        action: function () {
-                            window.autoSendData(name, val, url);
-                        }
-                    },
-                    cancel: {
-                        text: '取消',
-                        action: function () {
-
-                        }
-                    }
-                }
+                tpextbuilder.autoSendData(name, val, url);
             });
         } else {
-            window.autoSendData(name, val, url);
+            if (/^(input|textarea|select)$/i.test(obj.get(0).tagName)) {
+                $('body').on('change', '#' + id, function () {
+
+                    $('#' + id).toolbar({
+                        content: '#edit-options',
+                        position: 'left',
+                        style: 'success',
+                    });
+
+                    var name = $(this).attr('name');
+                    var val = '';
+                    if (/^(input|textarea|select)$/i.test(this.tagName)) {
+                        val = $(this).val();
+                    }
+
+                    tpextbuilder.autoSendData(name, val, url);
+                });
+            }
         }
-    });
+    };
 
-    if ($("input.table-row:checked").size() == 0) {
-        $('#' + id).addClass('disabled');
-    } else {
-        $('#' + id).removeClass('disabled');
-    }
+    tpextbuilder.postChecked = function (id, url, confirm) {
+        var obj = $('#' + id);
+        if (!obj.size()) {
+            return;
+        }
+        $('body').on('click', '#' + id, function () {
+            var name = 'rows';
+            var val = '';
 
-    $('body').on('change', 'input.table-row', function () {
+            var values = [];
+
+            $("input.table-row:checked").each(function (i, e) {
+                values.push($(e).val());
+            });
+
+            if (values.length == 0) {
+
+                lightyear.notify('未选中任何数据', 'warning');
+
+                return false;
+            }
+
+            val = values.join(',');
+
+            if (confirm) {
+                var text = $('#' + id).text();
+                $.alert({
+                    title: '操作提示',
+                    content: '确定要执行批量<strong>' + text + '</strong>操作吗？',
+                    buttons: {
+                        confirm: {
+                            text: '确认',
+                            btnClass: 'btn-primary',
+                            action: function () {
+                                tpextbuilder.autoSendData(name, val, url);
+                            }
+                        },
+                        cancel: {
+                            text: '取消',
+                            action: function () {
+
+                            }
+                        }
+                    }
+                });
+            } else {
+                tpextbuilder.autoSendData(name, val, url);
+            }
+        });
+
         if ($("input.table-row:checked").size() == 0) {
             $('#' + id).addClass('disabled');
         } else {
             $('#' + id).removeClass('disabled');
         }
-    });
 
-    $('body').on('change', 'input.table-row-checkall', function () {
-        if ($("input.table-row:checked").is(':checked')) {
-            $('#' + id).removeClass('disabled');
-        } else {
-            $('#' + id).addClass('disabled');
-        }
-    });
-}
-
-window.autoSendData = function (name, value, url) {
-    name = name.split('-')[0];
-    $.ajax({
-        url: url,
-        data: {
-            name: name,
-            value: value,
-            __token__: window.__token__,
-        },
-        type: "POST",
-        dataType: "json",
-        success: function (data) {
-            if (data.status) {
-                lightyear.notify('操作成功！', 'success');
+        $('body').on('change', 'input.table-row', function () {
+            if ($("input.table-row:checked").size() == 0) {
+                $('#' + id).addClass('disabled');
             } else {
-                lightyear.notify('操作失败', 'warning');
+                $('#' + id).removeClass('disabled');
             }
-        },
-        error: function () {
-            lightyear.notify('网络错误', 'danger');
-        }
-    });
-};
+        });
+
+        $('body').on('change', 'input.table-row-checkall', function () {
+            if ($("input.table-row:checked").is(':checked')) {
+                $('#' + id).removeClass('disabled');
+            } else {
+                $('#' + id).addClass('disabled');
+            }
+        });
+    }
+
+    tpextbuilder.autoSendData = function (name, value, url) {
+        name = name.split('-')[0];
+        $.ajax({
+            url: url,
+            data: {
+                name: name,
+                value: value,
+                __token__: w.__token__,
+            },
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.status) {
+                    lightyear.notify('操作成功！', 'success');
+                } else {
+                    lightyear.notify('操作失败', 'warning');
+                }
+            },
+            error: function () {
+                lightyear.notify('网络错误', 'danger');
+            }
+        });
+    };
+
+    tpextbuilder.refreshTable = function () {
+
+    }
+
+    w.tpextbuilder = tpextbuilder;
+
+})(window);

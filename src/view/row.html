@@ -1,0 +1,9 @@
+<div class="row">
+    {volist name="$cols" id="col"}
+    <div class="col-md-{$col->getSize()}">
+      {volist name="col->getElms()" id="elm"}
+        {:$elm->render()}
+      {/volist}
+    </div>
+    {/volist}
+</div>

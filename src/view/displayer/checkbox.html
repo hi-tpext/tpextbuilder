@@ -7,7 +7,7 @@
     </label>
     {/if}
     {volist name="options" id="option"}
-    <label class="lyear-checkbox {$inline} {$class}">
+    <label class="{$inline} {$class}">
         <input type="checkbox" value="{$key}" class="check-{$name}" {in
             name="$key" value="$checked" }checked{/in}
             id="{$id}-{$key}" name="{$name}" {$attr|raw}><span>{$option}</span>
