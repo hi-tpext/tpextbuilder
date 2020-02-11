@@ -43,7 +43,7 @@ class Tinymce extends Field
         $inputId = $this->getId();
 
         if (!isset($this->jsOptions['images_upload_url']) || empty($this->jsOptions['images_upload_url'])) {
-            $token = md5('uploadtoken' . time() . uniqid());
+            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
 

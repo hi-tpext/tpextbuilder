@@ -55,8 +55,9 @@ class Builder implements Renderable
     {
         if (static::$instance == null) {
             static::$instance = new static($title, $desc);
-            static::$instance->csrf_token = csrf_token();
-            View::share(['__token__' => static::$instance->csrf_token]);
+            $token = csrf_token();
+            static::$instance->csrf_token = $token;
+            View::share(['__token__' => $token]);
         }
 
         return static::$instance;
@@ -168,6 +169,17 @@ class Builder implements Renderable
     public function table($size = 12)
     {
         return $this->column($size)->table();
+    }
+
+    /**
+     * 获取一个工具栏
+     *
+     * @param integer col大小
+     * @return Toolbar
+     */
+    public function toolbar($size = 12)
+    {
+        return $this->column($size)->toolbar();
     }
 
     public function beforRender()

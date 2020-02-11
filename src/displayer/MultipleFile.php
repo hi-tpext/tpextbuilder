@@ -25,6 +25,8 @@ class MultipleFile extends Field
         '/assets/tpextbuilder/css/uploadfiles.css',
     ];
 
+    protected $canUpload = true;
+
     protected $files = [];
 
     protected $jsOptions = [
@@ -49,6 +51,8 @@ class MultipleFile extends Field
         'fileSingleSizeLimit' => 5 * 1024 * 1024,
         'fileNumLimit' => 5,
         'fileSizeLimit' => 0,
+        'thumbnailWidth' => 165,
+        'thumbnailHeight' => 110,
     ];
 
     protected $extTypes = [
@@ -67,6 +71,18 @@ class MultipleFile extends Field
      */
     function default($val = []) {
         $this->default = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function canUpload($val)
+    {
+        $this->canUpload = $val;
         return $this;
     }
 
@@ -97,7 +113,7 @@ class MultipleFile extends Field
     public function render()
     {
         if (!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url'])) {
-            $token = md5('uploadtoken' . time() . uniqid());
+            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
 
@@ -112,8 +128,11 @@ class MultipleFile extends Field
             $this->files = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 
+        $this->jsOptions['canUpload'] = $this->canUpload && empty($this->tableRowKey);
+
         $vars = array_merge($vars, [
             'jsOptions' => $this->jsOptions,
+            'canUpload' => $this->canUpload && empty($this->tableRowKey),
             'files' => $this->files,
         ]);
 

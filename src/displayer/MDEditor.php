@@ -61,7 +61,7 @@ class MDEditor extends Field
          *  }
          */
         if (!isset($this->jsOptions['imageUploadURL']) || empty($this->jsOptions['imageUploadURL'])) {
-            $token = md5('uploadtoken' . time() . uniqid());
+            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
 

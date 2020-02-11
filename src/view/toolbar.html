@@ -1,0 +1,7 @@
+{notempty name="$elms"}
+<div class="toolbar-btn-action m-b-10 {$class}" {$attr|raw}>
+    {volist name="elms" id="elm"}
+    {:$elm->render()}
+    {/volist}
+</div>
+{/notempty}

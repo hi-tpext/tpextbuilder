@@ -65,8 +65,8 @@ EOT;
     public function render()
     {
         if (empty($this->uploadUrl)) {
-
-            $token = md5('uploadtoken' . time() . uniqid());
+            
+            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());$token = md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
 

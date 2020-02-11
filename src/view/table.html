@@ -2,18 +2,36 @@
     {notempty name="$headers"}
     <thead>
         <tr>
+            {if condition="$rowCheckbox"}
+            <th style="width: 40px;">
+                <label class="checkbox-primary">
+                    <input type="checkbox" id="checkall-{$name}"
+                        data-check="check-{$name}" class="checkall table-row-checkall"><span></span>
+                </label>
+            </th>
+            {/if}
             {volist name="headers" id="header"}
-            <th>{$header}</th>
+            <th {$headStyle|raw}>{$header}</th>
             {/volist}
         </tr>
     </thead>
     {/notempty}
     <tbody>
-        {volist name="list" id="row" key="rowKey"}
+        {volist name="list" id="row"}
         <tr>
+            {if condition="$rowCheckbox"}
+            <td style="width: 40px;">
+                <label class="checkbox-primary">
+                    <input type="checkbox" id="{$name}-{$key}"
+                        value="{$ids[$key]}"
+                        class="check-{$name} table-row"><span></span>
+                </label>
+            </td>
+            {/if}
             {volist name="row" id="col"}
-            <td {:$col.displayer->getAttr()}>
-                {:$col.displayer->value($col.value)->extKey('-'.$rowKey)->render()}
+            <td class="col-md-{$col.wapper->getSize()}{$col.wapper->getClass()}"
+                {$col.wapper->getAttr()|raw}>
+                {$col.value|raw}
             </td>
             {/volist}
         </tr>

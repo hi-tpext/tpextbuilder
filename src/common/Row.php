@@ -42,6 +42,16 @@ class Row
     }
 
     /**
+     * 获取一个工具栏
+     *
+     * @return Toolbar
+     */
+    public function toolbar($size = 12)
+    {
+        return $this->column($size)->table();
+    }
+
+    /**
      * Undocumented function
      *
      * @return array

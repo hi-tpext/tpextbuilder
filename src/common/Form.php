@@ -16,6 +16,8 @@ class Form extends Wapper implements Renderable
 
     protected $class = '';
 
+    protected $attr = '';
+
     protected $method = 'post';
 
     protected $rows = [];
@@ -33,6 +35,7 @@ class Form extends Wapper implements Renderable
             'action' => $this->action,
             'method' => $this->method,
             'class' => $this->class,
+            'attr' => $this->attr,
         ];
 
         return $viewshow->assign($vars)->getContent();
@@ -68,15 +71,51 @@ class Form extends Wapper implements Renderable
         return $this;
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @param string $val
      * @return $this
      */
-    public function class($val)
+    function class ($val)
     {
         $this->class = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function attr($val)
+    {
+        $this->attr = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addClass($val)
+    {
+        $this->class .= ' ' . $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addAttr($val)
+    {
+        $this->attr .= ' ' . $val;
         return $this;
     }
 
@@ -166,7 +205,7 @@ class Form extends Wapper implements Renderable
 
             $this->rows[] = $row;
 
-            return $row->$name($arguments[0], $count > 1 ? $arguments[1] : '');
+            return $row->$name($arguments[0], $row->getLabel());
         }
 
         throw new \UnexpectedValueException('未知调用');

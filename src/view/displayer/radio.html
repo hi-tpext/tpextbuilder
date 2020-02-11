@@ -1,9 +1,9 @@
 {include file="$labeltempl" /}
-<div class="col-md-{$size[1]}">
+<div class="col-md-{$size[1]} radio-div" id="{$id}">
     {volist name="options" id="option"}
     <label class="lyear-radio {$inline} {$class}">
         <input type="radio" value="{$key}" class="check-{$name}" {if
-            condition="$key eq $checked"}checked{/if} id="fomm-{$name}-{$key}"
+            condition="$key eq $checked" }checked{/if} id="{$id}-{$key}"
             name="{$name}" {$attr|raw}><span>{$option}</span>
     </label>
     {/volist}

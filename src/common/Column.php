@@ -42,6 +42,18 @@ class Column
     }
 
     /**
+     * 获取一个表格
+     *
+     * @return Toolbar
+     */
+    public function toolbar()
+    {
+        $table = new Toolbar();
+        $this->elms[] = $table;
+        return $table;
+    }
+
+    /**
      * Undocumented function
      *
      * @return array

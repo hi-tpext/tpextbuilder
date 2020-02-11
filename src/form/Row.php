@@ -18,6 +18,8 @@ class Row extends Wapper implements Renderable
 
     protected $attr = '';
 
+    protected $style = '';
+
     protected $errorClass = '';
 
     /**
@@ -44,61 +46,167 @@ class Row extends Wapper implements Renderable
         return $this;
     }
 
-    public function createDisplayer($class, $arguments)
-    {
-        $displayer = new $class($arguments[0], $arguments[1]);
-        $displayer->setWapper($this);
-        $displayer->created();
-
-        $this->displayer = $displayer;
-
-        return $displayer;
-    }
-
+    /**
+     * Undocumented function
+     *
+     * @param int $val
+     * @return $this
+     */
     public function size($val)
     {
         $this->size = $val;
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function style($val)
+    {
+        $this->style = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    function class ($val)
+    {
+        $this->class = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function attr($val)
+    {
+        $this->attr = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
     public function errorClass($val)
     {
         $this->errorClass = $val;
         return $this;
     }
 
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    public function getClass()
-    {
-        return empty($this->class) ? '' : ' ' . $this->class;
-    }
-
-    public function getErrorClass()
-    {
-        return empty($this->errorClass) ? '' : ' ' . $this->errorClass;
-    }
-
-    public function getAttr()
-    {
-        return empty($this->attr) ? '' : ' ' . $this->attr;
-    }
-
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
     public function addClass($val)
     {
         $this->class .= ' ' . $val;
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
     public function addAttr($val)
     {
         $this->attr .= ' ' . $val;
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addStyle($val)
+    {
+        $this->style .= $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getClass()
+    {
+        return empty($this->class) ? '' : ' ' . $this->class;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getErrorClass()
+    {
+        return empty($this->errorClass) ? '' : ' ' . $this->errorClass;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getAttr()
+    {
+        return (empty($this->attr) ? '' : ' ' . $this->attr) . (empty($this->style) ? '' : ' style="' . $this->style . '"');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return \tpext\builder\displayer\Field
+     */
     public function getDisplayer()
     {
         return $this->displayer;
@@ -112,6 +220,17 @@ class Row extends Wapper implements Renderable
     public function beforRender()
     {
         return $this->displayer->beforRender();
+    }
+
+    public function createDisplayer($class, $arguments)
+    {
+        $displayer = new $class($arguments[0], $arguments[1]);
+        $displayer->setWapper($this);
+        $displayer->created();
+
+        $this->displayer = $displayer;
+
+        return $displayer;
     }
 
     public function __call($name, $arguments)

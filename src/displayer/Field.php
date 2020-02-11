@@ -5,13 +5,14 @@ namespace tpext\builder\displayer;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Plugin;
+use tpext\builder\common\Renderable;
 use tpext\builder\form\Wapper;
 
-class Field
+class Field implements Renderable
 {
     protected $id = '';
 
-    protected $extKey = '';
+    protected $tableRowKey = '';
 
     protected $name = '';
 
@@ -25,7 +26,7 @@ class Field
 
     protected $script = [];
 
-    protected $style = [];
+    protected $style = '';
 
     protected $view = 'field';
 
@@ -38,6 +39,8 @@ class Field
     protected $rules = '';
 
     protected $editable = true;
+
+    protected $autoPost = '';
 
     protected $showLabel = true;
 
@@ -99,17 +102,17 @@ class Field
      */
     public function getId()
     {
-        return 'form-' . $this->name . $this->extKey;
+        return 'form-' . $this->name . $this->tableRowKey;
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @return string
      */
     public function getName()
     {
-        return $this->name . $this->extKey;
+        return $this->name . $this->tableRowKey;
     }
 
     /**
@@ -118,9 +121,21 @@ class Field
      * @param string $val
      * @return $this
      */
-    public function extKey($val)
+    public function tableRowKey($val)
     {
-        $this->extKey = $val;
+        $this->tableRowKey = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @return $this
+     */
+    public function autoPost($url)
+    {
+        $this->autoPost = $url;
         return $this;
     }
 
@@ -189,6 +204,18 @@ class Field
      * @param string $val
      * @return $this
      */
+    public function style($val)
+    {
+        $this->style = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
     function class ($val)
     {
         $this->class = $val;
@@ -240,6 +267,18 @@ class Field
     public function addAttr($val)
     {
         $this->attr .= ' ' . $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addStyle($val)
+    {
+        $this->attr .= $val;
         return $this;
     }
 
@@ -500,6 +539,21 @@ class Field
         return $viewshow;
     }
 
+    protected function autoPostScript()
+    {
+        $script = '';
+        $inputId = $this->getId();
+
+        $script = <<<EOT
+
+        window.autoPost('{$inputId}', '{$this->autoPost}');
+
+EOT;
+        $this->script[] = $script;
+
+        return $script;
+    }
+
     public function beforRender()
     {
         if (!empty($this->js)) {
@@ -510,12 +564,12 @@ class Field
             Builder::getInstance()->addCss($this->css);
         }
 
-        if (!empty($this->script)) {
-            Builder::getInstance()->addScript($this->script);
+        if ($this->autoPost) {
+            $this->autoPostScript();
         }
 
-        if (!empty($this->style)) {
-            Builder::getInstance()->addStyle($this->style);
+        if (!empty($this->script)) {
+            Builder::getInstance()->addScript($this->script);
         }
 
         return $this;
@@ -544,17 +598,16 @@ class Field
             'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->getName(),
-            'extKey' => $this->extKey,
+            'tableRowKey' => $this->tableRowKey,
             'value' => $this->value ? $this->value : $this->default,
             'class' => ' ' . $this->class,
-            'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : ''),
+            'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '') . (empty($this->style) ? '' : ' style="' . $this->style . '"'),
             'error' => $this->error,
             'size' => $this->size,
             'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label text-right' : $this->labelClass,
             'labelAttr' => empty($this->labelAttr) ? '' : ' ' . $this->labelAttr,
             'options' => $this->options,
             'help' => $this->help,
-            'error' => $this->error,
             'showLabel' => $this->showLabel,
             'helptempl' => static::$helptempl,
             'labeltempl' => static::$labeltempl,

@@ -3,7 +3,6 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
-use tpext\builder\displayer\Field;
 use tpext\builder\form\Wapper;
 use tpext\builder\table\Column;
 
@@ -11,9 +10,21 @@ class Table extends Wapper implements Renderable
 {
     protected $view = '';
 
+    protected $js = [
+        '/assets/tpextbuilder/js/jquery-toolbar/jquery.toolbar.min.js',
+    ];
+
+    protected $css = [
+        '/assets/tpextbuilder/js/jquery-toolbar/jquery-toolbar.min.css',
+    ];
+
+    protected $headTextAlign = 'left';
+
+    protected $textAlign = 'left';
+
     protected $verticalAlign = 'middle';
 
-    protected $class = 'table-striped table-hover';
+    protected $class = 'table-striped table-hover table-bordered';
 
     protected $attr = '';
 
@@ -23,13 +34,58 @@ class Table extends Wapper implements Renderable
 
     protected $data = [];
 
+    protected $lit = [];
+
+    protected $pk = 'id';
+
+    protected $ids = [];
+
+    protected $rowCheckbox = true;
+
     protected $emptyText = "暂未数据~";
 
     public function beforRender()
     {
-        foreach ($this->cols as $col) {
+        Builder::getInstance()->addJs($this->js);
+        Builder::getInstance()->addCss($this->css);
 
-            $col->beforRender();
+        $this->list = [];
+
+        $pk = strtolower($this->pk);
+
+        foreach ($this->data as $row => $cols) {
+
+            foreach ($cols as $col => $value) {
+
+                if (strtolower($col) == $pk) {
+
+                    $this->ids[$row] = $value;
+                }
+
+                if (!isset($this->cols[$col])) {
+
+                    continue;
+                }
+
+                $displayer = $this->cols[$col]->getDisplayer();
+
+                $displayer
+                    ->showLabel(false)
+                    ->size([0, 12])
+                    ->value($value)
+                    ->tableRowKey('-' . $row);
+
+                $displayer->beforRender();
+
+                $this->cols[$col]->addStyle('vertical-align:' . $this->verticalAlign . ';' . 'text-align:' . $this->textAlign . ';');
+
+                $this->list[$row][$col] = [
+                    'displayer' => $displayer,
+                    'value' => $displayer->render(),
+                    'attr' => $displayer->getAttr(),
+                    'wapper' => $this->cols[$col],
+                ];
+            }
         }
     }
 
@@ -39,36 +95,44 @@ class Table extends Wapper implements Renderable
 
         $viewshow = new ViewShow($template);
 
-        $list = [];
-
-        foreach ($this->data as $row => $cols) {
-
-            foreach ($cols as $col => $value) {
-
-                $displayer = isset($this->cols[$col]) ? $this->cols[$col]->getDisplayer() : new Field($col, ucfirst($col));
-
-                $displayer->showLabel(false)
-                    ->size(12, 12)
-                    ->addAttr('style="vertical-align:' . $this->verticalAlign . ';"');
-
-                $list[$row][$col] = [
-                    'displayer' => $displayer,
-                    'value' => $value,
-                ];
-            }
-        }
-
         $vars = [
             'class' => $this->class,
             'attr' => $this->attr,
             'headers' => $this->headers,
             'cols' => $this->cols,
-            'list' => $list,
+            'list' => $this->list,
             'data' => $this->data,
             'emptyText' => $this->emptyText,
+            'headStyle' => 'style="text-align:' . $this->headTextAlign . ';"',
+            'ids' => $this->ids,
+            'rowCheckbox' => $this->rowCheckbox && !empty($this->ids),
+            'name' => time() . mt_rand(1000, 9999),
         ];
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    /**
+     * Undocumented function
+     * 主键, 默认 为 'id'
+     * @param string $val
+     * @return $this
+     */
+    public function pk($val)
+    {
+        $this->pk = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * @param boolean $val
+     * @return $this
+     */
+    public function rowCheckbox($val)
+    {
+        $this->rowCheckbox = $val;
+        return $this;
     }
 
     /**
@@ -122,6 +186,26 @@ class Table extends Wapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return array
+     */
+    public function getJs()
+    {
+        return $this->js;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getCss()
+    {
+        return $this->css;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return string
      */
     public function getClass()
@@ -164,6 +248,29 @@ class Table extends Wapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function textAlign($val)
+    {
+        return $this->textAlign = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function headTextAlign($val)
+    {
+        return $this->headTextAlign = $val;
+        return $this;
+    }
+    /**
+     * Undocumented function
+     *
      * @param array $data
      * @return $this
      */
@@ -189,22 +296,13 @@ class Table extends Wapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            //$row = new Row($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $col = new Column($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
-            //$this->rows[] = $row;
-
-            //return $row->$name($arguments[0], $count > 1 ? $arguments[1] : '');
-
-            $label = $count > 1 ? $arguments[1] : '';
-
-            if (empty($label)) {
-                $label = ucfirst($name);
-            }
-
-            $col = new Column($name, $label, $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
             $this->cols[$arguments[0]] = $col;
-            $this->headers[] = $label;
-            return $col->$name($arguments[0], $label)->extKey(1);
+
+            $this->headers[] = $col->getLabel();
+
+            return $col->$name($arguments[0], $col->getLabel());
         }
 
         throw new \UnexpectedValueException('未知调用');

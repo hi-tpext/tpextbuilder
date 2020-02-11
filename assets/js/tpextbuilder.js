@@ -84,8 +84,8 @@ $(function () {
 
         var $file_list = $('#file_list_' + $input_file_name);
         var ratio = window.devicePixelRatio || 1;
-        var thumbnailWidth = 165 * ratio;
-        var thumbnailHeight = 110 * ratio;
+        var thumbnailWidth = (jsOptions.thumbnailWidth || 165) * ratio;
+        var thumbnailHeight = (jsOptions.thumbnailHeight || 110) * ratio;
 
         $file_list.find('li.pic-item').each(function (ii, ee) {
             var $li = $(ee);
@@ -111,165 +111,168 @@ $(function () {
             }
         });
 
-        var uploader = WebUploader.create({
-            auto: true,
-            chunked: true,
-            prepareNextFile: true,
-            duplicate: jsOptions.duplicate ? true : false,
-            resize: jsOptions.resize ? true : false,
-            swf: jsOptions.swf_url,
-            server: jsOptions.upload_url,
-            pick: {
-                id: '#picker_' + $input_file_name,
-                multiple: $multiple
-            },
-            fileSingleSizeLimit: $size,
-            fileNumLimit: jsOptions.fileNumLimit,
-            fileSizeLimit: jsOptions.fileSizeLimit,
-            accept: {
-                title: '文件',
-                extensions: $ext,
-                mimeTypes: jsOptions.mimeTypes || '*/*'
-            },
-            thumb: {
-                // 图片质量，只有type为`image/jpeg`的时候才有效。
-                quality: 70,
-                // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
-                allowMagnify: false,
-                // 是否允许裁剪。
-                crop: true,
-                // 为空的话则保留原有图片格式。
-                // 否则强制转换成指定的类型。
-                type: 'image/jpeg'
-            }
-        });
-
-        uploader.on('beforeFileQueued', function (file) {
-            if ($multiple && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
-                lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
-                return false;
-            }
-        });
-        uploader.on('fileQueued', function (file) {
-            var $li = $('<li class="col-xs-6 col-sm-3 col-md-2 pic-item" id="' + file.id + '">' +
-                    '  <figure>' +
-                    '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
-                    '    <img>' +
-                    '</div>' +
-                    '    <figcaption>' +
-                    '      <a class="btn btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
-                    '      <a class="btn btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
-                    '    </figcaption>' +
-                    '  </figure>' +
-                    '</li>'),
-                $img = $li.find('img');
-
-            if ($multiple) {
-                $file_list.append($li);
-            } else {
-                $file_list.html($li);
-                $input_file.val('');
-            }
-            uploader.makeThumb(file, function (error, src) {
-                if (error) {
-                    $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +
-                        thumbnailHeight + 'px"><div class="filename" style="width:100%;font-size:12px;text-align:center;position:absolute;top:' + (thumbnailHeight / 2 - 10) + 'px;">不能预览</div></div>');
-                    return;
+        if (jsOptions.canUpload) {
+            var uploader = WebUploader.create({
+                auto: true,
+                chunked: true,
+                prepareNextFile: true,
+                duplicate: jsOptions.duplicate ? true : false,
+                resize: jsOptions.resize ? true : false,
+                swf: jsOptions.swf_url,
+                server: jsOptions.upload_url,
+                pick: {
+                    id: '#picker_' + $input_file_name,
+                    multiple: $multiple
+                },
+                fileSingleSizeLimit: $size,
+                fileNumLimit: jsOptions.fileNumLimit,
+                fileSizeLimit: jsOptions.fileSizeLimit,
+                accept: {
+                    title: '文件',
+                    extensions: $ext,
+                    mimeTypes: jsOptions.mimeTypes || '*/*'
+                },
+                thumb: {
+                    // 图片质量，只有type为`image/jpeg`的时候才有效。
+                    quality: 70,
+                    // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+                    allowMagnify: false,
+                    // 是否允许裁剪。
+                    crop: true,
+                    // 为空的话则保留原有图片格式。
+                    // 否则强制转换成指定的类型。
+                    type: 'image/jpeg'
                 }
-                $img.attr('src', src);
-                $img.css({
-                    'display': 'block',
-                    'min-height': 'auto',
-                    'max-width': thumbnailWidth + 'px',
-                    'margin': '0 auto'
-                });
-            }, thumbnailWidth, thumbnailHeight);
-            $('<div class="progress progress-sm"><div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div></div>').appendTo($li);
-        });
-        uploader.on('uploadProgress', function (file, percentage) {
-            var $percent = $('#' + file.id).find('.progress-bar');
-            $percent.css('width', percentage * 100 + '%');
-        });
-        uploader.on('uploadSuccess', function (file, response) {
-            var $li = $('#' + file.id);
-            if (response.status == 200) { // 返回200成功
+            });
+
+            uploader.on('beforeFileQueued', function (file) {
+                if ($multiple && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
+                    lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
+                    return false;
+                }
+            });
+            uploader.on('fileQueued', function (file) {
+                var $li = $('<li class="pic-item" id="' + file.id + '">' +
+                        '  <figure>' +
+                        '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
+                        '    <img>' +
+                        '</div>' +
+                        '    <figcaption>' +
+                        '      <a class="btn btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
+                        '      <a class="btn btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
+                        '    </figcaption>' +
+                        '  </figure>' +
+                        '</li>'),
+                    $img = $li.find('img');
+
                 if ($multiple) {
-                    if ($input_file.val()) {
-                        $input_file.val($input_file.val() + ',' + response.id);
+                    $file_list.append($li);
+                } else {
+                    $file_list.html($li);
+                    $input_file.val('');
+                }
+                uploader.makeThumb(file, function (error, src) {
+                    if (error) {
+                        $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +
+                            thumbnailHeight + 'px"><div class="filename" style="width:100%;font-size:12px;text-align:center;position:absolute;top:' + (thumbnailHeight / 2 - 10) + 'px;">不能预览</div></div>');
+                        return;
+                    }
+                    $img.attr('src', src);
+                    $img.css({
+                        'display': 'block',
+                        'min-height': 'auto',
+                        'max-width': thumbnailWidth + 'px',
+                        'margin': '0 auto'
+                    });
+                }, thumbnailWidth, thumbnailHeight);
+                $('<div class="progress progress-sm"><div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div></div>').appendTo($li);
+            });
+            uploader.on('uploadProgress', function (file, percentage) {
+                var $percent = $('#' + file.id).find('.progress-bar');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            uploader.on('uploadSuccess', function (file, response) {
+                var $li = $('#' + file.id);
+                if (response.status == 200) { // 返回200成功
+                    if ($multiple) {
+                        if ($input_file.val()) {
+                            $input_file.val($input_file.val() + ',' + response.id);
+                        } else {
+                            $input_file.val(response.id);
+                        }
+                        $li.find('.btn-remove-pic').attr('data-id', response.id);
                     } else {
                         $input_file.val(response.id);
                     }
-                    $li.find('.btn-remove-pic').attr('data-id', response.id);
-                } else {
-                    $input_file.val(response.id);
                 }
-            }
-            $('<div class="' + response.class + '"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.fileNumLimit + ')').appendTo($li);
-            if ($li.find('.cantpreview').size() > 0) {
-                $li.find('a.btn-link-pic').attr('href', response.picurl).removeClass('btn-link-pic').attr('target', '_blank');
-                $li.find('.filename').text(response.picurl);
-            } else {
-                $li.find('a.btn-link-pic').attr('href', response.picurl);
-            }
-        });
-        uploader.on('uploadError', function (file) {
-            var $li = $('#' + file.id);
-            $('<div class="error">上传失败</div>').appendTo($li);
-        });
-        uploader.on('error', function (type) {
-            switch (type) {
-                case 'Q_TYPE_DENIED':
-                    lightyear.notify('文件类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger');
-                    break;
-                case 'F_EXCEED_SIZE':
-                    lightyear.notify('文件不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger');
-                    break;
-            }
-        });
-        uploader.on('uploadComplete', function (file) {
-            setTimeout(function () {
-                $('#' + file.id).find('.progress').remove();
-            }, 500);
-        });
-        // 删除操作
-        $file_list.delegate('.btn-remove-pic', 'click', function () {
-            var id = $(this).data('id');
-            var that = $(this);
-            $.alert({
-                title: '提示',
-                content: '确认要删除此文件吗？',
-                buttons: {
-                    confirm: {
-                        text: '确认',
-                        btnClass: 'btn-primary',
-                        action: function () {
-                            if ($multiple) {
-                                var ids = $input_file.val().split(',');
-                                if (id) {
-                                    for (var i = 0; i < ids.length; i++) {
-                                        if (ids[i] == id) {
-                                            ids.splice(i, 1);
-                                            break;
-                                        }
-                                    }
-                                    $input_file.val(ids.join(','));
-                                }
-                            } else {
-                                $input_file.val('');
-                            }
-
-                            that.closest('.pic-item').remove();
-                        }
-                    },
-                    cancel: {
-                        text: '取消',
-                        action: function () {
-
-                        }
-                    }
+                $('<div class="' + response.class + '"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.fileNumLimit + ')').appendTo($li.find('figure'));
+                if ($li.find('.cantpreview').size() > 0) {
+                    $li.find('a.btn-link-pic').attr('href', response.picurl).removeClass('btn-link-pic').attr('target', '_blank');
+                    $li.find('.filename').text(response.picurl);
+                } else {
+                    $li.find('a.btn-link-pic').attr('href', response.picurl);
                 }
             });
-        });
+            uploader.on('uploadError', function (file) {
+                var $li = $('#' + file.id);
+                $('<div class="error">上传失败</div>').appendTo($li).find('figure');
+            });
+            uploader.on('error', function (type) {
+                switch (type) {
+                    case 'Q_TYPE_DENIED':
+                        lightyear.notify('文件类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger');
+                        break;
+                    case 'F_EXCEED_SIZE':
+                        lightyear.notify('文件不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger');
+                        break;
+                }
+            });
+            uploader.on('uploadComplete', function (file) {
+                setTimeout(function () {
+                    $('#' + file.id).find('.progress').remove();
+                }, 500);
+            });
+            // 删除操作
+            $file_list.delegate('.btn-remove-pic', 'click', function () {
+                var id = $(this).data('id');
+                var that = $(this);
+                $.alert({
+                    title: '提示',
+                    content: '确认要删除此文件吗？',
+                    buttons: {
+                        confirm: {
+                            text: '确认',
+                            btnClass: 'btn-primary',
+                            action: function () {
+                                if ($multiple) {
+                                    var ids = $input_file.val().split(',');
+                                    if (id) {
+                                        for (var i = 0; i < ids.length; i++) {
+                                            if (ids[i] == id) {
+                                                ids.splice(i, 1);
+                                                break;
+                                            }
+                                        }
+                                        $input_file.val(ids.join(','));
+                                    }
+                                } else {
+                                    $input_file.val('');
+                                }
+
+                                that.closest('.pic-item').remove();
+                            }
+                        },
+                        cancel: {
+                            text: '取消',
+                            action: function () {
+
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
         // 接入图片查看插件
         $(this).magnificPopup({
             delegate: 'a.btn-link-pic',
@@ -281,3 +284,143 @@ $(function () {
     });
 
 });
+
+window.autoPost = function (id, url) {
+    var obj = $('#' + id);
+    if (!obj.size()) {
+        return;
+    }
+    if (obj.is('div')) {
+        $('body').on('change', '#' + id + ' :radio,#' + id + ' :checkbox', function () {
+            var name = $(this).attr('name');
+            var val = '';
+            if ($(this).is(':radio')) {
+                val = $("input[name='" + name + "']:checked").val();
+            } else {
+                var values = [];
+                $("input[name='" + name + "']:checked").each(function (i, e) {
+                    values.push($(e).val());
+                });
+                val = values.join(',');
+            }
+
+            window.autoSendData(name, val, url);
+        });
+    } else {
+        if (/^(input|textarea|select)$/i.test(obj.get(0).tagName)) {
+            $('body').on('change', '#' + id, function () {
+
+                $('#' + id).toolbar({
+                    content: '#edit-options',
+                    position: 'left',
+                    style: 'success',
+                });
+
+                var name = $(this).attr('name');
+                var val = '';
+                if (/^(input|textarea|select)$/i.test(this.tagName)) {
+                    val = $(this).val();
+                }
+
+                window.autoSendData(name, val, url);
+            });
+        }
+    }
+};
+
+window.postChecked = function (id, url, confirm) {
+    var obj = $('#' + id);
+    if (!obj.size()) {
+        return;
+    }
+    $('body').on('click', '#' + id, function () {
+        var name = 'rows';
+        var val = '';
+
+        var values = [];
+
+        $("input.table-row:checked").each(function (i, e) {
+            values.push($(e).val());
+        });
+
+        if (values.length == 0) {
+
+            lightyear.notify('未选中任何数据', 'warning');
+
+            return false;
+        }
+
+        val = values.join(',');
+
+        if (confirm) {
+            var text = $('#' + id).text();
+            $.alert({
+                title: '操作提示',
+                content: '确定要执行批量<strong>' + text + '</strong>操作吗？',
+                buttons: {
+                    confirm: {
+                        text: '确认',
+                        btnClass: 'btn-primary',
+                        action: function () {
+                            window.autoSendData(name, val, url);
+                        }
+                    },
+                    cancel: {
+                        text: '取消',
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+        } else {
+            window.autoSendData(name, val, url);
+        }
+    });
+
+    if ($("input.table-row:checked").size() == 0) {
+        $('#' + id).addClass('disabled');
+    } else {
+        $('#' + id).removeClass('disabled');
+    }
+
+    $('body').on('change', 'input.table-row', function () {
+        if ($("input.table-row:checked").size() == 0) {
+            $('#' + id).addClass('disabled');
+        } else {
+            $('#' + id).removeClass('disabled');
+        }
+    });
+
+    $('body').on('change', 'input.table-row-checkall', function () {
+        if ($("input.table-row:checked").is(':checked')) {
+            $('#' + id).removeClass('disabled');
+        } else {
+            $('#' + id).addClass('disabled');
+        }
+    });
+}
+
+window.autoSendData = function (name, value, url) {
+    name = name.split('-')[0];
+    $.ajax({
+        url: url,
+        data: {
+            name: name,
+            value: value,
+            __token__: window.__token__,
+        },
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            if (data.status) {
+                lightyear.notify('操作成功！', 'success');
+            } else {
+                lightyear.notify('操作失败', 'warning');
+            }
+        },
+        error: function () {
+            lightyear.notify('网络错误', 'danger');
+        }
+    });
+};

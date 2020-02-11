@@ -11,11 +11,13 @@ class Upload extends Controller
     public function upfiles($type = '', $token = '')
     {
         if (empty($token)) {
-            exit('no token');
+            echo json_encode(['info' => 'no token', 'picurl' => '']);
+            return;
         }
 
         if (session('uploadtoken') != $token) {
-            exit('token error');
+            echo json_encode(['info' => 'token error', 'picurl' => '']);
+            return;
         }
 
         switch ($type) {
