@@ -1,5 +1,5 @@
-<form action="{$action}" method="{$method|default='post'}" enctype="multipart/form-data" class="{$class} {$attr|raw}"
-    id="thefrom">
+<form id="{$id}" action="{$action}" method="{$method|default='post'}"
+    class="{$class} {$attr|raw}" onsubmit="return formSubmit();">
     <div class="row">
         {volist name="rows" id="row"}
         <div class="form-group col-md-{$row->getSize()}{$row->getClass()}{$row->getErrorClass()}"{$row->getAttr()|raw}>
@@ -8,3 +8,56 @@
         {/volist}
     </div>
 </form>
+<script>
+    var ajax = {$ajax};
+    var search = '{$search}';
+
+    function formSubmit()
+    {
+        if(ajax)
+        {
+            var loading = $('body').lyearloading({
+                opacity: 0.07,
+                spinnerSize: 'lg'
+            });
+            var data = $('#{$id}').serialize();
+
+            if(search)
+            {
+                data.page = data.__page__;
+                delete data.page;
+            }
+
+            $.ajax({
+                url: '{$action}' || location.href,
+                data: data,
+                type: 'POST',
+                dataType: search ? 'html' : 'json',
+                success: function (data) {
+                    loading.destroy();
+                    if(search)
+                    {
+                        $('#' + search).replaceWith(data);
+                    }
+                    else
+                    {
+                        if (data.status) {
+                            lightyear.notify('操作成功！', 'success');
+                        } else {
+                            lightyear.notify(data.msg || '操作失败', 'warning');
+                        }
+                    }
+                },
+                error: function () {
+                    loading.destroy(); 
+                    lightyear.notify('网络错误', 'danger');
+                }
+            });
+
+            return false;
+        }
+
+        return true;
+    }
+
+</script>

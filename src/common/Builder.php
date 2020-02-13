@@ -76,11 +76,14 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param array|string $val
      * @return $this
      */
     public function addJs($val)
     {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
         $this->js = array_merge($this->js, $val);
         return $this;
     }
@@ -88,11 +91,14 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param array|string $val
      * @return $this
      */
     public function addCss($val)
     {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
         $this->css = array_merge($this->css, $val);
         return $this;
     }
@@ -100,11 +106,14 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param array|string $val
      * @return $this
      */
     public function addScript($val)
     {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
         $this->script = array_merge($this->script, $val);
         return $this;
     }
@@ -117,6 +126,9 @@ class Builder implements Renderable
      */
     public function addStyle($val)
     {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
         $this->style = array_merge($this->style, $val);
         return $this;
     }

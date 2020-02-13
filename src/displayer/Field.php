@@ -18,8 +18,6 @@ class Field implements Renderable
 
     protected $label = '';
 
-    protected $options = [];
-
     protected $js = [];
 
     protected $css = [];
@@ -606,7 +604,6 @@ EOT;
             'size' => $this->size,
             'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label text-right' : $this->labelClass,
             'labelAttr' => empty($this->labelAttr) ? '' : ' ' . $this->labelAttr,
-            'options' => $this->options,
             'help' => $this->help,
             'showLabel' => $this->showLabel,
             'helptempl' => static::$helptempl,

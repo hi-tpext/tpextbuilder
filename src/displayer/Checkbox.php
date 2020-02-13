@@ -6,8 +6,10 @@ class Checkbox extends Field
 {
     protected $view = 'checkbox';
 
-    protected $class = 'checkbox-default';
+    protected $class = 'lyear-checkbox checkbox-default';
 
+    protected $options = [];
+    
     protected $inline = true;
 
     protected $checkallBtn = false;
@@ -77,6 +79,7 @@ class Checkbox extends Field
             'inline' => $this->inline ? 'checkbox-inline' : 'm-t-10',
             'checkallBtn' => $this->checkallBtn,
             'checked' => $this->checked,
+            'options' => $this->options,
         ]);
 
         $viewshow = $this->getViewInstance();

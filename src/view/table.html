@@ -1,12 +1,13 @@
-<table class="table {$class}" {$attr|raw}>
+<table id="{$id}" class="table {$class}" {$attr|raw}>
     {notempty name="$headers"}
     <thead>
         <tr>
             {if condition="$rowCheckbox"}
             <th style="width: 40px;">
-                <label class="checkbox-primary">
+                <label class="lyear-checkbox checkbox-primary">
                     <input type="checkbox" id="checkall-{$name}"
-                        data-check="check-{$name}" class="checkall table-row-checkall"><span></span>
+                        data-check="check-{$name}" class="checkall
+                        table-row-checkall"><span></span>
                 </label>
             </th>
             {/if}
@@ -20,8 +21,8 @@
         {volist name="list" id="row"}
         <tr>
             {if condition="$rowCheckbox"}
-            <td style="width: 40px;">
-                <label class="checkbox-primary">
+            <td {$chekcboxtd|raw}>
+                <label class="lyear-checkbox checkbox-primary">
                     <input type="checkbox" id="{$name}-{$key}"
                         value="{$ids[$key]}"
                         class="check-{$name} table-row"><span></span>
@@ -43,3 +44,8 @@
         {/empty}
     </tbody>
 </table>
+{notempty name="paginator"}
+<nav id="{$id}-paginator" class="{:$paginator->getClass()}" {:$paginator->getAttr()} >
+    {:$paginator->render()}
+</nav>
+{/notempty}

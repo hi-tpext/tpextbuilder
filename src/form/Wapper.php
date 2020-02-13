@@ -44,6 +44,8 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\WangEditor     editor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\CKEditor       ckeditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MDEditor       mdeditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Match          match($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Matches        matches($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  */
 
 class Wapper
@@ -88,6 +90,8 @@ class Wapper
         'multipleImage' => \tpext\builder\displayer\MultipleImage::class,
         'image' => \tpext\builder\displayer\Image::class,
         'rangeSlider' => \tpext\builder\displayer\RangeSlider::class,
+        'match' => \tpext\builder\displayer\Match::class,
+        'matches' => \tpext\builder\displayer\Matches::class,
     ];
 
     protected static $defaultFieldClass = [];

@@ -5,10 +5,16 @@ namespace tpext\builder\common;
 use think\response\View as ViewShow;
 use tpext\builder\form\Wapper;
 use tpext\builder\table\Column;
+use tpext\builder\table\Paginator;
 
+/**
+ * Table class
+ */
 class Table extends Wapper implements Renderable
 {
     protected $view = '';
+
+    protected $id = 'the-table';
 
     protected $js = [
         '/assets/tpextbuilder/js/jquery-toolbar/jquery.toolbar.min.js',
@@ -24,7 +30,7 @@ class Table extends Wapper implements Renderable
 
     protected $verticalAlign = 'middle';
 
-    protected $class = 'table-striped table-hover table-bordered';
+    protected $class = 'table-striped table-hover table-bordered form-horizontal';
 
     protected $attr = '';
 
@@ -44,11 +50,21 @@ class Table extends Wapper implements Renderable
 
     protected $emptyText = "暂未数据~";
 
+    /**
+     * Undocumented variable
+     *
+     * @var Paginator
+     */
+    protected $paginator;
+
     public function beforRender()
     {
         Builder::getInstance()->addJs($this->js);
         Builder::getInstance()->addCss($this->css);
+    }
 
+    protected function initData()
+    {
         $this->list = [];
 
         $pk = strtolower($this->pk);
@@ -71,7 +87,7 @@ class Table extends Wapper implements Renderable
 
                 $displayer
                     ->showLabel(false)
-                    ->size([0, 12])
+                    ->size(0, 12)
                     ->value($value)
                     ->tableRowKey('-' . $row);
 
@@ -89,11 +105,15 @@ class Table extends Wapper implements Renderable
         }
     }
 
-    public function render()
+    public function render($content = true)
     {
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
 
         $viewshow = new ViewShow($template);
+
+        $this->initData();
+
+        $this->paginator->setItems($this->data);
 
         $vars = [
             'class' => $this->class,
@@ -107,9 +127,39 @@ class Table extends Wapper implements Renderable
             'ids' => $this->ids,
             'rowCheckbox' => $this->rowCheckbox && !empty($this->ids),
             'name' => time() . mt_rand(1000, 9999),
+            'chekcboxtd' => 'style="width:40px;vertical-align:' . $this->verticalAlign . ';"',
+            'id' => $this->id,
+            'paginator' => $content ? $this->paginator : '',
         ];
 
-        return $viewshow->assign($vars)->getContent();
+        if ($content) {
+            return $viewshow->assign($vars)->getContent();
+        }
+
+        return $viewshow->assign($vars);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @param \tpext\builder\table\Column $col
+     * @return void
+     */
+    public function addCol($name, $col)
+    {
+        $this->cols[$name] = $col;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getCols()
+    {
+        return $this->cols();
     }
 
     /**
@@ -122,6 +172,28 @@ class Table extends Wapper implements Renderable
     {
         $this->pk = $val;
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this;
+     */
+    public function id($val)
+    {
+        $this->id = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -290,6 +362,37 @@ class Table extends Wapper implements Renderable
         return $this->data;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param int $dataTotal
+     * @param integer $pageSize
+     * @param string $paginatorClass
+     * @return $this
+     */
+    public function paginator($dataTotal, $pageSize = 10, $paginatorClass = '')
+    {
+        $paginator = Paginator::make($this->data, $pageSize, 1, $dataTotal);
+
+        if ($paginatorClass) {
+            $paginator->class($paginatorClass);
+        }
+
+        $this->paginator = $paginator;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Paginator
+     */
+    public function getPaginator()
+    {
+        return $this->paginator;
+    }
+
     public function __call($name, $arguments)
     {
         $count = count($arguments);
@@ -305,6 +408,6 @@ class Table extends Wapper implements Renderable
             return $col->$name($arguments[0], $col->getLabel());
         }
 
-        throw new \UnexpectedValueException('未知调用');
+        throw new \UnexpectedValueException('未知调用:' . $name);
     }
 }

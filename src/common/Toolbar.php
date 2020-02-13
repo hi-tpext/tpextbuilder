@@ -158,6 +158,6 @@ class Toolbar extends Wapper implements Renderable
             return $elm;
         }
 
-        throw new \UnexpectedValueException('未知调用');
+        throw new \UnexpectedValueException('未知调用:' . $name);
     }
 }

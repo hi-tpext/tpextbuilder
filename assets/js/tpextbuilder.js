@@ -312,13 +312,6 @@ $(function () {
         } else {
             if (/^(input|textarea|select)$/i.test(obj.get(0).tagName)) {
                 $('body').on('change', '#' + id, function () {
-
-                    $('#' + id).toolbar({
-                        content: '#edit-options',
-                        position: 'left',
-                        style: 'success',
-                    });
-
                     var name = $(this).attr('name');
                     var val = '';
                     if (/^(input|textarea|select)$/i.test(this.tagName)) {
@@ -419,7 +412,7 @@ $(function () {
                 if (data.status) {
                     lightyear.notify('操作成功！', 'success');
                 } else {
-                    lightyear.notify('操作失败', 'warning');
+                    lightyear.notify(data.msg || '操作失败', 'warning');
                 }
             },
             error: function () {

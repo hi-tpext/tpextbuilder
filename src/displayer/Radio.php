@@ -6,7 +6,9 @@ class Radio extends Field
 {
     protected $view = 'radio';
 
-    protected $class = 'radio-default';
+    protected $class = 'lyear-radio radio-default';
+
+    protected $options = [];
 
     protected $inline = true;
 
@@ -49,6 +51,7 @@ class Radio extends Field
         $vars = array_merge($vars, [
             'inline' => $this->inline ? 'radio-inline' : 'm-t-10',
             'checked' => $this->checked,
+            'options' => $this->options,
         ]);
 
         $viewshow = $this->getViewInstance();

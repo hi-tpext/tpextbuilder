@@ -15,6 +15,8 @@ class Select extends Radio
         '/assets/tpextbuilder/js/select2/select2.min.css',
     ];
 
+    protected $options = [];
+
     protected $attr = 'size="1"';
 
     protected $group = false;
@@ -37,6 +39,18 @@ class Select extends Radio
     public function select2($use)
     {
         $this->select2 = $use;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $options
+     * @return $this
+     */
+    public function options($options)
+    {
+        $this->options = $options;
         return $this;
     }
 
@@ -179,6 +193,7 @@ EOT;
             'checked' => $this->checked,
             'select2' => $this->select2,
             'group' => $this->group,
+            'options' => $this->options,
         ]);
 
         $viewshow = $this->getViewInstance();

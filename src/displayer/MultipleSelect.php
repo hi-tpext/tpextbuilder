@@ -43,6 +43,7 @@ class MultipleSelect extends Select
             'checked' => $this->checked,
             'select2' => $this->select2,
             'group' => $this->group,
+            'options' => $this->options,
         ]);
 
         $viewshow = $this->getViewInstance();
