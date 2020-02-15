@@ -105,7 +105,6 @@ class Color extends Text
 
     protected function colorScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         $this->jsOptions['format'] = $this->format;

@@ -1,23 +1,29 @@
 <?php
 
-namespace tpext\builder\common;
+namespace tpext\builder\form;
 
 use think\response\View as ViewShow;
-use tpext\builder\form\FieldsContent;
+use tpext\builder\common\Builder;
+use tpext\builder\common\Plugin;
+use tpext\builder\common\Renderable;
 
-class Tab implements Renderable
+class Step implements Renderable
 {
     private $view = '';
 
-    protected $class = 'nav-justified';
+    protected $class = '';
 
     protected $rows = [];
 
     protected $labels = [];
 
+    protected $descriptions = [];
+
     protected $active = '';
 
     protected $id = '';
+
+    protected $mode = 'dots';
 
     public function getId()
     {
@@ -34,57 +40,39 @@ class Tab implements Renderable
      * @param string $label
      * @param boolean $isActive
      * @param string $name
-     * @return Row
-     */
-    public function add($label, $isActive = false, $name = '')
-    {
-        if (empty($name)) {
-            $name = '' . count($this->rows);
-        }
-
-        if (empty($this->active) && count($this->rows) == 0) {
-            $this->active = $name;
-        }
-
-        if ($isActive) {
-            $this->active = $name;
-        }
-
-        $row = new Row();
-        $this->rows[$name] = $row;
-        $this->labels[$name] = $label;
-        
-        return $row;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $label
-     * @param boolean $isActive
-     * @param string $name
      * @return FieldsContent
      */
-    public function addFieldsContent($label, $isActive = false, $name = '')
+    public function addFieldsContent($label, $description = '', $isActive = false, $name = '')
     {
         if (empty($name)) {
             $name = '' . count($this->rows);
         }
 
-        if (empty($this->active) && count($this->rows) == 0) {
+        if (count($this->rows) == 0) {
             $this->active = $name;
         }
 
         if ($isActive) {
-            $this->active = $name;
+            $this->actives[$name] = $name;
         }
 
         $content = new FieldsContent();
 
         $this->rows[$name] = $content;
         $this->labels[$name] = $label;
+        $this->descriptions[$name] = $description;
 
         return $content;
+    }
+
+    public function anchor()
+    {
+        $this->mode = 'anchor';
+    }
+
+    public function dots()
+    {
+        $this->mode = 'dots';
     }
 
     /**
@@ -117,10 +105,37 @@ class Tab implements Renderable
      * @param string $val
      * @return $this
      */
-    public function active($val)
+    public function actives($val)
     {
         $this->active = $val;
         return $this;
+    }
+
+    protected function stepScript()
+    {
+        $script = <<<EOT
+
+        $('.guide-box').bootstrapWizard({
+            'tabClass': 'nav-step',
+            'nextSelector': '[data-wizard="next"]',
+            'previousSelector': '[data-wizard="prev"]',
+            'finishSelector': '[data-wizard="finish"]',
+            'onTabClick': function(e, t, i) {
+                if (!$('.guide-box').is('[data-navigateable="true"]')) return ! 1
+            },
+            'onTabShow': function(e, t, i) {
+                t.children(":gt(" + i + ").complete").removeClass("complete");
+                t.children(":lt(" + i + "):not(.complete)").addClass("complete");
+            },
+            'onFinish': function(e, t, i) {
+                // 点击完成后处理提交
+            }
+        });
+
+EOT;
+        Builder::getInstance()->addScript($script);
+
+        return $script;
     }
 
     /**
@@ -138,6 +153,10 @@ class Tab implements Renderable
         foreach ($this->rows as $row) {
             $row->beforRender();
         }
+
+        Builder::getInstance()->addJs('/assets/tpextbuilder/js/jquery.bootstrap.wizard.min.js');
+
+        $this->stepScript();
     }
 
     /**
@@ -147,14 +166,16 @@ class Tab implements Renderable
      */
     public function render($partial = false)
     {
-        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tab.html']);
+        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'step.html']);
 
         $vars = [
             'labels' => $this->labels,
+            'descriptions' => $this->descriptions,
             'rows' => $this->rows,
             'active' => $this->active,
             'id' => $this->getId(),
-            'class' => $this->class,
+            'class' => ($this->mode == 'anchor' ? 'step-anchor' : 'step-dots') . ' ' . $this->class,
+            'mode' => $this->mode,
         ];
 
         $viewshow = new ViewShow($this->view);

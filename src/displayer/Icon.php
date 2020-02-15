@@ -31,7 +31,6 @@ class Icon extends Text
 
     protected function iconScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         $str = preg_replace('/\W/', '', $this->name);

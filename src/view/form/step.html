@@ -1,0 +1,22 @@
+{notempty name="$rows"}
+<ul class="nav-step {$class}">
+    {volist name="labels" id="label"}
+    <li class="nav-step-item {if condition='$key eq $active'}active{/if}">
+        {if condition="$mode eq 'anchor'"}
+        <h6>{$label|raw}</h6>
+        <p class="m-0">{$descriptions[$key]}</p>
+        {else/}
+        <span>{$label|raw}</span>
+        <a class="active" href="javascript:;"></a>
+        {/if}
+    </li>
+    {/volist}
+</ul>
+<div class="nav-step-content">
+    {volist name="rows" id="row"}
+    <div class="nav-step-pane {if condition='$key eq $active'}active{else/}hidden{/if}" id="step-{$id}-{$key}">
+        {:$row->render()}
+    </div>
+    {/volist}
+</div>
+{/notempty}

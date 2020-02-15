@@ -46,7 +46,6 @@ class DateTimeRange extends Text
 
     protected function dateTimeRangeScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         $this->jsOptions['timePicker'] = $this->timePicker;

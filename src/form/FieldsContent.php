@@ -6,7 +6,7 @@ use think\response\View as ViewShow;
 use tpext\builder\common\Plugin;
 use tpext\builder\common\Renderable;
 
-class Tab extends Wapper implements Renderable
+class FieldsContent extends Wapper implements Renderable
 {
     protected $rows = [];
 
@@ -20,7 +20,7 @@ class Tab extends Wapper implements Renderable
 
     public function render()
     {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'tab.html']);
+        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'fieldscontent.html']);
 
         $viewshow = new ViewShow($template);
 

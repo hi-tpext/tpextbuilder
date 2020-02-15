@@ -31,8 +31,6 @@ class CKEditor extends Field
 
     protected function editorScript()
     {
-        $script = '';
-
         // 配置可放在config.js中
         // 成功返回格式{"uploaded":1,"fileName":"图片名称","url":"图片访问路径"}
         // 失败返回格式{"uploaded":0,"error":{"message":"失败原因"}}

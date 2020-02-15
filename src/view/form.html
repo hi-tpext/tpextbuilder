@@ -6,6 +6,18 @@
         <div class="col-md-12">
             {:$row->render()}
         </div>
+        {elseif condition="$row instanceof tpext\builder\form\step"}
+        <div class="col-md-12 guide-box">
+            {:$row->render()}
+            <div class="nav-step-button">
+                <button class="btn btn-secondary disabled" data-wizard="prev"
+                    type="button">上一步</button>
+                <button class="btn btn-secondary" data-wizard="next"
+                    type="button">下一步</button>
+                <button class="btn btn-primary hidden" data-wizard="finish"
+                    type="submit">完成</button>
+            </div>
+        </div>
         {else/}
         <div class="form-group col-md-{$row->getSize()}{$row->getClass()}{$row->getErrorClass()}"{$row->getAttr()|raw}>
             {:$row->render()}

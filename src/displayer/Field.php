@@ -561,7 +561,6 @@ class Field implements Renderable
 
     protected function autoPostScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         $script = <<<EOT

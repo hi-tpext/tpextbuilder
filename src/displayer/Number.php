@@ -68,7 +68,6 @@ class Number extends Field
 
     protected function numberScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         $this->jsOptions = array_merge($this->jsOptions, [

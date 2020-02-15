@@ -40,7 +40,6 @@ class UEditor extends Field
 
     protected function editorScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         $script = <<<EOT

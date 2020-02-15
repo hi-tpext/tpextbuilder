@@ -39,7 +39,6 @@ class Tinymce extends Field
 
     protected function editorScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         if (!isset($this->jsOptions['images_upload_url']) || empty($this->jsOptions['images_upload_url'])) {

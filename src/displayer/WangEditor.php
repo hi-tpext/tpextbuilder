@@ -31,7 +31,6 @@ class WangEditor extends Field
 
     protected function editorScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         if (!isset($this->jsOptions['uploadImgServer']) || empty($this->jsOptions['uploadImgServer'])) {

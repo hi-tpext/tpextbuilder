@@ -5,8 +5,9 @@ namespace tpext\builder\common;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Plugin;
+use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Row;
-use tpext\builder\form\Tab as FormTab;
+use tpext\builder\form\Step;
 use tpext\builder\form\Wapper;
 
 /**
@@ -40,6 +41,13 @@ class Form extends Wapper implements Renderable
      * @var Tab
      */
     protected $__tab__;
+
+    /**
+     * Undocumented variable
+     *
+     * @var Step
+     */
+    protected $__step__;
 
     /**
      * Undocumented function
@@ -195,17 +203,48 @@ class Form extends Wapper implements Renderable
      * Undocumented function
      *
      * @param string $label
+     * @param boolean $active
      * @param string $name
-     * @return FormTab
+     * @return FieldsContent
      */
-    public function tab($label, $name = '', $active = false)
+    public function tab($label, $active = false, $name = '')
     {
         if (empty($this->__tab__)) {
             $this->__tab__ = new Tab();
             $this->rows[] = $this->__tab__;
         }
 
-        $fromTab = $this->__tab__->addFromContent($label, $name, $active);
+        $fromTab = $this->__tab__->addFieldsContent($label, $active, $name);
+        return $fromTab;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Step
+     */
+    public function getStep()
+    {
+        return $this->tab;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $label
+     * @param string $description
+     * @param boolean $active
+     * @param string $name
+     * @return FieldsContent
+     */
+    public function step($label, $description = '', $active = false, $name = '')
+    {
+        if (empty($this->__step__)) {
+            $this->__step__ = new Step();
+            $this->rows[] = $this->__step__;
+        }
+
+        $fromTab = $this->__step__->addFieldsContent($label, $description, $active, $name);
         return $fromTab;
     }
 
@@ -234,7 +273,7 @@ class Form extends Wapper implements Renderable
         $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-sm');
         $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-sm')->attr('onclick="location.replace(location.href)"');
 
-        $this->button('refresh', 'refresh', 1)->class('hide');
+        $this->button('refresh', 'refresh', 1)->class('hidden');
 
         $this->botttomButtonsCalled = true;
         return $this;

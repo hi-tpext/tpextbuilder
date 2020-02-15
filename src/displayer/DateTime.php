@@ -47,7 +47,6 @@ class DateTime extends Text
 
     protected function dateTimeScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         $str = preg_replace('/\W/', '', $this->name);

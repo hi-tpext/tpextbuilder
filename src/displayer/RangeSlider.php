@@ -34,7 +34,6 @@ class RangeSlider extends Text
 
     protected function rangeScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         if (!empty($this->value)) {

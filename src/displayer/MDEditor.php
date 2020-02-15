@@ -49,7 +49,6 @@ class MDEditor extends Field
 
     protected function editorScript()
     {
-        $script = '';
         $inputId = $this->getId();
 
         /**
