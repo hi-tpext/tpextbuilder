@@ -1,0 +1,15 @@
+.form-horizontal .checkbox-inline,
+.form-horizontal .radio-inline {
+    padding-top: 0;
+    margin-top: 10px;
+}
+
+form.search-form .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.checkbox-div,
+.radio-div {
+    min-height: 38px;
+}

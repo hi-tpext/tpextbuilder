@@ -56,6 +56,26 @@ class Row
     /**
      * Undocumented function
      *
+     * @return Content
+     */
+    public function content($size = 12)
+    {
+        return $this->column($size)->content();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Tab
+     */
+    public function tab($size = 12)
+    {
+        return $this->column($size)->tab();
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function getCols()
@@ -69,7 +89,6 @@ class Row
             $col->beforRender();
         }
     }
-
 
     public function render()
     {

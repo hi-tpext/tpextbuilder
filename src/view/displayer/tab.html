@@ -1,0 +1,7 @@
+<div class="row form-tab">
+  {volist name="rows" id="row"}
+  <div class="form-group col-md-{$row->getSize()}{$row->getClass()}{$row->getErrorClass()}"{$row->getAttr()|raw}>
+    {:$row->render()}
+  </div>
+  {/volist}
+</div>

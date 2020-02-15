@@ -2,39 +2,38 @@
     class="{$class} {$attr|raw}" onsubmit="return formSubmit();">
     <div class="row">
         {volist name="rows" id="row"}
+        {if condition="$row instanceof tpext\builder\common\Tab"}
+        <div class="col-md-12">
+            {:$row->render()}
+        </div>
+        {else/}
         <div class="form-group col-md-{$row->getSize()}{$row->getClass()}{$row->getErrorClass()}"{$row->getAttr()|raw}>
             {:$row->render()}
         </div>
+        {/if}
         {/volist}
     </div>
 </form>
 <script>
     var ajax = {$ajax};
     var search = '{$search}';
+    var lastsearch = '';
 
     function formSubmit()
     {
         if(ajax)
         {
-            var loading = $('body').lyearloading({
-                opacity: 0.07,
-                spinnerSize: 'lg'
-            });
+            lightyear.loading('show');
+
             var data = $('#{$id}').serialize();
-
-            if(search)
-            {
-                data.page = data.__page__;
-                delete data.page;
-            }
-
+           
             $.ajax({
                 url: '{$action}' || location.href,
                 data: data,
                 type: 'POST',
                 dataType: search ? 'html' : 'json',
                 success: function (data) {
-                    loading.destroy();
+                    lightyear.loading('hide');
                     if(search)
                     {
                         $('#' + search).replaceWith(data);
@@ -49,7 +48,7 @@
                     }
                 },
                 error: function () {
-                    loading.destroy(); 
+                    lightyear.loading('hide');
                     lightyear.notify('网络错误', 'danger');
                 }
             });

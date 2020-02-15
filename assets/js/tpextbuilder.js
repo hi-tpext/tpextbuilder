@@ -37,19 +37,7 @@ $(function () {
     });
 
     $('.btn-loading').click(function () {
-        var l = $('body').lyearloading({
-            opacity: 0.1, // 遮罩层透明度，为0时不透明
-            backgroundColor: '#ccc', // 遮罩层背景色
-            imgUrl: '', // 使用图片时的图片地址
-            textColorClass: 'text-success', // 文本文字的颜色
-            spinnerColorClass: 'text-success', // 加载动画的颜色(不使用图片时有效)
-            spinnerSize: 'lg', // 加载动画的大小(不使用图片时有效，示例：sm/nm/md/lg，也可自定义大小，如：25px)
-            spinnerText: '加载中...', // 文本文字    
-            zindex: 9999, // 元素的堆叠顺序值
-        });
-        setTimeout(function () {
-            l.hide();
-        }, 500000)
+        lightyear.loading('show');
     });
 
     $('select').each(function (i, e) {
@@ -294,7 +282,8 @@ $(function () {
             return;
         }
         if (obj.is('div')) {
-            $('body').on('change', '#' + id + ' :radio,#' + id + ' :checkbox', function () {
+            $('#' + id + ' :radio,#' + id + ' :checkbox').off('change');
+            $('#' + id + ' :radio,#' + id + ' :checkbox').change(function () {
                 var name = $(this).attr('name');
                 var val = '';
                 if ($(this).is(':radio')) {
@@ -306,19 +295,20 @@ $(function () {
                     });
                     val = values.join(',');
                 }
-
-                tpextbuilder.autoSendData(name, val, url);
+                name = name.split('-')[0];
+                tpextbuilder.autoSendData(name, val, url, 0);
             });
         } else {
             if (/^(input|textarea|select)$/i.test(obj.get(0).tagName)) {
-                $('body').on('change', '#' + id, function () {
+                $('#' + id).off('change');
+                $('#' + id).change(function () {
                     var name = $(this).attr('name');
                     var val = '';
                     if (/^(input|textarea|select)$/i.test(this.tagName)) {
                         val = $(this).val();
                     }
-
-                    tpextbuilder.autoSendData(name, val, url);
+                    name = name.split('-')[0];
+                    tpextbuilder.autoSendData(name, val, url, 0);
                 });
             }
         }
@@ -358,7 +348,7 @@ $(function () {
                             text: '确认',
                             btnClass: 'btn-primary',
                             action: function () {
-                                tpextbuilder.autoSendData(name, val, url);
+                                tpextbuilder.autoSendData(name, val, url, 1);
                             }
                         },
                         cancel: {
@@ -370,7 +360,7 @@ $(function () {
                     }
                 });
             } else {
-                tpextbuilder.autoSendData(name, val, url);
+                tpextbuilder.autoSendData(name, val, url, 1);
             }
         });
 
@@ -397,8 +387,7 @@ $(function () {
         });
     }
 
-    tpextbuilder.autoSendData = function (name, value, url) {
-        name = name.split('-')[0];
+    tpextbuilder.autoSendData = function (name, value, url, refresh) {
         $.ajax({
             url: url,
             data: {
@@ -411,6 +400,9 @@ $(function () {
             success: function (data) {
                 if (data.status) {
                     lightyear.notify('操作成功！', 'success');
+                    if (refresh) {
+                        $('#form-refresh').trigger('click');
+                    }
                 } else {
                     lightyear.notify(data.msg || '操作失败', 'warning');
                 }

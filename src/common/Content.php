@@ -1,13 +1,11 @@
 <?php
 
-namespace tpext\builder\displayer;
+namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
 
-class Html extends Field
+class Content implements Renderable
 {
-    protected $view = 'html';
-
     /**
      * Undocumented variable
      *
@@ -15,17 +13,13 @@ class Html extends Field
      */
     protected $content;
 
-    public function created()
+    public function render($partial = false)
     {
-        parent::created();
-
-        $this->value = $this->name;
-
-        $this->content = new ViewShow($this->value);
-
-        $this->content->isContent(true);
-
-        return $this;
+        if ($partial) {
+            return $this->content;
+        }
+        
+        return $this->content->getContent();
     }
 
     /**
@@ -47,7 +41,7 @@ class Html extends Field
     /**
      * Undocumented function
      *
-     * @param string $content
+     * @param string $template
      * @param array $vars
      * @param array $config
      * @return $this
@@ -60,15 +54,8 @@ class Html extends Field
         return $this;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return mixed
-     */
-    public function render()
+    public function beforRender()
     {
-        $this->value = $this->content->getContent();
 
-        return parent::render();
     }
 }

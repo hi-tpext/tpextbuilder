@@ -54,6 +54,30 @@ class Column
     }
 
     /**
+     * Undocumented function
+     *
+     * @return Content
+     */
+    public function content()
+    {
+        $content = new Content();
+        $this->elms[] = $content;
+        return $content;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Tab
+     */
+    public function tab()
+    {
+        $tab = new Tab();
+        $this->elms[] = $tab;
+        return $tab;
+    }
+
+    /**
      * 获取一新行
      *
      * @return Row

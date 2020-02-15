@@ -517,6 +517,28 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
+     * @return array
+     */
+    public function getScript()
+    {
+        return $this->script;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $labelMin
+     * @return $this
+     */
+    public function fullSize($labelMin = 3)
+    {
+        $this->size = [$labelMin, 12 - $labelMin];
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return mixed
      */
     public function render()

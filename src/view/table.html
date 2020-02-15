@@ -1,51 +1,90 @@
-<table id="{$id}" class="table {$class}" {$attr|raw}>
-    {notempty name="$headers"}
-    <thead>
-        <tr>
-            {if condition="$rowCheckbox"}
-            <th style="width: 40px;">
-                <label class="lyear-checkbox checkbox-primary">
-                    <input type="checkbox" id="checkall-{$name}"
-                        data-check="check-{$name}" class="checkall
-                        table-row-checkall"><span></span>
-                </label>
-            </th>
-            {/if}
-            {volist name="headers" id="header"}
-            <th {$headStyle|raw}>{$header}</th>
+
+<div id="{$id}" class="row">
+    <table class="table {$class}" {$attr|raw}>
+        {notempty name="$headers"}
+        <thead>
+            <tr>
+                {if condition="$rowCheckbox"}
+                <th style="width: 40px;">
+                    <label class="lyear-checkbox checkbox-primary">
+                        <input type="checkbox" id="checkall-{$name}"
+                            data-check="check-{$name}" class="checkall
+                            table-row-checkall"><span></span>
+                    </label>
+                </th>
+                {/if}
+                {volist name="headers" id="header"}
+                <th {$headStyle|raw}>{$header}</th>
+                {/volist}
+            </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+            {volist name="list" id="row"}
+            <tr>
+                {if condition="$rowCheckbox"}
+                <td {$chekcboxtd|raw}>
+                    <label class="lyear-checkbox checkbox-primary">
+                        <input type="checkbox" id="{$name}-{$key}"
+                            value="{$ids[$key]}"
+                            class="check-{$name} table-row"><span></span>
+                    </label>
+                </td>
+                {/if}
+                {volist name="row" id="col"}
+                <td class="col-md-{$col.wapper->getSize()}{$col.wapper->getClass()}"
+                    {$col.wapper->getAttr()|raw}>
+                    {$col.value|raw}
+                </td>
+                {/volist}
+            </tr>
             {/volist}
-        </tr>
-    </thead>
+            {empty name="$data"}
+            <tr>
+                <td>{$emptyText}</td>
+            </tr>
+            {/empty}
+        </tbody>
+    </table>
+    {notempty name="paginator"}
+    <nav class="{:$paginator->getClass()}" {:$paginator->getAttr()}>
+        {:$paginator->render()}
+    </nav>
     {/notempty}
-    <tbody>
-        {volist name="list" id="row"}
-        <tr>
-            {if condition="$rowCheckbox"}
-            <td {$chekcboxtd|raw}>
-                <label class="lyear-checkbox checkbox-primary">
-                    <input type="checkbox" id="{$name}-{$key}"
-                        value="{$ids[$key]}"
-                        class="check-{$name} table-row"><span></span>
-                </label>
-            </td>
-            {/if}
-            {volist name="row" id="col"}
-            <td class="col-md-{$col.wapper->getSize()}{$col.wapper->getClass()}"
-                {$col.wapper->getAttr()|raw}>
-                {$col.value|raw}
-            </td>
-            {/volist}
-        </tr>
-        {/volist}
-        {empty name="$data"}
-        <tr>
-            <td>{$emptyText}</td>
-        </tr>
-        {/empty}
-    </tbody>
-</table>
-{notempty name="paginator"}
-<nav id="{$id}-paginator" class="{:$paginator->getClass()}" {:$paginator->getAttr()} >
-    {:$paginator->render()}
-</nav>
-{/notempty}
+    <script>
+        var partial = {$partial};
+        if(!partial)
+        {
+            $('#form-__page_').val('{$paginator->currentPage()}');
+            $('#{$id} input.checkall').each(function (i, e) {
+                var checkall = $(e);
+                var checkboxes = $('.' + checkall.data('check'));
+                var count = checkboxes.size();
+
+                checkall.on('change', function () {
+                    checkboxes.prop('checked', checkall.is(':checked'));
+                });
+
+                checkboxes.on('change', function () {
+                    var ss = 0;
+                    checkboxes.each(function (ii, ee) {
+                        if ($(ee).is(':checked')) {
+                            ss += 1;
+                        }
+                    });
+                    checkall.prop('checked', ss == count);
+                });
+            });
+
+            {$script|raw}
+        }
+        else
+        {
+            setTimeout(function(){
+                {$script|raw}
+            },1000);
+        }
+
+        
+    </script>
+</div>

@@ -16,7 +16,7 @@ class Toolbar extends Wapper implements Renderable
 
     protected $elms = [];
 
-    public function render()
+    public function render($partial = false)
     {
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar.html']);
 
@@ -27,6 +27,10 @@ class Toolbar extends Wapper implements Renderable
             'class' => $this->class,
             'attr' => $this->attr,
         ];
+
+        if ($partial) {
+            return $viewshow->assign($vars);
+        }
 
         return $viewshow->assign($vars)->getContent();
     }
@@ -77,26 +81,6 @@ class Toolbar extends Wapper implements Renderable
     {
         $this->attr .= ' ' . $val;
         return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return array
-     */
-    public function getJs()
-    {
-        return $this->js;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return array
-     */
-    public function getCss()
-    {
-        return $this->css;
     }
 
     public function beforRender()

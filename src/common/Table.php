@@ -24,9 +24,9 @@ class Table extends Wapper implements Renderable
         '/assets/tpextbuilder/js/jquery-toolbar/jquery-toolbar.min.css',
     ];
 
-    protected $headTextAlign = 'left';
+    protected $headTextAlign = 'center';
 
-    protected $textAlign = 'left';
+    protected $textAlign = 'center';
 
     protected $verticalAlign = 'middle';
 
@@ -50,94 +50,9 @@ class Table extends Wapper implements Renderable
 
     protected $emptyText = "暂未数据~";
 
-    /**
-     * Undocumented variable
-     *
-     * @var Paginator
-     */
-    protected $paginator;
+    protected $searchForm = null;
 
-    public function beforRender()
-    {
-        Builder::getInstance()->addJs($this->js);
-        Builder::getInstance()->addCss($this->css);
-    }
-
-    protected function initData()
-    {
-        $this->list = [];
-
-        $pk = strtolower($this->pk);
-
-        foreach ($this->data as $row => $cols) {
-
-            foreach ($cols as $col => $value) {
-
-                if (strtolower($col) == $pk) {
-
-                    $this->ids[$row] = $value;
-                }
-
-                if (!isset($this->cols[$col])) {
-
-                    continue;
-                }
-
-                $displayer = $this->cols[$col]->getDisplayer();
-
-                $displayer
-                    ->showLabel(false)
-                    ->size(0, 12)
-                    ->value($value)
-                    ->tableRowKey('-' . $row);
-
-                $displayer->beforRender();
-
-                $this->cols[$col]->addStyle('vertical-align:' . $this->verticalAlign . ';' . 'text-align:' . $this->textAlign . ';');
-
-                $this->list[$row][$col] = [
-                    'displayer' => $displayer,
-                    'value' => $displayer->render(),
-                    'attr' => $displayer->getAttr(),
-                    'wapper' => $this->cols[$col],
-                ];
-            }
-        }
-    }
-
-    public function render($content = true)
-    {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
-
-        $viewshow = new ViewShow($template);
-
-        $this->initData();
-
-        $this->paginator->setItems($this->data);
-
-        $vars = [
-            'class' => $this->class,
-            'attr' => $this->attr,
-            'headers' => $this->headers,
-            'cols' => $this->cols,
-            'list' => $this->list,
-            'data' => $this->data,
-            'emptyText' => $this->emptyText,
-            'headStyle' => 'style="text-align:' . $this->headTextAlign . ';"',
-            'ids' => $this->ids,
-            'rowCheckbox' => $this->rowCheckbox && !empty($this->ids),
-            'name' => time() . mt_rand(1000, 9999),
-            'chekcboxtd' => 'style="width:40px;vertical-align:' . $this->verticalAlign . ';"',
-            'id' => $this->id,
-            'paginator' => $content ? $this->paginator : '',
-        ];
-
-        if ($content) {
-            return $viewshow->assign($vars)->getContent();
-        }
-
-        return $viewshow->assign($vars);
-    }
+    protected $script = [];
 
     /**
      * Undocumented function
@@ -372,7 +287,7 @@ class Table extends Wapper implements Renderable
      */
     public function paginator($dataTotal, $pageSize = 10, $paginatorClass = '')
     {
-        $paginator = Paginator::make($this->data, $pageSize, 1, $dataTotal);
+        $paginator = Paginator::make($this->data, $pageSize, input('__page__', 1), $dataTotal);
 
         if ($paginatorClass) {
             $paginator->class($paginatorClass);
@@ -391,6 +306,126 @@ class Table extends Wapper implements Renderable
     public function getPaginator()
     {
         return $this->paginator;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param From $form
+     * @return $this
+     */
+    public function searchForm($form)
+    {
+        $form->search($this);
+        $this->searchForm = $form;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Form
+     */
+    public function getSearch()
+    {
+        return $this->form;
+    }
+
+    public function beforRender()
+    {
+        Builder::getInstance()->addJs($this->js);
+        Builder::getInstance()->addCss($this->css);
+
+        if (empty($this->searchForm)) {
+            $form = Builder::getInstance()->form();
+            $form->addClass('hide');
+            $this->searchForm($form);
+            $form->beforRender();
+        }
+    }
+
+    protected function initData()
+    {
+        $this->list = [];
+
+        $pk = strtolower($this->pk);
+
+        foreach ($this->data as $row => $cols) {
+
+            foreach ($cols as $col => $value) {
+
+                if (strtolower($col) == $pk) {
+
+                    $this->ids[$row] = $value;
+                }
+
+                if (!isset($this->cols[$col])) {
+
+                    continue;
+                }
+
+                $colunm =  $this->cols[$col];
+
+                $displayer = $colunm->getDisplayer();
+
+                $displayer
+                    ->value($value)
+                    ->tableRowKey('-' . $row . time());
+
+                $colunm->beforRender();
+
+                $script = $displayer->getScript();
+
+                if (!empty($script)) {
+                    $this->script = array_merge($this->script, $script);
+                }
+
+                $this->cols[$col]->addStyle('vertical-align:' . $this->verticalAlign . ';' . 'text-align:' . $this->textAlign . ';');
+
+                $this->list[$row][$col] = [
+                    'displayer' => $displayer,
+                    'value' => $displayer->render(),
+                    'attr' => $displayer->getAttr(),
+                    'wapper' => $this->cols[$col],
+                ];
+            }
+        }
+    }
+
+    public function render($partial = false)
+    {
+        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
+
+        $viewshow = new ViewShow($template);
+
+        $this->initData();
+
+        $this->paginator->setItems($this->data);
+
+        $vars = [
+            'class' => $this->class,
+            'attr' => $this->attr,
+            'headers' => $this->headers,
+            'cols' => $this->cols,
+            'list' => $this->list,
+            'data' => $this->data,
+            'emptyText' => $this->emptyText,
+            'headStyle' => 'style="text-align:' . $this->headTextAlign . ';"',
+            'ids' => $this->ids,
+            'rowCheckbox' => $this->rowCheckbox && !empty($this->ids),
+            'name' => time() . mt_rand(1000, 9999),
+            'chekcboxtd' => 'style="width:40px;vertical-align:' . $this->verticalAlign . ';"',
+            'id' => $this->id,
+            'paginator' => $this->paginator,
+            'partial' => $partial ? 1 : 0,
+            'script' => implode('', $this->script),
+        ];
+
+        if ($partial) {
+            return $viewshow->assign($vars);
+        }
+
+        return $viewshow->assign($vars)->getContent();
     }
 
     public function __call($name, $arguments)

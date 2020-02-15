@@ -194,6 +194,28 @@ class Builder implements Renderable
         return $this->column($size)->toolbar();
     }
 
+    /**
+     * 获取一自定义内容
+     *
+     * @param integer col大小
+     * @return Content
+     */
+    public function content($size = 12)
+    {
+        return $this->column($size)->content();
+    }
+
+    /**
+     * 获取一自定义内容
+     *
+     * @param integer col大小
+     * @return Tab
+     */
+    public function tab($size = 12)
+    {
+        return $this->column($size)->tab();
+    }
+
     public function beforRender()
     {
         foreach ($this->rows as $row) {
@@ -201,6 +223,7 @@ class Builder implements Renderable
         }
 
         $this->js[] = '/assets/tpextbuilder/js/tpextbuilder.js';
+        $this->css[] = '/assets/tpextbuilder/css/tpextbuilder.css';
     }
 
     /**
@@ -208,7 +231,7 @@ class Builder implements Renderable
      *
      * @return mixed
      */
-    public function render()
+    public function render($partial = false)
     {
         $this->beforRender();
 

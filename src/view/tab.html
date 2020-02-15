@@ -1,0 +1,17 @@
+{notempty name="$rows"}
+<ul class="nav nav-tabs {$class}">
+    {volist name="labels" id="label"}
+    <li class="nav-item {if condition='$key eq $active'}active{/if}">
+        <a data-toggle="tab" href="#tab-{$id}-{$key}">{$label|raw}</a>
+    </li>
+    {/volist}
+</ul>
+<div class="tab-content">
+    {volist name="rows" id="row"}
+    <div class="tab-pane fade {if condition='$key eq $active'}active in{/if}"
+        id="tab-{$id}-{$key}">
+        {:$row->render()}
+    </div>
+    {/volist}
+</div>
+{/notempty}
