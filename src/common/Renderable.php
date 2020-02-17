@@ -7,14 +7,14 @@ interface Renderable
     /**
      * Undocumented function
      *
-     * @return void
+     * @return mixed
      */
     public function render();
 
     /**
      * Undocumented function
      *
-     * @return void
+     * @return Renderable
      */
     public function beforRender();
 }

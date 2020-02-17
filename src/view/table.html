@@ -1,3 +1,8 @@
+{notempty name="toolbar"}
+<div class="col-md-12">
+    {:$toolbar->render()}
+</div>
+{/notempty}
 
 <div id="{$id}" class="row">
     <table class="table {$class}" {$attr|raw}>
@@ -16,6 +21,9 @@
                 {volist name="headers" id="header"}
                 <th {$headStyle|raw}>{$header}</th>
                 {/volist}
+                {notempty name="$actionbars"}
+                <th {$headStyle|raw}>{$actionRowText|raw}</th>
+                {/notempty}
             </tr>
         </thead>
         {/notempty}
@@ -31,12 +39,17 @@
                     </label>
                 </td>
                 {/if}
-                {volist name="row" id="col"}
-                <td class="col-md-{$col.wapper->getSize()}{$col.wapper->getClass()}"
+                {foreach name="row" id="col" key="co"}
+                <td class="col-md-{$col.wapper->getColSize()} {$col.wapper->getClass()}"
                     {$col.wapper->getAttr()|raw}>
                     {$col.value|raw}
                 </td>
-                {/volist}
+                {/foreach}
+                {notempty name="$actionbars"}
+                <td class="text-center">
+                    {$actionbars[$key]|raw}
+                </td>
+                {/notempty}
             </tr>
             {/volist}
             {empty name="$data"}
@@ -53,9 +66,10 @@
     {/notempty}
     <script>
         var partial = {$partial};
-        if(!partial)
+        if(partial)
         {
-            $('#form-__page_').val('{$paginator->currentPage()}');
+            $('#form-__page__').val('{$paginator->currentPage()}');
+            
             $('#{$id} input.checkall').each(function (i, e) {
                 var checkall = $(e);
                 var checkboxes = $('.' + checkall.data('check'));
@@ -76,13 +90,19 @@
                 });
             });
 
+            $('#{$id} input.table-row-checkall').trigger('change');
+
             {$script|raw}
         }
         else
         {
-            setTimeout(function(){
-                {$script|raw}
-            },1000);
+            var it = setInterval(function(){
+                if(window.$)
+                {
+                    clearInterval(it);
+                    {$script|raw}
+                }
+            },500);
         }
 
         

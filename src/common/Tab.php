@@ -9,7 +9,7 @@ class Tab implements Renderable
 {
     private $view = '';
 
-    protected $class = 'nav-justified';
+    protected $class = '';
 
     protected $rows = [];
 
@@ -19,10 +19,12 @@ class Tab implements Renderable
 
     protected $id = '';
 
+    protected $partial = false;
+
     public function getId()
     {
         if (empty($this->id)) {
-            $this->id = mt_rand(1000, 9999);
+            $this->id = 'tab-' . mt_rand(1000, 9999);
         }
 
         return $this->id;
@@ -39,7 +41,7 @@ class Tab implements Renderable
     public function add($label, $isActive = false, $name = '')
     {
         if (empty($name)) {
-            $name = '' . count($this->rows);
+            $name = (count($this->rows) + 1);
         }
 
         if (empty($this->active) && count($this->rows) == 0) {
@@ -51,10 +53,23 @@ class Tab implements Renderable
         }
 
         $row = new Row();
-        $this->rows[$name] = $row;
-        $this->labels[$name] = $label;
-        
+
+        $this->rows[$name] = ['content' => $row, 'active' => ''];
+        $this->labels[$name] = ['content' => $label, 'active' => ''];
+
         return $row;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function partial($val = true)
+    {
+        $this->partial = $val;
+        return $this;
     }
 
     /**
@@ -68,7 +83,7 @@ class Tab implements Renderable
     public function addFieldsContent($label, $isActive = false, $name = '')
     {
         if (empty($name)) {
-            $name = '' . count($this->rows);
+            $name = (count($this->rows) + 1);
         }
 
         if (empty($this->active) && count($this->rows) == 0) {
@@ -81,8 +96,8 @@ class Tab implements Renderable
 
         $content = new FieldsContent();
 
-        $this->rows[$name] = $content;
-        $this->labels[$name] = $label;
+        $this->rows[$name] = ['content' => $content, 'active' => ''];
+        $this->labels[$name] = ['content' => $label, 'active' => ''];
 
         return $content;
     }
@@ -119,7 +134,12 @@ class Tab implements Renderable
      */
     public function active($val)
     {
-        $this->active = $val;
+        $names = array_keys($this->labels);
+
+        if (in_array($val, $names)) {
+            $this->active = $val;
+        }
+
         return $this;
     }
 
@@ -133,11 +153,28 @@ class Tab implements Renderable
         return empty($this->class) ? '' : ' ' . $this->class;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getRows()
+    {
+        return $this->rows;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         foreach ($this->rows as $row) {
-            $row->beforRender();
+            $row['content']->beforRender();
         }
+
+        return $this;
     }
 
     /**
@@ -145,9 +182,12 @@ class Tab implements Renderable
      *
      * @return mixed
      */
-    public function render($partial = false)
+    public function render()
     {
         $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tab.html']);
+
+        $this->labels[$this->active]['active'] = 'active';
+        $this->rows[$this->active]['active'] = 'in active';
 
         $vars = [
             'labels' => $this->labels,
@@ -159,7 +199,7 @@ class Tab implements Renderable
 
         $viewshow = new ViewShow($this->view);
 
-        if ($partial) {
+        if ($this->partial) {
             return $viewshow->assign($vars);
         }
 

@@ -10,7 +10,7 @@
     <label class="{$inline} {$class}">
         <input type="checkbox" value="{$key}" class="check-{$name}" {in
             name="$key" value="$checked" }checked{/in}
-            id="{$id}-{$key}" name="{$name}" {$attr|raw}><span>{$option}</span>
+            id="{$id}-{$key}" name="{$name}[]" {$attr|raw}><span>{$option}</span>
     </label>
     {/volist}
     {include file="$helptempl" /}

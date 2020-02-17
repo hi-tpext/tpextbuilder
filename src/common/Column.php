@@ -48,9 +48,9 @@ class Column
      */
     public function toolbar()
     {
-        $table = new Toolbar();
-        $this->elms[] = $table;
-        return $table;
+        $toolbar = new Toolbar();
+        $this->elms[] = $toolbar;
+        return $toolbar;
     }
 
     /**
@@ -109,10 +109,17 @@ class Column
         return $this->size;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         foreach ($this->elms as $elm) {
             $elm->beforRender();
         }
+
+        return $this;
     }
 }

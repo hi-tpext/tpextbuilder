@@ -36,8 +36,6 @@ class Field implements Renderable
 
     protected $rules = '';
 
-    protected $editable = true;
-
     protected $autoPost = '';
 
     protected $showLabel = true;
@@ -54,7 +52,7 @@ class Field implements Renderable
 
     protected $error = '';
 
-    protected $size = [2, 9];
+    protected $size = [2, 8];
 
     protected $help = '';
 
@@ -298,7 +296,7 @@ class Field implements Renderable
      * @param array $val
      * @return $this
      */
-    public function size($label = 2, $element = 9)
+    public function size($label = 2, $element = 8)
     {
         $this->size = [$label, $element];
         return $this;
@@ -465,28 +463,6 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
-     * @param boolean $editable
-     * @return $this
-     */
-    public function editable($editable = true)
-    {
-        $this->editable = $editable;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return boolean
-     */
-    public function isEditable()
-    {
-        return $this->editable;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @return string
      */
     protected function getValue()
@@ -539,6 +515,27 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
+     * @param array $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        if (isset($data[$this->name])) {
+            $value = $data[$this->name];
+
+            if (is_array($value)) {
+                $value = implode(',', $value);
+            }
+
+            $this->value = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return mixed
      */
     public function render()
@@ -561,11 +558,11 @@ class Field implements Renderable
 
     protected function autoPostScript()
     {
-        $inputId = $this->getId();
+        $class = 'row-' . $this->name;
 
         $script = <<<EOT
 
-        tpextbuilder.autoPost('{$inputId}', '{$this->autoPost}');
+        tpextbuilder.autoPost('{$class}', '{$this->autoPost}');
 
 EOT;
         $this->script[] = $script;

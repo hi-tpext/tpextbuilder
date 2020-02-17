@@ -16,25 +16,6 @@ class Toolbar extends Wapper implements Renderable
 
     protected $elms = [];
 
-    public function render($partial = false)
-    {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar.html']);
-
-        $viewshow = new ViewShow($template);
-
-        $vars = [
-            'elms' => $this->elms,
-            'class' => $this->class,
-            'attr' => $this->attr,
-        ];
-
-        if ($partial) {
-            return $viewshow->assign($vars);
-        }
-
-        return $viewshow->assign($vars)->getContent();
-    }
-
     /**
      * Undocumented function
      *
@@ -83,46 +64,34 @@ class Toolbar extends Wapper implements Renderable
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         foreach ($this->elms as $elm) {
 
             $elm->beforRender();
         }
+
+        return $this;
     }
 
-    public function buttons()
+    public function render()
     {
-        $this->btnAdd();
-        $this->btnEnable();
-        $this->btnDisable();
-        $this->btnDelete();
-        $this->btnRefresh();
-    }
+        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar.html']);
 
-    public function btnAdd($label = '添加', $class = 'btn-primary')
-    {
-        $this->linkBtn('add', $label)->icon('mdi-plus')->class($class);
-    }
+        $viewshow = new ViewShow($template);
 
-    public function btnDelete($label = '删除', $class = 'btn-danger')
-    {
-        $this->linkBtn('delete', $label)->icon('mdi-delete')->class($class)->postChecked(url('delete'));
-    }
+        $vars = [
+            'elms' => $this->elms,
+            'class' => $this->class,
+            'attr' => $this->attr,
+        ];
 
-    public function btnDisable($label = '禁用', $class = 'btn-warning')
-    {
-        $this->linkBtn('disable', $label)->icon('mdi-block-helper')->class($class)->postChecked(url('disable'));
-    }
-
-    public function btnEnable($label = '启用', $class = 'btn-success')
-    {
-        $this->linkBtn('enable', $label)->icon('mdi-check')->class($class)->postChecked(url('enable'));
-    }
-
-    public function btnRefresh($label = '', $class = 'btn-default')
-    {
-        $this->linkBtn('refresh', $label)->icon('mdi-refresh')->class($class)->attr('title="刷新"');
+        return $viewshow->assign($vars)->getContent();
     }
 
     public function __call($name, $arguments)

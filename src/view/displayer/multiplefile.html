@@ -1,14 +1,16 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]}">
     <div class="js-upload-files">
-        <input type="hidden" name="{$name}" class="form-control {$class}"
-            value="{$value}" id="{$id}" {$attr|raw}>
         {if condition="$canUpload"}
-        <div id="picker_{$name}"><i class="mdi mdi-cloud-upload"></i>&nbsp;上传{if
-            condition="$jsOptions.multiple"}多{else/}单{/if}个文件</div>
+        <div>
+            <input type="hidden" name="{$name}" class="{$class}"
+                value="{$value}" id="{$id}" {$attr|raw}>
+            <div id="picker_{$name}"><i class="mdi
+                    mdi-cloud-upload"></i>&nbsp;上传{if
+                condition="$jsOptions.multiple"}多{else/}单{/if}个文件</div>
+        </div>
         {/if}
-
-        <ul id="file_list_{$name}" class="list-inline clearfix
+        <ul id="file_list_{$name}" class="pull-left list-inline clearfix
             lyear-uploads-pic">
             {volist name="files" id="file"}
             <li class="pic-item" id="flie{$key}">
@@ -33,7 +35,7 @@
         </ul>
     </div>
     <script>
-        var jsOptions = {$jsOptions|json_encode|raw};
+        var jsOptions = JSON.parse('{$jsOptions|json_encode|raw}')
 
         if(!window.uploadConfigs)
         {

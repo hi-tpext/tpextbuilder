@@ -13,13 +13,27 @@ class Content implements Renderable
      */
     protected $content;
 
-    public function render($partial = false)
+    protected $partial = false;
+
+    public function render()
     {
-        if ($partial) {
+        if ($this->partial) {
             return $this->content;
         }
-        
+
         return $this->content->getContent();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function partial($val = true)
+    {
+        $this->partial = $val;
+        return $this;
     }
 
     /**
@@ -56,6 +70,6 @@ class Content implements Renderable
 
     public function beforRender()
     {
-
+        return $this;
     }
 }

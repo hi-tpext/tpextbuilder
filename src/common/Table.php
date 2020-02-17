@@ -3,8 +3,11 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
+use tpext\builder\displayer\Field;
 use tpext\builder\form\Wapper;
+use tpext\builder\table\Actionbar;
 use tpext\builder\table\Column;
+use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
 
 /**
@@ -30,7 +33,7 @@ class Table extends Wapper implements Renderable
 
     protected $verticalAlign = 'middle';
 
-    protected $class = 'table-striped table-hover table-bordered form-horizontal';
+    protected $class = 'table-striped table-hover table-bordered';
 
     protected $attr = '';
 
@@ -46,20 +49,39 @@ class Table extends Wapper implements Renderable
 
     protected $ids = [];
 
+    protected $actionbars = [];
+
     protected $rowCheckbox = true;
 
     protected $emptyText = "暂未数据~";
 
+    protected $toolbar = null;
+
+    protected $useToolbar = true;
+
+    protected $actionbar = null;
+
+    protected $useActionbar = true;
+
+    protected $actionRowText = '操作';
+
+    /**
+     * Undocumented variable
+     *
+     * @var Form
+     */
     protected $searchForm = null;
 
     protected $script = [];
+
+    protected $partial = false;
 
     /**
      * Undocumented function
      *
      * @param string $name
      * @param \tpext\builder\table\Column $col
-     * @return void
+     * @return $this
      */
     public function addCol($name, $col)
     {
@@ -167,6 +189,18 @@ class Table extends Wapper implements Renderable
     public function addAttr($val)
     {
         $this->attr .= ' ' . $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function partial($val = true)
+    {
+        $this->partial = $val;
         return $this;
     }
 
@@ -331,10 +365,83 @@ class Table extends Wapper implements Renderable
         return $this->form;
     }
 
+    /**
+     * 获取一个toolbar
+     *
+     * @return MultipleToolbar
+     */
+    public function getToolbar()
+    {
+        if (empty($this->toolbar)) {
+            $this->toolbar = new MultipleToolbar();
+        }
+
+        return $this->toolbar;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this;
+     */
+    public function useToolbar($val)
+    {
+        $this->useToolbar = $val;
+        return $this;
+    }
+
+    /**
+     * 获取一个actionbar
+     *
+     * @return Actionbar
+     */
+    public function getActionbar()
+    {
+        if (empty($this->actionbar)) {
+            $this->actionbar = new Actionbar();
+        }
+
+        return $this->actionbar;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this;
+     */
+    public function useActionbar($val)
+    {
+        $this->useActionbar = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this;
+     */
+    protected function actionRowText($val)
+    {
+        $this->actionRowText = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         Builder::getInstance()->addJs($this->js);
         Builder::getInstance()->addCss($this->css);
+
+        if ($this->useToolbar) {
+            $this->getToolbar()->beforRender();
+        }
 
         if (empty($this->searchForm)) {
             $form = Builder::getInstance()->form();
@@ -342,13 +449,20 @@ class Table extends Wapper implements Renderable
             $this->searchForm($form);
             $form->beforRender();
         }
+
+        return $this;
     }
 
     protected function initData()
     {
+        $emptyCols = empty($this->cols);
+
         $this->list = [];
 
         $pk = strtolower($this->pk);
+
+        $actionbar = $this->getActionbar();
+        $actionbar->pk($this->pk);
 
         foreach ($this->data as $row => $cols) {
 
@@ -361,18 +475,25 @@ class Table extends Wapper implements Renderable
 
                 if (!isset($this->cols[$col])) {
 
-                    continue;
+                    if ($emptyCols) {
+                        $this->cols[$col] = new Field($col, ucfirst($col));
+                    } else {
+                        continue;
+                    }
                 }
 
-                $colunm =  $this->cols[$col];
+                $colunm = $this->cols[$col];
+
+                $colunm->beforRender();
 
                 $displayer = $colunm->getDisplayer();
 
                 $displayer
                     ->value($value)
-                    ->tableRowKey('-' . $row . time());
-
-                $colunm->beforRender();
+                    ->tableRowKey('-' . $row . time())
+                    ->showLabel(false)
+                    ->size(0, 12)
+                    ->beforRender();
 
                 $script = $displayer->getScript();
 
@@ -389,10 +510,15 @@ class Table extends Wapper implements Renderable
                     'wapper' => $this->cols[$col],
                 ];
             }
+
+            if ($this->useActionbar && isset($this->ids[$row])) {
+
+                $this->actionbars[$row] = $actionbar->rowid($this->ids[$row])->beforRender()->render();
+            }
         }
     }
 
-    public function render($partial = false)
+    public function render()
     {
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
 
@@ -417,11 +543,14 @@ class Table extends Wapper implements Renderable
             'chekcboxtd' => 'style="width:40px;vertical-align:' . $this->verticalAlign . ';"',
             'id' => $this->id,
             'paginator' => $this->paginator,
-            'partial' => $partial ? 1 : 0,
-            'script' => implode('', $this->script),
+            'partial' => $this->partial ? 1 : 0,
+            'script' => implode('', array_unique($this->script)),
+            'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,
+            'actionbars' => $this->actionbars,
+            'actionRowText' => $this->actionRowText
         ];
 
-        if ($partial) {
+        if ($this->partial) {
             return $viewshow->assign($vars);
         }
 

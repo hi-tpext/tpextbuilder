@@ -37,9 +37,9 @@ class RangeSlider extends Text
         $inputId = $this->getId();
 
         if (!empty($this->value)) {
-            $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
+            $this->checked = is_array($this->value) ? $this->value : explode(';', $this->value);
         } else if (!empty($this->default)) {
-            $this->checked = is_array($this->default) ? $this->default : explode(',', $this->default);
+            $this->checked = is_array($this->default) ? $this->default : explode(';', $this->default);
         }
 
         if (count($this->checked) > 0) {

@@ -38,6 +38,8 @@ class Builder implements Renderable
 
     protected static $instance = null;
 
+    protected $notify = [];
+
     protected function __construct($title, $desc)
     {
         $this->title = $title;
@@ -55,9 +57,7 @@ class Builder implements Renderable
     {
         if (static::$instance == null) {
             static::$instance = new static($title, $desc);
-            $token = csrf_token();
-            static::$instance->csrf_token = $token;
-            View::share(['__token__' => $token]);
+
         }
 
         return static::$instance;
@@ -70,6 +70,12 @@ class Builder implements Renderable
      */
     public function getCsrfToken()
     {
+        if (!$this->csrf_token) {
+            $token = csrf_token();
+            $this->csrf_token = $token;
+            View::share(['__token__' => $token]);
+        }
+
         return $this->csrf_token;
     }
 
@@ -131,6 +137,33 @@ class Builder implements Renderable
         }
         $this->style = array_merge($this->style, $val);
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     * lightyear.notify('修改成功，页面即将自动跳转~', 'success', 5000, 'mdi mdi-emoticon-happy', 'top', 'center');
+     * @param string $msg
+     * @param string $type
+     * @param integer $delay
+     * @param string $icon
+     * @param string $from
+     * @param string $align
+     * @return $this
+     */
+    public function notify($msg, $type = 'info', $delay = 2000, $icon = '', $from = 'top', $align = 'center')
+    {
+        $this->notify = [$msg, $type, $delay, $icon, $from, $align];
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getNotify()
+    {
+        return $this->notify;
     }
 
     /**
@@ -231,11 +264,16 @@ class Builder implements Renderable
      *
      * @return mixed
      */
-    public function render($partial = false)
+    public function render()
     {
         $this->beforRender();
 
         $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+
+        if (!empty($this->notify)) {
+
+            $this->script[] = "lightyear.notify('{$this->notify[0]}', '{$this->notify[1]}', {$this->notify[2]}, '{$this->notify[3]}', '{$this->notify[4]}', '{$this->notify[5]}');";
+        }
 
         $vars = [
             'title' => $this->title,

@@ -14,6 +14,8 @@ class LinkBtn extends Bar
 
     protected $postChecked = '';
 
+    protected $postRowid = '';
+
     protected $confirm = true;
 
     /**
@@ -40,10 +42,34 @@ class LinkBtn extends Bar
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @param boolean $confirm
+     * @return $this
+     */
     public function postChecked($url, $confirm = true)
     {
         $this->postChecked = $url;
         $this->confirm = $confirm;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @param boolean $confirm
+     * @return $this
+     */
+    public function postRowid($url, $confirm = true)
+    {
+        $this->postRowid = $url;
+        $this->confirm = $confirm;
+
+        return $this;
     }
 
     protected function postCheckedScript()
@@ -61,10 +87,30 @@ EOT;
         return $script;
     }
 
+    protected function postRowidScript()
+    {
+        $script = '';
+        $inputId = $this->getId();
+
+        $script = <<<EOT
+
+        tpextbuilder.postRowid('{$inputId}', '{$this->postRowid}', {$this->confirm});
+
+EOT;
+        $this->script[] = $script;
+
+        return $script;
+    }
+
     public function beforRender()
     {
         if ($this->postChecked) {
+
             $this->postCheckedScript();
+
+        } else if ($this->postRowid) {
+
+            $this->postRowidScript();
         }
 
         return parent::beforRender();

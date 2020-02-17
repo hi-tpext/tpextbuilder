@@ -21,10 +21,6 @@ class Bar implements Renderable
 
     protected $style = '';
 
-    protected $js = [];
-
-    protected $css = [];
-
     protected $script = [];
 
     public function __construct($name, $label = '')
@@ -32,7 +28,7 @@ class Bar implements Renderable
         $this->name = $name;
         $this->label = $label;
     }
-    
+
     public function created()
     {
         $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
@@ -53,7 +49,7 @@ class Bar implements Renderable
      */
     public function getId()
     {
-        return 'tool-' . $this->name;
+        return 'bar-' . $this->name;
     }
 
     /**
@@ -148,6 +144,16 @@ class Bar implements Renderable
     {
         $this->attr .= $val;
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getScript()
+    {
+        return $this->script;
     }
 
     public function beforRender()

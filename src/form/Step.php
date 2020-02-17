@@ -13,11 +13,13 @@ class Step implements Renderable
 
     protected $class = '';
 
+    protected $navigateable = true;
+
+    protected $size = [2, 8];
+
     protected $rows = [];
 
     protected $labels = [];
-
-    protected $descriptions = [];
 
     protected $active = '';
 
@@ -28,7 +30,7 @@ class Step implements Renderable
     public function getId()
     {
         if (empty($this->id)) {
-            $this->id = mt_rand(1000, 9999);
+            $this->id = 'step-' . mt_rand(1000, 9999);
         }
 
         return $this->id;
@@ -45,7 +47,7 @@ class Step implements Renderable
     public function addFieldsContent($label, $description = '', $isActive = false, $name = '')
     {
         if (empty($name)) {
-            $name = '' . count($this->rows);
+            $name = (count($this->rows) + 1);
         }
 
         if (count($this->rows) == 0) {
@@ -58,21 +60,56 @@ class Step implements Renderable
 
         $content = new FieldsContent();
 
-        $this->rows[$name] = $content;
-        $this->labels[$name] = $label;
-        $this->descriptions[$name] = $description;
+        $this->rows[$name] = ['content' => $content, 'description' => $description, 'active' => ''];
+        $this->labels[$name] = ['content' => $label, 'active' => ''];
 
         return $content;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function navigateable($val)
+    {
+        $this->navigateable = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $val
+     * @return $this
+     */
+    public function size($left = 2, $width = 8)
+    {
+        $this->size = [$left, $width];
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function anchor()
     {
         $this->mode = 'anchor';
+        return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function dots()
     {
         $this->mode = 'dots';
+        return $this;
     }
 
     /**
@@ -105,23 +142,31 @@ class Step implements Renderable
      * @param string $val
      * @return $this
      */
-    public function actives($val)
+    public function active($val)
     {
-        $this->active = $val;
+        $names = array_keys($this->labels);
+
+        if (in_array($val, $names)) {
+            $this->active = $val;
+        }
+
         return $this;
     }
 
     protected function stepScript()
     {
+        $id = $this->getId();
+        $navigateable = $this->navigateable ? 'true' : 'false';
+
         $script = <<<EOT
 
-        $('.guide-box').bootstrapWizard({
+        $('#{$id}').bootstrapWizard({
             'tabClass': 'nav-step',
             'nextSelector': '[data-wizard="next"]',
             'previousSelector': '[data-wizard="prev"]',
             'finishSelector': '[data-wizard="finish"]',
             'onTabClick': function(e, t, i) {
-                if (!$('.guide-box').is('[data-navigateable="true"]')) return ! 1
+                return {$navigateable};
             },
             'onTabShow': function(e, t, i) {
                 t.children(":gt(" + i + ").complete").removeClass("complete");
@@ -148,15 +193,22 @@ EOT;
         return empty($this->class) ? '' : ' ' . $this->class;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         foreach ($this->rows as $row) {
-            $row->beforRender();
+            $row['content']->beforRender();
         }
 
         Builder::getInstance()->addJs('/assets/tpextbuilder/js/jquery.bootstrap.wizard.min.js');
 
         $this->stepScript();
+
+        return $this;
     }
 
     /**
@@ -168,14 +220,28 @@ EOT;
     {
         $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'step.html']);
 
+        $names = array_keys($this->labels);
+
+        foreach ($names as $name) {
+            if ($name == $this->active) {
+                $this->labels[$name]['active'] = 'active';
+                $this->rows[$name]['active'] = 'active';
+
+                break;
+            } else {
+                $this->labels[$name]['active'] = 'complete';
+                $this->rows[$name]['active'] = 'complete';
+            }
+        }
+
         $vars = [
             'labels' => $this->labels,
-            'descriptions' => $this->descriptions,
             'rows' => $this->rows,
             'active' => $this->active,
             'id' => $this->getId(),
             'class' => ($this->mode == 'anchor' ? 'step-anchor' : 'step-dots') . ' ' . $this->class,
             'mode' => $this->mode,
+            'size' => $this->size,
         ];
 
         $viewshow = new ViewShow($this->view);

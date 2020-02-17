@@ -31,29 +31,38 @@ class Form extends Wapper implements Renderable
 
     protected $botttomButtonsCalled = false;
 
-    protected $ajax = true;
+    protected $ajax = false;
 
     protected $search;
+
+    protected $defaultDisplayerSize = null;
 
     /**
      * Undocumented variable
      *
      * @var Tab
      */
-    protected $__tab__;
+    protected $tab = null;
 
     /**
      * Undocumented variable
      *
      * @var Step
      */
-    protected $__step__;
+    protected $step = null;
+
+    /**
+     * Undocumented variable
+     *
+     * @var FieldsContent
+     */
+    protected $__fields_content__ = null;
 
     /**
      * Undocumented function
      *
      * @param \tpext\builder\form\Row $row
-     * @return void
+     * @return $this
      */
     public function addRow($row)
     {
@@ -80,6 +89,7 @@ class Form extends Wapper implements Renderable
     public function search($val)
     {
         $this->search = $val->getId();
+        $this->ajax = true;
         return $this;
     }
 
@@ -205,17 +215,17 @@ class Form extends Wapper implements Renderable
      * @param string $label
      * @param boolean $active
      * @param string $name
-     * @return FieldsContent
+     * @return $this
      */
     public function tab($label, $active = false, $name = '')
     {
-        if (empty($this->__tab__)) {
-            $this->__tab__ = new Tab();
-            $this->rows[] = $this->__tab__;
+        if (empty($this->tab)) {
+            $this->tab = new Tab();
+            $this->rows[] = $this->tab;
         }
 
-        $fromTab = $this->__tab__->addFieldsContent($label, $active, $name);
-        return $fromTab;
+        $this->__fields_content__ = $this->tab->addFieldsContent($label, $active, $name);
+        return $this;
     }
 
     /**
@@ -225,7 +235,7 @@ class Form extends Wapper implements Renderable
      */
     public function getStep()
     {
-        return $this->tab;
+        return $this->step;
     }
 
     /**
@@ -235,17 +245,66 @@ class Form extends Wapper implements Renderable
      * @param string $description
      * @param boolean $active
      * @param string $name
-     * @return FieldsContent
+     * @return $this
      */
     public function step($label, $description = '', $active = false, $name = '')
     {
-        if (empty($this->__step__)) {
-            $this->__step__ = new Step();
-            $this->rows[] = $this->__step__;
+        if (empty($this->step)) {
+            $this->step = new Step();
+            $this->rows[] = $this->step;
         }
 
-        $fromTab = $this->__step__->addFieldsContent($label, $description, $active, $name);
-        return $fromTab;
+        $this->__fields_content__ = $this->step->addFieldsContent($label, $description, $active, $name);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function fieldsContentEnd()
+    {
+        $this->__fields_content__ = null;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return FieldsContent
+     */
+    public function getFieldsContent()
+    {
+        return $this->__fields_content__;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $label
+     * @param integer $element
+     * @return $this
+     */
+    public function defaultDisplayerSize($label = 2, $element = 8)
+    {
+        $this->defaultDisplayerSize = [$label, $element];
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        foreach ($this->rows as $row) {
+            $row->fill($data);
+        }
+
+        return $this;
     }
 
     /**
@@ -257,16 +316,22 @@ class Form extends Wapper implements Renderable
     public function bottomButtons($create = true)
     {
         if ($create) {
+            $this->fieldsContentEnd();
             $this->divider('', '', 12);
             $this->html('', '', 5)->showLabel(false);
-            $this->button('submit', '提&nbsp;&nbsp;交', 1)->class('btn-success');
-            $this->button('reset', '重&nbsp;&nbsp;置', 1)->class('btn-warning');
+            $this->btnSubmit();
+            $this->btnReset();
         }
 
         $this->botttomButtonsCalled = true;
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function searchButtons()
     {
         $this->html('', '', 5)->showLabel(false);
@@ -285,11 +350,12 @@ class Form extends Wapper implements Renderable
      * @param string $label
      * @param integer $size
      * @param string $label
-     * @return void
+     * @return $this
      */
-    public function submitBtn($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
+    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
     {
         $this->button('submit', $label, $size)->class($class)->loading();
+        return $this;
     }
 
     /**
@@ -298,11 +364,12 @@ class Form extends Wapper implements Renderable
      * @param string $label
      * @param integer $size
      * @param string $label
-     * @return void
+     * @return $this
      */
-    public function resetBtn($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning')
+    public function btnReset($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning')
     {
         $this->button('submit', $label, $size)->class($class);
+        return $this;
     }
 
     /**
@@ -312,20 +379,22 @@ class Form extends Wapper implements Renderable
      * @param integer $size
      * @param string $label
      * @param string $attr
-     * @return void
+     * @return $this
      */
-    public function backBtn($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
+    public function btnBack($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
         $this->button('button', $label, $size)->class($class)->attr($attr);
+        return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
-        $token = Builder::getInstance()->getCsrfToken();
-
-        $this->hidden('__token__', $token);
-
-        if (!$this->botttomButtonsCalled) {
+        if (!$this->botttomButtonsCalled && empty($this->step)) {
             if ($this->search) {
                 $this->searchButtons();
             } else {
@@ -341,11 +410,13 @@ class Form extends Wapper implements Renderable
 
         foreach ($this->rows as $row) {
             if ($this->search) {
-                $row->getDisplayer()->fullSize(3);
+                $row->getDisplayer()->fullSize(3)->autoPost(false);
             }
 
             $row->beforRender();
         }
+
+        return $this;
     }
 
     protected function searchScript()
@@ -356,24 +427,25 @@ class Form extends Wapper implements Renderable
         $('body').on('click', '#{$this->search} ul li a', function(){
             var page = $(this).attr('href').replace(/.*\?page=(\d+).*/,'$1');
             $('#form-__page__').val(page);
-            $('#{$form}').trigger('submit');
+            $('#{$form} form').trigger('submit');
             return false;
         });
 
         $('body').on('click', '#tool-refresh,#form-refresh', function(){
-            $('#{$form}').trigger('submit');
+            $('#{$form} form').trigger('submit');
         });
 
         $('body').on('click', '#form-submit', function(){
             $('#form-__page__').val(1);
         });
+
 EOT;
         Builder::getInstance()->addScript($script);
 
         return $script;
     }
 
-    public function render($partial = false)
+    public function render()
     {
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
 
@@ -382,18 +454,13 @@ EOT;
         $vars = [
             'rows' => $this->rows,
             'action' => $this->action,
-            'method' => $this->method,
+            'method' => strtoupper($this->method),
             'class' => $this->class,
             'attr' => $this->attr,
             'id' => $this->id,
-            'ajax' => ($this->ajax || !empty($this->search)),
+            'ajax' => ($this->ajax || !empty($this->search) ? 1 : 0),
             'search' => $this->search,
-            'partial' => $partial,
         ];
-
-        if ($partial) {
-            return $viewshow->assign($vars);
-        }
 
         return $viewshow->assign($vars)->getContent();
     }
@@ -406,9 +473,19 @@ EOT;
 
             $row = new Row($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
-            $this->rows[] = $row;
+            if ($this->__fields_content__) {
+                $this->__fields_content__->addRow($row);
+            } else {
+                $this->rows[] = $row;
+            }
 
-            return $row->$name($arguments[0], $row->getLabel());
+            $displayer = $row->$name($arguments[0], $row->getLabel());
+
+            if ($this->defaultDisplayerSize) {
+                $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);
+            }
+
+            return $displayer;
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);

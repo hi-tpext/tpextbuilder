@@ -10,12 +10,41 @@ class FieldsContent extends Wapper implements Renderable
 {
     protected $rows = [];
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         foreach ($this->rows as $row) {
 
             $row->beforRender();
         }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Row $row
+     * @return void
+     */
+    public function addRow($row)
+    {
+        $this->rows[] = $row;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getRows()
+    {
+        return $this->rows;
     }
 
     public function render()

@@ -12,7 +12,7 @@ class Row
      * Undocumented function
      *
      * @param integer $size
-     * @return void
+     * @return Column
      */
     public function column($size = 12)
     {
@@ -83,11 +83,18 @@ class Row
         return $this->cols;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         foreach ($this->cols as $col) {
             $col->beforRender();
         }
+        
+        return $this;
     }
 
     public function render()

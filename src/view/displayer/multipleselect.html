@@ -1,6 +1,6 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]} clearfix">
-    <select class="form-control {$class}" name="{$name}" id="{$id}"
+    <select class="form-control {$class}" name="{$name}[]" id="{$id}"
         multiple="multiple" {$attr|raw}>
         {if condition="$group"}
         {volist name="options" id="group"}

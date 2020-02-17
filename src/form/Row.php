@@ -12,7 +12,7 @@ class Row extends Wapper implements Renderable
 
     protected $label = '';
 
-    protected $size = 12;
+    protected $cloSize = 12;
 
     protected $class = '';
 
@@ -37,7 +37,7 @@ class Row extends Wapper implements Renderable
 
         $this->name = $name;
         $this->label = $label;
-        $this->size = $colSize;
+        $this->cloSize = $colSize;
         $this->class = $colClass;
         $this->attr = $colAttr;
 
@@ -52,7 +52,7 @@ class Row extends Wapper implements Renderable
      * @param int $val
      * @return $this
      */
-    public function size($val)
+    public function cloSize($val)
     {
         $this->size = $val;
         return $this;
@@ -157,9 +157,9 @@ class Row extends Wapper implements Renderable
      *
      * @return string
      */
-    public function getSize()
+    public function getColSize()
     {
-        return $this->size;
+        return $this->cloSize;
     }
 
     /**
@@ -169,7 +169,7 @@ class Row extends Wapper implements Renderable
      */
     public function getClass()
     {
-        return empty($this->class) ? '' : ' ' . $this->class;
+        return 'row-' . $this->name . ' ' . $this->class;
     }
 
     /**
@@ -179,7 +179,7 @@ class Row extends Wapper implements Renderable
      */
     public function getErrorClass()
     {
-        return empty($this->errorClass) ? '' : ' ' . $this->errorClass;
+        return $this->errorClass;
     }
 
     /**
@@ -205,6 +205,16 @@ class Row extends Wapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return \tpext\builder\displayer\Field
      */
     public function getDisplayer()
@@ -217,9 +227,27 @@ class Row extends Wapper implements Renderable
         return $this->displayer->render();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
-        return $this->displayer->beforRender();
+        $this->displayer->beforRender();
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        $this->displayer->fill($data);
+        return $this;
     }
 
     public function createDisplayer($class, $arguments)
@@ -242,6 +270,6 @@ class Row extends Wapper implements Renderable
             return $this->createDisplayer($class, $arguments);
         }
 
-        throw new \UnexpectedValueException('未知调用');
+        throw new \UnexpectedValueException('未知调用:' . $name);
     }
 }

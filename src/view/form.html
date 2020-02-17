@@ -1,74 +1,71 @@
-<form id="{$id}" action="{$action}" method="{$method|default='post'}"
-    class="{$class} {$attr|raw}" onsubmit="return formSubmit();">
-    <div class="row">
+<div id="{$id}" class="row">
+    <form action="{$action}" method="{$method|default='POST'}"
+        enctype="multipart/form-data"
+        class="{$class} {$attr|raw}" onsubmit="return formSubmit();">
+
         {volist name="rows" id="row"}
         {if condition="$row instanceof tpext\builder\common\Tab"}
         <div class="col-md-12">
             {:$row->render()}
         </div>
         {elseif condition="$row instanceof tpext\builder\form\step"}
-        <div class="col-md-12 guide-box">
+        <div class="col-md-12">
             {:$row->render()}
-            <div class="nav-step-button">
-                <button class="btn btn-secondary disabled" data-wizard="prev"
-                    type="button">上一步</button>
-                <button class="btn btn-secondary" data-wizard="next"
-                    type="button">下一步</button>
-                <button class="btn btn-primary hidden" data-wizard="finish"
-                    type="submit">完成</button>
-            </div>
         </div>
         {else/}
-        <div class="form-group col-md-{$row->getSize()}{$row->getClass()}{$row->getErrorClass()}"{$row->getAttr()|raw}>
+        <div class="form-group col-md-{$row->getColSize()} {$row->getClass()} {$row->getErrorClass()}"{$row->getAttr()|raw}>
             {:$row->render()}
         </div>
         {/if}
         {/volist}
-    </div>
-</form>
-<script>
-    var ajax = {$ajax};
-    var search = '{$search}';
-    var lastsearch = '';
+    </form>
 
-    function formSubmit()
-    {
-        if(ajax)
+    <script>
+        var ajax = {$ajax};
+        var search = '{$search}';
+        var lastsearch = '';
+    
+        function formSubmit()
         {
-            lightyear.loading('show');
-
-            var data = $('#{$id}').serialize();
-           
-            $.ajax({
-                url: '{$action}' || location.href,
-                data: data,
-                type: 'POST',
-                dataType: search ? 'html' : 'json',
-                success: function (data) {
-                    lightyear.loading('hide');
-                    if(search)
-                    {
-                        $('#' + search).replaceWith(data);
-                    }
-                    else
-                    {
-                        if (data.status) {
-                            lightyear.notify('操作成功！', 'success');
-                        } else {
-                            lightyear.notify(data.msg || '操作失败', 'warning');
+            if(ajax)
+            {
+                lightyear.loading('show');
+    
+                var data = $('#{$id} form').serialize();
+               
+                $.ajax({
+                    url: '{$action}' || location.href,
+                    data: data,
+                    type: 'POST',
+                    dataType: 'html',
+                    success: function (data) {
+                        setTimeout(function(){
+                            lightyear.loading('hide');
+                        },500);
+                        if(/^\{.+\}$/.test(data))
+                        {
+                            if (data.status || data.code) {
+                                lightyear.notify('操作成功！', 'success');
+                            } else {
+                                lightyear.notify(data.msg || data.message || '操作失败', 'warning');
+                            }
                         }
+                        else
+                        {
+                            $('#' + search).replaceWith(data);
+                        }
+                    },
+                    error: function () {
+                        lightyear.loading('hide');
+                        lightyear.notify('网络错误', 'danger');
                     }
-                },
-                error: function () {
-                    lightyear.loading('hide');
-                    lightyear.notify('网络错误', 'danger');
-                }
-            });
-
-            return false;
+                });
+    
+                return false;
+            }
+    
+            return true;
         }
-
-        return true;
-    }
-
-</script>
+    
+    </script>
+</div>

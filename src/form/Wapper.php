@@ -50,6 +50,8 @@ namespace tpext\builder\form;
 
 class Wapper
 {
+    protected $dfaultDisplayerSize = null;
+
     protected static $displayers = [];
 
     protected static $displayerMap = [

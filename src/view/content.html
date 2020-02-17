@@ -11,18 +11,21 @@
 {/block}
 
 {block name="content"}
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      {notempty name="$title"}
-      <div class="card-header"><h4>{$title}<small> - {$desc}</small></h4></div>
+<div class="panel panel-default">
+  {notempty name="$title"}
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      {$title}
+      {notempty name="$desc"}
+      <small> - {$desc}</small>
       {/notempty}
-      <div class="card-body">
-        {volist name="rows" id="row"}
+    </h4>
+  </div>
+  {/notempty}
+  <div class="panel-body">
+    {volist name="rows" id="row"}
         {:$row->render()}
-        {/volist}
-      </div>
-    </div>
+    {/volist}
   </div>
 </div>
 {/block}
