@@ -27,11 +27,11 @@ class Table extends Wapper implements Renderable
         '/assets/tpextbuilder/js/jquery-toolbar/jquery-toolbar.min.css',
     ];
 
-    protected $headTextAlign = 'center';
+    protected $headTextAlign = 'text-center';
 
-    protected $textAlign = 'center';
+    protected $textAlign = 'text-center';
 
-    protected $verticalAlign = 'middle';
+    protected $verticalAlign = 'vertical-middle';
 
     protected $class = 'table-striped table-hover table-bordered';
 
@@ -64,6 +64,8 @@ class Table extends Wapper implements Renderable
     protected $useActionbar = true;
 
     protected $actionRowText = '操作';
+
+    protected $isInitData = false;
 
     /**
      * Undocumented variable
@@ -256,7 +258,7 @@ class Table extends Wapper implements Renderable
 
     /**
      * Undocumented function
-     *
+     * vertical-middle | vertical-mtop | vertical-bottom
      * @param string $val
      * @return $this
      */
@@ -268,7 +270,7 @@ class Table extends Wapper implements Renderable
 
     /**
      * Undocumented function
-     *
+     * text-left | text-center | text-right
      * @param string $val
      * @return $this
      */
@@ -280,7 +282,7 @@ class Table extends Wapper implements Renderable
 
     /**
      * Undocumented function
-     *
+     * text-left | text-center | text-right
      * @param string $val
      * @return $this
      */
@@ -298,6 +300,15 @@ class Table extends Wapper implements Renderable
     public function data($data)
     {
         $this->data = $data;
+
+        if (count($data) > 0 && empty($this->cols)) {
+            $cols = array_keys($data[0]);
+
+            foreach ($cols as $col) {
+                $this->field($col, ucfirst($col));
+            }
+        }
+
         return $this;
     }
 
@@ -436,6 +447,8 @@ class Table extends Wapper implements Renderable
      */
     public function beforRender()
     {
+        $this->initData();
+
         Builder::getInstance()->addJs($this->js);
         Builder::getInstance()->addCss($this->css);
 
@@ -443,44 +456,42 @@ class Table extends Wapper implements Renderable
             $this->getToolbar()->beforRender();
         }
 
+        if ($this->useActionbar) {
+            $this->getActionbar()->beforRender();
+        }
+
         if (empty($this->searchForm)) {
             $form = Builder::getInstance()->form();
-            $form->addClass('hide');
             $this->searchForm($form);
+            $form->addClass('form-empty');
             $form->beforRender();
         }
+
+        $this->searchForm->addClass('hidden');
 
         return $this;
     }
 
     protected function initData()
     {
-        $emptyCols = empty($this->cols);
-
         $this->list = [];
 
-        $pk = strtolower($this->pk);
+        $pk = $this->pk;
 
         $actionbar = $this->getActionbar();
+
         $actionbar->pk($this->pk);
 
-        foreach ($this->data as $row => $cols) {
+        $cols = array_keys($this->cols);
 
-            foreach ($cols as $col => $value) {
+        foreach ($this->data as $key => $data) {
 
-                if (strtolower($col) == $pk) {
+            if (isset($data[$pk])) {
 
-                    $this->ids[$row] = $value;
-                }
+                $this->ids[$key] = $data[$pk];
+            }
 
-                if (!isset($this->cols[$col])) {
-
-                    if ($emptyCols) {
-                        $this->cols[$col] = new Field($col, ucfirst($col));
-                    } else {
-                        continue;
-                    }
-                }
+            foreach ($cols as $col) {
 
                 $colunm = $this->cols[$col];
 
@@ -489,8 +500,8 @@ class Table extends Wapper implements Renderable
                 $displayer = $colunm->getDisplayer();
 
                 $displayer
-                    ->value($value)
-                    ->tableRowKey('-' . $row . time())
+                    ->fill($data)
+                    ->tableRowKey('-' . $key)
                     ->showLabel(false)
                     ->size(0, 12)
                     ->beforRender();
@@ -501,9 +512,7 @@ class Table extends Wapper implements Renderable
                     $this->script = array_merge($this->script, $script);
                 }
 
-                $this->cols[$col]->addStyle('vertical-align:' . $this->verticalAlign . ';' . 'text-align:' . $this->textAlign . ';');
-
-                $this->list[$row][$col] = [
+                $this->list[$key][$col] = [
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
                     'attr' => $displayer->getAttr(),
@@ -511,20 +520,26 @@ class Table extends Wapper implements Renderable
                 ];
             }
 
-            if ($this->useActionbar && isset($this->ids[$row])) {
+            if ($this->useActionbar && isset($this->ids[$key])) {
 
-                $this->actionbars[$row] = $actionbar->rowid($this->ids[$row])->beforRender()->render();
+                $actionbar->tableRowKey('-' . $key)->rowdata($data)->beforRender();
+
+                $this->actionbars[$key] = $actionbar->render();
             }
         }
+
+        $this->isInitData = true;
     }
 
     public function render()
     {
+        if (!$this->isInitData) {
+            $this->initData();
+        }
+
         $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
 
         $viewshow = new ViewShow($template);
-
-        $this->initData();
 
         $this->paginator->setItems($this->data);
 
@@ -536,18 +551,18 @@ class Table extends Wapper implements Renderable
             'list' => $this->list,
             'data' => $this->data,
             'emptyText' => $this->emptyText,
-            'headStyle' => 'style="text-align:' . $this->headTextAlign . ';"',
+            'headTextAlign' => $this->headTextAlign,
             'ids' => $this->ids,
             'rowCheckbox' => $this->rowCheckbox && !empty($this->ids),
             'name' => time() . mt_rand(1000, 9999),
-            'chekcboxtd' => 'style="width:40px;vertical-align:' . $this->verticalAlign . ';"',
+            'verticalAlign' => $this->verticalAlign,
+            'textAlign' => $this->textAlign,
             'id' => $this->id,
             'paginator' => $this->paginator,
             'partial' => $this->partial ? 1 : 0,
-            'script' => implode('', array_unique($this->script)),
             'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,
             'actionbars' => $this->actionbars,
-            'actionRowText' => $this->actionRowText
+            'actionRowText' => $this->actionRowText,
         ];
 
         if ($this->partial) {

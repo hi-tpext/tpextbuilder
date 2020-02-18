@@ -26,10 +26,12 @@ class Match extends Field
     public function render()
     {
         $vars = $this->commonVars();
-
-        if(isset($this->options[$vars['value']]))
-        {
-            $vars['value'] = $this->options[$vars['value']];
+        if (isset($this->options[$vars['value']])) {
+            $this->value = $vars['value'] = $this->options[$vars['value']];
+        } else if (isset($this->options['__default__'])) {
+            $this->value = $vars['value'] = $this->options['__default__'];
+        } else {
+            echo $this->name, ':', $this->value, '|', $vars['value'], '<br>';
         }
 
         $viewshow = $this->getViewInstance();

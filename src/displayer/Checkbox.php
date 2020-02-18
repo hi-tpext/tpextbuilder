@@ -9,7 +9,7 @@ class Checkbox extends Field
     protected $class = 'lyear-checkbox checkbox-default';
 
     protected $options = [];
-    
+
     protected $inline = true;
 
     protected $checkallBtn = false;
@@ -69,9 +69,9 @@ class Checkbox extends Field
     {
         $vars = $this->commonVars();
 
-        if (!empty($this->value)) {
+        if (!($this->value === '' || $this->value === null || $this->value === [])) {
             $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
-        } else if (!empty($this->default)) {
+        } else if (!($this->default === '' || $this->default === null || $this->default === [])) {
             $this->checked = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 

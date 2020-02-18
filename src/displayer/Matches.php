@@ -36,7 +36,7 @@ class Matches extends Field
             }
         }
 
-        $vars['value'] = implode(', ', $texts);
+        $this->value = $vars['value'] = implode(', ', $texts);
 
         $viewshow = $this->getViewInstance();
 

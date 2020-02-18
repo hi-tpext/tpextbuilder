@@ -615,7 +615,7 @@ EOT;
             'label' => $this->label,
             'name' => $this->getName(),
             'tableRowKey' => $this->tableRowKey,
-            'value' => $this->value ? $this->value : $this->default,
+            'value' => !($this->value === '' || $this->value === null) ? $this->value : $this->default,
             'class' => ' ' . $this->class,
             'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '') . (empty($this->style) ? '' : ' style="' . $this->style . '"'),
             'error' => $this->error,

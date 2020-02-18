@@ -2,37 +2,58 @@
 
     var tpextbuilder = function () {};
     tpextbuilder.autoPost = function (classname, url) {
-        console.log(classname);
-        $('body').on('change', '.' + classname + ' :radio,:checkbox', function () {
+
+        $('body').on('change', 'td.' + classname + ' :checkbox', function () {
             var name = $(this).attr('name');
-            console.log($(this).attr('id'));
-            var val = '';
-            if ($(this).is(':radio')) {
-                val = $("input[name='" + name + "']:checked").val();
-            } else {
-                var values = [];
-                $("input[name='" + name + "']:checked").each(function (i, e) {
-                    values.push($(e).val());
-                });
-                val = values.join(',');
-            }
+            var values = [];
+            $('td.' + classname + " input[name='" + name + "']:checked").each(function (i, e) {
+                values.push($(e).val());
+            });
+            var val = values.join(',');
             name = name.split('-')[0];
-            console.log(name);
-            tpextbuilder.autoSendData(name, val, url, 0);
+            tpextbuilder.autoSendData({
+                name: name,
+                value: val
+            }, url, 0);
         });
 
-        $('body').on('blur', '.' + classname + ' input[type="text"],textarea', function () {
+        $('body').on('change', 'td.' + classname + ' :radio', function () {
+            var val = $('td.' + classname + " input[name='" + name + "']:checked").val();
+            name = name.split('-')[0];
+            tpextbuilder.autoSendData({
+                name: name,
+                value: val
+            }, url, 0);
+        });
+
+        $('body').on('blur', 'td.' + classname + ' input[type="text"]', function () {
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
-            tpextbuilder.autoSendData(name, val, url, 0);
+            tpextbuilder.autoSendData({
+                name: name,
+                value: val
+            }, url, 0);
         });
 
-        $('body').on('change', '.' + classname + ' select', function () {
+        $('body').on('blur', 'td.' + classname + ' textarea', function () {
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
-            tpextbuilder.autoSendData(name, val, url, 0);
+            tpextbuilder.autoSendData({
+                name: name,
+                value: val
+            }, url, 0);
+        });
+
+        $('body').on('change', 'td.' + classname + ' select', function () {
+            var name = $(this).attr('name');
+            var val = $(this).val();
+            name = name.split('-')[0];
+            tpextbuilder.autoSendData({
+                name: name,
+                value: val
+            }, url, 0);
         });
     };
 
@@ -42,7 +63,7 @@
             return;
         }
         $('body').on('click', '#' + id, function () {
-            var name = 'rows';
+            var name = 'ids';
             var val = '';
 
             var values = [];
@@ -70,7 +91,9 @@
                             text: '确认',
                             btnClass: 'btn-primary',
                             action: function () {
-                                tpextbuilder.autoSendData(name, val, url, 1);
+                                tpextbuilder.autoSendData({
+                                    ids: val
+                                }, url, 1);
                             }
                         },
                         cancel: {
@@ -82,7 +105,9 @@
                     }
                 });
             } else {
-                tpextbuilder.autoSendData(name, val, url, 1);
+                tpextbuilder.autoSendData({
+                    ids: val
+                }, url, 1);
             }
         });
 
@@ -109,24 +134,81 @@
         });
     }
 
-    tpextbuilder.autoSendData = function (name, value, url, refresh) {
+    tpextbuilder.postRowid = function (classname, url, confirm) {
+        $('body').on('click', 'td.row-__action__ .' + classname, function () {
+            var name = 'ids';
+            var val = $(this).data('id');
+            if (confirm) {
+                var text = $(this).text() || $(this).attr('title') || '此';
+                $.alert({
+                    title: '操作提示',
+                    content: '确定要执行<strong>' + text + '</strong>操作吗？',
+                    buttons: {
+                        confirm: {
+                            text: '确认',
+                            btnClass: 'btn-primary',
+                            action: function () {
+                                tpextbuilder.autoSendData({
+                                    ids: val
+                                }, url, 1);
+                            }
+                        },
+                        cancel: {
+                            text: '取消',
+                            action: function () {
+
+                            }
+                        }
+                    }
+                });
+            } else {
+                tpextbuilder.autoSendData({
+                    ids: val
+                }, url, 1);
+            }
+        });
+    };
+
+    tpextbuilder.useLayer = function (classname, size) {
+        $('body').on('click', '.' + classname, function () {
+            var href = $(this).attr('href');
+
+            if (!href) {
+                return true;
+            }
+            if (/javascript:/i.test(href)) {
+                return true;
+            }
+
+            var text = $(this).text() || $(this).attr('title');
+            layer.open({
+                type: 2,
+                title: text,
+                shadeClose: true,
+                shade: 0.8,
+                area: size || ['90%', '90%'],
+                content: $(this).attr('href')
+            });
+
+            return false;
+        });
+    };
+
+    tpextbuilder.autoSendData = function (data, url, refresh) {
+        data.__token__ = w.__token__;
         $.ajax({
             url: url,
-            data: {
-                name: name,
-                value: value,
-                __token__: w.__token__,
-            },
+            data: data,
             type: "POST",
             dataType: "json",
             success: function (data) {
-                if (data.status) {
+                if (data.status || data.code) {
                     lightyear.notify('操作成功！', 'success');
                     if (refresh) {
                         $('#form-refresh').trigger('click');
                     }
                 } else {
-                    lightyear.notify(data.msg || '操作失败', 'warning');
+                    lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                 }
             },
             error: function () {

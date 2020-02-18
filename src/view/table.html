@@ -1,5 +1,5 @@
 {notempty name="toolbar"}
-<div class="col-md-12">
+<div class="row m-b-10 m-l-10">
     {:$toolbar->render()}
 </div>
 {/notempty}
@@ -19,10 +19,10 @@
                 </th>
                 {/if}
                 {volist name="headers" id="header"}
-                <th {$headStyle|raw}>{$header}</th>
+                <th class="{$headTextAlign}">{$header}</th>
                 {/volist}
                 {notempty name="$actionbars"}
-                <th {$headStyle|raw}>{$actionRowText|raw}</th>
+                <th class="{$headTextAlign}">{$actionRowText|raw}</th>
                 {/notempty}
             </tr>
         </thead>
@@ -31,7 +31,7 @@
             {volist name="list" id="row"}
             <tr>
                 {if condition="$rowCheckbox"}
-                <td {$chekcboxtd|raw}>
+                <td class="{$verticalAlign} {$textAlign}">
                     <label class="lyear-checkbox checkbox-primary">
                         <input type="checkbox" id="{$name}-{$key}"
                             value="{$ids[$key]}"
@@ -40,13 +40,13 @@
                 </td>
                 {/if}
                 {foreach name="row" id="col" key="co"}
-                <td class="col-md-{$col.wapper->getColSize()} {$col.wapper->getClass()}"
+                <td class="col-md-{$col.wapper->getColSize()} {$verticalAlign} {$textAlign} {$col.wapper->getClass()}"
                     {$col.wapper->getAttr()|raw}>
                     {$col.value|raw}
                 </td>
                 {/foreach}
                 {notempty name="$actionbars"}
-                <td class="text-center">
+                <td class="text-center row-__action__ {$verticalAlign} {$textAlign}">
                     {$actionbars[$key]|raw}
                 </td>
                 {/notempty}
@@ -91,20 +91,6 @@
             });
 
             $('#{$id} input.table-row-checkall').trigger('change');
-
-            {$script|raw}
         }
-        else
-        {
-            var it = setInterval(function(){
-                if(window.$)
-                {
-                    clearInterval(it);
-                    {$script|raw}
-                }
-            },500);
-        }
-
-        
     </script>
 </div>

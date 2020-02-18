@@ -169,7 +169,9 @@ class Row extends Wapper implements Renderable
      */
     public function getClass()
     {
-        return 'row-' . $this->name . ' ' . $this->class;
+        $arr = explode(' ', $this->class);
+
+        return 'row-' . $this->name . ' ' . implode(' ', array_unique($arr));
     }
 
     /**

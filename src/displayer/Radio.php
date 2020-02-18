@@ -42,7 +42,7 @@ class Radio extends Field
     {
         $vars = $this->commonVars();
 
-        if (!empty($this->value)) {
+        if (!($this->value === '' || $this->value === null)) {
             $this->checked = $this->value;
         } else {
             $this->checked = $this->default;

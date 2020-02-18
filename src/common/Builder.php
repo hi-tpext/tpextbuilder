@@ -255,7 +255,9 @@ class Builder implements Renderable
             $row->beforRender();
         }
 
+        $this->js[] = '/assets/tpextbuilder/js/layer/layer.js';
         $this->js[] = '/assets/tpextbuilder/js/tpextbuilder.js';
+
         $this->css[] = '/assets/tpextbuilder/css/tpextbuilder.css';
     }
 

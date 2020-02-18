@@ -11,6 +11,8 @@ class Bar implements Renderable
 {
     protected $view = '';
 
+    protected $tableRowKey = '';
+
     protected $class = 'btn-default';
 
     protected $name = '';
@@ -49,7 +51,7 @@ class Bar implements Renderable
      */
     public function getId()
     {
-        return 'bar-' . $this->name;
+        return 'bar-' . $this->name . $this->tableRowKey;
     }
 
     /**
@@ -149,6 +151,18 @@ class Bar implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function tableRowKey($val)
+    {
+        $this->tableRowKey = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function getScript()
@@ -180,11 +194,7 @@ class Bar implements Renderable
      */
     public function render()
     {
-        $vars = $this->commonVars();
-
-        $viewshow = $this->getViewInstance();
-
-        return $viewshow->assign($vars)->getContent();
+        return '<!--empty bar-->';
     }
 
     protected function getViewInstance()

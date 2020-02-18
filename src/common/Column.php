@@ -77,6 +77,11 @@ class Column
         return $tab;
     }
 
+    public function accordion()
+    {
+        
+    }
+
     /**
      * 获取一新行
      *

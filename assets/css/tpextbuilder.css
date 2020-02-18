@@ -13,3 +13,18 @@ form.search-form .form-group {
 .radio-div {
     min-height: 38px;
 }
+
+.vertical-middle,
+.table>tbody>tr>td.vertical-middle {
+    vertical-align: middle;
+}
+
+.vertical-top,
+.table>tbody>tr>td.vertical-top {
+    vertical-align: top;
+}
+
+.vertical-bottom,
+.table>tbody>tr>td.vertical-bottom {
+    vertical-align: bottom;
+}

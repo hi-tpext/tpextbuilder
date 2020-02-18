@@ -431,8 +431,24 @@ class Form extends Wapper implements Renderable
             return false;
         });
 
-        $('body').on('click', '#tool-refresh,#form-refresh', function(){
+        $('body').on('click', '#btn-tool-refresh,#form-refresh', function(){
             $('#{$form} form').trigger('submit');
+        });
+
+        if($('#{$form} form').hasClass('form-empty'))
+        {   
+            $('#btn-tool-search').remove();
+        }
+
+        $('body').on('click', '#btn-tool-search', function(){
+            if($('#{$form} form').hasClass('hidden'))
+            {
+                $('#{$form} form').removeClass('hidden');
+            }
+            else
+            {
+                $('#{$form} form').slideToggle(300);
+            }
         });
 
         $('body').on('click', '#form-submit', function(){
