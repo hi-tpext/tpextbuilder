@@ -28,3 +28,9 @@ form.search-form .form-group {
 .table>tbody>tr>td.vertical-bottom {
     vertical-align: bottom;
 }
+
+.raw
+{
+    min-height: 38px;
+    line-height: 38px;
+}

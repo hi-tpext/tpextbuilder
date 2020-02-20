@@ -2,7 +2,7 @@
 
 namespace tpext\builder\displayer;
 
-class Match extends Field
+class Match extends Raw
 {
     protected $options = [];
 

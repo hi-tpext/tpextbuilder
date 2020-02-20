@@ -6,6 +6,7 @@ namespace tpext\builder\toolbar;
  * Class Wapper.
  *
  * @method \tpext\builder\toolbar\LinkBtn          linkBtn($name, $label)
+ * @method \tpext\builder\toolbar\ActionBtn        actionBtn($name, $label)
  * @method \tpext\builder\toolbar\Html             html($html)
  */
 
@@ -15,6 +16,7 @@ class Wapper
 
     protected static $displayerMap = [
         'linkBtn' => \tpext\builder\toolbar\LinkBtn::class,
+        'actionBtn' => \tpext\builder\toolbar\ActionBtn::class,
         'html' => \tpext\builder\toolbar\Html::class,
     ];
 

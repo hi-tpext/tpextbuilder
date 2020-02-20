@@ -18,6 +18,8 @@ class Actionbar extends Toolbar
 
     protected $useLayer = true;
 
+    protected $mapClass = [];
+
     /**
      * Undocumented function
      *
@@ -68,6 +70,10 @@ class Actionbar extends Toolbar
                 $elm->parse($this->rowdata);
             }
 
+            if ($this->mapClass) {
+                $elm->mapClass($this->mapClass);
+            }
+
             $elm->useLayer($this->useLayer);
         }
 
@@ -106,6 +112,18 @@ class Actionbar extends Toolbar
     /**
      * Undocumented function
      *
+     * @param array $data
+     * @return $this
+     */
+    public function mapClass($data)
+    {
+        $this->mapClass = $data;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function buttons()
@@ -131,7 +149,7 @@ class Actionbar extends Toolbar
         if (empty($url)) {
             $url = url('edit', ['id' => '__data.pk__']);
         }
-        $this->linkBtn('action-edit', $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('edit', $label)->href($url)->icon($icon)->class($class)->attr($attr);
         return $this;
     }
 
@@ -150,7 +168,7 @@ class Actionbar extends Toolbar
         if (empty($url)) {
             $url = url('view', ['id' => '__data.pk__']);
         }
-        $this->linkBtn('action-edit', $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('edit', $label)->href($url)->icon($icon)->class($class)->attr($attr);
         return $this;
     }
 
@@ -170,7 +188,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('delete');
         }
-        $this->linkBtn('action-delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
         return $this;
     }
 
@@ -190,7 +208,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('disable');
         }
-        $this->linkBtn('action-disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
         return $this;
     }
 
@@ -210,13 +228,14 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('enable');
         }
-        $this->linkBtn('action-enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
         return $this;
     }
 
     /**
      * Undocumented function
      *
+     * @param string $name
      * @param string $url
      * @param string $label
      * @param string $class
@@ -224,15 +243,17 @@ class Actionbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnLink($url, $label = '', $class = 'btn-secondary', $icon = '', $attr = '')
+    public function btnLink($name = '', $url, $label = '', $class = 'btn-secondary', $icon = '', $attr = '')
     {
-        $action = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $url, -1, $count);
+        if (!$name) {
+            $name = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $url, -1, $count);
 
-        if (!$count) {
-            $action = mt_rand(10, 99);
+            if (!$count) {
+                $name = mt_rand(10, 99);
+            }
         }
 
-        $this->linkBtn('action-' . $action, $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn($name, $label)->href($url)->icon($icon)->class($class)->attr($attr);
 
         return $this;
     }
@@ -240,22 +261,26 @@ class Actionbar extends Toolbar
     /**
      * Undocumented function
      *
-     * @param string $url
+     * @param string $name
+     * @param string $postUrl
      * @param string $label
      * @param string $class
      * @param string $icon
+     * @param boolean $confirm
      * @param string $attr
      * @return $this
      */
-    public function btnPostRowid($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $confirm = true, $attr = '')
+    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $confirm = true, $attr = '')
     {
-        $action = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $url, -1, $count);
+        if (!$name) {
+            $name = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $postUrl, -1, $count);
 
-        if (!$count) {
-            $action = mt_rand(10, 99);
+            if (!$count) {
+                $name = mt_rand(10, 99);
+            }
         }
 
-        $this->linkBtn('action-' . $action, $label)->postRowid($url, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn($name, $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
 
         return $this;
     }

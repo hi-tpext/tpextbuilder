@@ -349,12 +349,13 @@ class Form extends Wapper implements Renderable
      *
      * @param string $label
      * @param integer $size
-     * @param string $label
+     * @param string $class
      * @return $this
      */
     public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
     {
         $this->button('submit', $label, $size)->class($class)->loading();
+        $this->botttomButtonsCalled = true;
         return $this;
     }
 
@@ -363,7 +364,7 @@ class Form extends Wapper implements Renderable
      *
      * @param string $label
      * @param integer $size
-     * @param string $label
+     * @param string $class
      * @return $this
      */
     public function btnReset($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning')
@@ -377,13 +378,27 @@ class Form extends Wapper implements Renderable
      *
      * @param string $label
      * @param integer $size
-     * @param string $label
+     * @param string $class
      * @param string $attr
      * @return $this
      */
     public function btnBack($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
         $this->button('button', $label, $size)->class($class)->attr($attr);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $label
+     * @param integer $size
+     * @param string $class
+     * @return $this
+     */
+    public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default')
+    {
+        $this->button('button', $label, $size)->class($class . ' btn-close-layer');
         return $this;
     }
 
@@ -436,7 +451,7 @@ class Form extends Wapper implements Renderable
         });
 
         if($('#{$form} form').hasClass('form-empty'))
-        {   
+        {
             $('#btn-tool-search').remove();
         }
 

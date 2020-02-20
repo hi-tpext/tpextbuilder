@@ -70,7 +70,7 @@ class MultipleToolbar extends Toolbar
         if (empty($url)) {
             $url = url('add');
         }
-        $this->linkBtn('tool-add', $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->linkBtn('add', $label)->href($url)->icon($icon)->class($class)->attr($attr);
         return $this;
     }
 
@@ -90,7 +90,7 @@ class MultipleToolbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('delete');
         }
-        $this->linkBtn('tool-delete', $label)->postChecked($postUrl, $confirm)->class($class)->icon($icon)->attr($attr);
+        $this->linkBtn('delete', $label)->postChecked($postUrl, $confirm)->class($class)->icon($icon)->attr($attr);
         return $this;
     }
 
@@ -110,7 +110,7 @@ class MultipleToolbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('disable');
         }
-        $this->linkBtn('tool-disable', $label)->postChecked($postUrl, $confirm)->class($class)->icon($icon)->attr($attr);
+        $this->linkBtn('disable', $label)->postChecked($postUrl, $confirm)->class($class)->icon($icon)->attr($attr);
         return $this;
     }
 
@@ -130,7 +130,7 @@ class MultipleToolbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('enable');
         }
-        $this->linkBtn('tool-enable', $label)->postChecked($postUrl, $confirm)->class($class)->icon($icon)->attr($attr);
+        $this->linkBtn('enable', $label)->postChecked($postUrl, $confirm)->class($class)->icon($icon)->attr($attr);
         return $this;
     }
 
@@ -146,7 +146,7 @@ class MultipleToolbar extends Toolbar
      */
     public function btnRefresh($label = '', $class = 'btn-cyan', $icon = 'mdi-refresh', $attr = 'title="刷新"')
     {
-        $this->linkBtn('tool-refresh', $label)->class($class)->icon($icon)->attr($attr);
+        $this->linkBtn('refresh', $label)->class($class)->icon($icon)->attr($attr);
         return $this;
     }
 
@@ -162,11 +162,11 @@ class MultipleToolbar extends Toolbar
      */
     public function btnToggleSearch($label = '', $class = 'btn-secondary', $icon = 'mdi-magnify', $attr = 'title="搜索"')
     {
-        $this->linkBtn('tool-search', $label)->class($class)->icon($icon)->attr($attr);
+        $this->linkBtn('search', $label)->class($class)->icon($icon)->attr($attr);
         return $this;
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @param string $url
@@ -184,7 +184,7 @@ class MultipleToolbar extends Toolbar
             $action = mt_rand(10, 99);
         }
 
-        $this->linkBtn('action-' . $action, $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->linkBtn($action, $label)->href($url)->icon($icon)->class($class)->attr($attr);
 
         return $this;
     }
@@ -208,7 +208,7 @@ class MultipleToolbar extends Toolbar
             $action = mt_rand(10, 99);
         }
 
-        $this->linkBtn('bar-' . $action, $label)->postChecked($url, $confirm)->class($class)->icon($icon)->attr($attr);
+        $this->linkBtn($action, $label)->postChecked($url, $confirm)->class($class)->icon($icon)->attr($attr);
 
         return $this;
     }

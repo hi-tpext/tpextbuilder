@@ -8,7 +8,7 @@ class Module extends baseModule
 {
     protected $name = 'tpext.builder';
 
-    protected $title = 'tpextbuilder';
+    protected $title = 'tpextui生成';
 
     protected $description = '后台ui生成';
 

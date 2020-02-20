@@ -169,31 +169,6 @@
         });
     };
 
-    tpextbuilder.useLayer = function (classname, size) {
-        $('body').on('click', '.' + classname, function () {
-            var href = $(this).attr('href');
-
-            if (!href) {
-                return true;
-            }
-            if (/javascript:/i.test(href)) {
-                return true;
-            }
-
-            var text = $(this).text() || $(this).attr('title');
-            layer.open({
-                type: 2,
-                title: text,
-                shadeClose: true,
-                shade: 0.8,
-                area: size || ['90%', '90%'],
-                content: $(this).attr('href')
-            });
-
-            return false;
-        });
-    };
-
     tpextbuilder.autoSendData = function (data, url, refresh) {
         data.__token__ = w.__token__;
         $.ajax({
@@ -218,6 +193,22 @@
     };
 
     w.tpextbuilder = tpextbuilder;
+
+    w.layerOpen = function (obj, size) {
+        var href = $(obj).data('url');
+
+        var text = $(obj).text() || $(obj).attr('title');
+        layer.open({
+            type: 2,
+            title: text,
+            shadeClose: false,
+            shade: 0.8,
+            area: size || ['90%', '90%'],
+            content: href
+        });
+
+        return false;
+    };
 
 })(window);
 
@@ -271,6 +262,13 @@ $(function () {
                 $(e).parent('div').find('span.select2-selection__clear').first().css('display', 'none');
                 $(e).parent('div').find('span.select2-selection').first().css('background-color', '#eee');
             }, 1000);
+        }
+    });
+
+    $('body').on('click', '.btn-close-layer', function () {
+        if (parent && parent.layer) {
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);
         }
     });
 

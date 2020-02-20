@@ -239,7 +239,7 @@ class Builder implements Renderable
     }
 
     /**
-     * 获取一自定义内容
+     * 获取一tab内容
      *
      * @param integer col大小
      * @return Tab
@@ -247,6 +247,16 @@ class Builder implements Renderable
     public function tab($size = 12)
     {
         return $this->column($size)->tab();
+    }
+
+    /**
+     * 获取layer
+     *
+     * @return Layer
+     */
+    public function layer()
+    {
+        return new Layer;
     }
 
     public function beforRender()
