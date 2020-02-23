@@ -4,7 +4,7 @@ namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
-use tpext\builder\common\Plugin;
+use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Row;
 use tpext\builder\form\Step;
@@ -446,16 +446,16 @@ class Form extends Wapper implements Renderable
             return false;
         });
 
-        $('body').on('click', '#btn-tool-refresh,#form-refresh', function(){
+        $('body').on('click', '#btn-refresh,#form-refresh', function(){
             $('#{$form} form').trigger('submit');
         });
 
         if($('#{$form} form').hasClass('form-empty'))
         {
-            $('#btn-tool-search').remove();
+            $('#btn-search').remove();
         }
 
-        $('body').on('click', '#btn-tool-search', function(){
+        $('body').on('click', '#btn-search', function(){
             if($('#{$form} form').hasClass('hidden'))
             {
                 $('#{$form} form').removeClass('hidden');
@@ -478,7 +478,7 @@ EOT;
 
     public function render()
     {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
 
         $viewshow = new ViewShow($template);
 

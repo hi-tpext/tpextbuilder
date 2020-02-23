@@ -82,7 +82,7 @@
             val = values.join(',');
 
             if (confirm) {
-                var text = $('#' + id).text();
+                var text = $('#' + id).text().trim();
                 $.alert({
                     title: '操作提示',
                     content: '确定要执行批量<strong>' + text + '</strong>操作吗？',
@@ -139,7 +139,7 @@
             var name = 'ids';
             var val = $(this).data('id');
             if (confirm) {
-                var text = $(this).text() || $(this).attr('title') || '此';
+                var text = $(this).text().trim() || $(this).attr('title') || '此';
                 $.alert({
                     title: '操作提示',
                     content: '确定要执行<strong>' + text + '</strong>操作吗？',
@@ -178,7 +178,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.status || data.code) {
-                    lightyear.notify('操作成功！', 'success');
+                    lightyear.notify(data.msg || data.message || '操作成功！', 'success');
                     if (refresh) {
                         $('#form-refresh').trigger('click');
                     }

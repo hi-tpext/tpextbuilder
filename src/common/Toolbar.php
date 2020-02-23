@@ -3,7 +3,6 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
-use tpext\builder\common\Plugin;
 use tpext\builder\toolbar\Wapper;
 
 class Toolbar extends Wapper implements Renderable
@@ -81,7 +80,7 @@ class Toolbar extends Wapper implements Renderable
 
     public function render()
     {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar.html']);
 
         $viewshow = new ViewShow($template);
 

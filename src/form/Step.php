@@ -4,7 +4,7 @@ namespace tpext\builder\form;
 
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
-use tpext\builder\common\Plugin;
+use tpext\builder\common\Module;
 use tpext\builder\common\Renderable;
 
 class Step implements Renderable
@@ -218,7 +218,7 @@ EOT;
      */
     public function render($partial = false)
     {
-        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'step.html']);
+        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'step.html']);
 
         $names = array_keys($this->labels);
 

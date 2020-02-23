@@ -184,7 +184,7 @@ class Tab implements Renderable
      */
     public function render()
     {
-        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tab.html']);
+        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tab.html']);
 
         $this->labels[$this->active]['active'] = 'active';
         $this->rows[$this->active]['active'] = 'in active';

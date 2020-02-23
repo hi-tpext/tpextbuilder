@@ -6,13 +6,17 @@ use tpext\common\Module as baseModule;
 
 class Module extends baseModule
 {
+    protected $version = '1.0.1';
+    
     protected $name = 'tpext.builder';
 
-    protected $title = 'tpextui生成';
+    protected $title = 'tpext ui生成';
 
     protected $description = '后台ui生成';
 
-    protected $__root__ = __DIR__ . '/../../';
+    protected $root = __DIR__ . '/../../';
+
+    protected $assets = 'assets';
 
     protected $modules = [
         'admin' => ['upload'],

@@ -99,7 +99,7 @@ class Row
 
     public function render()
     {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'row.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'row.html']);
 
         $viewshow = new ViewShow($template);
 

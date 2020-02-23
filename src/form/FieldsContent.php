@@ -3,8 +3,8 @@
 namespace tpext\builder\form;
 
 use think\response\View as ViewShow;
-use tpext\builder\common\Plugin;
 use tpext\builder\common\Renderable;
+use tpext\builder\common\Module;
 
 class FieldsContent extends Wapper implements Renderable
 {
@@ -49,7 +49,7 @@ class FieldsContent extends Wapper implements Renderable
 
     public function render()
     {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'fieldscontent.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'fieldscontent.html']);
 
         $viewshow = new ViewShow($template);
 

@@ -3,7 +3,6 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
-use tpext\builder\displayer\Field;
 use tpext\builder\form\Wapper;
 use tpext\builder\table\Actionbar;
 use tpext\builder\table\Column;
@@ -537,7 +536,7 @@ class Table extends Wapper implements Renderable
             $this->initData();
         }
 
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
 
         $viewshow = new ViewShow($template);
 

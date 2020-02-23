@@ -4,7 +4,7 @@ namespace tpext\builder\displayer;
 
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
-use tpext\builder\common\Plugin;
+use tpext\builder\common\Module;
 use tpext\builder\common\Renderable;
 use tpext\builder\form\Wapper;
 
@@ -549,7 +549,7 @@ class Field implements Renderable
 
     protected function getViewInstance()
     {
-        $template = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', $this->view . '.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', $this->view . '.html']);
 
         $viewshow = new ViewShow($template);
 
@@ -599,11 +599,11 @@ EOT;
     public function commonVars()
     {
         if (empty(static::$helptempl)) {
-            static::$helptempl = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'helptempl.html']);
+            static::$helptempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'helptempl.html']);
         }
 
         if (empty(static::$labeltempl)) {
-            static::$labeltempl = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
+            static::$labeltempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
         if (is_array($this->default)) {

@@ -4,8 +4,6 @@ namespace tpext\builder\common;
 
 use think\facade\View;
 use think\response\View as ViewShow;
-use tpext\builder\common\Plugin;
-use tpext\myadmin\common\Module;
 
 class Builder implements Renderable
 {
@@ -280,7 +278,7 @@ class Builder implements Renderable
     {
         $this->beforRender();
 
-        $this->view = Plugin::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
 
         if (!empty($this->notify)) {
 
@@ -301,9 +299,9 @@ class Builder implements Renderable
 
         $instance = Module::getInstance();
 
-        $config = $instance->setConfig(['page_title' => $this->desc, 'position' => $this->title]);
+        $config = $instance->setConfig(['page_title' => $this->desc, 'page_position' => $this->title]);
 
-        View::share(['admin' => $config]);
+        View::share(['admin_page_title' => $this->desc, 'admin_page_position' => $this->title]);
 
         return $view->assign($vars);
     }
