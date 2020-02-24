@@ -30,8 +30,6 @@ class Match extends Raw
             $this->value = $vars['value'] = $this->options[$vars['value']];
         } else if (isset($this->options['__default__'])) {
             $this->value = $vars['value'] = $this->options['__default__'];
-        } else {
-            echo $this->name, ':', $this->value, '|', $vars['value'], '<br>';
         }
 
         $viewshow = $this->getViewInstance();

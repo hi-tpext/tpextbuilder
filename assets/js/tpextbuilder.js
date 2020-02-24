@@ -11,16 +11,21 @@
             });
             var val = values.join(',');
             name = name.split('-')[0];
+            var dataid = $(this).parents('tr.table-row-id').data('id');
             tpextbuilder.autoSendData({
+                id: dataid,
                 name: name,
                 value: val
             }, url, 0);
         });
 
         $('body').on('change', 'td.' + classname + ' :radio', function () {
+            var name = $(this).attr('name');
             var val = $('td.' + classname + " input[name='" + name + "']:checked").val();
             name = name.split('-')[0];
+            var dataid = $(this).parents('tr.table-row-id').data('id');
             tpextbuilder.autoSendData({
+                id: dataid,
                 name: name,
                 value: val
             }, url, 0);
@@ -30,7 +35,9 @@
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
+            var dataid = $(this).parents('tr.table-row-id').data('id');
             tpextbuilder.autoSendData({
+                id: dataid,
                 name: name,
                 value: val
             }, url, 0);
@@ -40,7 +47,9 @@
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
+            var dataid = $(this).parents('tr.table-row-id').data('id');
             tpextbuilder.autoSendData({
+                id: dataid,
                 name: name,
                 value: val
             }, url, 0);
@@ -50,7 +59,9 @@
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
+            var dataid = $(this).parents('tr.table-row-id').data('id');
             tpextbuilder.autoSendData({
+                id: dataid,
                 name: name,
                 value: val
             }, url, 0);

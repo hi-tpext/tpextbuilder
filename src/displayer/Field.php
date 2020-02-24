@@ -68,6 +68,8 @@ class Field implements Renderable
 
     protected static $labeltempl;
 
+    protected $mapClassWhen = [];
+
     public function __construct($name, $label = '')
     {
         if (empty($label)) {
@@ -536,6 +538,22 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
+     * @param array|string $value acses
+     * @param string $class
+     * @return $this
+     */
+    public function mapClassWhen($values, $class)
+    {
+        if (!is_array($values)) {
+            $values = [$values];
+        }
+        $this->mapClassWhen = [$values, $class];
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return mixed
      */
     public function render()
@@ -610,13 +628,23 @@ EOT;
             $this->default = implode(',', $this->default);
         }
 
+        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+
+        $mapClass = '';
+
+        if (!empty($this->mapClassWhen)) {
+            if (in_array($value, $this->mapClassWhen[0])) {
+                $mapClass = ' ' . $this->mapClassWhen[1];
+            }
+        }
+
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->getName(),
             'tableRowKey' => $this->tableRowKey,
-            'value' => !($this->value === '' || $this->value === null) ? $this->value : $this->default,
-            'class' => ' ' . $this->class,
+            'value' => $value,
+            'class' => ' ' . $this->class . $mapClass,
             'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '') . (empty($this->style) ? '' : ' style="' . $this->style . '"'),
             'error' => $this->error,
             'size' => $this->size,

@@ -196,11 +196,12 @@ class MultipleToolbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean $confirm
      * @param string $attr
+     * @param boolean $confirm
      * @return $this
+     * 
      */
-    public function btnPostChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $confirm = true, $attr = '')
+    public function btnPostChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         $action = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $url, -1, $count);
 

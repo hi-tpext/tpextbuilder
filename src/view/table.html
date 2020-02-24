@@ -29,7 +29,7 @@
         {/notempty}
         <tbody>
             {volist name="list" id="row"}
-            <tr>
+            <tr class="table-row-id" data-id="{$ids[$key]}">
                 {if condition="$rowCheckbox"}
                 <td class="{$verticalAlign} {$textAlign}">
                     <label class="lyear-checkbox checkbox-primary">
@@ -54,7 +54,7 @@
             {/volist}
             {empty name="$data"}
             <tr>
-                <td>{$emptyText}</td>
+                <td colspan="{$cols|count}">{$emptyText|raw}</td>
             </tr>
             {/empty}
         </tbody>

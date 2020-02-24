@@ -266,11 +266,12 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean $confirm
      * @param string $attr
+     * @param boolean $confirm
      * @return $this
+     * 
      */
-    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $confirm = true, $attr = '')
+    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         if (!$name) {
             $name = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $postUrl, -1, $count);

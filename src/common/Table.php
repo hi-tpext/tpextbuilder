@@ -52,7 +52,7 @@ class Table extends Wapper implements Renderable
 
     protected $rowCheckbox = true;
 
-    protected $emptyText = "暂未数据~";
+    protected $emptyText = "<p class='text-center'><span>暂无数据~</span></p>";
 
     protected $toolbar = null;
 
@@ -489,6 +489,10 @@ class Table extends Wapper implements Renderable
 
                 $this->ids[$key] = $data[$pk];
             }
+            else
+            {
+                $this->ids[$key] = $key;
+            }
 
             foreach ($cols as $col) {
 
@@ -552,7 +556,7 @@ class Table extends Wapper implements Renderable
             'emptyText' => $this->emptyText,
             'headTextAlign' => $this->headTextAlign,
             'ids' => $this->ids,
-            'rowCheckbox' => $this->rowCheckbox && !empty($this->ids),
+            'rowCheckbox' => $this->rowCheckbox && $this->useToolbar,
             'name' => time() . mt_rand(1000, 9999),
             'verticalAlign' => $this->verticalAlign,
             'textAlign' => $this->textAlign,
