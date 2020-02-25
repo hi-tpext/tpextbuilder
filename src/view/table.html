@@ -40,25 +40,27 @@
                 </td>
                 {/if}
                 {foreach name="row" id="col" key="co"}
-                <td class="col-md-{$col.wapper->getColSize()} {$verticalAlign} {$textAlign} {$col.wapper->getClass()}"
+                <td class="col-md-{$col.wapper->getColSize()} {$verticalAlign}
+                    {$textAlign} {$col.wapper->getClass()}"
                     {$col.wapper->getAttr()|raw}>
                     {$col.value|raw}
                 </td>
                 {/foreach}
                 {notempty name="$actionbars"}
-                <td class="text-center row-__action__ {$verticalAlign} {$textAlign}">
+                <td class="text-center row-__action__ {$verticalAlign}
+                    {$textAlign}">
                     {$actionbars[$key]|raw}
                 </td>
                 {/notempty}
             </tr>
             {/volist}
-            {empty name="$data"}
-            <tr>
-                <td colspan="{$cols|count}">{$emptyText|raw}</td>
-            </tr>
-            {/empty}
         </tbody>
     </table>
+    {empty name="$data"}
+    <div>
+        {$emptyText|raw}
+    </div>
+    {/empty}
     {notempty name="paginator"}
     <nav class="{:$paginator->getClass()}" {:$paginator->getAttr()}>
         {:$paginator->render()}

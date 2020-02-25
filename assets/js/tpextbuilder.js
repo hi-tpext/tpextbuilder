@@ -209,11 +209,14 @@
         var href = $(obj).data('url');
 
         var text = $(obj).text() || $(obj).attr('title');
+        if ($(obj).data('layer-size')) {
+            size = $(obj).data('layer-size').split(',');
+        }
         layer.open({
             type: 2,
             title: text,
             shadeClose: false,
-            shade: 0.8,
+            shade: 0.3,
             area: size || ['90%', '90%'],
             content: href
         });

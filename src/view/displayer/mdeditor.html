@@ -3,7 +3,7 @@
     <div id="{$id}-div">
         <textarea class="form-control {$class}" placeholder="请输入{$label}"
             rows="{$options.rows|default=3}"
-            name="{$name}" id="{$id}" {$attr|raw}>{$value}</textarea>
+            name="{$name}" id="{$id}" {$attr|raw}>{$value|raw}</textarea>
     </div>
     {include file="$helptempl" /}
 </div>

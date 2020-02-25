@@ -148,6 +148,6 @@ class MultipleFile extends Field
             return $this;
         }
 
-        throw new \UnexpectedValueException('未知调用');
+        throw new \UnexpectedValueException('未知调用:' . $name);
     }
 }

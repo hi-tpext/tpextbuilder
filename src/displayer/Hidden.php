@@ -6,10 +6,9 @@ class Hidden extends Field
 {
     protected $view = 'hidden';
 
-    public function __construct($name, $value = '')
+    public function __construct($name)
     {
         $this->name = $name;
-        $this->value = $value;
     }
 
     public function created()

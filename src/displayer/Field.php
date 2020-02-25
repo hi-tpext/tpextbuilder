@@ -70,6 +70,8 @@ class Field implements Renderable
 
     protected $mapClassWhen = [];
 
+    protected $required = false;
+
     public function __construct($name, $label = '')
     {
         if (empty($label)) {
@@ -131,8 +133,11 @@ class Field implements Renderable
      * @param string $url
      * @return $this
      */
-    public function autoPost($url)
+    public function autoPost($url = '')
     {
+        if (empty($url)) {
+            $url = url('autopost');
+        }
         $this->autoPost = $url;
         return $this;
     }
@@ -372,10 +377,32 @@ class Field implements Renderable
      * @param boolean $val
      * @return $this
      */
+    public function required($val = true)
+    {
+        $this->required = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
     public function showLabel($val)
     {
         $this->showLabel = $val;
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return $this->required;
     }
 
     /**

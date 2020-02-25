@@ -2,9 +2,7 @@
 
 namespace tpext\builder\toolbar;
 
-use tpext\builder\toolbar\LinkBtn;
-
-class ActionBtn extends LinkBtn
+class ActionBtn extends Bar
 {
     protected $view = 'actionbtn';
 
@@ -17,6 +15,8 @@ class ActionBtn extends LinkBtn
     protected $data = [];
 
     protected $dataid = 0;
+
+    protected $confirm = true;
 
     /**
      * Undocumented function
@@ -88,6 +88,21 @@ class ActionBtn extends LinkBtn
         return $this;
     }
 
+     /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @param boolean $confirm
+     * @return $this
+     */
+    public function postRowid($url, $confirm = true)
+    {
+        $this->postRowid = $url;
+        $this->confirm = $confirm;
+
+        return $this;
+    }
+
     protected function postRowidScript()
     {
         $script = '';
@@ -124,14 +139,8 @@ EOT;
     {
         $vars = $this->commonVars();
 
-        $this->useLayer = $this->useLayer && !empty($this->href) && !preg_match('/javascript:.*/i', $this->href) && !preg_match('/^#.*/i', $this->href);
-
         $vars = array_merge($vars, [
-            'icon' => $this->icon,
             'class' => $vars['class'] . $this->extClass,
-            'href' => empty($this->__href__) ? $this->href : $this->__href__,
-            'attr' => $this->attr,
-            'useLayer' => $this->useLayer,
             'dataid' => $this->dataid,
         ]);
 

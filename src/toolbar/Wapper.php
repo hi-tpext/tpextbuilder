@@ -7,6 +7,7 @@ namespace tpext\builder\toolbar;
  *
  * @method \tpext\builder\toolbar\LinkBtn          linkBtn($name, $label)
  * @method \tpext\builder\toolbar\ActionBtn        actionBtn($name, $label)
+ * @method \tpext\builder\toolbar\ImportBtn        importBtn($name, $label)
  * @method \tpext\builder\toolbar\Html             html($html)
  */
 

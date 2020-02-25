@@ -10,6 +10,14 @@ class Layer
 
     public function close($success = true, $msg = '操作成功')
     {
+        if (request()->isAjax()) {
+            return json([
+                'code' => $success ? 1 : 0,
+                'msg' => $msg,
+                'layer_close' => 1,
+            ]);
+        }
+
         $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'close.html']);
 
         $vars = [
@@ -24,6 +32,14 @@ class Layer
 
     public function closeRefresh($success = true, $msg = '操作成功')
     {
+        if (request()->isAjax()) {
+            return json([
+                'code' => $success ? 1 : 0,
+                'msg' => $msg,
+                'layer_close_refresh' => 1,
+            ]);
+        }
+
         $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closeRefresh.html']);
 
         $vars = [

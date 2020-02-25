@@ -31,11 +31,13 @@ class Form extends Wapper implements Renderable
 
     protected $botttomButtonsCalled = false;
 
-    protected $ajax = false;
+    protected $ajax = true;
 
     protected $search;
 
     protected $defaultDisplayerSize = null;
+
+    protected $validator = [];
 
     /**
      * Undocumented variable
@@ -354,7 +356,7 @@ class Form extends Wapper implements Renderable
      */
     public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
     {
-        $this->button('submit', $label, $size)->class($class)->loading();
+        $this->button('submit', $label, $size)->class($class);
         $this->botttomButtonsCalled = true;
         return $this;
     }
@@ -418,20 +420,72 @@ class Form extends Wapper implements Renderable
         }
 
         if ($this->search) {
-            $this->hidden('__page__', 1);
+            $this->hidden('__page__')->value(1);
             $this->addClass(' search-form');
             $this->searchScript();
         }
 
         foreach ($this->rows as $row) {
+            $displayer = $row->getDisplayer();
+
             if ($this->search) {
-                $row->getDisplayer()->fullSize(3)->autoPost(false);
+                $displayer->fullSize(3)->autoPost(false);
+            }
+
+            if ($displayer->isRequired()) {
+                $this->validator[$displayer->getName()]['required'] = true;
             }
 
             $row->beforRender();
         }
 
+        $this->validatorScript();
+
         return $this;
+    }
+
+    protected function validatorScript()
+    {
+        $form = $this->getId();
+
+        $rules = json_encode($this->validator);
+
+        $script = <<<EOT
+        $('#{$form} form').validate({
+            ignore: ".ignore",    // 插件默认不验证隐藏元素,这里可以自定义一个不验证的class,即验证隐藏元素,不验证class为.ignore的元素
+            focusInvalid: false,  // 禁用无效元素的聚焦
+            rules: {$rules},
+            errorPlacement: function errorPlacement(error, element) {
+                var parent = $(element).parents('.form-group');
+                if (parent.find('.error-label').length) {
+                    return;
+                }
+                parent.addClass('has-error');
+                parent.append(error.addClass('help-block').addClass('error-label'));
+                lightyear.notify('输入有误', 'warning');
+            },
+            highlight: function(element) {
+                var el = $(element);
+                if (el.hasClass('js-tags-input')) {
+                    el.next('.tagsinput').addClass('is-invalid');  // tags插件所隐藏的输入框没法实时验证，比较尴尬
+                }
+            },
+            unhighlight: function(element) {
+                $(element).next('.tagsinput').removeClass('is-invalid');
+                $(element).parents('.form-group').removeClass('has-error');
+            },
+            submitHandler: function(form) {
+                formSubmit();
+            }
+        });
+
+EOT;
+        Builder::getInstance()->addScript($script);
+
+        Builder::getInstance()->addjs('/assets/tpextbuilder/js/jquery-validate/jquery.validate.min.js');
+        Builder::getInstance()->addjs('/assets/tpextbuilder/js/jquery-validate/messages_zh.min.js');
+
+        return $script;
     }
 
     protected function searchScript()
@@ -489,8 +543,8 @@ EOT;
             'class' => $this->class,
             'attr' => $this->attr,
             'id' => $this->id,
-            'ajax' => ($this->ajax || !empty($this->search) ? 1 : 0),
-            'search' => $this->search,
+            'ajax' => $this->ajax || !empty($this->search) ? 1 : 0,
+            'search' => $this->search
         ];
 
         return $viewshow->assign($vars)->getContent();

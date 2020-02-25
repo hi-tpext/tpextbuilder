@@ -34,7 +34,9 @@ class MultipleToolbar extends Toolbar
 
         foreach ($this->elms as $elm) {
 
-            $elm->useLayer($this->useLayer);
+            if (!$this->useLayer) {
+                $elm->useLayer(false);
+            }
         }
 
         return parent::beforRender();
@@ -169,6 +171,45 @@ class MultipleToolbar extends Toolbar
     /**
      * Undocumented function
      *
+     * @param string $afterSuccessUrl
+     * @param string|array acceptedExts
+     * @param int fileSize MB
+     * @param string $label
+     * @param string $class
+     * @param string $icon
+     * @param string $attr
+     * @return $this
+     */
+    public function btnImport($afterSuccessUrl, $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
+    {
+        if (empty($afterSuccessUrl)) {
+            $afterSuccessUrl = url('/tpextbuilder/admin/import/afterSuccess');
+        }
+
+        if (is_array($acceptedExts)) {
+            $acceptedExts = implode(',', $acceptedExts);
+        }
+
+        $afterSuccessUrl = urlencode($afterSuccessUrl);
+
+        $afterSuccessUrl = preg_replace('/(.+?)(\.html)?$/', '$1', $afterSuccessUrl);
+
+        $importpagetoken = session('importpagetoken') ? session('importpagetoken') : md5('importpagetoken' . time() . uniqid());
+
+        session('importpagetoken', $importpagetoken);
+
+        $pagetoken = md5($importpagetoken . $acceptedExts . $fileSize);
+
+        $url = url('/tpextbuilder/admin/import/index') . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
+
+        $this->linkBtn('import', $label)->useLayer(true, ['220px', '300px'])->href($url)->icon($icon)->class($class)->attr($attr);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param string $url
      * @param string $label
      * @param string $class
@@ -199,7 +240,7 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @param boolean $confirm
      * @return $this
-     * 
+     *
      */
     public function btnPostChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {

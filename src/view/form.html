@@ -1,7 +1,7 @@
 <div id="{$id}" class="row">
     <form action="{$action}" method="{$method|default='POST'}"
         enctype="multipart/form-data"
-        class="{$class} {$attr|raw}" onsubmit="return formSubmit();">
+        class="{$class} {$attr|raw}">
 
         {volist name="rows" id="row"}
         {if condition="$row instanceof tpext\builder\common\Tab"}
@@ -13,7 +13,8 @@
             {:$row->render()}
         </div>
         {else/}
-        <div class="form-group col-md-{$row->getColSize()} {$row->getClass()} {$row->getErrorClass()}"{$row->getAttr()|raw}>
+        <div class="form-group col-md-{$row->getColSize()} {$row->getClass()}
+            {$row->getErrorClass()}"{$row->getAttr()|raw}>
             {:$row->render()}
         </div>
         {/if}
@@ -27,6 +28,8 @@
     
         function formSubmit()
         {
+            lightyear.loading('hide');
+            
             if(ajax)
             {
                 lightyear.loading('show');
@@ -44,8 +47,30 @@
                         },500);
                         if(/^\{.+\}$/.test(data))
                         {
+                            data = JSON.parse(data);
                             if (data.status || data.code) {
-                                lightyear.notify('操作成功！', 'success');
+                                
+                                if(data.layer_close)
+                                {
+                                    closeLayer(data.msg || data.message ||'操作成功！');
+                                }
+                                else if(data.layer_close_refresh)
+                                {
+                                    closeLayerRefresh(data.msg || data.message ||'操作成功！');
+                                }
+                                else if(data.url)
+                                {
+                                    lightyear.notify(data.msg || data.message ||'操作成功！', 'success');
+                                    
+                                    setTimeout(function(){
+                                        location.replace(data.url);
+
+                                    }, data.wait *1000 || 2000);
+                                }
+                                else
+                                {
+                                    lightyear.notify(data.msg || data.message ||'操作成功！', 'success');
+                                }
                             } else {
                                 lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                             }
@@ -65,6 +90,39 @@
             }
     
             return true;
+        }
+
+        function closeLayer(msg)
+        {
+            parent.lightyear.notify(msg, 'success');
+
+            if(parent && parent.layer)
+            {
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index);
+            }
+        }
+
+        function closeLayerRefresh(msg)
+        {
+            parent.lightyear.notify(msg, 'success');
+
+            if(parent && parent.layer)
+            {
+                if(parent.$('#form-refresh').size())
+                {
+                    parent.$('#form-refresh').trigger('click');
+                }
+                else
+                {
+                    setTimeout(function(){
+                        parent.location.reload();
+                    },2000);
+                }
+
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index);     
+            }
         }
     
     </script>

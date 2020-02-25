@@ -17,6 +17,12 @@ class Bar implements Renderable
 
     protected $name = '';
 
+    protected $icon = '';
+
+    protected $href = 'javascript:;';
+
+    protected $__href__ = '';
+
     protected $label = '';
 
     protected $attr = '';
@@ -24,6 +30,10 @@ class Bar implements Renderable
     protected $style = '';
 
     protected $script = [];
+
+    protected $useLayer = true;
+
+    protected $layerSize = ['90%', '90%'];
 
     public function __construct($name, $label = '')
     {
@@ -33,15 +43,7 @@ class Bar implements Renderable
 
     public function created()
     {
-        $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
-
-        $fieldType = lcfirst($fieldType);
-
-        $defaultClass = Wapper::hasDefaultFieldClass($fieldType);
-
-        if (!empty($defaultClass)) {
-            $this->class = $defaultClass;
-        }
+       
     }
 
     /**
@@ -106,9 +108,48 @@ class Bar implements Renderable
      * @param string $val
      * @return $this
      */
+    public function icon($val)
+    {
+        $this->icon = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function href($val)
+    {
+        $this->href = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
     public function attr($val)
     {
         $this->attr = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @param array $size
+     * @return $this
+     */
+    public function useLayer($val, $size = ['90%', '90%'])
+    {
+        $this->useLayer = $val;
+        $this->layerSize = $size;
+
         return $this;
     }
 
@@ -213,12 +254,19 @@ class Bar implements Renderable
      */
     public function commonVars()
     {
+
+        $this->useLayer = $this->useLayer && !empty($this->href) && !preg_match('/javascript:.*/i', $this->href) && !preg_match('/^#.*/i', $this->href);
+        
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->getName(),
             'class' => ' ' . $this->class,
+            'href' => empty($this->__href__) ? $this->href : $this->__href__,
+            'icon' => $this->icon,
             'attr' => $this->attr . (empty($this->style) ? '' : ' style="' . $this->style . '"'),
+            'useLayer' => $this->useLayer,
+            'layerSize' => implode(',', $this->layerSize),
         ];
 
         return $vars;
