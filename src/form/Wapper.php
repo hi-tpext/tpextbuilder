@@ -34,6 +34,7 @@ namespace tpext\builder\form;
  * @method \tpext\builder\displayer\Decimal        decimal($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Html           html($html, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Raw            raw($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Show           show($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Tags           tags($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Icon           icon($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MultipleImage  multipleImage($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -94,6 +95,8 @@ class Wapper
         'rangeSlider' => \tpext\builder\displayer\RangeSlider::class,
         'match' => \tpext\builder\displayer\Match::class,
         'matches' => \tpext\builder\displayer\Matches::class,
+        'show' => \tpext\builder\displayer\Show::class,
+        'password' => \tpext\builder\displayer\Password::class,
     ];
 
     protected static $defaultFieldClass = [];

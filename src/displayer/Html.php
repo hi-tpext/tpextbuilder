@@ -19,11 +19,7 @@ class Html extends Field
     {
         parent::created();
 
-        $this->value = $this->name;
-
-        $this->content = new ViewShow($this->value);
-
-        $this->content->isContent(true);
+        $this->value = $this->label;
 
         return $this;
     }
@@ -67,7 +63,9 @@ class Html extends Field
      */
     public function render()
     {
-        $this->value = $this->content->getContent();
+        if ($this->content) {
+            $this->value = $this->content->getContent();
+        }
 
         return parent::render();
     }

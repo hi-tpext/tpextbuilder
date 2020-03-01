@@ -12,7 +12,7 @@ class Checkbox extends Field
 
     protected $inline = true;
 
-    protected $checkallBtn = false;
+    protected $checkallBtn = '';
 
     protected $default = [];
 
@@ -45,10 +45,10 @@ class Checkbox extends Field
     /**
      * Undocumented function
      *
-     * @param boolean $val
+     * @param string $val
      * @return $this
      */
-    public function checkallBtn($val = true)
+    public function checkallBtn($val = '全选')
     {
         $this->checkallBtn = $val;
         return $this;
@@ -75,9 +75,22 @@ class Checkbox extends Field
             $this->checked = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 
+        $checkall = false;
+
+        if ($this->checkallBtn) {
+            $count = 0;
+            foreach ($this->options as $key => $op) {
+                if (in_array($key, $this->checked)) {
+                    $count += 1;
+                }
+            }
+            $checkall = $count == count($this->options);
+        }
+
         $vars = array_merge($vars, [
             'inline' => $this->inline ? 'checkbox-inline' : 'm-t-10',
             'checkallBtn' => $this->checkallBtn,
+            'checkall' => $checkall,
             'checked' => $this->checked,
             'options' => $this->options,
         ]);

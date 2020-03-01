@@ -304,7 +304,7 @@ class Table extends Wapper implements Renderable
             $cols = array_keys($data[0]);
 
             foreach ($cols as $col) {
-                $this->field($col, ucfirst($col));
+                $this->show($col, ucfirst($col));
             }
         }
 
@@ -452,7 +452,7 @@ class Table extends Wapper implements Renderable
         Builder::getInstance()->addCss($this->css);
 
         if ($this->useToolbar) {
-            $this->getToolbar()->beforRender();
+            $this->getToolbar()->hasSearch(!empty($this->searchForm))->beforRender();
         }
 
         if ($this->useActionbar) {
@@ -488,9 +488,7 @@ class Table extends Wapper implements Renderable
             if (isset($data[$pk])) {
 
                 $this->ids[$key] = $data[$pk];
-            }
-            else
-            {
+            } else {
                 $this->ids[$key] = $key;
             }
 

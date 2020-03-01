@@ -22,108 +22,111 @@
     </form>
 
     <script>
-        var ajax = {$ajax};
-        var search = '{$search}';
-        var lastsearch = '';
-    
-        function formSubmit()
+
+        if(!window.forms)
         {
-            lightyear.loading('hide');
-            
-            if(ajax)
+            window.forms = [];
+        }
+
+        window.forms['{$id}'] = {
+            ajax : {$ajax},
+            search : '{$search}',
+            formSubmit : function ()
             {
-                lightyear.loading('show');
-    
-                var data = $('#{$id} form').serialize();
-               
-                $.ajax({
-                    url: '{$action}' || location.href,
-                    data: data,
-                    type: 'POST',
-                    dataType: 'html',
-                    success: function (data) {
-                        setTimeout(function(){
-                            lightyear.loading('hide');
-                        },500);
-                        if(/^\{.+\}$/.test(data))
-                        {
-                            data = JSON.parse(data);
-                            if (data.status || data.code) {
-                                
-                                if(data.layer_close)
-                                {
-                                    closeLayer(data.msg || data.message ||'操作成功！');
-                                }
-                                else if(data.layer_close_refresh)
-                                {
-                                    closeLayerRefresh(data.msg || data.message ||'操作成功！');
-                                }
-                                else if(data.url)
-                                {
-                                    lightyear.notify(data.msg || data.message ||'操作成功！', 'success');
+                lightyear.loading('hide');
+                var search = this.search;
+                
+                if(this.ajax)
+                {
+                    lightyear.loading('show');
+        
+                    var data = $('#{$id} form').serialize();
+                
+                    $.ajax({
+                        url: '{$action}' || location.href,
+                        data: data,
+                        type: 'POST',
+                        dataType: 'html',
+                        success: function (data) {
+                            setTimeout(function(){
+                                lightyear.loading('hide');
+                            },500);
+                            if(/^\{.+\}$/.test(data))
+                            {
+                                data = JSON.parse(data);
+                                if (data.status || data.code) {
                                     
-                                    setTimeout(function(){
-                                        location.replace(data.url);
+                                    if(data.layer_close)
+                                    {
+                                        this.closeLayer(data.msg || data.message || '操作成功！');
+                                    }
+                                    else if(data.layer_close_refresh)
+                                    {
+                                        this.closeLayerRefresh(data.msg || data.message || '操作成功！');
+                                    }
+                                    else if(data.url)
+                                    {
+                                        lightyear.notify(data.msg || data.message || '操作成功！', 'success');
+                                        
+                                        setTimeout(function(){
+                                            location.replace(data.url);
 
-                                    }, data.wait *1000 || 2000);
+                                        }, data.wait * 1000 || 2000);
+                                    }
+                                    else
+                                    {
+                                        lightyear.notify(data.msg || data.message || '操作成功！', 'success');
+                                    }
+                                } else {
+                                    lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                                 }
-                                else
-                                {
-                                    lightyear.notify(data.msg || data.message ||'操作成功！', 'success');
-                                }
-                            } else {
-                                lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                             }
+                            else
+                            {
+                                $('#' + search).replaceWith(data);
+                            }
+                        },
+                        error: function () {
+                            lightyear.loading('hide');
+                            lightyear.notify('网络错误', 'danger');
                         }
-                        else
-                        {
-                            $('#' + search).replaceWith(data);
-                        }
-                    },
-                    error: function () {
-                        lightyear.loading('hide');
-                        lightyear.notify('网络错误', 'danger');
-                    }
-                });
-    
+                    });
+                }
+
                 return false;
-            }
-    
-            return true;
-        }
-
-        function closeLayer(msg)
-        {
-            parent.lightyear.notify(msg, 'success');
-
-            if(parent && parent.layer)
+            },
+            closeLayer : function (msg)
             {
-                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                parent.layer.close(index);
-            }
-        }
+                parent.lightyear.notify(msg, 'success');
 
-        function closeLayerRefresh(msg)
-        {
-            parent.lightyear.notify(msg, 'success');
-
-            if(parent && parent.layer)
+                if(parent && parent.layer)
+                {
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);
+                }
+            },
+            closeLayerRefresh : function (msg)
             {
-                if(parent.$('#form-refresh').size())
-                {
-                    parent.$('#form-refresh').trigger('click');
-                }
-                else
-                {
-                    setTimeout(function(){
-                        parent.location.reload();
-                    },2000);
-                }
+                parent.lightyear.notify(msg, 'success');
 
-                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                parent.layer.close(index);     
+                if(parent && parent.layer)
+                {
+                    if(parent.$('#form-refresh').size())
+                    {
+                        parent.$('#form-refresh').trigger('click');
+                    }
+                    else
+                    {
+                        setTimeout(function(){
+                            parent.location.reload();
+                        },2000);
+                    }
+
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);     
+                }
             }
-        }
+        };
     
     </script>
 </div>

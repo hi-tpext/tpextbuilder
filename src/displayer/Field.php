@@ -2,6 +2,7 @@
 
 namespace tpext\builder\displayer;
 
+use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
@@ -136,7 +137,7 @@ class Field implements Renderable
     public function autoPost($url = '')
     {
         if (empty($url)) {
-            $url = url('autopost');
+            $url = url('autoPost');
         }
         $this->autoPost = $url;
         return $this;
@@ -150,6 +151,9 @@ class Field implements Renderable
      */
     public function value($val)
     {
+        if (is_array($val)) {
+            $val = explode(',', $val);
+        }
         $this->value = $val;
         return $this;
     }
@@ -544,12 +548,12 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $data
+     * @param array|Model $data
      * @return $this
      */
     public function fill($data = [])
     {
-        if (isset($data[$this->name])) {
+        if (!empty($this->name) && isset($data[$this->name])) {
             $value = $data[$this->name];
 
             if (is_array($value)) {
@@ -669,6 +673,7 @@ EOT;
             'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->getName(),
+            'requiredStyle' => $this->required ? '' :'style="visibility: hidden;"',
             'tableRowKey' => $this->tableRowKey,
             'value' => $value,
             'class' => ' ' . $this->class . $mapClass,

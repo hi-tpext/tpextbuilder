@@ -6,6 +6,8 @@ class Select extends Radio
 {
     protected $view = 'select';
 
+    protected $class = '';
+
     protected $js = [
         '/assets/tpextbuilder/js/select2/select2.min.js',
         '/assets/tpextbuilder/js/select2/i18n/zh-CN.js',
@@ -110,8 +112,8 @@ class Select extends Radio
                 delay: {$delay},
                 data: function (params) {
                   return {
-                    q: params.term,
-                    page: params.page,
+                    q: params.term || '',
+                    page: params.page || 1,
                     eleid : '{$selectId}'
                   };
                 },

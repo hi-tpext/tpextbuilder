@@ -29,8 +29,17 @@ form.search-form .form-group {
     vertical-align: bottom;
 }
 
-.raw
+.field-raw,.field-show
 {
     min-height: 38px;
     line-height: 38px;
+}
+
+.field-required
+{
+    color: red;
+}
+span.select2-container
+{
+    min-width: 100%;
 }

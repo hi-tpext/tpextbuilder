@@ -6,7 +6,7 @@ use tpext\builder\common\Builder;
 
 class Import extends Controller
 {
-    public function index()
+    public function page()
     {
         $acceptedExts = input('acceptedExts');
         $fileSize = input('fileSize');

@@ -8,6 +8,10 @@ class MultipleToolbar extends Toolbar
 {
     protected $useLayer = true;
 
+    protected $hasSearch = false;
+
+    protected $btnSearch = null;
+
     /**
      * Undocumented function
      *
@@ -24,12 +28,29 @@ class MultipleToolbar extends Toolbar
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function hasSearch($val)
+    {
+        $this->hasSearch = $val;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function beforRender()
     {
         if (empty($this->elms)) {
             $this->buttons();
+        }
+
+        if ($this->hasSearch && !$this->btnSearch) {
+            $this->btnToggleSearch();
         }
 
         foreach ($this->elms as $elm) {
@@ -52,7 +73,6 @@ class MultipleToolbar extends Toolbar
         $this->btnAdd();
         $this->btnDelete();
         $this->btnRefresh();
-        $this->btnToggleSearch();
 
         return $this;
     }
@@ -165,6 +185,8 @@ class MultipleToolbar extends Toolbar
     public function btnToggleSearch($label = '', $class = 'btn-secondary', $icon = 'mdi-magnify', $attr = 'title="搜索"')
     {
         $this->linkBtn('search', $label)->class($class)->icon($icon)->attr($attr);
+
+        $this->btnSearch = true;
         return $this;
     }
 

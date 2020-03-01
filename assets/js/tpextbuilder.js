@@ -244,8 +244,16 @@ $(function () {
                     ss += 1;
                 }
             });
-            checkall.prop('checked', ss == count);
+            checkall.prop('checked', count > 0 && ss == count);
         });
+
+        var ss = 0;
+        checkboxes.each(function (ii, ee) {
+            if ($(ee).is(':checked')) {
+                ss += 1;
+            }
+        });
+        checkall.prop('checked', count > 0 && ss == count);
     });
 
     $("form select").on("select2:opening", function (e) {
@@ -297,7 +305,7 @@ $(function () {
     // 通用绑定，
     $('.js-upload-files').each(function () {
         var $input_file = $(this).find('input'),
-            $input_file_name = $input_file.attr('name');
+            $input_file_name = $(this).data('name');
 
         var jsOptions = window.uploadConfigs[$input_file_name];
 

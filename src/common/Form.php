@@ -2,6 +2,7 @@
 
 namespace tpext\builder\common;
 
+use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
@@ -38,6 +39,8 @@ class Form extends Wapper implements Renderable
     protected $defaultDisplayerSize = null;
 
     protected $validator = [];
+
+    protected $butonsSizeClass = '';
 
     /**
      * Undocumented variable
@@ -126,7 +129,7 @@ class Form extends Wapper implements Renderable
      */
     public function getId()
     {
-        return $this->id;
+        return $this->id . ($this->search ? '-search' : '');
     }
 
     /**
@@ -174,6 +177,18 @@ class Form extends Wapper implements Renderable
     public function attr($val)
     {
         $this->attr = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * btn-lg btn-sm btn-xs
+     * @param string $val
+     * @return $this
+     */
+    public function butonsSizeClass($val)
+    {
+        $this->butonsSizeClass = $val;
         return $this;
     }
 
@@ -297,7 +312,7 @@ class Form extends Wapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $data
+     * @param array|Model $data
      * @return $this
      */
     public function fill($data = [])
@@ -319,9 +334,10 @@ class Form extends Wapper implements Renderable
     {
         if ($create) {
             $this->fieldsContentEnd();
-            $this->divider('', '', 12);
-            $this->html('', '', 5)->showLabel(false);
+            $this->divider('', '', 12)->size(0, 12)->showLabel(false);
+            $this->html('', '', 4)->showLabel(false);
             $this->btnSubmit();
+            $this->html('', '', 2)->showLabel(false);
             $this->btnReset();
         }
 
@@ -336,6 +352,7 @@ class Form extends Wapper implements Renderable
      */
     public function searchButtons()
     {
+        $this->html('', '', 12)->showLabel(false);
         $this->html('', '', 5)->showLabel(false);
         $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-sm');
         $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-sm')->attr('onclick="location.replace(location.href)"');
@@ -356,7 +373,7 @@ class Form extends Wapper implements Renderable
      */
     public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
     {
-        $this->button('submit', $label, $size)->class($class);
+        $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
         return $this;
     }
@@ -371,7 +388,7 @@ class Form extends Wapper implements Renderable
      */
     public function btnReset($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning')
     {
-        $this->button('submit', $label, $size)->class($class);
+        $this->button('reset', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         return $this;
     }
 
@@ -386,7 +403,7 @@ class Form extends Wapper implements Renderable
      */
     public function btnBack($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
-        $this->button('button', $label, $size)->class($class)->attr($attr);
+        $this->button('button', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->attr($attr);
         return $this;
     }
 
@@ -400,7 +417,7 @@ class Form extends Wapper implements Renderable
      */
     public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default')
     {
-        $this->button('button', $label, $size)->class($class . ' btn-close-layer');
+        $this->button('button', $label, $size)->class($class . ' btn-close-layer'. ' '.$this->butonsSizeClass);
         return $this;
     }
 
@@ -461,8 +478,7 @@ class Form extends Wapper implements Renderable
                     return;
                 }
                 parent.addClass('has-error');
-                parent.append(error.addClass('help-block').addClass('error-label'));
-                lightyear.notify('输入有误', 'warning');
+                lightyear.notify(parent.find('.control-label').text() + error.text(), 'warning');
             },
             highlight: function(element) {
                 var el = $(element);
@@ -475,7 +491,8 @@ class Form extends Wapper implements Renderable
                 $(element).parents('.form-group').removeClass('has-error');
             },
             submitHandler: function(form) {
-                formSubmit();
+                window.forms['{$form}'].formSubmit();
+                return false;
             }
         });
 
@@ -542,9 +559,9 @@ EOT;
             'method' => strtoupper($this->method),
             'class' => $this->class,
             'attr' => $this->attr,
-            'id' => $this->id,
+            'id' => $this->getId(),
             'ajax' => $this->ajax || !empty($this->search) ? 1 : 0,
-            'search' => $this->search
+            'search' => $this->search,
         ];
 
         return $viewshow->assign($vars)->getContent();

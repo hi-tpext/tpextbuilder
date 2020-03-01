@@ -3,6 +3,7 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
+use tpext\builder\toolbar\Bar;
 use tpext\builder\toolbar\Wapper;
 
 class Toolbar extends Wapper implements Renderable
@@ -14,6 +15,8 @@ class Toolbar extends Wapper implements Renderable
     protected $attr = '';
 
     protected $elms = [];
+
+    protected $__elm__;
 
     /**
      * Undocumented function
@@ -66,6 +69,16 @@ class Toolbar extends Wapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return Bar
+     */
+    public function getCurrent()
+    {
+        return $this->__elm__;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function beforRender()
@@ -101,13 +114,13 @@ class Toolbar extends Wapper implements Renderable
 
             $class = static::$displayerMap[$name];
 
-            $elm = new $class($arguments[0], $count > 1 ? $arguments[1] : '');
+            $this->__elm__ = new $class($arguments[0], $count > 1 ? $arguments[1] : '');
 
-            $elm->created();
+            $this->__elm__->created();
 
-            $this->elms[] = $elm;
+            $this->elms[] = $this->__elm__;
 
-            return $elm;
+            return $this->__elm__;
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);
