@@ -1,7 +1,7 @@
 (function (w) {
 
     var tpextbuilder = function () {};
-    tpextbuilder.autoPost = function (classname, url) {
+    tpextbuilder.autoPost = function (classname, url, refresh) {
 
         $('body').on('change', 'td.' + classname + ' :checkbox', function () {
             var name = $(this).attr('name');
@@ -16,7 +16,7 @@
                 id: dataid,
                 name: name,
                 value: val
-            }, url, 0);
+            }, url, refresh);
         });
 
         $('body').on('change', 'td.' + classname + ' :radio', function () {
@@ -28,7 +28,7 @@
                 id: dataid,
                 name: name,
                 value: val
-            }, url, 0);
+            }, url, refresh);
         });
 
         $('body').on('blur', 'td.' + classname + ' input[type="text"]', function () {
@@ -40,7 +40,7 @@
                 id: dataid,
                 name: name,
                 value: val
-            }, url, 0);
+            }, url, refresh);
         });
 
         $('body').on('blur', 'td.' + classname + ' textarea', function () {
@@ -52,7 +52,7 @@
                 id: dataid,
                 name: name,
                 value: val
-            }, url, 0);
+            }, url, refresh);
         });
 
         $('body').on('change', 'td.' + classname + ' select', function () {
@@ -64,7 +64,7 @@
                 id: dataid,
                 name: name,
                 value: val
-            }, url, 0);
+            }, url, refresh);
         });
     };
 

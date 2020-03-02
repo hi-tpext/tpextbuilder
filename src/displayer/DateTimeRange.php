@@ -57,6 +57,20 @@ class DateTimeRange extends Text
                 'separator' => $this->separator,
             ]);
 
+        $vars = $this->commonVars();
+
+        if ($vars['value']) {
+            $values = explode($this->separator, $vars['value']);
+
+            if (count($values) == 2) {
+                $this->jsOptions['startDate'] = $values[0];
+                $this->jsOptions['endDate'] = $values[1];
+            } else {
+                $this->jsOptions['startDate'] = date('Y-m-25 H:i:s');
+                $this->jsOptions['endDate'] = '';
+            }
+        }
+
         $configs = json_encode($this->jsOptions);
 
         $configs = substr($configs, 1, strlen($configs) - 2);

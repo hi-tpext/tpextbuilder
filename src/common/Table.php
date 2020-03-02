@@ -69,6 +69,13 @@ class Table extends Wapper implements Renderable
     /**
      * Undocumented variable
      *
+     * @var Paginator
+     */
+    protected $paginator;
+
+    /**
+     * Undocumented variable
+     *
      * @var Form
      */
     protected $searchForm = null;
@@ -542,7 +549,9 @@ class Table extends Wapper implements Renderable
 
         $viewshow = new ViewShow($template);
 
-        $this->paginator->setItems($this->data);
+        if (!$this->paginator) {
+            $this->paginator = Paginator::make($this->data, 999, 1, 999);
+        }
 
         $vars = [
             'class' => $this->class,

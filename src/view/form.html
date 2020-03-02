@@ -1,6 +1,5 @@
 <div id="{$id}" class="row">
-    <form action="{$action}" method="{$method|default='POST'}"
-        enctype="multipart/form-data"
+    <form action="{$action}" method="{$method|default='POST'}" enctype="multipart/form-data"
         class="{$class} {$attr|raw}">
 
         {volist name="rows" id="row"}
@@ -14,76 +13,68 @@
         </div>
         {else/}
         <div class="form-group col-md-{$row->getColSize()} {$row->getClass()}
-            {$row->getErrorClass()}"{$row->getAttr()|raw}>
+            {$row->getErrorClass()}" {$row->getAttr()|raw}>
             {:$row->render()}
         </div>
         {/if}
         {/volist}
     </form>
-
+    <div class="col-md-12">
+        <div id="help-block" class="help-block hidden has-error text-center">
+            <label class="error-label control-label"></label>
+        </div>
+    </div>
     <script>
-
-        if(!window.forms)
-        {
+        if (!window.forms) {
             window.forms = [];
         }
 
         window.forms['{$id}'] = {
-            ajax : {$ajax},
-            search : '{$search}',
-            formSubmit : function ()
-            {
+            ajax: '{$ajax}' == '1',
+            search: '{$search}',
+            formSubmit: function () {
                 lightyear.loading('hide');
-                var search = this.search;
-                
-                if(this.ajax)
-                {
+                var that = this;
+
+                if (that.ajax) {
                     lightyear.loading('show');
-        
+
                     var data = $('#{$id} form').serialize();
-                
+
                     $.ajax({
                         url: '{$action}' || location.href,
                         data: data,
                         type: 'POST',
                         dataType: 'html',
                         success: function (data) {
-                            setTimeout(function(){
+                            setTimeout(function () {
                                 lightyear.loading('hide');
-                            },500);
-                            if(/^\{.+\}$/.test(data))
-                            {
+                            }, 500);
+                            if (/^\{.+\}$/.test(data)) {
                                 data = JSON.parse(data);
                                 if (data.status || data.code) {
-                                    
-                                    if(data.layer_close)
-                                    {
-                                        this.closeLayer(data.msg || data.message || '操作成功！');
-                                    }
-                                    else if(data.layer_close_refresh)
-                                    {
-                                        this.closeLayerRefresh(data.msg || data.message || '操作成功！');
-                                    }
-                                    else if(data.url)
-                                    {
-                                        lightyear.notify(data.msg || data.message || '操作成功！', 'success');
-                                        
-                                        setTimeout(function(){
+
+                                    if (data.layer_close) {
+                                        that.closeLayer(data.msg || data.message || '操作成功！');
+                                    } else if (data.layer_close_refresh) {
+                                        that.closeLayerRefresh(data.msg || data.message || '操作成功！');
+                                    } else if (data.url) {
+                                        lightyear.notify(data.msg || data.message || '操作成功！',
+                                            'success');
+
+                                        setTimeout(function () {
                                             location.replace(data.url);
 
                                         }, data.wait * 1000 || 2000);
-                                    }
-                                    else
-                                    {
-                                        lightyear.notify(data.msg || data.message || '操作成功！', 'success');
+                                    } else {
+                                        lightyear.notify(data.msg || data.message || '操作成功！',
+                                            'success');
                                     }
                                 } else {
                                     lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                                 }
-                            }
-                            else
-                            {
-                                $('#' + search).replaceWith(data);
+                            } else {
+                                $('#' + that.search).replaceWith(data);
                             }
                         },
                         error: function () {
@@ -95,38 +86,30 @@
 
                 return false;
             },
-            closeLayer : function (msg)
-            {
+            closeLayer: function (msg) {
                 parent.lightyear.notify(msg, 'success');
 
-                if(parent && parent.layer)
-                {
+                if (parent && parent.layer) {
                     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                     parent.layer.close(index);
                 }
             },
-            closeLayerRefresh : function (msg)
-            {
+            closeLayerRefresh: function (msg) {
                 parent.lightyear.notify(msg, 'success');
 
-                if(parent && parent.layer)
-                {
-                    if(parent.$('#form-refresh').size())
-                    {
+                if (parent && parent.layer) {
+                    if (parent.$('#form-refresh').size()) {
                         parent.$('#form-refresh').trigger('click');
-                    }
-                    else
-                    {
-                        setTimeout(function(){
+                    } else {
+                        setTimeout(function () {
                             parent.location.reload();
-                        },2000);
+                        }, 2000);
                     }
 
                     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    parent.layer.close(index);     
+                    parent.layer.close(index);
                 }
             }
         };
-    
     </script>
 </div>

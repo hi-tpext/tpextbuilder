@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 {if condition="$rowCheckbox"}
-                <th style="width: 40px;">
+                <th class="table-checkbox">
                     <label class="lyear-checkbox checkbox-primary">
                         <input type="checkbox" id="checkall-{$name}"
                             data-check="check-{$name}" class="checkall
@@ -31,7 +31,7 @@
             {volist name="list" id="row"}
             <tr class="table-row-id" data-id="{$ids[$key]}">
                 {if condition="$rowCheckbox"}
-                <td class="{$verticalAlign} {$textAlign}">
+                <td class="table-checkbox {$verticalAlign} {$textAlign}">
                     <label class="lyear-checkbox checkbox-primary">
                         <input type="checkbox" id="{$name}-{$key}"
                             value="{$ids[$key]}"

@@ -12,7 +12,7 @@ class Number extends Field
 
     protected $min = 0;
 
-    protected $max = 99999;
+    protected $max = 9999999;
 
     protected $js = [
         '/assets/tpextbuilder/js/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js',

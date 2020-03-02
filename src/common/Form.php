@@ -335,9 +335,9 @@ class Form extends Wapper implements Renderable
         if ($create) {
             $this->fieldsContentEnd();
             $this->divider('', '', 12)->size(0, 12)->showLabel(false);
-            $this->html('', '', 4)->showLabel(false);
+            $this->html('', '', 5)->showLabel(false);
             $this->btnSubmit();
-            $this->html('', '', 2)->showLabel(false);
+            $this->html('', '', 1)->showLabel(false);
             $this->btnReset();
         }
 
@@ -438,6 +438,7 @@ class Form extends Wapper implements Renderable
 
         if ($this->search) {
             $this->hidden('__page__')->value(1);
+            $this->hidden('__search__')->value(1);
             $this->addClass(' search-form');
             $this->searchScript();
         }
@@ -474,11 +475,9 @@ class Form extends Wapper implements Renderable
             rules: {$rules},
             errorPlacement: function errorPlacement(error, element) {
                 var parent = $(element).parents('.form-group');
-                if (parent.find('.error-label').length) {
-                    return;
-                }
                 parent.addClass('has-error');
-                lightyear.notify(parent.find('.control-label').text() + error.text(), 'warning');
+                $('#help-block').removeClass('hidden');
+                $('#help-block .error-label').html(parent.find('.control-label').text() + error.text());
             },
             highlight: function(element) {
                 var el = $(element);

@@ -39,6 +39,8 @@ class Field implements Renderable
 
     protected $autoPost = '';
 
+    protected $autoPostRefresh = false;
+
     protected $showLabel = true;
 
     protected $class = '';
@@ -132,14 +134,16 @@ class Field implements Renderable
      * Undocumented function
      *
      * @param string $url
+     * @param boolean $refresh
      * @return $this
      */
-    public function autoPost($url = '')
+    public function autoPost($url = '', $refresh = true)
     {
         if (empty($url)) {
             $url = url('autoPost');
         }
         $this->autoPost = $url;
+        $this->autoPostRefresh = $refresh;
         return $this;
     }
 
@@ -609,9 +613,11 @@ class Field implements Renderable
     {
         $class = 'row-' . $this->name;
 
+        $refresh = $this->autoPostRefresh ? 1 : 0;
+
         $script = <<<EOT
 
-        tpextbuilder.autoPost('{$class}', '{$this->autoPost}');
+        tpextbuilder.autoPost('{$class}', '{$this->autoPost}' ,{$refresh});
 
 EOT;
         $this->script[] = $script;
@@ -673,7 +679,7 @@ EOT;
             'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->getName(),
-            'requiredStyle' => $this->required ? '' :'style="visibility: hidden;"',
+            'requiredStyle' => $this->required ? '' : 'style="visibility: hidden;"',
             'tableRowKey' => $this->tableRowKey,
             'value' => $value,
             'class' => ' ' . $this->class . $mapClass,

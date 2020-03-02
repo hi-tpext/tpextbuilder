@@ -4,6 +4,8 @@ namespace tpext\builder\displayer;
 
 class Icon extends Text
 {
+    protected $view = 'icon';
+
     protected $js = [
         '/assets/tpextbuilder/js/fontIconPicker/jquery.fonticonpicker.min.js',
     ];
