@@ -21,11 +21,4 @@ class Module extends baseModule
     protected $modules = [
         'admin' => ['upload', 'import'],
     ];
-
-    public function moduleInit($info = [])
-    {
-        parent::moduleInit($info);
-
-        return true;
-    }
 }

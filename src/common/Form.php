@@ -335,9 +335,9 @@ class Form extends Wapper implements Renderable
         if ($create) {
             $this->fieldsContentEnd();
             $this->divider('', '', 12)->size(0, 12)->showLabel(false);
-            $this->html('', '', 5)->showLabel(false);
+            $this->html('', '', 4)->showLabel(false);
             $this->btnSubmit();
-            $this->html('', '', 1)->showLabel(false);
+            $this->html('', '', 3)->showLabel(false);
             $this->btnReset();
         }
 
@@ -352,12 +352,10 @@ class Form extends Wapper implements Renderable
      */
     public function searchButtons()
     {
-        $this->html('', '', 12)->showLabel(false);
-        $this->html('', '', 5)->showLabel(false);
-        $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-sm');
-        $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-sm')->attr('onclick="location.replace(location.href)"');
-
-        $this->button('refresh', 'refresh', 1)->class('hidden');
+        $this->html('', '', 1)->showLabel(false);
+        $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-xs');
+        $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-xs')->attr('onclick="location.replace(location.href)"');
+        $this->button('refresh', 'refresh', 1)->getWapper()->class('hidden');
 
         $this->botttomButtonsCalled = true;
         return $this;
@@ -417,7 +415,7 @@ class Form extends Wapper implements Renderable
      */
     public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default')
     {
-        $this->button('button', $label, $size)->class($class . ' btn-close-layer'. ' '.$this->butonsSizeClass);
+        $this->button('button', $label, $size)->class($class . ' btn-close-layer' . ' ' . $this->butonsSizeClass);
         return $this;
     }
 
@@ -444,10 +442,15 @@ class Form extends Wapper implements Renderable
         }
 
         foreach ($this->rows as $row) {
+            if (!$row instanceof Row) {
+                $row->beforRender();
+                continue;
+            }
+
             $displayer = $row->getDisplayer();
 
             if ($this->search) {
-                $displayer->fullSize(3)->autoPost(false);
+                $displayer->fullSize(4)->autoPost(false);
             }
 
             if ($displayer->isRequired()) {

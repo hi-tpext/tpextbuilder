@@ -19,7 +19,9 @@ class Html extends Field
     {
         parent::created();
 
-        $this->value = $this->label;
+        $this->value = $this->name;
+
+        $this->name = 'html' . mt_rand(100, 999);
 
         return $this;
     }

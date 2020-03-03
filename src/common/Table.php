@@ -3,6 +3,7 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
+use tpext\builder\form\Row;
 use tpext\builder\form\Wapper;
 use tpext\builder\table\Actionbar;
 use tpext\builder\table\Column;
@@ -52,7 +53,7 @@ class Table extends Wapper implements Renderable
 
     protected $rowCheckbox = true;
 
-    protected $emptyText = "<p class='text-center'><span>暂无数据~</span></p>";
+    protected $emptyText = "<p class='text-center'><span>暂无相关数据~</span></p>";
 
     protected $toolbar = null;
 
@@ -504,6 +505,10 @@ class Table extends Wapper implements Renderable
                 $colunm = $this->cols[$col];
 
                 $colunm->beforRender();
+
+                if (!$colunm instanceof Row) {
+                    continue;
+                }
 
                 $displayer = $colunm->getDisplayer();
 
