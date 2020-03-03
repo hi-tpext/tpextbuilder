@@ -67,6 +67,8 @@ class Table extends Wapper implements Renderable
 
     protected $isInitData = false;
 
+    protected $sortable = ['id'];
+
     /**
      * Undocumented variable
      *
@@ -298,6 +300,23 @@ class Table extends Wapper implements Renderable
         return $this->headTextAlign = $val;
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param string|array $val
+     * @return $this
+     */
+    public function sortable($val)
+    {
+        if (!is_array($val)) {
+            $val = explode(',', $val);
+        }
+
+        $this->sortable = $val;
+        return $this;
+    }
+
     /**
      * Undocumented function
      *
@@ -558,6 +577,18 @@ class Table extends Wapper implements Renderable
             $this->paginator = Paginator::make($this->data, 999, 1, 999);
         }
 
+        $sort = input('__sort__', '');
+        $sortKey = '';
+        $sortOrder = '';
+
+        if ($sort) {
+            $arr = explode(':', $sort);
+            if (count($arr) == 2) {
+                $sortKey = $arr[0];
+                $sortOrder = $arr[1];
+            }
+        }
+
         $vars = [
             'class' => $this->class,
             'attr' => $this->attr,
@@ -568,8 +599,12 @@ class Table extends Wapper implements Renderable
             'emptyText' => $this->emptyText,
             'headTextAlign' => $this->headTextAlign,
             'ids' => $this->ids,
+            'sortable' => $this->sortable,
+            'sortKey' => $sortKey,
+            'sortOrder' => $sortOrder,
             'rowCheckbox' => $this->rowCheckbox && $this->useToolbar,
             'name' => time() . mt_rand(1000, 9999),
+            'tdClass' => $this->verticalAlign . ' ' . $this->textAlign,
             'verticalAlign' => $this->verticalAlign,
             'textAlign' => $this->textAlign,
             'id' => $this->id,
@@ -597,7 +632,7 @@ class Table extends Wapper implements Renderable
 
             $this->cols[$arguments[0]] = $col;
 
-            $this->headers[] = $col->getLabel();
+            $this->headers[$arguments[0]] = $col->getLabel();
 
             return $col->$name($arguments[0], $col->getLabel());
         }

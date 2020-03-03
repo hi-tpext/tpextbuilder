@@ -437,6 +437,7 @@ class Form extends Wapper implements Renderable
         if ($this->search) {
             $this->hidden('__page__')->value(1);
             $this->hidden('__search__')->value(1);
+            $this->hidden('__sort__');
             $this->addClass(' search-form');
             $this->searchScript();
         }
@@ -540,6 +541,25 @@ EOT;
 
         $('body').on('click', '#form-submit', function(){
             $('#form-__page__').val(1);
+        });
+        
+        $('body').on('click', '.table .sortable', function(){
+            var sort = '';
+            if($(this).hasClass('mdi-sort-descending'))
+            {
+                sort = $(this).data('key') + ':asc';
+                $(this).removeClass('mdi-sort-descending').addClass('mdi-sort-ascending');
+            }
+            else
+            {
+                sort = $(this).data('key') + ':desc';
+                $('.sortable.mdi-sort-ascending').removeClass('mdi-sort-ascending').addClass('mdi-sort');
+                $('.sortable.mdi-sort-descending').removeClass('mdi-sort-descending').addClass('mdi-sort');
+                $(this).removeClass('mdi-sort').addClass('mdi-sort-descending');
+            }
+
+            $('#form-__sort__').val(sort);
+            $('#{$form} form').trigger('submit');
         });
 
 EOT;

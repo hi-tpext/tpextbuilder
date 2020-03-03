@@ -19,7 +19,20 @@
                 </th>
                 {/if}
                 {volist name="headers" id="header"}
-                <th class="{$headTextAlign}">{$header}</th>
+                <th class="{$headTextAlign}">
+                    {$header}
+                    {in name="$key" value="$sortable"}
+                        {if condition="$key eq $sortKey"}
+                            {if condition="$sortOrder eq 'asc'"}
+                            <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-ascending pull-right"></a>
+                            {else/}
+                            <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-descending pull-right"></a>
+                            {/if}
+                        {else/}
+                        <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort pull-right"></a>
+                        {/if}
+                    {/in}
+                </th>
                 {/volist}
                 {notempty name="$actionbars"}
                 <th class="{$headTextAlign}">{$actionRowText|raw}</th>
@@ -31,7 +44,7 @@
             {volist name="list" id="row"}
             <tr class="table-row-id" data-id="{$ids[$key]}">
                 {if condition="$rowCheckbox"}
-                <td class="table-checkbox {$verticalAlign} {$textAlign}">
+                <td class="table-checkbox {$tdClass}">
                     <label class="lyear-checkbox checkbox-primary">
                         <input type="checkbox" id="{$name}-{$key}"
                             value="{$ids[$key]}"
@@ -40,8 +53,7 @@
                 </td>
                 {/if}
                 {foreach name="row" id="col" key="co"}
-                <td class="col-md-{$col.wapper->getColSize()} {$verticalAlign}
-                    {$textAlign} {$col.wapper->getClass()}"
+                <td class="col-md-{$col.wapper->getColSize()} {$tdClass} {$col.wapper->getClass()}"
                     {$col.wapper->getAttr()|raw}>
                     {$col.value|raw}
                 </td>
