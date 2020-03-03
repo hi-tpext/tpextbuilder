@@ -39,7 +39,7 @@ class Upload extends Controller
             //echo json_encode(['status' => 500, 'info' => '上传失败，没有权限', 'class' => 'error']);
             // 失败跟成功同样的方式返回
         } else {
-            $newPath = preg_replace('/^.+?\/public(\/.+)$/i', '$1', $newPath);
+            $newPath = preg_replace('/^.+?public(\/.+)$/i', '$1', $newPath);
             switch ($type) {
                 case 'wangeditor':
                     echo json_encode(['url' => $newPath]);
@@ -205,7 +205,7 @@ class Upload extends Controller
                 "title" => $up->errorInfo,
             ]);
         } else {
-            $newPath = preg_replace('/^.+?\/public(\/.+)$/i', '$1', $newPath);
+            $newPath = preg_replace('/^.+?public(\/.+)$/i', '$1', $newPath);
 
             return json_encode([
                 "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
