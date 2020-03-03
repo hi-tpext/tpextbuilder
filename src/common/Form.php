@@ -493,8 +493,7 @@ class Form extends Wapper implements Renderable
                 $(element).parents('.form-group').removeClass('has-error');
             },
             submitHandler: function(form) {
-                window.forms['{$form}'].formSubmit();
-                return false;
+                return window.forms['{$form}'].formSubmit();
             }
         });
 

@@ -82,9 +82,11 @@
                             lightyear.notify('网络错误', 'danger');
                         }
                     });
-                }
 
-                return false;
+                    return false;
+                }
+                
+                return true;
             },
             closeLayer: function (msg) {
                 parent.lightyear.notify(msg, 'success');
