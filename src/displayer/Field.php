@@ -105,7 +105,7 @@ class Field implements Renderable
      */
     public function getId()
     {
-        return 'form-' . $this->name . preg_replace('/\W/', '', $this->tableRowKey);
+        return 'form-' . preg_replace('/\W/', '', $this->name . $this->tableRowKey);
     }
 
     /**

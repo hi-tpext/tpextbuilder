@@ -2,6 +2,7 @@
 namespace tpext\builder\admin\controller;
 
 use think\Controller;
+use tpext\builder\common\Module;
 use tpext\builder\common\Upload as UploadTool;
 
 /* 参照 Light-Year-Example 相关上传处理方式*/
@@ -31,12 +32,18 @@ class Upload extends Controller
                 $file_input_name = 'file';
         }
 
-        $up = new UploadTool();
+        $config = Module::getInstance()->getConfig();
+
+        $config['allowSuffix'] = explode(',', $config['allowSuffix']);
+        $config['maxSize'] = $config['maxSize'] * 1024 * 1024;
+
+        $up = new UploadTool($config);
 
         $newPath = $up->uploadFile($file_input_name);
+
         if ($newPath === false) {
             //var_dump($up->errorNumber);
-            //echo json_encode(['status' => 500, 'info' => '上传失败，没有权限', 'class' => 'error']);
+            echo json_encode(['status' => 500, 'info' => '上传失败-' . $up->errorInfo, 'class' => 'error']);
             // 失败跟成功同样的方式返回
         } else {
             $newPath = preg_replace('/^.+?public(\/.+)$/i', '$1', $newPath);
@@ -192,7 +199,11 @@ class Upload extends Controller
     {
         $file_input_name = 'upfile';
 
-        $up = new UploadTool(['path' => app()->getRootPath() . "/public/upload/{$type}/" . date('Ym') . '/']);
+        $config = Module::getInstance()->getConfig();
+
+        $config['path'] = app()->getRootPath() . "/public/upload/{$type}/" . date('Ym') . '/';
+
+        $up = new UploadTool($config);
 
         $newPath = $up->uploadFile($file_input_name);
         if ($newPath === false) {

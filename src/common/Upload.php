@@ -7,7 +7,7 @@ class Upload
     //文件上传保存路径
     protected $path = '';
     //允许文件上传的后缀
-    public static $allowSuffix = [
+    protected $allowSuffix = [
         //
         'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp',
         //
@@ -26,7 +26,7 @@ class Upload
         'application/x-zip-compressed'];
 
     //允许文件上传的文件最大大小
-    protected $maxSize = 2000000;
+    protected $maxSize = 20 * 1024 * 1024;
     //是否启用随机名
     protected $isRandName = true;
     //加上文件前缀
@@ -215,7 +215,7 @@ class Upload
      */
     protected function checkSuffix()
     {
-        if (!in_array($this->suffix, static::$allowSuffix)) {
+        if (!in_array($this->suffix, $this->allowSuffix)) {
             $this->setOption('errorNumber', -5);
             return false;
         }
