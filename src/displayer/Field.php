@@ -11,8 +11,6 @@ use tpext\builder\form\Wapper;
 
 class Field implements Renderable
 {
-    protected $id = '';
-
     protected $tableRowKey = '';
 
     protected $name = '';

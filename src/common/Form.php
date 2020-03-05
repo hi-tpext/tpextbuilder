@@ -93,7 +93,7 @@ class Form extends Wapper implements Renderable
      */
     public function search($val)
     {
-        $this->search = $val->getId();
+        $this->search = $val->getFormId();
         $this->ajax = true;
         return $this;
     }
@@ -102,7 +102,7 @@ class Form extends Wapper implements Renderable
      * Undocumented function
      *
      * @param boolean $val
-     * @return $this;
+     * @return $this
      */
     public function ajax($val)
     {
@@ -114,9 +114,9 @@ class Form extends Wapper implements Renderable
      * Undocumented function
      *
      * @param string $val
-     * @return $this;
+     * @return $this
      */
-    public function id($val)
+    public function formId($val)
     {
         $this->id = $val;
         return $this;
@@ -127,7 +127,7 @@ class Form extends Wapper implements Renderable
      *
      * @return string
      */
-    public function getId()
+    public function getFormId()
     {
         return $this->id . ($this->search ? '-search' : '');
     }
@@ -468,7 +468,7 @@ class Form extends Wapper implements Renderable
 
     protected function validatorScript()
     {
-        $form = $this->getId();
+        $form = $this->getFormId();
 
         $rules = json_encode($this->validator);
 
@@ -509,7 +509,7 @@ EOT;
 
     protected function searchScript()
     {
-        $form = $this->getId();
+        $form = $this->getFormId();
 
         $script = <<<EOT
         $('body').on('click', '#{$this->search} ul li a', function(){
@@ -580,7 +580,7 @@ EOT;
             'method' => strtoupper($this->method),
             'class' => $this->class,
             'attr' => $this->attr,
-            'id' => $this->getId(),
+            'id' => $this->getFormId(),
             'ajax' => $this->ajax || !empty($this->search) ? 1 : 0,
             'search' => $this->search,
         ];

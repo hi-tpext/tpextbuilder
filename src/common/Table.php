@@ -126,9 +126,9 @@ class Table extends Wapper implements Renderable
      * Undocumented function
      *
      * @param string $val
-     * @return $this;
+     * @return $this
      */
-    public function id($val)
+    public function tableId($val)
     {
         $this->id = $val;
         return $this;
@@ -139,7 +139,7 @@ class Table extends Wapper implements Renderable
      *
      * @return string
      */
-    public function getId()
+    public function getTableId()
     {
         return $this->id;
     }
@@ -420,7 +420,7 @@ class Table extends Wapper implements Renderable
      * Undocumented function
      *
      * @param boolean $val
-     * @return $this;
+     * @return $this
      */
     public function useToolbar($val)
     {
@@ -446,7 +446,7 @@ class Table extends Wapper implements Renderable
      * Undocumented function
      *
      * @param boolean $val
-     * @return $this;
+     * @return $this
      */
     public function useActionbar($val)
     {
@@ -458,7 +458,7 @@ class Table extends Wapper implements Renderable
      * Undocumented function
      *
      * @param boolean $val
-     * @return $this;
+     * @return $this
      */
     protected function actionRowText($val)
     {
