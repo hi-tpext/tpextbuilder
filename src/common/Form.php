@@ -93,7 +93,7 @@ class Form extends Wapper implements Renderable
      */
     public function search($val)
     {
-        $this->search = $val->getFormId();
+        $this->search = $val->getTableId();
         $this->ajax = true;
         return $this;
     }
