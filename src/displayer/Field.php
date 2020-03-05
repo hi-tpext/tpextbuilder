@@ -154,7 +154,7 @@ class Field implements Renderable
     public function value($val)
     {
         if (is_array($val)) {
-            $val = explode(',', $val);
+            $val = implode(',', $val);
         }
         $this->value = $val;
         return $this;

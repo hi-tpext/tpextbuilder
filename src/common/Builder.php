@@ -64,6 +64,30 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function setTitle($val)
+    {
+        $this->title = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function setDesc($val)
+    {
+        $this->desc = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return string
      */
     public function getCsrfToken()

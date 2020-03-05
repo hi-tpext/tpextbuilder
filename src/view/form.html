@@ -53,11 +53,13 @@
                             if (/^\{.+\}$/.test(data)) {
                                 data = JSON.parse(data);
                                 if (data.status || data.code) {
-
                                     if (data.layer_close) {
                                         that.closeLayer(data.msg || data.message || '操作成功！');
                                     } else if (data.layer_close_refresh) {
                                         that.closeLayerRefresh(data.msg || data.message || '操作成功！');
+                                    } else if (data.layer_close_go) {
+                                        that.closeLayerGo(data.msg || data.message || '操作成功！', data
+                                            .layer_close_go);
                                     } else if (data.url) {
                                         lightyear.notify(data.msg || data.message || '操作成功！',
                                             'success');
@@ -89,27 +91,43 @@
                 return true;
             },
             closeLayer: function (msg) {
-                parent.lightyear.notify(msg, 'success');
-
-                if (parent && parent.layer) {
-                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    parent.layer.close(index);
+                if (parent) {
+                    parent.lightyear.notify(msg, 'success');
+                    if (parent.layer) {
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index);
+                    }
+                } else {
+                    lightyear.notify(msg, 'success');
                 }
             },
             closeLayerRefresh: function (msg) {
-                parent.lightyear.notify(msg, 'success');
-
-                if (parent && parent.layer) {
-                    if (parent.$('#form-refresh').size()) {
-                        parent.$('#form-refresh').trigger('click');
-                    } else {
-                        setTimeout(function () {
+                if (parent) {
+                    parent.lightyear.notify(msg, 'success');
+                    if (parent.layer) {
+                        if (parent.$('#form-refresh').size()) {
+                            parent.$('#form-refresh').trigger('click');
+                        } else {
                             parent.location.reload();
-                        }, 2000);
+                        }
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index);
                     }
-
-                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    parent.layer.close(index);
+                } else {
+                    lightyear.notify(msg, 'success');
+                }
+            },
+            closeLayerGo: function (msg, url) {
+                if (parent) {
+                    parent.lightyear.notify(msg, 'success');
+                    if (parent.layer) {
+                        parent.location.replace(url);
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index);
+                    }
+                } else {
+                    alert(0);
+                    lightyear.notify(msg, 'success');
                 }
             }
         };

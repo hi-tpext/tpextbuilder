@@ -19,7 +19,7 @@ return [
     'isRandName' => 1,
     //配置描述
     '__config__' => [
-        'allowSuffix' => ['type' => 'textarea', 'label' => '允许上传的文件后缀', 'size' => [2, 10]],
+        'allowSuffix' => ['type' => 'textarea', 'label' => '允许上传的文件后缀', 'size' => [2, 10], 'help' => '以英文,号分割'],
         'maxSize' => ['type' => 'number', 'label' => '上传文件大小限制(MB)'],
         'isRandName' => ['type' => 'radio', 'label' => '随机文件名', 'options' => [0 => '否', 1 => '是']],
     ],

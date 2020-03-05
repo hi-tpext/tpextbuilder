@@ -30,6 +30,29 @@ class Layer
         return $view->assign($vars);
     }
 
+    public function closeGo($success = true, $msg = '操作成功', $url)
+    {
+        if (request()->isAjax()) {
+            return json([
+                'code' => $success ? 1 : 0,
+                'msg' => $msg,
+                'layer_close_go' => $url,
+            ]);
+        }
+
+        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closeGo.html']);
+
+        $vars = [
+            'success' => $success ? 1 : 0,
+            'msg' => $msg,
+            'url' => $url,
+        ];
+
+        $view = new ViewShow($this->view);
+
+        return $view->assign($vars);
+    }
+
     public function closeRefresh($success = true, $msg = '操作成功')
     {
         if (request()->isAjax()) {

@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="zh">
-    <head>
-        <script>
-            if(parent && parent.layer)
-            {
-                var success = {$success};
-                var msg = '{$msg}';
 
-                if(success)
-                {
-                    parent.lightyear.notify(msg, 'success');
-                }
-                else
-                {
-                    parent.lightyear.notify(msg, 'danger');
-                }
+<head>
+    <script>
+        var success = '{$success}' == '1';
+        var msg = '{$msg}';
 
-                if(parent.$('#form-refresh').size())
-                {
-                    parent.$('#form-refresh').trigger('click');
-                }
-                else
-                {
-                    setTimeout(function(){
-                        parent.location.reload();
-                    },2000);
-                }
-
-                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                parent.layer.close(index);     
+        if (parent && parent.layer) {
+            if (success) {
+                parent.lightyear.notify(msg, 'success');
+            } else {
+                parent.lightyear.notify(msg, 'danger');
             }
-        </script>
-    </head>
+
+            if (parent.$('#form-refresh').size()) {
+                parent.$('#form-refresh').trigger('click');
+            } else {
+                setTimeout(function () {
+                    parent.location.reload();
+                }, 2000);
+            }
+
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);
+        } else {
+            if (success) {
+                lightyear.notify(msg, 'success');
+            } else {
+                lightyear.notify(msg, 'danger');
+            }
+        }
+    </script>
+</head>
+
 </html>
