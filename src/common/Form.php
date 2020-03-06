@@ -451,7 +451,7 @@ class Form extends Wapper implements Renderable
             $displayer = $row->getDisplayer();
 
             if ($this->search) {
-                $displayer->fullSize(4)->autoPost(false);
+                $displayer->fullSize(4);
             }
 
             if ($displayer->isRequired()) {
