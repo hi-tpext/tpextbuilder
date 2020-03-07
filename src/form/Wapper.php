@@ -124,6 +124,11 @@ class Wapper
         static::$displayerMap = array_merge(static::$displayerMap, $pair);
     }
 
+    public static function getDisplayerMap()
+    {
+        return static::$displayerMap;
+    }
+
     public static function setdefaultFieldClass($pair)
     {
         static::$defaultFieldClass = array_merge(static::$defaultFieldClass, $pair);

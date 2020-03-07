@@ -15,7 +15,7 @@ class MDEditor extends Field
     ];
 
     /*模板样式里面有一个css会影响editor.md的图标,这里重设下*/
-    protected $style = [
+    protected $style =
         '.editormd .divider {
             width: auto;
         }
@@ -24,8 +24,8 @@ class MDEditor extends Field
             margin: 0px;
 
         }
-        ',
-    ];
+        '
+    ;
 
     protected $jsOptions = [
         'height' => 600,

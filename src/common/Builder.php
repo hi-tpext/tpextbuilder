@@ -4,6 +4,7 @@ namespace tpext\builder\common;
 
 use think\facade\View;
 use think\response\View as ViewShow;
+use tpext\common\ExtLoader;
 
 class Builder implements Renderable
 {
@@ -296,11 +297,24 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function minify($val)
+    {
+        $this->minify = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return mixed
      */
     public function render()
     {
         $this->beforRender();
+        ExtLoader::trigger('builder_render', [$this->js, $this->css]);
 
         $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
 
@@ -313,7 +327,7 @@ class Builder implements Renderable
             'title' => $this->title,
             'desc' => $this->desc,
             'rows' => $this->rows,
-            'js' => $this->minify ? [] : array_unique($this->js),
+            'js' => $this->minify ? ['/assets/tpextbuilder/js/layer/layer.js'] : array_unique($this->js),
             'css' => $this->minify ? [] : array_unique($this->css),
             'style' => implode('', array_unique($this->style)),
             'script' => implode('', array_unique($this->script)),
@@ -323,7 +337,7 @@ class Builder implements Renderable
 
         $instance = Module::getInstance();
 
-        $config = $instance->setConfig(['page_title' => $this->desc, 'page_position' => $this->title]);
+        $instance->setConfig(['page_title' => $this->desc, 'page_position' => $this->title]);
 
         View::share(['admin_page_title' => $this->desc, 'admin_page_position' => $this->title]);
 
