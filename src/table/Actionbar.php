@@ -163,7 +163,7 @@ class Actionbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnView($url = '', $label = '', $class = 'btn-primary', $icon = 'mdi-lead-pencil', $attr = 'title="编辑"')
+    public function btnView($url = '', $label = '', $class = 'btn-primary', $icon = 'mdi-lead-pencil', $attr = 'title="查看"')
     {
         if (empty($url)) {
             $url = url('view', ['id' => '__data.pk__']);
