@@ -11,8 +11,7 @@
 use tpext\common\ExtLoader;
 
 $classMap = [
-    'tpext\\builder\\common\\Module',
-    'tpext\\builder\\common\\Plugin',
+    'tpext\\builder\\common\\Module'
 ];
 
 ExtLoader::addClassMap($classMap);
