@@ -1,8 +1,7 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]}">
     <label class="lyear-switch {$class}">
-        <input type="checkbox" name="{$name}" id="{$id}" {if
-            condition="$checked"}checked{/if} {$attr|raw}>
+        <input type="checkbox" name="{$name}" id="{$id}" {if condition="$checked" }checked{/if} {$attr|raw}>
         <span></span>
     </label>
     {include file="$helptempl" /}

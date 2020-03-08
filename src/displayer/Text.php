@@ -12,6 +12,8 @@ class Text extends Field
 
     protected $maxlength = 0;
 
+    protected $placeholder = '';
+
     protected $js = [
         '/assets/tpextbuilder/js/bootstrap-maxlength/bootstrap-maxlength.min.js',
     ];
@@ -25,6 +27,18 @@ class Text extends Field
     public function maxlength($val = 0)
     {
         $this->maxlength = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function placeholder($val)
+    {
+        $this->placeholder = $val;
         return $this;
     }
 
@@ -78,7 +92,6 @@ class Text extends Field
 
     public function render()
     {
-
         if ($this->maxlength > 0) {
             $this->attr .= ' maxlength="' . $this->maxlength . '"';
         }
@@ -88,6 +101,7 @@ class Text extends Field
         $vars = array_merge($vars, [
             'befor' => $this->befor,
             'after' => $this->after,
+            'placeholder' => $this->placeholder
         ]);
 
         $viewshow = $this->getViewInstance();

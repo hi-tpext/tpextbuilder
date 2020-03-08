@@ -2,15 +2,13 @@
 <div class="col-md-{$size[1]} checkbox-div" id="{$id}">
     {if condition="$checkallBtn"}
     <label class="lyear-checkbox {$inline} {$class}">
-        <input type="checkbox" class="checkall" id="checkall-{$name}" {if
-            condition="$checkall" }checked{/if}
+        <input type="checkbox" class="checkall" id="checkall-{$name}" {if condition="$checkall" }checked{/if}
             data-check="check-{$name}"><span>{$checkallBtn}</span>
     </label>
     {/if}
     {volist name="options" id="option"}
     <label class="{$inline} {$class}">
-        <input type="checkbox" value="{$key}" class="check-{$name}" {in
-            name="$key" value="$checked" }checked{/in}
+        <input type="checkbox" value="{$key}" class="check-{$name}" {in name="$key" value="$checked" }checked{/in}
             id="{$id}-{$key}" name="{$name}[]" {$attr|raw}><span>{$option}</span>
     </label>
     {/volist}

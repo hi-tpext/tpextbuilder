@@ -22,6 +22,8 @@ class Number extends Field
         '/assets/tpextbuilder/js/bootstrap-touchspin/jquery.bootstrap-touchspin.css',
     ];
 
+    protected $placeholder = '';
+
     protected $jsOptions = [
         //'postfix' => '%',
         //'prefix' => '¥',
@@ -51,6 +53,18 @@ class Number extends Field
     public function max($val)
     {
         $this->max = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function placeholder($val)
+    {
+        $this->placeholder = $val;
         return $this;
     }
 
@@ -96,5 +110,18 @@ EOT;
         $this->numberScript();
 
         return parent::beforRender();
+    }
+
+    public function render()
+    {
+        $vars = $this->commonVars();
+
+        $vars = array_merge($vars, [
+            'placeholder' => $this->placeholder,
+        ]);
+
+        $viewshow = $this->getViewInstance();
+
+        return $viewshow->assign($vars)->getContent();
     }
 }

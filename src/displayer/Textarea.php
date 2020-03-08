@@ -8,6 +8,8 @@ class Textarea extends Field
 
     protected $maxlength = 0;
 
+    protected $placeholder = '';
+
     protected $js = [
         '/assets/tpextbuilder/js/bootstrap-maxlength/bootstrap-maxlength.min.js',
     ];
@@ -24,13 +26,32 @@ class Textarea extends Field
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function placeholder($val)
+    {
+        $this->placeholder = $val;
+        return $this;
+    }
+
     public function render()
     {
-
         if ($this->maxlength > 0) {
             $this->attr .= ' maxlength="' . $this->maxlength . '"';
         }
 
-        return parent::render();
+        $vars = $this->commonVars();
+
+        $vars = array_merge($vars, [
+            'placeholder' => $this->placeholder,
+        ]);
+
+        $viewshow = $this->getViewInstance();
+
+        return $viewshow->assign($vars)->getContent();
     }
 }
