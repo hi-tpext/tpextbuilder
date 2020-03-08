@@ -163,12 +163,12 @@ class Actionbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnView($url = '', $label = '', $class = 'btn-primary', $icon = 'mdi-lead-pencil', $attr = 'title="查看"')
+    public function btnView($url = '', $label = '', $class = 'btn-primary', $icon = 'mdi-lead-pencil', $attr = 'title="编辑"')
     {
         if (empty($url)) {
             $url = url('view', ['id' => '__data.pk__']);
         }
-        $this->actionBtn('view', $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('edit', $label)->href($url)->icon($icon)->class($class)->attr($attr);
         return $this;
     }
 

@@ -29,7 +29,7 @@ class FieldsContent extends Wapper implements Renderable
      * Undocumented function
      *
      * @param Row $row
-     * @return $this
+     * @return void
      */
     public function addRow($row)
     {

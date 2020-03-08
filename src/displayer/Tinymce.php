@@ -6,6 +6,8 @@ class Tinymce extends Field
 {
     protected $view = 'tinymce';
 
+    protected $minify = false;
+
     protected $js = [
         '/assets/tpextbuilder/js/tinymce/tinymce.min.js',
     ];

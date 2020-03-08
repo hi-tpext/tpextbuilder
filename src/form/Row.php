@@ -260,6 +260,8 @@ class Row extends Wapper implements Renderable
 
         $this->displayer = $displayer;
 
+        static::addUsing($displayer);
+
         return $displayer;
     }
 

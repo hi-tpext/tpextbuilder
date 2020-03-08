@@ -501,9 +501,6 @@ class Form extends Wapper implements Renderable
 EOT;
         Builder::getInstance()->addScript($script);
 
-        Builder::getInstance()->addjs('/assets/tpextbuilder/js/jquery-validate/jquery.validate.min.js');
-        Builder::getInstance()->addjs('/assets/tpextbuilder/js/jquery-validate/messages_zh.min.js');
-
         return $script;
     }
 

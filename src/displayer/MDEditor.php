@@ -6,6 +6,8 @@ class MDEditor extends Field
 {
     protected $view = 'mdeditor';
 
+    protected $minify = false;
+
     protected $js = [
         '/assets/tpextbuilder/js/editor.md/editormd.min.js',
     ];

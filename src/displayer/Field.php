@@ -73,6 +73,8 @@ class Field implements Renderable
 
     protected $required = false;
 
+    protected $minify = true;
+
     public function __construct($name, $label = '')
     {
         if (empty($label)) {
@@ -414,6 +416,16 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
+     * @return boolean
+     */
+    public function canMinify()
+    {
+        return $this->minify;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param boolean $val
      * @return $this
      */
@@ -625,7 +637,7 @@ EOT;
 
     public function beforRender()
     {
-        if (!empty($this->js)) {
+        if (!empty($this->js) && (!Builder::isMinify() || $this->minify)) {
             Builder::getInstance()->addJs($this->js);
         }
 

@@ -6,6 +6,8 @@ class WangEditor extends Field
 {
     protected $view = 'wangeditor';
 
+    protected $minify = false;
+    
     protected $js = [
         '/assets/tpextbuilder/js/wangEditor/wangEditor.min.js',
     ];

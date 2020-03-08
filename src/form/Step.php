@@ -81,7 +81,8 @@ class Step implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param integer $left
+     * @param integer $width
      * @return $this
      */
     public function size($left = 2, $width = 8)

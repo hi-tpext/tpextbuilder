@@ -4,7 +4,7 @@ namespace tpext\builder\common;
 
 use think\facade\View;
 use think\response\View as ViewShow;
-use tpext\common\ExtLoader;
+use tpext\builder\form\Wapper;
 
 class Builder implements Renderable
 {
@@ -16,7 +16,7 @@ class Builder implements Renderable
 
     protected $csrf_token = '';
 
-    protected $minify = false;
+    protected static $minify = false;
 
     /**
      * Undocumented variable
@@ -39,6 +39,8 @@ class Builder implements Renderable
 
     protected $notify = [];
 
+    protected $layer;
+
     protected function __construct($title, $desc)
     {
         $this->title = $title;
@@ -52,11 +54,19 @@ class Builder implements Renderable
      * @param string $desc
      * @return $this
      */
-    public static function getInstance($title = 'Page', $desc = '')
+    public static function getInstance($title = '', $desc = '')
     {
         if (static::$instance == null) {
             static::$instance = new static($title, $desc);
-
+        } else {
+            if ($title) {
+                static::$instance->setTitle($title);
+                static::$instance->setDesc($desc);
+            }
+            if ($desc) {
+                static::$instance->setTitle($title);
+                static::$instance->setDesc($desc);
+            }
         }
 
         return static::$instance;
@@ -160,6 +170,56 @@ class Builder implements Renderable
         }
         $this->style = array_merge($this->style, $val);
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getJs()
+    {
+        return $this->js;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getScript()
+    {
+        return $this->script;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getCss()
+    {
+        return $this->css;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getRows()
+    {
+        return $this->rows;
     }
 
     /**
@@ -279,7 +339,26 @@ class Builder implements Renderable
      */
     public function layer()
     {
-        return new Layer;
+        if (!$this->layer) {
+            $this->layer = new Layer;
+        }
+
+        return $this->layer;
+    }
+
+    public function commonJs()
+    {
+        return [
+            '/assets/tpextbuilder/js/jquery-validate/jquery.validate.min.js',
+            '/assets/tpextbuilder/js/jquery-validate/messages_zh.min.js',
+            '/assets/tpextbuilder/js/layer/layer.js',
+            '/assets/tpextbuilder/js/tpextbuilder.js',
+        ];
+    }
+
+    public function commonCss()
+    {
+        return '/assets/tpextbuilder/css/tpextbuilder.css';
     }
 
     public function beforRender()
@@ -288,22 +367,29 @@ class Builder implements Renderable
             $row->beforRender();
         }
 
-        $this->js[] = '/assets/tpextbuilder/js/layer/layer.js';
-        $this->js[] = '/assets/tpextbuilder/js/tpextbuilder.js';
-
-        $this->css[] = '/assets/tpextbuilder/css/tpextbuilder.css';
+        $this->addJs($this->commonJs());
+        $this->addCss($this->commonCss());
     }
 
     /**
      * Undocumented function
      *
      * @param boolean $val
-     * @return $this
+     * @return void
      */
-    public function minify($val)
+    public static function minify($val)
     {
-        $this->minify = $val;
-        return $this;
+        static::$minify = $val;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public static function isMinify()
+    {
+        return static::$minify;
     }
 
     /**
@@ -314,7 +400,6 @@ class Builder implements Renderable
     public function render()
     {
         $this->beforRender();
-        ExtLoader::trigger('builder_render', [$this->js, $this->css]);
 
         $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
 
@@ -323,12 +408,24 @@ class Builder implements Renderable
             $this->script[] = "lightyear.notify('{$this->notify[0]}', '{$this->notify[1]}', {$this->notify[2]}, '{$this->notify[3]}', '{$this->notify[4]}', '{$this->notify[5]}');";
         }
 
+        if (static::$minify) {
+            $this->js = [];
+            $this->css = [];
+            $using = Wapper::getUsing();
+
+            foreach ($using as $field) {
+                if (!$field->canMinify()) {
+                    $this->addJs($field->getJs());
+                }
+            }
+        }
+
         $vars = [
-            'title' => $this->title,
+            'title' => $this->title ? $this->title : 'Page',
             'desc' => $this->desc,
             'rows' => $this->rows,
-            'js' => $this->minify ? ['/assets/tpextbuilder/js/layer/layer.js'] : array_unique($this->js),
-            'css' => $this->minify ? [] : array_unique($this->css),
+            'js' => array_unique($this->js),
+            'css' => array_unique($this->css),
             'style' => implode('', array_unique($this->style)),
             'script' => implode('', array_unique($this->script)),
         ];

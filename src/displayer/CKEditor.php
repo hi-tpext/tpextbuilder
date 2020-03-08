@@ -6,6 +6,8 @@ class CKEditor extends Field
 {
     protected $view = 'ckeditor';
 
+    protected $minify = false;
+
     protected $js = [
         '/assets/tpextbuilder/js/ckeditor/ckeditor.js',
     ];

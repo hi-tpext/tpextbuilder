@@ -101,6 +101,13 @@ class Wapper
 
     protected static $defaultFieldClass = [];
 
+    protected static $using = [];
+
+    public static function addUsing($class)
+    {
+        static::$using[] = $class;
+    }
+
     public static function isDisplayer($name)
     {
         if (empty(static::$displayers)) {
@@ -127,6 +134,11 @@ class Wapper
     public static function getDisplayerMap()
     {
         return static::$displayerMap;
+    }
+
+    public static function getUsing()
+    {
+        return static::$using;
     }
 
     public static function setdefaultFieldClass($pair)
