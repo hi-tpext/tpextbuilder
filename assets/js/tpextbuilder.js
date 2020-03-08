@@ -93,7 +93,7 @@
             val = values.join(',');
 
             if (confirm) {
-                var text = $('#' + id).text().trim();
+                var text = $('#' + id).text().trim() || $(this).attr('title');
                 $.alert({
                     title: '操作提示',
                     content: '确定要执行批量<strong>' + text + '</strong>操作吗？',
@@ -192,8 +192,7 @@
                     lightyear.notify(data.msg || data.message || '操作成功！', 'success');
                     if (refresh) {
                         $('#form-refresh').trigger('click');
-                    }
-                    else if (data.url) {
+                    } else if (data.url) {
                         setTimeout(function () {
                             location.replace(data.url);
                         }, data.wait * 1000 || 2000);
