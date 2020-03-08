@@ -16,6 +16,9 @@ form.search-form .form-group {
     min-height: 33px;
 }
 
+.button-div .btn-xs {
+    margin-top: 5px;
+}
 
 .table .checkbox-div,
 .table .radio-div,
