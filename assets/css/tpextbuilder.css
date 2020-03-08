@@ -11,12 +11,15 @@ form.search-form .form-group {
 }
 
 .checkbox-div,
-.radio-div {
+.radio-div,
+.button-div {
     min-height: 33px;
 }
 
-.tabl .checkbox-div,
-.tabl .radio-div {
+
+.table .checkbox-div,
+.table .radio-div,
+.table .button-div {
     min-height: 30px;
 }
 
