@@ -74,7 +74,6 @@
             return;
         }
         $('body').on('click', '#' + id, function () {
-            var name = 'ids';
             var val = '';
 
             var values = [];
@@ -147,7 +146,6 @@
 
     tpextbuilder.postRowid = function (classname, url, confirm) {
         $('body').on('click', 'td.row-__action__ .' + classname, function () {
-            var name = 'ids';
             var val = $(this).data('id');
             if (confirm) {
                 var text = $(this).text().trim() || $(this).attr('title') || '此';

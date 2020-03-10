@@ -40,7 +40,7 @@ class Form extends Wapper implements Renderable
 
     protected $validator = [];
 
-    protected $butonsSizeClass = '';
+    protected $butonsSizeClass = 'btn-sm';
 
     /**
      * Undocumented variable
@@ -438,7 +438,7 @@ class Form extends Wapper implements Renderable
             $this->hidden('__page__')->value(1);
             $this->hidden('__search__')->value(1);
             $this->hidden('__sort__');
-            $this->addClass(' search-form');
+            $this->addClass('search-form');
             $this->searchScript();
         }
 
@@ -534,6 +534,11 @@ EOT;
             {
                 $('#{$form} form').slideToggle(300);
             }
+        });
+
+        $('body').on('click', '#btn-export', function(){
+            var url = $(this).data('export-url');
+            window.forms['{$form}'].exportPost(url);
         });
 
         $('body').on('click', '#form-submit', function(){

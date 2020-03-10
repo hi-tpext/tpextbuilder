@@ -32,11 +32,12 @@
         window.forms['{$id}'] = {
             ajax: '{$ajax}' == '1',
             search: '{$search}',
+            export: 0,
+            action: '{$action}',
             formSubmit: function () {
                 lightyear.loading('hide');
                 var that = this;
-
-                if (that.ajax) {
+                if (!that.export && that.ajax) {
                     lightyear.loading('show');
 
                     var data = $('#{$id} form').serialize();
@@ -89,6 +90,34 @@
                 }
 
                 return true;
+            },
+            exportPost: function (url) {
+                this.export = 1;
+                lightyear.loading('show');
+                var form = $('#{$id} form');
+                form.attr('action', url);
+
+                var values = [];
+                $("input.table-row:checked").each(function (i, e) {
+                    values.push($(e).val());
+                });
+
+                var tempInput = document.createElement("input");
+                tempInput.type = "hidden";
+                tempInput.id = "checked_ids";
+                tempInput.name = 'checked_ids';
+                tempInput.value = values.join(',');
+                form.append(tempInput);
+
+                form.trigger('submit');
+
+                form.attr('action', this.action);
+                $(tempInput).remove();
+                this.export = 0;
+
+                setTimeout(function () {
+                    lightyear.loading('hide');
+                }, 2000);
             },
             closeLayer: function (msg) {
                 if (parent) {

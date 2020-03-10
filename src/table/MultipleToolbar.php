@@ -232,6 +232,26 @@ class MultipleToolbar extends Toolbar
     /**
      * Undocumented function
      *
+     * @param string $postUrl
+     * @param string $label
+     * @param string $class
+     * @param string $icon
+     * @param string $attr
+     * @return $this
+     */
+    public function btnExport($postUrl = '', $label = '导出', $class = 'btn-pink', $icon = 'mdi-export', $attr = 'title="导出"')
+    {
+        if (empty($postUrl)) {
+            $postUrl = url('export');
+        }
+
+        $this->linkBtn('export', $label)->class($class)->icon($icon)->attr($attr . ' data-export-url="' . $postUrl . '"');
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param string $url
      * @param string $label
      * @param string $class
