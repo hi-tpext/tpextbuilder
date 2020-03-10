@@ -149,7 +149,7 @@ class Actionbar extends Toolbar
         if (empty($url)) {
             $url = url('edit', ['id' => '__data.pk__']);
         }
-        $this->actionBtn('edit', $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->attr($attr);
         return $this;
     }
 
@@ -168,7 +168,7 @@ class Actionbar extends Toolbar
         if (empty($url)) {
             $url = url('view', ['id' => '__data.pk__']);
         }
-        $this->actionBtn('edit', $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->attr($attr);
         return $this;
     }
 
@@ -188,7 +188,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('delete');
         }
-        $this->actionBtn('delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
         return $this;
     }
 
@@ -208,7 +208,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('disable');
         }
-        $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
         return $this;
     }
 
@@ -228,7 +228,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('enable');
         }
-        $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
         return $this;
     }
 
@@ -253,7 +253,7 @@ class Actionbar extends Toolbar
             }
         }
 
-        $this->actionBtn($name, $label)->href($url)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn($name, $label)->href($url)->icon($icon)->addClass($class)->attr($attr);
 
         return $this;
     }
@@ -281,7 +281,7 @@ class Actionbar extends Toolbar
             }
         }
 
-        $this->actionBtn($name, $label)->postRowid($postUrl, $confirm)->icon($icon)->class($class)->attr($attr);
+        $this->actionBtn($name, $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
 
         return $this;
     }

@@ -538,7 +538,13 @@ EOT;
 
         $('body').on('click', '#btn-export', function(){
             var url = $(this).data('export-url');
-            window.forms['{$form}'].exportPost(url);
+            window.forms['{$form}'].exportPost(url, '');
+        });
+
+        $('body').on('click', '#dropdown-exports-div .dropdown-menu li a', function(){
+            var url = $('#dropdown-exports').data('export-url');
+            var fileType = $(this).data('key');
+            window.forms['{$form}'].exportPost(url, fileType);
         });
 
         $('body').on('click', '#form-submit', function(){

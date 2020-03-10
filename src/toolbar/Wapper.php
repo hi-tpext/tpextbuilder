@@ -8,6 +8,7 @@ namespace tpext\builder\toolbar;
  * @method \tpext\builder\toolbar\LinkBtn          linkBtn($name, $label)
  * @method \tpext\builder\toolbar\ActionBtn        actionBtn($name, $label)
  * @method \tpext\builder\toolbar\ImportBtn        importBtn($name, $label)
+ * @method \tpext\builder\toolbar\DropdownBtns         dropdownBtns($html, $label)
  * @method \tpext\builder\toolbar\Html             html($html)
  */
 
@@ -18,11 +19,14 @@ class Wapper
     protected static $displayerMap = [
         'linkBtn' => \tpext\builder\toolbar\LinkBtn::class,
         'actionBtn' => \tpext\builder\toolbar\ActionBtn::class,
+        'dropdownBtns' => \tpext\builder\toolbar\DropdownBtns::class,
         'html' => \tpext\builder\toolbar\Html::class,
     ];
 
     protected static $defaultFieldClass = [
-        'linkBtn' => 'btn-sm',
+        'linkBtn' => 'btn-xs',
+        'actionBtn' => 'btn-xs',
+        'dropdownBtns' => 'btn-xs',
     ];
 
     public static function isDisplayer($name)

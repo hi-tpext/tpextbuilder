@@ -40,7 +40,7 @@ class Layer
             ]);
         }
 
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closeGo.html']);
+        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closego.html']);
 
         $vars = [
             'success' => $success ? 1 : 0,
@@ -63,7 +63,7 @@ class Layer
             ]);
         }
 
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closeRefresh.html']);
+        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closerefresh.html']);
 
         $vars = [
             'success' => $success ? 1 : 0,

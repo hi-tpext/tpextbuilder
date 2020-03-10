@@ -1,0 +1,14 @@
+<div id="{$id}-div" class="btn-group pull-right m-r-10" role="group">
+        <a class="btn {$class} btn-{$name} dropdown-toggle" id="{$id}" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" {$attr|raw}>
+                {if condition="$icon"}<i class="mdi {$icon}"></i>{/if}{$label|raw}
+                <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+                {volist name="items" id="item"}
+                <li>
+                        <a data-key="{$key}" href="javascript:;">{$item|raw}</a>
+                </li>
+                {/volist}
+        </ul>
+</div>

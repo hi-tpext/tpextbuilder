@@ -43,7 +43,15 @@ class Bar implements Renderable
 
     public function created()
     {
-       
+        $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
+
+        $fieldType = lcfirst($fieldType);
+
+        $defaultClass = Wapper::hasDefaultFieldClass($fieldType);
+
+        if (!empty($defaultClass)) {
+            $this->class = $defaultClass;
+        }
     }
 
     /**
@@ -254,7 +262,6 @@ class Bar implements Renderable
      */
     public function commonVars()
     {
-
         $this->useLayer = $this->useLayer && !empty($this->href) && !preg_match('/javascript:.*/i', $this->href) && !preg_match('/^#.*/i', $this->href);
         
         $vars = [

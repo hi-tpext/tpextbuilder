@@ -91,7 +91,7 @@
 
                 return true;
             },
-            exportPost: function (url) {
+            exportPost: function (url, file_type) {
                 this.export = 1;
                 lightyear.loading('show');
                 var form = $('#{$id} form');
@@ -102,17 +102,25 @@
                     values.push($(e).val());
                 });
 
-                var tempInput = document.createElement("input");
-                tempInput.type = "hidden";
-                tempInput.id = "checked_ids";
-                tempInput.name = 'checked_ids';
-                tempInput.value = values.join(',');
-                form.append(tempInput);
+                var __file_type__ = document.createElement("input");
+                __file_type__.type = "hidden";
+                __file_type__.id = "__file_type__";
+                __file_type__.name = '__file_type__';
+                __file_type__.value = file_type || '';
+                form.append(__file_type__);
+
+                var __ids__ = document.createElement("input");
+                __ids__.type = "hidden";
+                __ids__.id = "__ids__";
+                __ids__.name = '__ids__';
+                __ids__.value = values.join(',');
+                form.append(__ids__);
 
                 form.trigger('submit');
 
                 form.attr('action', this.action);
-                $(tempInput).remove();
+                $(__ids__).remove();
+                $(__file_type__).remove();
                 this.export = 0;
 
                 setTimeout(function () {
