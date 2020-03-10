@@ -110,3 +110,8 @@ form textarea.form-control,
 .table .select2-container .select2-selection .select2-selection__rendered {
     line-height: 33px;
 }
+
+.panel.content .content-header
+{
+    background: #fff;
+}
