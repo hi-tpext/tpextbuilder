@@ -4,9 +4,12 @@ namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
 use tpext\builder\form\FieldsContent;
+use tpext\builder\traits\HasDom;
 
 class Tab implements Renderable
 {
+    use HasDom;
+
     private $view = '';
 
     protected $class = '';
@@ -108,30 +111,6 @@ class Tab implements Renderable
      * @param string $val
      * @return $this
      */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
     public function active($val)
     {
         $names = array_keys($this->labels);
@@ -141,16 +120,6 @@ class Tab implements Renderable
         }
 
         return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return empty($this->class) ? '' : ' ' . $this->class;
     }
 
     /**
@@ -195,6 +164,7 @@ class Tab implements Renderable
             'active' => $this->active,
             'id' => $this->getId(),
             'class' => $this->class,
+            'attr' => $this->getAttrWithStyle(),
         ];
 
         $viewshow = new ViewShow($this->view);

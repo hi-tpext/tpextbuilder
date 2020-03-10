@@ -7,10 +7,13 @@ use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\common\Renderable;
-use tpext\builder\form\Wapper;
+use tpext\builder\form\FWapper;
+use tpext\builder\traits\HasDom;
 
 class Field implements Renderable
 {
+    use HasDom;
+
     protected $tableRowKey = '';
 
     protected $name = '';
@@ -22,8 +25,6 @@ class Field implements Renderable
     protected $css = [];
 
     protected $script = [];
-
-    protected $style = '';
 
     protected $view = 'field';
 
@@ -41,11 +42,7 @@ class Field implements Renderable
 
     protected $showLabel = true;
 
-    protected $class = '';
-
     protected $labelClass = '';
-
-    protected $attr = '';
 
     protected $labelArrt = '';
 
@@ -91,7 +88,7 @@ class Field implements Renderable
 
         $fieldType = lcfirst($fieldType);
 
-        $defaultClass = Wapper::hasDefaultFieldClass($fieldType);
+        $defaultClass = FWapper::hasDefaultFieldClass($fieldType);
 
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;
@@ -215,81 +212,9 @@ class Field implements Renderable
      * @param string $val
      * @return $this
      */
-    public function style($val)
-    {
-        $this->style = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
     public function labelClass($val)
     {
         $this->labelClass = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function attr($val)
-    {
-        $this->attr = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addAttr($val)
-    {
-        $this->attr .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addStyle($val)
-    {
-        $this->attr .= $val;
         return $this;
     }
 
@@ -455,26 +380,6 @@ class Field implements Renderable
     public function getWapper()
     {
         return $this->wapper;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getAttr()
-    {
-        return $this->attr;
     }
 
     /**

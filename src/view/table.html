@@ -1,3 +1,6 @@
+{notempty name="searchForm"}
+{:$searchForm->render()}
+{/notempty}
 {notempty name="toolbar"}
 <div class="row m-b-10 m-l-10">
     {:$toolbar->render()}
@@ -54,7 +57,7 @@
                 {/if}
                 {foreach name="row" id="col" key="co"}
                 <td class="col-md-{$col.wapper->getColSize()} {$tdClass} {$col.wapper->getClass()}"
-                    {$col.wapper->getAttr()|raw}>
+                    {$col.wapper->getAttrWithStyle()|raw}>
                     {$col.value|raw}
                 </td>
                 {/foreach}

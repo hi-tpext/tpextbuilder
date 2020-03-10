@@ -9,22 +9,21 @@ use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Row;
 use tpext\builder\form\Step;
-use tpext\builder\form\Wapper;
+use tpext\builder\form\FWapper;
+use tpext\builder\traits\HasDom;
 
 /**
  * Form class
  */
-class Form extends Wapper implements Renderable
+class Form extends FWapper implements Renderable
 {
+    use HasDom;
+
     protected $view = '';
 
     protected $action = '';
 
     protected $id = 'the-form';
-
-    protected $class = 'form-horizontal';
-
-    protected $attr = '';
 
     protected $method = 'post';
 
@@ -62,6 +61,11 @@ class Form extends Wapper implements Renderable
      * @var FieldsContent
      */
     protected $__fields_content__ = null;
+
+    public function __construct()
+    {
+        $this->class = 'form-horizontal';
+    }
 
     /**
      * Undocumented function
@@ -158,30 +162,6 @@ class Form extends Wapper implements Renderable
 
     /**
      * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function attr($val)
-    {
-        $this->attr = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
      * btn-lg btn-sm btn-xs
      * @param string $val
      * @return $this
@@ -189,30 +169,6 @@ class Form extends Wapper implements Renderable
     public function butonsSizeClass($val)
     {
         $this->butonsSizeClass = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addAttr($val)
-    {
-        $this->attr .= ' ' . $val;
         return $this;
     }
 
@@ -550,7 +506,7 @@ EOT;
         $('body').on('click', '#form-submit', function(){
             $('#form-__page__').val(1);
         });
-        
+
         $('body').on('click', '.table .sortable', function(){
             var sort = '';
             if($(this).hasClass('mdi-sort-descending'))
@@ -587,7 +543,7 @@ EOT;
             'action' => $this->action,
             'method' => strtoupper($this->method),
             'class' => $this->class,
-            'attr' => $this->attr,
+            'attr' => $this->getAttrWithStyle(),
             'id' => $this->getFormId(),
             'ajax' => $this->ajax || !empty($this->search) ? 1 : 0,
             'search' => $this->search,

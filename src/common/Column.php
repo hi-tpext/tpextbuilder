@@ -77,11 +77,6 @@ class Column
         return $tab;
     }
 
-    public function accordion()
-    {
-        
-    }
-
     /**
      * 获取一新行
      *
@@ -92,6 +87,18 @@ class Column
         $row = new Row();
         $this->elms[] = $row;
         return $row;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Renderable $rendable
+     * @return void
+     */
+    public function append($rendable)
+    {
+        $this->elms[] = $rendable;
+        return $this;
     }
 
     /**

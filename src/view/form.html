@@ -13,7 +13,7 @@
         </div>
         {else/}
         <div class="form-group col-md-{$row->getColSize()} {$row->getClass()}
-            {$row->getErrorClass()}" {$row->getAttr()|raw}>
+            {$row->getErrorClass()}" {$row->getAttrWithStyle()|raw}>
             {:$row->render()}
         </div>
         {/if}

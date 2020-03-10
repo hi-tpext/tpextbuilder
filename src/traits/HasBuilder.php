@@ -4,6 +4,8 @@ namespace tpext\builder\traits;
 
 use think\Model;
 use tpext\builder\common\Builder;
+use tpext\builder\common\Form;
+use tpext\builder\common\Table;
 
 trait HasBuilder
 {
@@ -20,9 +22,9 @@ trait HasBuilder
      * @var string
      */
     protected $pageTitle = 'Page';
-    protected $add = '添加';
-    protected $edit = '编辑';
-    protected $index = '列表';
+    protected $addText = '添加';
+    protected $editText = '编辑';
+    protected $indexText = '列表';
 
     /**
      * 允许行内编辑的字段，留空则不限制
@@ -33,7 +35,20 @@ trait HasBuilder
 
     public function index()
     {
+        $builder = $this->builder($this->pageTitle, $this->indexText);
 
+        $search = $this->builSearch($builder->form());
+        $table = $this->buildTable($builder->table());
+
+        $table->searchForm($search);
+
+        $table->data($data);
+
+        if (request()->isAjax()) {
+            return $table->partial()->render();
+        }
+
+        return $builder->render();
     }
 
     public function add()
@@ -41,7 +56,10 @@ trait HasBuilder
         if (request()->isPost()) {
             return $this->save();
         } else {
-            return $this->form($this->add);
+            $builder = $this->builder($this->pageTitle, $this->addText);
+            $form = $builder->form();
+            $form = $this->builForm($form, false);
+            return $builder->render();
         }
     }
 
@@ -54,8 +72,11 @@ trait HasBuilder
             if (!$data) {
                 $this->error('数据不存在');
             }
-
-            return $this->form($this->edit, $data);
+            $builder = $this->builder($this->pageTitle, $this->editText);
+            $form = $builder->form();
+            $form = $this->builForm($form, true);
+            $form->fill($data);
+            return $builder->render();
         }
     }
 
@@ -118,50 +139,24 @@ trait HasBuilder
     /**
      * Undocumented function
      *
-     * @param string $action
-     * @param array $data
-     * @return mixed
+     * @param Table $table
+     * @return Table
      */
-    protected function table($data = [])
+    protected function buildTable($table)
     {
-        $builder = $this->builder($this->pageTitle, $this->index);
-
-        $table = $builder->form();
-        $table = $this->createForm($table, $this->isEdit($data));
-
-        $form->fill($data);
-
-        return $builder->render();
+        return $table;
     }
 
     /**
      * Undocumented function
      *
-     * @param string $action
-     * @param array $data
-     * @return mixed
+     * @param Form $form
+     * @return Form
      */
-    protected function form($action, $data = [])
+    protected function builSearch($form)
     {
-        $builder = $this->builder($this->pageTitle, $action);
-
-        $form = $builder->form();
-        $form = $this->createForm($form, $this->isEdit($data));
-
-        $form->fill($data);
-
-        return $builder->render();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $data
-     * @return boolean
-     */
-    protected function isEdit($data)
-    {
-        return isset($data[$this->dataModel->getPk()]);
+        //无搜索就返回 null
+        return null;
     }
 
     /**

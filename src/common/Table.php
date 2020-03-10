@@ -3,18 +3,20 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
-use tpext\builder\form\Row;
-use tpext\builder\form\Wapper;
+use tpext\builder\table\TWapper;
 use tpext\builder\table\Actionbar;
 use tpext\builder\table\Column;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
+use tpext\builder\traits\HasDom;
 
 /**
  * Table class
  */
-class Table extends Wapper implements Renderable
+class Table extends TWapper implements Renderable
 {
+    use HasDom;
+
     protected $view = '';
 
     protected $id = 'the-table';
@@ -32,10 +34,6 @@ class Table extends Wapper implements Renderable
     protected $textAlign = 'text-center';
 
     protected $verticalAlign = 'vertical-middle';
-
-    protected $class = 'table-striped table-hover table-bordered';
-
-    protected $attr = '';
 
     protected $headers = [];
 
@@ -69,6 +67,8 @@ class Table extends Wapper implements Renderable
 
     protected $sortable = ['id'];
 
+    protected $sortOrder = '';
+
     /**
      * Undocumented variable
      *
@@ -86,6 +86,12 @@ class Table extends Wapper implements Renderable
     protected $script = [];
 
     protected $partial = false;
+
+    public function __construct()
+    {
+        $this->class = 'table-striped table-hover table-bordered';
+    }
+
 
     /**
      * Undocumented function
@@ -158,54 +164,6 @@ class Table extends Wapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param string $val
-     * @return $this
-     */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function attr($val)
-    {
-        $this->attr = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addAttr($val)
-    {
-        $this->attr .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @param boolean $val
      * @return $this
      */
@@ -233,26 +191,6 @@ class Table extends Wapper implements Renderable
     public function getCss()
     {
         return $this->css;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getAttr()
-    {
-        return $this->attr;
     }
 
     /**
@@ -341,6 +279,18 @@ class Table extends Wapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function sortOrder($val)
+    {
+        $this->sortOrder = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function getData()
@@ -377,29 +327,6 @@ class Table extends Wapper implements Renderable
     public function getPaginator()
     {
         return $this->paginator;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param From $form
-     * @return $this
-     */
-    public function searchForm($form)
-    {
-        $form->search($this);
-        $this->searchForm = $form;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return Form
-     */
-    public function getSearch()
-    {
-        return $this->form;
     }
 
     /**
@@ -440,6 +367,20 @@ class Table extends Wapper implements Renderable
         }
 
         return $this->actionbar;
+    }
+
+    /**
+     * 获取一个搜索
+     *
+     * @return Search
+     */
+    public function getSearch()
+    {
+        if (empty($this->searchForm)) {
+            $this->searchForm = new Search();
+            $this->searchForm->search($this);
+        }
+        return $this->searchForm;
     }
 
     /**
@@ -487,13 +428,11 @@ class Table extends Wapper implements Renderable
         }
 
         if (empty($this->searchForm)) {
-            $form = Builder::getInstance()->form();
-            $this->searchForm($form);
-            $form->addClass('form-empty');
-            $form->beforRender();
+            $this->getSearch();
+            $this->searchForm->addClass('form-empty');
         }
 
-        $this->searchForm->addClass('hidden');
+        $this->searchForm->beforRender();
 
         return $this;
     }
@@ -525,7 +464,7 @@ class Table extends Wapper implements Renderable
 
                 $colunm->beforRender();
 
-                if (!$colunm instanceof Row) {
+                if (!$colunm instanceof Column) {
                     continue;
                 }
 
@@ -577,12 +516,12 @@ class Table extends Wapper implements Renderable
             $this->paginator = Paginator::make($this->data, 999, 1, 999);
         }
 
-        $sort = input('__sort__', '');
+        $sort = input('__sort__', $this->sortOrder);
         $sortKey = '';
         $sortOrder = '';
 
         if ($sort) {
-            $arr = explode(':', $sort);
+            $arr = explode(' ', $sort);
             if (count($arr) == 2) {
                 $sortKey = $arr[0];
                 $sortOrder = $arr[1];
@@ -591,7 +530,7 @@ class Table extends Wapper implements Renderable
 
         $vars = [
             'class' => $this->class,
-            'attr' => $this->attr,
+            'attr' => $this->getAttrWithStyle(),
             'headers' => $this->headers,
             'cols' => $this->cols,
             'list' => $this->list,
@@ -610,6 +549,7 @@ class Table extends Wapper implements Renderable
             'id' => $this->id,
             'paginator' => $this->paginator,
             'partial' => $this->partial ? 1 : 0,
+            'searchForm' => !$this->partial ? $this->searchForm : null,
             'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,
             'actionbars' => $this->actionbars,
             'actionRowText' => $this->actionRowText,
