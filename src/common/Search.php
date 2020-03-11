@@ -7,21 +7,20 @@ use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\search\Row;
 use tpext\builder\search\SWapper;
+use tpext\builder\traits\HasDom;
 
 /**
  * Form class
  */
 class Search extends SWapper implements Renderable
 {
+    use HasDom;
+
     protected $view = '';
 
     protected $action = '';
 
     protected $id = 'the-form-search';
-
-    protected $class = 'form-horizontal';
-
-    protected $attr = '';
 
     protected $method = 'post';
 
@@ -34,6 +33,14 @@ class Search extends SWapper implements Renderable
     protected $defaultDisplayerSize = null;
 
     protected $butonsSizeClass = 'btn-sm';
+
+    protected $rand;
+
+    public function __construct()
+    {
+        $this->class = 'form-horizontal';
+        $this->rand = mt_rand(1000, 9999);
+    }
 
     /**
      * Undocumented function
@@ -94,30 +101,6 @@ class Search extends SWapper implements Renderable
 
     /**
      * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function attr($val)
-    {
-        $this->attr = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
      * btn-lg btn-sm btn-xs
      * @param string $val
      * @return $this
@@ -125,30 +108,6 @@ class Search extends SWapper implements Renderable
     public function butonsSizeClass($val)
     {
         $this->butonsSizeClass = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addAttr($val)
-    {
-        $this->attr .= ' ' . $val;
         return $this;
     }
 
@@ -334,7 +293,7 @@ EOT;
             'action' => $this->action,
             'method' => strtoupper($this->method),
             'class' => $this->class,
-            'attr' => $this->attr,
+            'attr' => $this->getAttrWithStyle(),
             'id' => $this->getFormId(),
             'ajax' => $this->ajax,
             'search' => $this->search,
@@ -357,6 +316,10 @@ EOT;
 
             if ($this->defaultDisplayerSize) {
                 $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);
+            }
+
+            if ($name == 'button') {
+                $displayer->tableRowKey($this->rand);
             }
 
             return $displayer;

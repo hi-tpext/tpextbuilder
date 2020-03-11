@@ -7,9 +7,9 @@ use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
+use tpext\builder\form\FWapper;
 use tpext\builder\form\Row;
 use tpext\builder\form\Step;
-use tpext\builder\form\FWapper;
 use tpext\builder\traits\HasDom;
 
 /**
@@ -33,13 +33,13 @@ class Form extends FWapper implements Renderable
 
     protected $ajax = true;
 
-    protected $search;
-
     protected $defaultDisplayerSize = null;
 
     protected $validator = [];
 
     protected $butonsSizeClass = 'btn-sm';
+
+    protected $rand;
 
     /**
      * Undocumented variable
@@ -65,6 +65,7 @@ class Form extends FWapper implements Renderable
     public function __construct()
     {
         $this->class = 'form-horizontal';
+        $this->rand = mt_rand(1000, 9999);
     }
 
     /**
@@ -87,19 +88,6 @@ class Form extends FWapper implements Renderable
     public function getRows()
     {
         return $this->rows();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Table $val
-     * @return $this
-     */
-    public function search($val)
-    {
-        $this->search = $val->getTableId();
-        $this->ajax = true;
-        return $this;
     }
 
     /**
@@ -133,7 +121,7 @@ class Form extends FWapper implements Renderable
      */
     public function getFormId()
     {
-        return $this->id . ($this->search ? '-search' : '');
+        return $this->id;
     }
 
     /**
@@ -304,22 +292,6 @@ class Form extends FWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return $this
-     */
-    public function searchButtons()
-    {
-        $this->html('', '', 1)->showLabel(false);
-        $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-xs');
-        $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-xs')->attr('onclick="location.replace(location.href)"');
-        $this->button('refresh', 'refresh', 1)->getWapper()->class('hidden');
-
-        $this->botttomButtonsCalled = true;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @param string $label
      * @param integer $size
      * @param string $class
@@ -383,19 +355,7 @@ class Form extends FWapper implements Renderable
     public function beforRender()
     {
         if (!$this->botttomButtonsCalled && empty($this->step)) {
-            if ($this->search) {
-                $this->searchButtons();
-            } else {
-                $this->bottomButtons(true);
-            }
-        }
-
-        if ($this->search) {
-            $this->hidden('__page__')->value(1);
-            $this->hidden('__search__')->value(1);
-            $this->hidden('__sort__');
-            $this->addClass('search-form');
-            $this->searchScript();
+            $this->bottomButtons(true);
         }
 
         foreach ($this->rows as $row) {
@@ -405,10 +365,6 @@ class Form extends FWapper implements Renderable
             }
 
             $displayer = $row->getDisplayer();
-
-            if ($this->search) {
-                $displayer->fullSize(4);
-            }
 
             if ($displayer->isRequired()) {
                 $this->validator[$displayer->getName()]['required'] = true;
@@ -460,78 +416,6 @@ EOT;
         return $script;
     }
 
-    protected function searchScript()
-    {
-        $form = $this->getFormId();
-
-        $script = <<<EOT
-        $('body').on('click', '#{$this->search} ul li a', function(){
-            var page = $(this).attr('href').replace(/.*\?page=(\d+).*/,'$1');
-            $('#form-__page__').val(page);
-            $('#{$form} form').trigger('submit');
-            return false;
-        });
-
-        $('body').on('click', '#btn-refresh,#form-refresh', function(){
-            $('#{$form} form').trigger('submit');
-        });
-
-        if($('#{$form} form').hasClass('form-empty'))
-        {
-            $('#btn-search').remove();
-        }
-
-        $('body').on('click', '#btn-search', function(){
-            if($('#{$form} form').hasClass('hidden'))
-            {
-                $('#{$form} form').removeClass('hidden');
-            }
-            else
-            {
-                $('#{$form} form').slideToggle(300);
-            }
-        });
-
-        $('body').on('click', '#btn-export', function(){
-            var url = $(this).data('export-url');
-            window.forms['{$form}'].exportPost(url, '');
-        });
-
-        $('body').on('click', '#dropdown-exports-div .dropdown-menu li a', function(){
-            var url = $('#dropdown-exports').data('export-url');
-            var fileType = $(this).data('key');
-            window.forms['{$form}'].exportPost(url, fileType);
-        });
-
-        $('body').on('click', '#form-submit', function(){
-            $('#form-__page__').val(1);
-        });
-
-        $('body').on('click', '.table .sortable', function(){
-            var sort = '';
-            if($(this).hasClass('mdi-sort-descending'))
-            {
-                sort = $(this).data('key') + ':asc';
-                $(this).removeClass('mdi-sort-descending').addClass('mdi-sort-ascending');
-            }
-            else
-            {
-                sort = $(this).data('key') + ':desc';
-                $('.sortable.mdi-sort-ascending').removeClass('mdi-sort-ascending').addClass('mdi-sort');
-                $('.sortable.mdi-sort-descending').removeClass('mdi-sort-descending').addClass('mdi-sort');
-                $(this).removeClass('mdi-sort').addClass('mdi-sort-descending');
-            }
-
-            $('#form-__sort__').val(sort);
-            $('#{$form} form').trigger('submit');
-        });
-
-EOT;
-        Builder::getInstance()->addScript($script);
-
-        return $script;
-    }
-
     public function render()
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
@@ -545,8 +429,8 @@ EOT;
             'class' => $this->class,
             'attr' => $this->getAttrWithStyle(),
             'id' => $this->getFormId(),
-            'ajax' => $this->ajax || !empty($this->search) ? 1 : 0,
-            'search' => $this->search,
+            'ajax' => $this->ajax ? 1 : 0,
+            'search' => '',
         ];
 
         return $viewshow->assign($vars)->getContent();
@@ -570,6 +454,10 @@ EOT;
 
             if ($this->defaultDisplayerSize) {
                 $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);
+            }
+
+            if ($name == 'button') {
+                $displayer->tableRowKey($this->rand);
             }
 
             return $displayer;
