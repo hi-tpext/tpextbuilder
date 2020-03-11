@@ -11,9 +11,7 @@ return [
     //
     "rar,zip,tar,gz,7z,bz2,cab,iso," .
     //
-    "doc,docx,xls,xlsx,ppt,pptx,pdf,txt,md," .
-    //
-    "xml,json,"
+    "doc,docx,xls,xlsx,ppt,pptx,pdf,txt,md"
     ,
     'maxSize' => 20,
     'isRandName' => 1,

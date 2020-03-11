@@ -6,7 +6,7 @@ use think\response\View as ViewShow;
 use tpext\builder\common\Renderable;
 use tpext\builder\common\Module;
 
-class FieldsContent extends Wapper implements Renderable
+class FieldsContent extends FWapper implements Renderable
 {
     protected $rows = [];
 

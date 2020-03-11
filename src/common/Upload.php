@@ -17,9 +17,7 @@ class Upload
         //
         "rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso",
         //
-        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md",
-        //
-        "xml", "json"];
+        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md"];
 
     //允许文件上传的 Mime 类型
     protected $allowMime = ['image/jpeg', 'image/gif', 'image/wbmp', 'image/wbmp', 'image/png',
@@ -215,6 +213,10 @@ class Upload
      */
     protected function checkSuffix()
     {
+        if (in_array(strtolower($this->suffix), ['php', 'phps', 'php5', 'php7', 'htaccess', 'cgi', 'config', 'conf', 'js', 'css', 'html', 'htm', 'exe', 'asp', 'dll', 'aspx', 'asa', 'asax', 'ascx', 'asmx', 'ashx', 'axd', 'jsp', 'jspx', 'cer', 'cdx'])) {
+            $this->setOption('errorNumber', -5);
+            return false;
+        }
         if (!in_array($this->suffix, $this->allowSuffix)) {
             $this->setOption('errorNumber', -5);
             return false;

@@ -231,6 +231,26 @@ class Form extends FWapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return $this
+     */
+    public function tabEnd()
+    {
+        return $this->fieldsContentEnd();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function stepEnd()
+    {
+        return $this->fieldsContentEnd();
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return FieldsContent
      */
     public function getFieldsContent()
