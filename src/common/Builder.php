@@ -30,7 +30,7 @@ class Builder implements Renderable
 
     protected $css = [];
 
-    protected $style = [];
+    protected $stylesheet = [];
 
     protected $script = [];
 
@@ -162,12 +162,12 @@ class Builder implements Renderable
      * @param array $val
      * @return $this
      */
-    public function addStyle($val)
+    public function addStyleSheet($val)
     {
         if (!is_array($val)) {
             $val = [$val];
         }
-        $this->style = array_merge($this->style, $val);
+        $this->stylesheet = array_merge($this->stylesheet, $val);
         return $this;
     }
 
@@ -425,7 +425,7 @@ class Builder implements Renderable
             'rows' => $this->rows,
             'js' => array_unique($this->js),
             'css' => array_unique($this->css),
-            'style' => implode('', array_unique($this->style)),
+            'stylesheet' => implode('', array_unique($this->stylesheet)),
             'script' => implode('', array_unique($this->script)),
         ];
 

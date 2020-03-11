@@ -17,7 +17,7 @@ class MDEditor extends Field
     ];
 
     /*模板样式里面有一个css会影响editor.md的图标,这里重设下*/
-    protected $style =
+    protected $stylesheet =
         '.editormd .divider {
             width: auto;
         }
@@ -30,7 +30,8 @@ class MDEditor extends Field
     ;
 
     protected $jsOptions = [
-        'height' => 600,
+        'height' => 500,
+        'width' => 1200,
         'path' => "/assets/tpextbuilder/js/editor.md/lib/",
         'codeFold' => true,
         'htmlDecode' => 'iframe|on*', // 开启标签
@@ -73,7 +74,7 @@ class MDEditor extends Field
 
         $script = <<<EOT
 
-        var editor = editormd("{$inputId}-div", {$configs});
+        var mdeditor = editormd("{$inputId}-div", {$configs});
 
 EOT;
         $this->script[] = $script;

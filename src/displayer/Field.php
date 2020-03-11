@@ -24,6 +24,8 @@ class Field implements Renderable
 
     protected $css = [];
 
+    protected $stylesheet = '';
+
     protected $script = [];
 
     protected $view = 'field';
@@ -556,6 +558,11 @@ EOT;
 
         if (!empty($this->script)) {
             Builder::getInstance()->addScript($this->script);
+        }
+
+        if(!empty($this->stylesheet))
+        {
+            Builder::getInstance()->addStyleSheet($this->stylesheet);
         }
 
         return $this;

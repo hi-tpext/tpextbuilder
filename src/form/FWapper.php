@@ -47,6 +47,7 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\WangEditor     editor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\CKEditor       ckeditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\MDEditor       mdeditor($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\MDReader       mdreader($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Match          match($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Matches        matches($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  */

@@ -37,6 +37,7 @@ class Wapper
         'ueditor' => \tpext\builder\displayer\UEditor::class,
         'ckeditor' => \tpext\builder\displayer\CKEditor::class,
         'mdeditor' => \tpext\builder\displayer\MDEditor::class,
+        'mdreader' => \tpext\builder\displayer\MDReader::class,
         'editor' => \tpext\builder\displayer\WangEditor::class,
         'rate' => \tpext\builder\displayer\Rate::class,
         'month' => \tpext\builder\displayer\Month::class,
