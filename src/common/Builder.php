@@ -4,7 +4,6 @@ namespace tpext\builder\common;
 
 use think\facade\View;
 use think\response\View as ViewShow;
-use tpext\builder\form\Wapper;
 
 class Builder implements Renderable
 {
