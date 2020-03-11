@@ -17,7 +17,6 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\Hidden         hidden($name)
  * @method \tpext\builder\displayer\Color          color($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\RangeSlider    rangeSlider($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\Image          image($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Date           date($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Datetime       datetime($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Time           time($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
@@ -33,8 +32,6 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\Decimal        decimal($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Tags           tags($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Icon           icon($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\MultipleImage  multipleImage($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
- * @method \tpext\builder\displayer\MultipleFile   multipleFile($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  */
 
 class SWapper extends Base
