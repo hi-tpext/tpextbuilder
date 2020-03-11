@@ -175,13 +175,6 @@ class Search extends SWapper implements Renderable
         $this->addClass('hidden');
         $empty = empty($this->rows);
 
-        $this->hidden('__page__')->value(1);
-        $this->hidden('__search__')->value(1);
-        $this->hidden('__sort__');
-        $this->addClass('search-form');
-        $this->button('refresh', 'refresh', 1)->addClass('search-refresh')->getWapper()->class('hidden');
-        $this->searchScript();
-
         if (!$empty) {
             if (!$this->searchButtonsCalled) {
                 $this->searchButtons();
@@ -189,6 +182,13 @@ class Search extends SWapper implements Renderable
         } else {
             $this->addClass('form-empty');
         }
+
+        $this->hidden('__page__')->value(1);
+        $this->hidden('__search__')->value(1);
+        $this->hidden('__sort__');
+        $this->addClass('search-form');
+        $this->button('refresh', 'refresh', 1)->addClass('search-refresh')->getWapper()->class('hidden');
+        $this->searchScript();
 
         foreach ($this->rows as $row) {
             if (!$row instanceof Row) {
@@ -305,7 +305,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new Row($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new Row($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 3, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
             $this->rows[] = $row;
 

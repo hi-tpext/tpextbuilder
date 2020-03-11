@@ -11,7 +11,7 @@ class Row extends SWapper implements Renderable
     use HasDom;
     use HasRow;
 
-    public function __construct($name, $label = '', $colSize = 12, $colClass = '', $colAttr = '')
+    public function __construct($name, $label = '', $colSize = 3, $colClass = '', $colAttr = '')
     {
         if (empty($label)) {
             $label = ucfirst($name);

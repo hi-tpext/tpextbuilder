@@ -2,12 +2,13 @@
 
 namespace tpext\builder\common;
 
+use think\Collection;
 use think\response\View as ViewShow;
-use tpext\builder\table\TWapper;
 use tpext\builder\table\Actionbar;
 use tpext\builder\table\Column;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
+use tpext\builder\table\TWapper;
 use tpext\builder\traits\HasDom;
 
 /**
@@ -91,7 +92,6 @@ class Table extends TWapper implements Renderable
     {
         $this->class = 'table-striped table-hover table-bordered';
     }
-
 
     /**
      * Undocumented function
@@ -261,10 +261,24 @@ class Table extends TWapper implements Renderable
      * @param array $data
      * @return $this
      */
-    public function data($data)
+    public function data($data = [])
     {
-        $this->data = $data;
+        return $this->fill($data);
+    }
 
+    /**
+     * Undocumented function
+     *
+     * @param array
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        if ($data && $data instanceof Collection) {
+            $data = $data->toArray();
+        }
+
+        $this->data = $data;
         if (count($data) > 0 && empty($this->cols)) {
             $cols = array_keys($data[0]);
 
@@ -272,7 +286,6 @@ class Table extends TWapper implements Renderable
                 $this->show($col, ucfirst($col));
             }
         }
-
         return $this;
     }
 
