@@ -39,8 +39,6 @@ class Form extends FWapper implements Renderable
 
     protected $butonsSizeClass = 'btn-sm';
 
-    protected $rand;
-
     /**
      * Undocumented variable
      *

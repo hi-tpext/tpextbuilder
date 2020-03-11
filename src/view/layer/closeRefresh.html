@@ -13,8 +13,8 @@
                 parent.lightyear.notify(msg, 'danger');
             }
 
-            if (parent.$('#form-refresh').size()) {
-                parent.$('#form-refresh').trigger('click');
+            if (parent.$('.search-refresh').size()) {
+                parent.$('.search-refresh').trigger('click');
             } else {
                 setTimeout(function () {
                     parent.location.reload();

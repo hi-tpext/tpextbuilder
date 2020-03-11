@@ -34,12 +34,9 @@ class Search extends SWapper implements Renderable
 
     protected $butonsSizeClass = 'btn-sm';
 
-    protected $rand;
-
     public function __construct()
     {
         $this->class = 'form-horizontal';
-        $this->rand = mt_rand(1000, 9999);
     }
 
     /**
@@ -182,7 +179,7 @@ class Search extends SWapper implements Renderable
         $this->hidden('__search__')->value(1);
         $this->hidden('__sort__');
         $this->addClass('search-form');
-        $this->button('refresh', 'refresh', 1)->getWapper()->class('hidden');
+        $this->button('refresh', 'refresh', 1)->addClass('search-refresh')->getWapper()->class('hidden');
         $this->searchScript();
 
         if (!$empty) {
@@ -316,10 +313,6 @@ EOT;
 
             if ($this->defaultDisplayerSize) {
                 $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);
-            }
-
-            if ($name == 'button') {
-                $displayer->tableRowKey($this->rand);
             }
 
             return $displayer;
