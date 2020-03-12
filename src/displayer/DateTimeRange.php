@@ -59,21 +59,21 @@ class DateTimeRange extends Text
 
         $vars = $this->commonVars();
 
+        $vars = $this->commonVars();
         if ($vars['value']) {
             $values = explode($this->separator, $vars['value']);
 
             if (count($values) == 2) {
                 $this->jsOptions['startDate'] = $values[0];
                 $this->jsOptions['endDate'] = $values[1];
-            } else {
-                echo 666;
-                $this->jsOptions['startDate'] = date('Y-m-d H:i:s', 0);
-                $this->jsOptions['endDate'] = date('Y-m-d H:i:s', 0);
-
             }
         } else {
-            $this->jsOptions['startDate'] = date('Y-m-d H:i:s', 0);
-            $this->jsOptions['endDate'] = date('Y-m-d H:i:s', 0);
+            if (!isset($this->jsOptions['startDate'])) {
+                $this->jsOptions['startDate'] = date('Y-m-d H:i:s', strtotime('-1 month'));
+            }
+            if (!isset($this->jsOptions['endDate'])) {
+                $this->jsOptions['endDate'] = date('Y-m-d H:i:s');
+            }
         }
 
         $configs = json_encode($this->jsOptions);
