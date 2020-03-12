@@ -28,7 +28,7 @@ class Select extends Radio
     protected $select2 = true;
 
     protected $jsOptions = [
-        'placeholder' => '请选择',
+        'placeholder' => '',
         'allowClear' => true,
         'minimumInputLength' => 0,
         'language' => 'zh-CN',
@@ -66,6 +66,18 @@ class Select extends Radio
     /**
      * Undocumented function
      *
+     * @param [type] $val
+     * @return $this
+     */
+    public function placeholder($val)
+    {
+        $this->jsOptions['placeholder'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array $options
      * @return $this
      */
@@ -75,10 +87,59 @@ class Select extends Radio
         return $this;
     }
 
+    public function asNextScript($prevID)
+    {
+        $script = '';
+        $selectId = $this->getId();
+
+        if (empty($this->jsOptions['placeholder'])) {
+            $this->jsOptions['placeholder'] = '请选择' . $this->getlabel();
+        }
+
+        if (isset($this->jsOptions['ajax'])) {
+            $ajax = $this->jsOptions['ajax'];
+            unset($this->jsOptions['ajax']);
+            $url = $ajax['url'];
+            $id = isset($ajax['id']) ? $ajax['id'] : 'id';
+            $text = isset($ajax['text']) ? $ajax['text'] : 'text';
+
+            $configs = json_encode($this->jsOptions);
+
+            $configs = substr($configs, 1, strlen($configs) - 2);
+            $script = <<<EOT
+
+            $.get('{$url}',{q : $('#{$prevID}').val(),eleid : '{$prevID}'}, function (data) {
+                $('#{$selectId}').find("option").remove();
+                //$('#{$selectId}').select2('destroy').empty();
+                $('#{$selectId}').select2({
+                    {$configs},
+                    data: $.map(data, function (d) {
+                        d.id = d.{$id};
+                        d.text = d.{$text};
+                        return d;
+                    })
+                }).trigger('change');
+            });
+
+EOT;
+            $this->jsOptions['ajax'] = $ajax;
+            return $script;
+        }
+    }
+    /**
+     * Undocumented function
+     *
+     * @param string $prev
+     * @return string
+     */
     protected function select2Script()
     {
         $script = '';
         $selectId = $this->getId();
+
+        if (empty($this->jsOptions['placeholder'])) {
+            $this->jsOptions['placeholder'] = '请选择' . $this->getlabel();
+        }
 
         if (isset($this->jsOptions['ajax'])) {
             $ajax = $this->jsOptions['ajax'];
@@ -94,6 +155,7 @@ class Select extends Radio
             $configs = substr($configs, 1, strlen($configs) - 2);
 
             $script = <<<EOT
+
             $('#{$selectId}').select2({
               {$configs},
               ajax: {
@@ -138,13 +200,46 @@ EOT;
             $('#{$selectId}').select2({
                 {$configs}
             });
-
 EOT;
         }
 
-        $this->script[] = $script;
+        if (empty($prev)) {
+            $this->script[] = $script;
+        }
 
         return $script;
+    }
+
+    /*
+    $form->select('province', '省份', 4)->dataUrl(url('province'))->withNext(
+    $form->select('city', '城市', 4)->dataUrl(url('city'))->withNext(
+    $form->select('area', '区域', 4)->dataUrl(url('area'))
+    )
+    );
+     */
+
+    /**
+     * Undocumented function
+     *
+     * @param Select $nextSelect
+     * @return $this
+     */
+    public function withNext($nextSelect)
+    {
+        $selectId = $this->getId();
+
+        $nextScript = $nextSelect->asNextScript($selectId);
+
+        $script = <<<EOT
+        $(document).off('change', '#{$selectId}');
+        $(document).on('change', "#{$selectId}", function () {
+            {$nextScript};
+        });
+
+EOT;
+        $this->script[] = $script;
+
+        return $this;
     }
 
     protected function isGroup()

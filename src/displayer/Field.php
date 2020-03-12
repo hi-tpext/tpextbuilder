@@ -120,6 +120,16 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param string $val
      * @return $this
      */
@@ -490,6 +500,37 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $event
+     * @return $this
+     */
+    public function trigger($event)
+    {
+        $fieldId = $this->getId();
+
+        $script = <<<EOT
+
+        $('#{$fieldId}').trigger('{$event}');
+
+EOT;
+        $this->script[] = $script;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $script
+     * @return $this
+     */
+    public function addScript($script)
+    {
+        $this->script[] = $script;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array|string $value acses
      * @param string $class
      * @return $this
@@ -560,8 +601,7 @@ EOT;
             Builder::getInstance()->addScript($this->script);
         }
 
-        if(!empty($this->stylesheet))
-        {
+        if (!empty($this->stylesheet)) {
             Builder::getInstance()->addStyleSheet($this->stylesheet);
         }
 
