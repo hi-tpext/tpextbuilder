@@ -86,7 +86,7 @@ trait HasBuilder
      * @param Table $table
      * @return void
      */
-    protected function buildDataList($table)
+    protected function buildDataList()
     {
         $page = input('__page__/d', 1);
         $page = $page < 1 ? 1 : $page;
@@ -94,10 +94,13 @@ trait HasBuilder
 
         $where = [];
 
+        $table = $this->table;
+
+        $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagezise, $this->pagezise)->select();
+        $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagezise);
         $table->sortOrder($sortOrder);
 
-        $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagezise, $this->pagezise)->select();
         return $data;
     }
 
@@ -164,15 +167,16 @@ trait HasBuilder
     {
         $builder = $this->builder($this->pageTitle, $this->indexText);
 
-        $table = $builder->table();
-        $this->table = $table;
-        $this->search = $table->getSearch();
+        $this->table = $builder->table();
+        $this->table->pk($this->dataModel->getPk());
+        $this->search = $this->table->getSearch();
+
         $this->builSearch();
-        $this->buildTable($table);
-        $table->data($this->buildDataList($table));
+        $this->buildTable();
+        $this->buildDataList();
 
         if (request()->isAjax()) {
-            return $table->partial()->render();
+            return $this->table->partial()->render();
         }
 
         return $builder->render();
