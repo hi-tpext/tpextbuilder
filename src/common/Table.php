@@ -258,7 +258,7 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $data
+     * @param array|Collection $data
      * @return $this
      */
     public function data($data = [])
@@ -269,18 +269,20 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array
+     * @param array|Collection $data
      * @return $this
      */
     public function fill($data = [])
     {
-        if ($data && $data instanceof Collection) {
-            $data = $data->toArray();
-        }
-
         $this->data = $data;
         if (count($data) > 0 && empty($this->cols)) {
-            $cols = array_keys($data[0]);
+            $cols = [];
+
+            if ($data && $data instanceof Collection) {
+                $cols = array_keys($data->toArray()[0]);
+            } else {
+                $cols = array_keys($data[0]);
+            }
 
             foreach ($cols as $col) {
                 $this->show($col, ucfirst($col));
