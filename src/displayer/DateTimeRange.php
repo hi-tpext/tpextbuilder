@@ -66,9 +66,14 @@ class DateTimeRange extends Text
                 $this->jsOptions['startDate'] = $values[0];
                 $this->jsOptions['endDate'] = $values[1];
             } else {
-                $this->jsOptions['startDate'] = date('Y-m-25 H:i:s');
-                $this->jsOptions['endDate'] = '';
+                echo 666;
+                $this->jsOptions['startDate'] = date('Y-m-d H:i:s', 0);
+                $this->jsOptions['endDate'] = date('Y-m-d H:i:s', 0);
+
             }
+        } else {
+            $this->jsOptions['startDate'] = date('Y-m-d H:i:s', 0);
+            $this->jsOptions['endDate'] = date('Y-m-d H:i:s', 0);
         }
 
         $configs = json_encode($this->jsOptions);
