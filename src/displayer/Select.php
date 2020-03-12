@@ -2,8 +2,12 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasOptions;
+
 class Select extends Radio
 {
+    use HasOptions;
+
     protected $view = 'select';
 
     protected $class = '';
@@ -16,8 +20,6 @@ class Select extends Radio
     protected $css = [
         '/assets/tpextbuilder/js/select2/select2.min.css',
     ];
-
-    protected $options = [];
 
     protected $attr = 'size="1"';
 
@@ -41,18 +43,6 @@ class Select extends Radio
     public function select2($use)
     {
         $this->select2 = $use;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function options($options)
-    {
-        $this->options = $options;
         return $this;
     }
 

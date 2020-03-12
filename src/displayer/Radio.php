@@ -2,30 +2,20 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasOptions;
+
 class Radio extends Field
 {
+    use HasOptions;
+    
     protected $view = 'radio';
 
     protected $class = 'lyear-radio radio-default';
 
-    protected $options = [];
-
     protected $inline = true;
 
     protected $checked = '';
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function options($options)
-    {
-        $this->options = $options;
-        return $this;
-    }
-
+   
     /**
      * Undocumented function
      *

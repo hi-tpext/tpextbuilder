@@ -2,13 +2,15 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasOptions;
+
 class Checkbox extends Field
 {
+    use HasOptions;
+
     protected $view = 'checkbox';
 
     protected $class = 'lyear-checkbox checkbox-default';
-
-    protected $options = [];
 
     protected $inline = true;
 
@@ -17,18 +19,6 @@ class Checkbox extends Field
     protected $default = [];
 
     protected $checked = [];
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function options($options)
-    {
-        $this->options = $options;
-        return $this;
-    }
 
     /**
      * Undocumented function

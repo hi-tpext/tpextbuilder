@@ -26,7 +26,7 @@ trait HasBuilder
     protected $editText = '编辑';
     protected $indexText = '列表';
     protected $pagezise = 14;
-    protected $sortOrder = 'id desc';
+    protected $sortOrder = ''; //id desc
     protected $enableField = 'enable';
 
     /**
@@ -81,28 +81,6 @@ trait HasBuilder
     /*******辅助方法******/
 
     /**
-     * Undocumented function
-     *
-     * @param Table $table
-     * @return void
-     */
-    protected function buildDataList()
-    {
-        $page = input('__page__/d', 1);
-        $page = $page < 1 ? 1 : $page;
-        $sortOrder = input('__sort__', $this->sortOrder);
-
-        $where = [];
-
-        $table = $this->table;
-
-        $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagezise, $this->pagezise)->select();
-        $table->fill($data);
-        $table->paginator($this->dataModel->where($where)->count(), $this->pagezise);
-        $table->sortOrder($sortOrder);
-    }
-
-    /**
      * 构建表单
      *
      * @param boolean $isEdit
@@ -124,23 +102,46 @@ trait HasBuilder
     }
 
     /**
-     * 构建搜索
+     * 构建搜索 范例
      *
      * @return void
      */
     protected function builSearch()
     {
         $search = $this->search;
+        $search->text('some_key_words')->placeholder('输入姓名|电话|邮箱查询');
     }
 
     /**
-     * 保存数据
+     * 保存数据 范例
      *
      * @param integer $id
      * @return void
      */
     private function save($id = 0)
     {
+        $data = request()->only([
+            'some_fields',
+            // ... more_fields
+        ], 'post');
+
+        $result = $this->validate($data, [
+            'some_fields|AreYouOK' => 'require',
+        ]);
+
+        if (true !== $result) {
+            $this->error($result);
+        }
+
+        if ($id) {
+            $res = $this->dataModel->where(['id' => $id])->update($data);
+        } else {
+            $res = $this->dataModel->create($data);
+        }
+        if (!$res) {
+            $this->error('保存失败');
+        }
+
         return $this->builder()->layer()->closeRefresh(1, '保存成功');
     }
 
@@ -155,8 +156,43 @@ trait HasBuilder
         if (!empty($this->delNotAllowed) && in_array($id, $this->delNotAllowed)) {
             return false;
         }
-        // 其他
+        // 其他逻辑
         return true;
+    }
+
+    protected function filter()
+    {
+        $where = [];
+        $searchData = request()->only([
+            'some_key_words',
+            // ... more_key_words
+        ], 'post');
+        $where = [];
+        if (!empty($searchData['some_key_words'])) {
+            //$where[] = ['phone|username|email', 'like', '%' . $searchData['some_key_words'] . '%'];
+        }
+
+        return $where;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Table $table
+     * @return void
+     */
+    protected function buildDataList()
+    {
+        $page = input('__page__/d', 1);
+        $page = $page < 1 ? 1 : $page;
+        $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->dataModel->getPk() . ' desc');
+        $where = $this->filter();
+        $table = $this->table;
+
+        $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagezise, $this->pagezise)->select();
+        $table->fill($data);
+        $table->paginator($this->dataModel->where($where)->count(), $this->pagezise);
+        $table->sortOrder($sortOrder);
     }
 
     /*******通用方法******/
