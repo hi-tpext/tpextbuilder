@@ -556,6 +556,7 @@ class Table extends TWapper implements Renderable
             'sortable' => $this->sortable,
             'sortKey' => $sortKey,
             'sortOrder' => $sortOrder,
+            'sort' => $sort,
             'rowCheckbox' => $this->rowCheckbox && $this->useToolbar,
             'name' => time() . mt_rand(1000, 9999),
             'tdClass' => $this->verticalAlign . ' ' . $this->textAlign,

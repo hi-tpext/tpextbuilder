@@ -83,6 +83,9 @@
     {/notempty}
     <script>
         var partial = {$partial};
+
+        document.getElementById('form-__sort__').value = '{$sort}';
+        
         if(partial)
         {
             $('#form-__page__').val('{$paginator->currentPage()}');
