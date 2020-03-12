@@ -93,7 +93,7 @@ class Column
      * Undocumented function
      *
      * @param Renderable $rendable
-     * @return void
+     * @return $this
      */
     public function append($rendable)
     {

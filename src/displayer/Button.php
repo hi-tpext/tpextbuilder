@@ -31,11 +31,12 @@ class Button extends Field
      * Undocumented function
      *
      * @param string $val
-     * @return void
+     * @return $this
      */
     public function type($val)
     {
         $this->type = $val;
+        return $this;
     }
 
     public function loading($val = true)

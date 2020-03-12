@@ -81,7 +81,7 @@ class Upload
      * $key 就是你 input 框中的 name 属性值
      *
      * @param [type] $key
-     * @return void
+     * @return boolean
      */
     public function uploadFile($key)
     {
@@ -127,7 +127,7 @@ class Upload
     /**
      * 得到文件的新名字
      *
-     * @return void
+     * @return string
      */
     protected function createNewName()
     {
@@ -143,7 +143,7 @@ class Upload
     /**
      * 判断该路径是否存在，是否可写
      *
-     * @return void
+     * @return boolean
      */
     protected function check()
     {
@@ -181,7 +181,7 @@ class Upload
     /**
      * 判断文件大小
      *
-     * @return void
+     * @return boolean
      */
     protected function checkSize()
     {
@@ -195,7 +195,7 @@ class Upload
     /**
      * 判断文件的 mime 是否符合
      *
-     * @return void
+     * @return boolean
      */
     protected function checkMime()
     {
@@ -209,7 +209,7 @@ class Upload
     /**
      * 判断文件的后缀是否符合
      *
-     * @return void
+     * @return boolean
      */
     protected function checkSuffix()
     {
@@ -227,7 +227,7 @@ class Upload
     /**
      * 返回错误信息
      *
-     * @return void
+     * @return string
      */
     protected function getErrorInfo()
     {

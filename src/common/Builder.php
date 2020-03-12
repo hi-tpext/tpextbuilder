@@ -214,7 +214,7 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @return void
+     * @return array
      */
     public function getRows()
     {
@@ -374,11 +374,12 @@ class Builder implements Renderable
      * Undocumented function
      *
      * @param boolean $val
-     * @return void
+     * @return $this
      */
     public static function minify($val)
     {
         static::$minify = $val;
+        return $this;
     }
 
     /**

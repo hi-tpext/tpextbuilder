@@ -85,7 +85,7 @@ class Paginator extends Bootstrap
      * Undocumented function
      *
      * @param array $val
-     * @return void
+     * @return $this
      */
     public function options($val)
     {

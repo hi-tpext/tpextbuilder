@@ -100,8 +100,6 @@ trait HasBuilder
         $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagezise);
         $table->sortOrder($sortOrder);
-
-        return $data;
     }
 
     /**
