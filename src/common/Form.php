@@ -29,6 +29,8 @@ class Form extends FWapper implements Renderable
 
     protected $rows = [];
 
+    protected $data = [];
+
     protected $botttomButtonsCalled = false;
 
     protected $ajax = true;
@@ -279,11 +281,22 @@ class Form extends FWapper implements Renderable
      */
     public function fill($data = [])
     {
+        $this->data = $data;
+
         foreach ($this->rows as $row) {
             $row->fill($data);
         }
-
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**

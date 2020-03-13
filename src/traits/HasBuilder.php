@@ -96,7 +96,7 @@ trait HasBuilder
      *
      * @return void
      */
-    protected function buildTable()
+    protected function buildTable(&$data = [])
     {
         $table = $this->table;
     }
@@ -179,7 +179,7 @@ trait HasBuilder
      * Undocumented function
      *
      * @param Table $table
-     * @return void
+     * @return array|Collection
      */
     protected function buildDataList()
     {
@@ -190,9 +190,10 @@ trait HasBuilder
         $table = $this->table;
 
         $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
-        $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagesize);
         $table->sortOrder($sortOrder);
+
+        return $data;
     }
 
     /*******通用方法******/
@@ -206,8 +207,9 @@ trait HasBuilder
         $this->search = $this->table->getSearch();
 
         $this->builSearch();
-        $this->buildTable();
-        $this->buildDataList();
+        $data = $this->buildDataList();
+        $this->buildTable($data);
+        $this->table->fill($data);
 
         if (request()->isAjax()) {
             return $this->table->partial()->render();
