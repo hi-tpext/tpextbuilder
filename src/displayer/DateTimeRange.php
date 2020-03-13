@@ -35,6 +35,30 @@ class DateTimeRange extends Text
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return void
+     */
+    public function startDate($val)
+    {
+        $this->jsOptions['startDate'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return void
+     */
+    public function endDate($val)
+    {
+        $this->jsOptions['endDate'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array $options
      * @return $this
      */
