@@ -25,8 +25,8 @@ trait HasBuilder
     protected $addText = '添加';
     protected $editText = '编辑';
     protected $indexText = '列表';
-    protected $pagezise = 14;
-    protected $sortOrder = ''; //id desc
+    protected $pagesize = 14;
+    protected $sortOrder = 'sort asc';
     protected $enableField = 'enable';
 
     /**
@@ -69,7 +69,7 @@ trait HasBuilder
      *   $this->addText = '添加';
      *   $this->editText = '编辑';
      *   $this->indexText = '列表';
-     *   $this->pagezise = 14;
+     *   $this->pagesize = 14;
      *   $this->sortOrder = 'id desc';
      *
      *   $this->delNotAllowed = [1, 3, 4];
@@ -189,9 +189,11 @@ trait HasBuilder
         $where = $this->filterWhere();
         $table = $this->table;
 
-        $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagezise, $this->pagezise)->select();
+        $table->sortable([]);
+
+        $data = $this->dataModel->buildList(0, 0);
         $table->fill($data);
-        $table->paginator($this->dataModel->where($where)->count(), $this->pagezise);
+        $table->paginator($this->dataModel->where($where)->count(), $this->pagesize);
         $table->sortOrder($sortOrder);
     }
 
@@ -224,6 +226,7 @@ trait HasBuilder
             $builder = $this->builder($this->pageTitle, $this->addText);
             $form = $builder->form();
             $this->form = $form;
+            $this->builForm(false, $data);
             return $builder->render();
         }
     }
