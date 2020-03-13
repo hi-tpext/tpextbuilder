@@ -195,6 +195,7 @@ class MultipleToolbar extends Toolbar
      *
      * @param string $afterSuccessUrl
      * @param string|array acceptedExts
+     * @param array layerSize
      * @param int fileSize MB
      * @param string $label
      * @param string $class
@@ -202,7 +203,7 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnImport($afterSuccessUrl, $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
+    public function btnImport($afterSuccessUrl, $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['220px', '300px'], $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
     {
         if (empty($afterSuccessUrl)) {
             $afterSuccessUrl = url('/tpextbuilder/admin/import/afterSuccess');
@@ -224,7 +225,7 @@ class MultipleToolbar extends Toolbar
 
         $url = url('/tpextbuilder/admin/import/page') . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
 
-        $this->linkBtn('import', $label)->useLayer(true, ['220px', '300px'])->href($url)->icon($icon)->addClass($class)->attr($attr);
+        $this->linkBtn('import', $label)->useLayer(true, $layerSize)->href($url)->icon($icon)->addClass($class)->attr($attr);
 
         return $this;
     }
