@@ -279,6 +279,11 @@ EOT;
         return $script;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string|ViewShow
+     */
     public function render()
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
@@ -297,6 +302,12 @@ EOT;
         ];
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function __toString()
+    {
+        $this->partial = false;
+        return $this->render();
     }
 
     public function __call($name, $arguments)

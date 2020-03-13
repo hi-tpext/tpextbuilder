@@ -106,6 +106,11 @@ class Toolbar extends Wapper implements Renderable
         return $viewshow->assign($vars)->getContent();
     }
 
+    public function __toString()
+    {
+        return $this->render();
+    }
+
     public function __call($name, $arguments)
     {
         $count = count($arguments);

@@ -203,7 +203,7 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnImport($afterSuccessUrl, $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['220px', '300px'], $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
+    public function btnImport($afterSuccessUrl = '', $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['800px', '550px'], $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
     {
         if (empty($afterSuccessUrl)) {
             $afterSuccessUrl = url('/tpextbuilder/admin/import/afterSuccess');

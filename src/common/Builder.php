@@ -392,7 +392,7 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @return mixed
+     * @return ViewShow
      */
     public function render()
     {
@@ -436,5 +436,10 @@ class Builder implements Renderable
         View::share(['admin_page_title' => $this->desc, 'admin_page_position' => $this->title]);
 
         return $view->assign($vars);
+    }
+
+    public function __toString()
+    {
+        return $this->render()->getContent();
     }
 }

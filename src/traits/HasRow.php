@@ -51,7 +51,7 @@ trait HasRow
         return $this->name;
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @return string
@@ -96,6 +96,11 @@ trait HasRow
     public function render()
     {
         return $this->displayer->render();
+    }
+
+    public function __toString()
+    {
+        return $this->render();
     }
 
     public function createDisplayer($class, $arguments)

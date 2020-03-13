@@ -558,6 +558,11 @@ EOT;
         return $viewshow->assign($vars)->getContent();
     }
 
+    public function __toString()
+    {
+        return $this->render();
+    }
+
     protected function getViewInstance()
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', $this->view . '.html']);

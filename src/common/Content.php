@@ -15,6 +15,11 @@ class Content implements Renderable
 
     protected $partial = false;
 
+    /**
+     * Undocumented function
+     *
+     * @return string|ViewShow
+     */
     public function render()
     {
         if ($this->partial) {
@@ -22,6 +27,12 @@ class Content implements Renderable
         }
 
         return $this->content->getContent();
+    }
+
+    public function __toString()
+    {
+        $this->partial = false;
+        return $this->render();
     }
 
     /**

@@ -149,7 +149,7 @@ class Tab implements Renderable
     /**
      * Undocumented function
      *
-     * @return mixed
+     * @return string|ViewShow
      */
     public function render()
     {
@@ -174,5 +174,11 @@ class Tab implements Renderable
         }
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function __toString()
+    {
+        $this->partial = false;
+        return $this->render();
     }
 }

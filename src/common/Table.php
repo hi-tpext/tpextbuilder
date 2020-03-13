@@ -517,6 +517,11 @@ class Table extends TWapper implements Renderable
         $this->isInitData = true;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string|ViewShow
+     */
     public function render()
     {
         if (!$this->isInitData) {
@@ -576,6 +581,12 @@ class Table extends TWapper implements Renderable
         }
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function __toString()
+    {
+        $this->partial = false;
+        return $this->render();
     }
 
     public function __call($name, $arguments)

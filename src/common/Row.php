@@ -109,4 +109,9 @@ class Row
 
         return $viewshow->assign($vars)->getContent();
     }
+
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

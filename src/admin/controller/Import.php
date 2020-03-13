@@ -48,10 +48,32 @@ class Import extends Controller
 
     public function afterSuccess()
     {
-        $builder = Builder::getInstance();
+        $builder = Builder::getInstance('提示');
 
         $fileurl = input('fileurl');
 
-        return $builder->layer()->closeRefresh(1, '导入成功：' . $fileurl);
+        $script = <<<EOT
+        <p>文件上传成功，但未做后续处理：{$fileurl}</p>
+        <pre>
+        //指定你的处理action，如 url('afterSuccess')
+        \$table->getToolbar()->btnImport(url('afterSuccess'));
+
+        //请在你的控制器实现导入逻辑
+        public function afterSuccess()
+        {
+            \$fileurl = input('fileurl');
+            if (is_file(app()->getRootPath() . 'public' . \$fileurl)) {
+                // 导入逻辑...
+                return \$builder->layer()->closeRefresh(1, '导入成功：' . \$fileurl);
+            }
+
+            \$builder = \$this->builder('出错了');
+            \$builder->content()->display('&lt;p&gt;' . '未能读取文件:' . \$fileurl . '&lt;/p&gt;');
+        }
+        </pre>
+
+EOT;
+        $builder->content()->display($script);
+        return $builder->render();
     }
 }
