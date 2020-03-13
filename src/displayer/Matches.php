@@ -2,21 +2,11 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasOptions;
+
 class Matches extends Raw
 {
-    protected $options = [];
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function options($options)
-    {
-        $this->options = $options;
-        return $this;
-    }
+    use HasOptions;
 
     /**
      * Undocumented function
