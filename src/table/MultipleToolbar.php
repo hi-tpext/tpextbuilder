@@ -222,7 +222,7 @@ class MultipleToolbar extends Toolbar
 
         $pagetoken = md5($importpagetoken . $acceptedExts . $fileSize);
 
-        $url = url('/tpextbuilder/admin/import/index') . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
+        $url = url('/tpextbuilder/admin/import/page') . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
 
         $this->linkBtn('import', $label)->useLayer(true, ['220px', '300px'])->href($url)->icon($icon)->addClass($class)->attr($attr);
 
