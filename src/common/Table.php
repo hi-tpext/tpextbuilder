@@ -489,7 +489,7 @@ class Table extends TWapper implements Renderable
                     ->fill($data)
                     ->tableRowKey('-' . $key)
                     ->showLabel(false)
-                    ->size(0, 12)
+                    ->size(0, 0)
                     ->beforRender();
 
                 $script = $displayer->getScript();

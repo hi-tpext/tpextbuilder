@@ -120,3 +120,8 @@ a.sortable.mdi-sort
 {
     color: #999;
 }
+
+.table tbody td div {
+    padding-left: 0;
+    padding-right: 0;
+}
