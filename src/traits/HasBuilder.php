@@ -160,7 +160,7 @@ trait HasBuilder
         return true;
     }
 
-    protected function filter()
+    protected function filterWhere()
     {
         $where = [];
         $searchData = request()->only([
@@ -186,7 +186,7 @@ trait HasBuilder
         $page = input('__page__/d', 1);
         $page = $page < 1 ? 1 : $page;
         $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->dataModel->getPk() . ' desc');
-        $where = $this->filter();
+        $where = $this->filterWhere();
         $table = $this->table;
 
         $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagezise, $this->pagezise)->select();
