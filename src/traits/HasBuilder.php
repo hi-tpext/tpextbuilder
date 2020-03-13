@@ -86,7 +86,7 @@ trait HasBuilder
      * @param boolean $isEdit
      * @param array $data
      */
-    protected function builForm($isEdit, $data = [])
+    protected function builForm($isEdit, &$data = [])
     {
         $form = $this->form;
     }
