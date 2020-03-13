@@ -370,16 +370,15 @@ class Builder implements Renderable
         $this->addCss($this->commonCss());
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
+   /**
+    * Undocumented function
+    *
+    * @param boolean $val
+    * @return void
+    */
     public static function minify($val)
     {
         static::$minify = $val;
-        return $this;
     }
 
     /**
