@@ -191,7 +191,7 @@ trait HasBuilder
 
         $table->sortable([]);
 
-        $data = $this->dataModel->buildList(0, 0);
+        $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
         $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagesize);
         $table->sortOrder($sortOrder);
@@ -279,17 +279,14 @@ trait HasBuilder
         }
         $res = 0;
         foreach ($ids as $id) {
-            if ($id == 1) {
-                continue;
-            }
             if ($this->dataModel->where(['id' => $id])->update([$this->enableField => 1])) {
                 $res += 1;
             }
         }
         if ($res) {
-            $this->success('成功启用' . $res . '个账号');
+            $this->success('成功操作' . $res . '条数据');
         } else {
-            $this->error('启用失败');
+            $this->error('操作失败');
         }
     }
 
@@ -302,17 +299,14 @@ trait HasBuilder
         }
         $res = 0;
         foreach ($ids as $id) {
-            if ($id == 1) {
-                continue;
-            }
             if ($this->dataModel->where(['id' => $id])->update([$this->enableField => 0])) {
                 $res += 1;
             }
         }
         if ($res) {
-            $this->success('成功禁用' . $res . '个账号');
+            $this->success('成功操作' . $res . '条数据');
         } else {
-            $this->error('禁用失败');
+            $this->error('操作失败');
         }
     }
 
