@@ -189,8 +189,6 @@ trait HasBuilder
         $where = $this->filterWhere();
         $table = $this->table;
 
-        $table->sortable([]);
-
         $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
         $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagesize);
