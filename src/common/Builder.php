@@ -60,10 +60,8 @@ class Builder implements Renderable
         } else {
             if ($title) {
                 static::$instance->setTitle($title);
-                static::$instance->setDesc($desc);
             }
             if ($desc) {
-                static::$instance->setTitle($title);
                 static::$instance->setDesc($desc);
             }
         }
