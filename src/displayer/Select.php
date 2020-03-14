@@ -56,7 +56,9 @@ class Select extends Radio
     {
         $this->jsOptions['ajax'] = [
             'url' => $url,
-            'options' => ['id' => $KeyField, 'text' => $textField, 'delay' => $delay],
+            'id' => $KeyField,
+            'text' => $textField,
+            'delay' => $delay,
             'loadmore' => $loadmore,
         ];
 
@@ -109,11 +111,11 @@ class Select extends Radio
             $script = <<<EOT
 
             $.get('{$url}',{q : $('#{$prevID}').val(),eleid : '{$prevID}'}, function (data) {
-                $('#{$selectId}').find("option").remove();
-                //$('#{$selectId}').select2('destroy').empty();
+                $('#{$selectId}').select2('destroy').empty();
+                var list = data.data ? data.data : data;
                 $('#{$selectId}').select2({
                     {$configs},
-                    data: $.map(data, function (d) {
+                    data: $.map(list, function (d) {
                         d.id = d.{$id};
                         d.text = d.{$text};
                         return d;
@@ -123,6 +125,7 @@ class Select extends Radio
 
 EOT;
             $this->jsOptions['ajax'] = $ajax;
+            $this->jsOptions['prev_id'] = $prevID;
             return $script;
         }
     }
@@ -154,6 +157,8 @@ EOT;
 
             $configs = substr($configs, 1, strlen($configs) - 2);
 
+            $prev_id = isset($this->jsOptions['prev_id']) ? $this->jsOptions['prev_id'] : '';
+
             $script = <<<EOT
 
             $('#{$selectId}').select2({
@@ -164,7 +169,7 @@ EOT;
                 delay: {$delay},
                 data: function (params) {
                   return {
-                    q: params.term || '',
+                    q: params.term || ('{$prev_id}' ? $('#{$prev_id}').val() : ''),
                     page: params.page || 1,
                     eleid : '{$selectId}'
                   };
@@ -200,6 +205,7 @@ EOT;
             $('#{$selectId}').select2({
                 {$configs}
             });
+
 EOT;
         }
 

@@ -31,7 +31,7 @@ trait HasOptions
      * @param string $keyField
      * @return $this
      */
-    public function optionsData($optionsData, $textField = '', $keyField = '')
+    public function optionsData($optionsData, $textField = '', $keyField = 'id')
     {
         $options = [];
         foreach ($optionsData as $data) {
@@ -43,9 +43,8 @@ trait HasOptions
                 $textField = isset($data['opt_text']) ? 'opt_text' : 'name'; //模型需要实现[getOptTextAttr]，否则看是否刚好有name这个字段;
             }
 
-            $options[$keyField] = $data[$textField];
+            $options[$data[$keyField]] = $data[$textField];
         }
-
         $this->options = $options;
 
         return $this;
