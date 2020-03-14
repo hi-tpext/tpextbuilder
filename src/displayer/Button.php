@@ -39,9 +39,16 @@ class Button extends Field
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
     public function loading($val = true)
     {
         $this->loading = $val;
+        return $this;
     }
 
     public function render()

@@ -275,7 +275,10 @@ $(function () {
     });
 
     $('.btn-loading').click(function () {
-        lightyear.loading('show');
+        $(this).lyearloading({
+            opacity: 0.2,
+            spinnerSize: 'nm'
+        });
     });
 
     $('select').each(function (i, e) {
