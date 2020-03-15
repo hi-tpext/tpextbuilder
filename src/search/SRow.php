@@ -3,13 +3,21 @@
 namespace tpext\builder\search;
 
 use tpext\builder\common\Renderable;
+use tpext\builder\common\Search;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
 
-class Row extends SWapper implements Renderable
+class SRow extends SWapper implements Renderable
 {
     use HasDom;
     use HasRow;
+
+    /**
+     * Undocumented variable
+     *
+     * @var Search
+     */
+    protected $search;
 
     public function __construct($name, $label = '', $colSize = 3, $colClass = '', $colAttr = '')
     {
@@ -23,9 +31,29 @@ class Row extends SWapper implements Renderable
         $this->class = $colClass;
         $this->attr = $colAttr;
 
-        $this->createDisplayer(\tpext\builder\displayer\Field::class, [$name, $label]);
-
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Search $val
+     * @return $this
+     */
+    public function setSearch($val)
+    {
+        $this->search = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Search
+     */
+    public function getForm()
+    {
+        return $this->search;
     }
 
     public function __call($name, $arguments)

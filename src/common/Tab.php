@@ -2,6 +2,7 @@
 
 namespace tpext\builder\common;
 
+use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\traits\HasDom;
@@ -23,6 +24,15 @@ class Tab implements Renderable
     protected $id = '';
 
     protected $partial = false;
+
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    protected $__fields_contents__ = [];
+
+    protected $content;
 
     public function getId()
     {
@@ -98,11 +108,26 @@ class Tab implements Renderable
         }
 
         $content = new FieldsContent();
+        $this->__fields_contents__[] = $content;
 
         $this->rows[$name] = ['content' => $content, 'active' => ''];
         $this->labels[$name] = ['content' => $label, 'active' => ''];
 
         return $content;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|Model $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        foreach ($this->__fields_contents__ as $content) {
+            $content->fill($data);
+        }
+        return $this;
     }
 
     /**

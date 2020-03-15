@@ -6,11 +6,11 @@ use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
-use tpext\builder\common\Renderable;
-use tpext\builder\form\FWapper;
+use tpext\builder\common\Wapper;
+use tpext\builder\form\Fillable;
 use tpext\builder\traits\HasDom;
 
-class Field implements Renderable
+class Field implements Fillable
 {
     use HasDom;
 
@@ -90,7 +90,7 @@ class Field implements Renderable
 
         $fieldType = lcfirst($fieldType);
 
-        $defaultClass = FWapper::hasDefaultFieldClass($fieldType);
+        $defaultClass = Wapper::hasDefaultFieldClass($fieldType);
 
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;
@@ -375,7 +375,7 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
-     * @param \tpext\builder\form\Row $wapper
+     * @param \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn $wapper
      * @return $this
      */
     public function setWapper($wapper)
@@ -387,7 +387,7 @@ class Field implements Renderable
     /**
      * Undocumented function
      *
-     * @return \tpext\builder\form\Row
+     * @return \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn
      */
     public function getWapper()
     {

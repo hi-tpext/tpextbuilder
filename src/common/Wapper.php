@@ -51,6 +51,7 @@ class Wapper
         'matches' => \tpext\builder\displayer\Matches::class,
         'show' => \tpext\builder\displayer\Show::class,
         'password' => \tpext\builder\displayer\Password::class,
+        'fields' => \tpext\builder\displayer\Fields::class,
     ];
 
     protected static $defaultFieldClass = [];

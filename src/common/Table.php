@@ -5,7 +5,7 @@ namespace tpext\builder\common;
 use think\Collection;
 use think\response\View as ViewShow;
 use tpext\builder\table\Actionbar;
-use tpext\builder\table\Column;
+use tpext\builder\table\TColumn;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
 use tpext\builder\table\TWapper;
@@ -97,7 +97,7 @@ class Table extends TWapper implements Renderable
      * Undocumented function
      *
      * @param string $name
-     * @param \tpext\builder\table\Column $col
+     * @param \tpext\builder\table\TColumn $col
      * @return $this
      */
     public function addCol($name, $col)
@@ -479,7 +479,7 @@ class Table extends TWapper implements Renderable
 
                 $colunm->beforRender();
 
-                if (!$colunm instanceof Column) {
+                if (!$colunm instanceof TColumn) {
                     continue;
                 }
 
@@ -595,7 +595,9 @@ class Table extends TWapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $col = new Column($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $col = new TColumn($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+
+            $col->setTable($this);
 
             $this->cols[$arguments[0]] = $col;
 

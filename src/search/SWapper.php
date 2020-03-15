@@ -32,6 +32,7 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\Decimal        decimal($name, $label = '', $cloSize = 3, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Tags           tags($name, $label = '', $cloSize = 3, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Icon           icon($name, $label = '', $cloSize = 3, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Fields         fields($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  */
 
 class SWapper extends Base

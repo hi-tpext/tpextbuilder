@@ -7,8 +7,9 @@ use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
+use tpext\builder\form\Fillable;
+use tpext\builder\form\FRow;
 use tpext\builder\form\FWapper;
-use tpext\builder\form\Row;
 use tpext\builder\form\Step;
 use tpext\builder\traits\HasDom;
 
@@ -71,7 +72,7 @@ class Form extends FWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param \tpext\builder\form\Row $row
+     * @param FRow|Fillable $row
      * @return $this
      */
     public function addRow($row)
@@ -87,7 +88,7 @@ class Form extends FWapper implements Renderable
      */
     public function getRows()
     {
-        return $this->rows();
+        return $this->rows;
     }
 
     /**
@@ -176,7 +177,7 @@ class Form extends FWapper implements Renderable
      * @param string $label
      * @param boolean $active
      * @param string $name
-     * @return $this
+     * @return Tab
      */
     public function tab($label, $active = false, $name = '')
     {
@@ -186,7 +187,7 @@ class Form extends FWapper implements Renderable
         }
 
         $this->__fields_content__ = $this->tab->addFieldsContent($label, $active, $name);
-        return $this;
+        return $this->tab;
     }
 
     /**
@@ -206,7 +207,7 @@ class Form extends FWapper implements Renderable
      * @param string $description
      * @param boolean $active
      * @param string $name
-     * @return $this
+     * @return Step
      */
     public function step($label, $description = '', $active = false, $name = '')
     {
@@ -216,7 +217,18 @@ class Form extends FWapper implements Renderable
         }
 
         $this->__fields_content__ = $this->step->addFieldsContent($label, $description, $active, $name);
-        return $this;
+        return $this->step;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return FieldsContent
+     */
+    public function createFieldsContent()
+    {
+        $this->__fields_content__ = new FieldsContent();
+        return $this->__fields_content__;
     }
 
     /**
@@ -224,7 +236,7 @@ class Form extends FWapper implements Renderable
      *
      * @return $this
      */
-    public function fieldsContentEnd()
+    public function fieldsEnd()
     {
         $this->__fields_content__ = null;
         return $this;
@@ -237,7 +249,7 @@ class Form extends FWapper implements Renderable
      */
     public function tabEnd()
     {
-        return $this->fieldsContentEnd();
+        return $this->fieldsEnd();
     }
 
     /**
@@ -247,7 +259,7 @@ class Form extends FWapper implements Renderable
      */
     public function stepEnd()
     {
-        return $this->fieldsContentEnd();
+        return $this->fieldsEnd();
     }
 
     /**
@@ -282,10 +294,6 @@ class Form extends FWapper implements Renderable
     public function fill($data = [])
     {
         $this->data = $data;
-
-        foreach ($this->rows as $row) {
-            $row->fill($data);
-        }
         return $this;
     }
 
@@ -308,7 +316,7 @@ class Form extends FWapper implements Renderable
     public function bottomButtons($create = true)
     {
         if ($create) {
-            $this->fieldsContentEnd();
+            $this->fieldsEnd();
             $this->divider('', '', 12)->size(0, 12)->showLabel(false);
             $this->html('', '', 4)->showLabel(false);
             $this->btnSubmit();
@@ -388,9 +396,10 @@ class Form extends FWapper implements Renderable
         if (!$this->botttomButtonsCalled && empty($this->step)) {
             $this->bottomButtons(true);
         }
-
         foreach ($this->rows as $row) {
-            if (!$row instanceof Row) {
+            $row->fill($this->data);
+
+            if (!$row instanceof FRow) {
                 $row->beforRender();
                 continue;
             }
@@ -484,13 +493,15 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new Row($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
             if ($this->__fields_content__) {
                 $this->__fields_content__->addRow($row);
             } else {
                 $this->rows[] = $row;
             }
+
+            $row->setForm($this);
 
             $displayer = $row->$name($arguments[0], $row->getLabel());
 

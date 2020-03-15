@@ -2,13 +2,17 @@
 
 namespace tpext\builder\form;
 
+use think\Model;
 use think\response\View as ViewShow;
-use tpext\builder\common\Renderable;
 use tpext\builder\common\Module;
+use tpext\builder\common\Renderable;
+use tpext\builder\displayer\Field;
 
 class FieldsContent extends FWapper implements Renderable
 {
     protected $rows = [];
+
+    protected $data = [];
 
     /**
      * Undocumented function
@@ -18,17 +22,16 @@ class FieldsContent extends FWapper implements Renderable
     public function beforRender()
     {
         foreach ($this->rows as $row) {
-
+            $row->fill($this->data);
             $row->beforRender();
         }
-
         return $this;
     }
 
     /**
      * Undocumented function
      *
-     * @param Row $row
+     * @param FRow|Field|Fillable $row
      * @return $this
      */
     public function addRow($row)
@@ -45,6 +48,18 @@ class FieldsContent extends FWapper implements Renderable
     public function getRows()
     {
         return $this->rows;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|Model $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        $this->data = $data;
+        return $this;
     }
 
     public function render()
@@ -66,7 +81,7 @@ class FieldsContent extends FWapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new Row($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
             $this->rows[] = $row;
 

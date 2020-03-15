@@ -5,7 +5,9 @@ namespace tpext\builder\common;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
-use tpext\builder\search\Row;
+use tpext\builder\form\FieldsContent;
+use tpext\builder\form\Fillable;
+use tpext\builder\search\SRow;
 use tpext\builder\search\SWapper;
 use tpext\builder\traits\HasDom;
 
@@ -34,6 +36,13 @@ class Search extends SWapper implements Renderable
 
     protected $butonsSizeClass = 'btn-sm';
 
+    /**
+     * Undocumented variable
+     *
+     * @var FieldsContent
+     */
+    protected $__fields_content__ = null;
+
     public function __construct()
     {
         $this->class = 'form-horizontal';
@@ -42,7 +51,7 @@ class Search extends SWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param \tpext\builder\form\Row $row
+     * @param SRow|Fillable $row
      * @return $this
      */
     public function addRow($row)
@@ -59,6 +68,28 @@ class Search extends SWapper implements Renderable
     public function getRows()
     {
         return $this->rows();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return FieldsContent
+     */
+    public function createFieldsContent()
+    {
+        $this->__fields_content__ = new FieldsContent();
+        return $this->__fields_content__;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function fieldsContentEnd()
+    {
+        $this->__fields_content__ = null;
+        return $this;
     }
 
     /**
@@ -191,7 +222,7 @@ class Search extends SWapper implements Renderable
         $this->searchScript();
 
         foreach ($this->rows as $row) {
-            if (!$row instanceof Row) {
+            if (!$row instanceof SRow) {
                 $row->beforRender();
                 continue;
             }
@@ -316,9 +347,15 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new Row($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 3, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 3, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
-            $this->rows[] = $row;
+            if ($this->__fields_content__) {
+                $this->__fields_content__->addRow($row);
+            } else {
+                $this->rows[] = $row;
+            }
+
+            $row->setSearch($this);
 
             $displayer = $row->$name($arguments[0], $row->getLabel());
 

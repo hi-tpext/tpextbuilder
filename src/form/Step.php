@@ -2,10 +2,12 @@
 
 namespace tpext\builder\form;
 
+use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\common\Renderable;
+use tpext\builder\form\FieldsContent;
 
 class Step implements Renderable
 {
@@ -26,6 +28,13 @@ class Step implements Renderable
     protected $id = '';
 
     protected $mode = 'dots';
+
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    protected $__fields_contents__ = [];
 
     public function getId()
     {
@@ -59,11 +68,26 @@ class Step implements Renderable
         }
 
         $content = new FieldsContent();
+        $this->content[] = $content;
 
         $this->rows[$name] = ['content' => $content, 'description' => $description, 'active' => ''];
         $this->labels[$name] = ['content' => $label, 'active' => ''];
 
         return $content;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|Model $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        foreach ($this->__fields_contents__ as $content) {
+            $content->fill($data);
+        }
+        return $this;
     }
 
     /**
