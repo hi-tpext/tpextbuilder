@@ -19,7 +19,7 @@ class Fields extends Field
     public function created()
     {
         parent::created();
-        $this->__fields_content__ = $this->getWapper()->getForm()->createFieldsContent();
+        $this->__fields_content__ = $this->getWapper()->getForm()->createFields();
     }
 
     /**

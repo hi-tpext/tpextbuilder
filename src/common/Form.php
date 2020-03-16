@@ -63,6 +63,13 @@ class Form extends FWapper implements Renderable
      */
     protected $__fields_content__ = null;
 
+    /**
+     * Undocumented variable
+     *
+     * @var FieldsContent
+     */
+    protected $__fields__ = null;
+
     public function __construct()
     {
         $this->class = 'form-horizontal';
@@ -225,10 +232,10 @@ class Form extends FWapper implements Renderable
      *
      * @return FieldsContent
      */
-    public function createFieldsContent()
+    public function createFields()
     {
-        $this->__fields_content__ = new FieldsContent();
-        return $this->__fields_content__;
+        $this->__fields__ = new FieldsContent();
+        return $this->__fields__;
     }
 
     /**
@@ -238,7 +245,7 @@ class Form extends FWapper implements Renderable
      */
     public function fieldsEnd()
     {
-        $this->__fields_content__ = null;
+        $this->__fields__ = null;
         return $this;
     }
 
@@ -249,7 +256,9 @@ class Form extends FWapper implements Renderable
      */
     public function tabEnd()
     {
-        return $this->fieldsEnd();
+        $this->__fields_content__ = null;
+
+        return $this;
     }
 
     /**
@@ -259,7 +268,9 @@ class Form extends FWapper implements Renderable
      */
     public function stepEnd()
     {
-        return $this->fieldsEnd();
+        $this->__fields_content__ = null;
+
+        return $this;
     }
 
     /**
@@ -317,6 +328,7 @@ class Form extends FWapper implements Renderable
     {
         if ($create) {
             $this->fieldsEnd();
+            $this->tabEnd();
             $this->divider('', '', 12)->size(0, 12)->showLabel(false);
             $this->html('', '', 4)->showLabel(false);
             $this->btnSubmit();
@@ -495,7 +507,11 @@ EOT;
 
             $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
-            if ($this->__fields_content__) {
+            if($this->__fields__)
+            {
+                $this->__fields__->addRow($row);
+            }
+            else if ($this->__fields_content__) {
                 $this->__fields_content__->addRow($row);
             } else {
                 $this->rows[] = $row;
