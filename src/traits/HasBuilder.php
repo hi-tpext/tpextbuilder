@@ -190,6 +190,8 @@ trait HasBuilder
         $table = $this->table;
 
         $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
+        $this->buildTable($data);
+        $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagesize);
         $table->sortOrder($sortOrder);
 
@@ -207,9 +209,7 @@ trait HasBuilder
         $this->search = $this->table->getSearch();
 
         $this->builSearch();
-        $data = $this->buildDataList();
-        $this->buildTable($data);
-        $this->table->fill($data);
+        $this->buildDataList();
 
         if (request()->isAjax()) {
             return $this->table->partial()->render();
