@@ -228,76 +228,7 @@
 
 })(window);
 
-$(function () {
-    //动态选择框，上下级选中状态变化
-    $('input.checkall').each(function (i, e) {
-        var checkall = $(e);
-        var checkboxes = $('.' + checkall.data('check'));
-        var count = checkboxes.size();
-
-        checkall.on('change', function () {
-            checkboxes.prop('checked', checkall.is(':checked'));
-        });
-
-        checkboxes.on('change', function () {
-            var ss = 0;
-            checkboxes.each(function (ii, ee) {
-                if ($(ee).is(':checked')) {
-                    ss += 1;
-                }
-            });
-            checkall.prop('checked', count > 0 && ss == count);
-        });
-
-        var ss = 0;
-        checkboxes.each(function (ii, ee) {
-            if ($(ee).is(':checked')) {
-                ss += 1;
-            }
-        });
-        checkall.prop('checked', count > 0 && ss == count);
-    });
-
-    $("form select").on("select2:opening", function (e) {
-        if ($(this).attr('readonly') || $(this).is(':hidden')) {
-            e.preventDefault();
-        }
-    });
-
-    $('input[type="text"],textarea').each(function () {
-        if ($(this).attr('maxlength')) {
-            $(this).maxlength({
-                warningClass: "label label-info",
-                limitReachedClass: "label label-warning",
-                placement: "centered-right",
-            });
-        }
-    });
-
-    $('.btn-loading').click(function () {
-        $(this).lyearloading({
-            opacity: 0.2,
-            spinnerSize: 'nm'
-        });
-    });
-
-    $('select').each(function (i, e) {
-        if ($(e).attr('readonly')) {
-            setTimeout(function () {
-                $(e).parent('div').find('span.select2-selection__choice__remove').first().css('display', 'none');
-                $(e).parent('div').find('li.select2-search').first().css('display', 'none');
-                $(e).parent('div').find('span.select2-selection__clear').first().css('display', 'none');
-                $(e).parent('div').find('span.select2-selection').first().css('background-color', '#eee');
-            }, 1000);
-        }
-    });
-
-    $('body').on('click', '.btn-close-layer', function () {
-        if (parent && parent.layer) {
-            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            parent.layer.close(index);
-        }
-    });
+window.renderFiles = function () {
 
     /*
      * 示例上传成功采用返回ID的形式，即上传成功以附件表形式存储，返回给前端ID值。
@@ -306,7 +237,7 @@ $(function () {
      * 存放预览图的div元素，命名：file_list_*；后面的上传按钮的命名：filePicker_*（这里的*跟隐藏的input的name对应）。方便单页面中存在有多个上传时区分以及使用。
      * input上保存上传后的图片ID以及设置上传时的一些参数，
      */
-
+    
     // 通用绑定，
     $('.js-upload-files').each(function () {
         var $input_file = $(this).find('input'),
@@ -527,4 +458,78 @@ $(function () {
             }
         });
     });
+};
+
+$(function () {
+    //动态选择框，上下级选中状态变化
+    $('input.checkall').each(function (i, e) {
+        var checkall = $(e);
+        var checkboxes = $('.' + checkall.data('check'));
+        var count = checkboxes.size();
+
+        checkall.on('change', function () {
+            checkboxes.prop('checked', checkall.is(':checked'));
+        });
+
+        checkboxes.on('change', function () {
+            var ss = 0;
+            checkboxes.each(function (ii, ee) {
+                if ($(ee).is(':checked')) {
+                    ss += 1;
+                }
+            });
+            checkall.prop('checked', count > 0 && ss == count);
+        });
+
+        var ss = 0;
+        checkboxes.each(function (ii, ee) {
+            if ($(ee).is(':checked')) {
+                ss += 1;
+            }
+        });
+        checkall.prop('checked', count > 0 && ss == count);
+    });
+
+    $("form select").on("select2:opening", function (e) {
+        if ($(this).attr('readonly') || $(this).is(':hidden')) {
+            e.preventDefault();
+        }
+    });
+
+    $('input[type="text"],textarea').each(function () {
+        if ($(this).attr('maxlength')) {
+            $(this).maxlength({
+                warningClass: "label label-info",
+                limitReachedClass: "label label-warning",
+                placement: "centered-right",
+            });
+        }
+    });
+
+    $('.btn-loading').click(function () {
+        $(this).lyearloading({
+            opacity: 0.2,
+            spinnerSize: 'nm'
+        });
+    });
+
+    $('select').each(function (i, e) {
+        if ($(e).attr('readonly')) {
+            setTimeout(function () {
+                $(e).parent('div').find('span.select2-selection__choice__remove').first().css('display', 'none');
+                $(e).parent('div').find('li.select2-search').first().css('display', 'none');
+                $(e).parent('div').find('span.select2-selection__clear').first().css('display', 'none');
+                $(e).parent('div').find('span.select2-selection').first().css('background-color', '#eee');
+            }, 1000);
+        }
+    });
+
+    $('body').on('click', '.btn-close-layer', function () {
+        if (parent && parent.layer) {
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);
+        }
+    });
+
+    window.renderFiles();
 });
