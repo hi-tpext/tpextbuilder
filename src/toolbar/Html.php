@@ -10,4 +10,18 @@ class Html extends Bar
     {
         $this->label = $html;
     }
+
+     /**
+     * Undocumented function
+     *
+     * @return mixed
+     */
+    public function render()
+    {
+        $vars = $this->commonVars();
+
+        $viewshow = $this->getViewInstance();
+
+        return $viewshow->assign($vars)->getContent();
+    }
 }
