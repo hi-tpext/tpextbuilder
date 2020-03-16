@@ -8,6 +8,8 @@ class Textarea extends Field
 
     protected $maxlength = 0;
 
+    protected $rows = 3;
+
     protected $placeholder = '';
 
     protected $js = [
@@ -23,6 +25,18 @@ class Textarea extends Field
     public function maxlength($val = 0)
     {
         $this->maxlength = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $val
+     * @return $this
+     */
+    public function rows($val = 3)
+    {
+        $this->rows = $val;
         return $this;
     }
 
@@ -48,6 +62,7 @@ class Textarea extends Field
 
         $vars = array_merge($vars, [
             'placeholder' => $this->placeholder,
+            'rows' => $this->rows,
         ]);
 
         $viewshow = $this->getViewInstance();
