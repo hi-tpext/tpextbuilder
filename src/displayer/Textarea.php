@@ -58,11 +58,12 @@ class Textarea extends Field
             $this->attr .= ' maxlength="' . $this->maxlength . '"';
         }
 
+        $this->addAttr('rows="' . $this->rows . '"');
+
         $vars = $this->commonVars();
 
         $vars = array_merge($vars, [
             'placeholder' => $this->placeholder,
-            'rows' => $this->rows,
         ]);
 
         $viewshow = $this->getViewInstance();
