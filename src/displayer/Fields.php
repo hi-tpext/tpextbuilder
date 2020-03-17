@@ -3,11 +3,19 @@
 namespace tpext\builder\displayer;
 
 use think\Model;
+use tpext\builder\common\Form;
 use tpext\builder\form\FieldsContent;
 
 class Fields extends Field
 {
     protected $view = 'fields';
+
+    /**
+     * Undocumented variable
+     *
+     * @var Form
+     */
+    protected $form;
 
     /**
      * Undocumented variable
@@ -19,7 +27,25 @@ class Fields extends Field
     public function created()
     {
         parent::created();
-        $this->__fields_content__ = $this->getWapper()->getForm()->createFields();
+
+        $this->form = $this->getWapper()->getForm();
+        $this->__fields_content__ = $this->form->createFields();
+
+        $this->name = 'fields' . mt_rand(100, 999);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Field ...$fields
+     * @return void
+     */
+    public function with(...$fields)
+    {
+        $this->form->fieldsEnd();
+        return $this;
     }
 
     /**

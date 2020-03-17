@@ -350,6 +350,8 @@ class Form extends FWapper implements Renderable
      */
     public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
     {
+        $this->fieldsEnd();
+        $this->tabEnd();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
         return $this;
@@ -507,11 +509,9 @@ EOT;
 
             $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
-            if($this->__fields__)
-            {
+            if ($this->__fields__) {
                 $this->__fields__->addRow($row);
-            }
-            else if ($this->__fields_content__) {
+            } else if ($this->__fields_content__) {
                 $this->__fields_content__->addRow($row);
             } else {
                 $this->rows[] = $row;
