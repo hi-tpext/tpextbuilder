@@ -109,7 +109,7 @@ class Select extends Radio
 
             $configs = substr($configs, 1, strlen($configs) - 2);
             $script = <<<EOT
-           
+
             //是否自动加载下一级。比如省市区三级联动时，开启了的话，选择了云南省，市和区会自动选择：云南省-昆明市-五华区。
             //某些时候这样未必市合理的。
             if(autoLoad)
@@ -295,6 +295,10 @@ EOT;
         }
 
         $this->isGroup();
+
+        if (!isset($this->options[''])) {
+            $this->options = ['' => $this->jsOptions['placeholder']] + $this->options;
+        }
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,

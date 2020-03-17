@@ -26,7 +26,7 @@ trait HasBuilder
     protected $editText = '编辑';
     protected $indexText = '列表';
     protected $pagesize = 14;
-    protected $sortOrder = 'sort asc';
+    protected $sortOrder = 'id asc';
     protected $enableField = 'enable';
 
     /**
@@ -81,10 +81,11 @@ trait HasBuilder
     /*******辅助方法******/
 
     /**
-     * 构建表单
+     * Undocumented function
      *
      * @param boolean $isEdit
      * @param array $data
+     * @return void
      */
     protected function builForm($isEdit, &$data = [])
     {
@@ -92,8 +93,9 @@ trait HasBuilder
     }
 
     /**
-     * 构建表格
+     * Undocumented function
      *
+     * @param array $data
      * @return void
      */
     protected function buildTable(&$data = [])
@@ -178,7 +180,6 @@ trait HasBuilder
     /**
      * Undocumented function
      *
-     * @param Table $table
      * @return array|Collection
      */
     protected function buildDataList()
