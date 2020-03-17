@@ -109,19 +109,29 @@ class Select extends Radio
 
             $configs = substr($configs, 1, strlen($configs) - 2);
             $script = <<<EOT
-
-            $.get('{$url}',{q : $('#{$prevID}').val(),eleid : '{$prevID}'}, function (data) {
-                $('#{$selectId}').select2('destroy').empty();
-                var list = data.data ? data.data : data;
-                $('#{$selectId}').select2({
-                    {$configs},
-                    data: $.map(list, function (d) {
-                        d.id = d.{$id};
-                        d.text = d.{$text};
-                        return d;
-                    })
-                }).trigger('change');
-            });
+           
+            //是否自动加载下一级。比如省市区三级联动时，开启了的话，选择了云南省，市和区会自动选择：云南省-昆明市-五华区。
+            //某些时候这样未必市合理的。
+            if(autoLoad)
+            {
+                $.get('{$url}',{q : $('#{$prevID}').val(),eleid : '{$prevID}'}, function (data) {
+                    $('#{$selectId}').select2('destroy').empty();
+                    var list = data.data ? data.data : data;
+                    $('#{$selectId}').select2({
+                        {$configs},
+                        data: $.map(list, function (d) {
+                            d.id = d.{$id};
+                            d.text = d.{$text};
+                            return d;
+                        })
+                    }).trigger('change');
+                });
+            }
+            else
+            {
+                //关闭后，省变化了，市和区不会自动加载，比如选择了云南省：云南省-请选择市-请选择区。要一级一级去选
+                $('#{$selectId}').empty().trigger('change');
+            }
 
 EOT;
             $this->jsOptions['ajax'] = $ajax;
@@ -228,17 +238,21 @@ EOT;
      * Undocumented function
      *
      * @param Select $nextSelect
+     * @param boolean $autoLoad 此select变化时，是否自动加载下一级的选项
      * @return $this
      */
-    public function withNext($nextSelect)
+    public function withNext($nextSelect, $autoLoad = false)
     {
         $selectId = $this->getId();
 
         $nextScript = $nextSelect->asNextScript($selectId);
 
+        $autoLoad = $autoLoad ? 1 : 0;
+
         $script = <<<EOT
         $(document).off('change', '#{$selectId}');
         $(document).on('change', "#{$selectId}", function () {
+            var autoLoad = {$autoLoad};
             {$nextScript};
         });
 
