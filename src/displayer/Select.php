@@ -296,7 +296,7 @@ EOT;
 
         $this->isGroup();
 
-        if (!isset($this->options[''])) {
+        if (!$this->group && !isset($this->options[''])) {
             $this->options = ['' => $this->jsOptions['placeholder']] + $this->options;
         }
 
