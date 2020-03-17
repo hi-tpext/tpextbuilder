@@ -279,7 +279,7 @@ trait HasBuilder
         }
         $res = 0;
         foreach ($ids as $id) {
-            if ($this->dataModel->where(['id' => $id])->update([$this->enableField => 1])) {
+            if ($this->dataModel->where([$this->dataModel->getPk() => $id])->update([$this->enableField => 1])) {
                 $res += 1;
             }
         }
@@ -299,7 +299,7 @@ trait HasBuilder
         }
         $res = 0;
         foreach ($ids as $id) {
-            if ($this->dataModel->where(['id' => $id])->update([$this->enableField => 0])) {
+            if ($this->dataModel->where([$this->dataModel->getPk() => $id])->update([$this->enableField => 0])) {
                 $res += 1;
             }
         }
