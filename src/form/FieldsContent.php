@@ -4,6 +4,7 @@ namespace tpext\builder\form;
 
 use think\Model;
 use think\response\View as ViewShow;
+use tpext\builder\common\Form;
 use tpext\builder\common\Module;
 use tpext\builder\common\Renderable;
 use tpext\builder\displayer\Field;
@@ -15,6 +16,13 @@ class FieldsContent extends FWapper implements Renderable
     protected $data = [];
 
     /**
+     * Undocumented variable
+     *
+     * @var Form
+     */
+    protected $form;
+
+    /**
      * Undocumented function
      *
      * @return $this
@@ -23,6 +31,17 @@ class FieldsContent extends FWapper implements Renderable
     {
         foreach ($this->rows as $row) {
             $row->fill($this->data);
+            if (!$row instanceof FRow) {
+                $row->beforRender();
+                continue;
+            }
+
+            $displayer = $row->getDisplayer();
+
+            if ($displayer->isRequired()) {
+                $this->form->addJqValidatorRule($displayer->getName(), 'required', true);
+            }
+
             $row->beforRender();
         }
         return $this;
@@ -48,6 +67,28 @@ class FieldsContent extends FWapper implements Renderable
     public function getRows()
     {
         return $this->rows;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Form $val
+     * @return $this
+     */
+    public function setForm($val)
+    {
+        $this->form = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Form
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 
     /**

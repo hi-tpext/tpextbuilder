@@ -194,6 +194,7 @@ class Form extends FWapper implements Renderable
         }
 
         $this->__fields_content__ = $this->tab->addFieldsContent($label, $active, $name);
+        $this->__fields_content__->setForm($this);
         return $this->tab;
     }
 
@@ -224,6 +225,7 @@ class Form extends FWapper implements Renderable
         }
 
         $this->__fields_content__ = $this->step->addFieldsContent($label, $description, $active, $name);
+        $this->__fields_content__->setForm($this);
         return $this->step;
     }
 
@@ -235,6 +237,7 @@ class Form extends FWapper implements Renderable
     public function createFields()
     {
         $this->__fields__ = new FieldsContent();
+        $this->__fields__->setForm($this);
         return $this->__fields__;
     }
 
@@ -306,6 +309,11 @@ class Form extends FWapper implements Renderable
     {
         $this->data = $data;
         return $this;
+    }
+
+    public function addJqValidatorRule($name, $rule, $val = true)
+    {
+        $this->validator[$name][$rule] = $val;
     }
 
     /**
