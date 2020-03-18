@@ -10,7 +10,9 @@ class Divider extends Field
     {
         parent::created();
 
-        $this->value = $this->name;
+        $this->value = $this->label ? $this->label : $this->name;
+
+        $this->name = 'divider' . mt_rand(100, 999);
 
         $this->label = '';
     }

@@ -81,11 +81,10 @@ class DateTimeRange extends Text
                 'separator' => $this->separator,
             ]);
 
-        $vars = $this->commonVars();
+        $value = $this->renderValue();
 
-        $vars = $this->commonVars();
-        if ($vars['value']) {
-            $values = explode($this->separator, $vars['value']);
+        if ($value) {
+            $values = explode($this->separator, $value);
 
             if (count($values) == 2) {
                 $this->jsOptions['startDate'] = $values[0];

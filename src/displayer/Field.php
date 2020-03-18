@@ -616,6 +616,22 @@ EOT;
     /**
      * Undocumented function
      *
+     * @return string
+     */
+    protected function renderValue()
+    {
+        if (is_array($this->default)) {
+            $this->default = implode(',', $this->default);
+        }
+
+        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+
+        return $value;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function commonVars()
@@ -632,7 +648,7 @@ EOT;
             $this->default = implode(',', $this->default);
         }
 
-        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+        $value = $this->renderValue();
 
         $mapClass = '';
 
