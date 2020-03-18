@@ -125,3 +125,8 @@ a.sortable.mdi-sort
     padding-left: 0;
     padding-right: 0;
 }
+
+.table .row-__action__ .btn-group-xs > .btn, .btn-xs {
+    padding: 0 3px;
+    margin: 1px;
+}
