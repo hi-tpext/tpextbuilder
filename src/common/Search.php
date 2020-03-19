@@ -75,10 +75,11 @@ class Search extends SWapper implements Renderable
      *
      * @return FieldsContent
      */
-    public function createFieldsContent()
+    public function createFields()
     {
-        $this->__fields_content__ = new FieldsContent();
-        return $this->__fields_content__;
+        $this->__fields__ = new FieldsContent();
+        $this->__fields__->setForm($this);
+        return $this->__fields__;
     }
 
     /**
