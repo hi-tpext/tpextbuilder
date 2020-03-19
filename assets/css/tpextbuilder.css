@@ -10,6 +10,11 @@ form.search-form .form-group {
     margin-bottom: 10px;
 }
 
+form.search-form .fields-list .form-group {
+    margin-left: -15px;
+    margin-right: 15px;
+}
+
 .checkbox-div,
 .radio-div,
 .button-div {
