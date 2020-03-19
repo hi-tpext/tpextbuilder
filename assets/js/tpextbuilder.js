@@ -189,7 +189,15 @@
                 if (data.status || data.code) {
                     lightyear.notify(data.msg || data.message || '操作成功！', 'success');
                     if (refresh) {
-                        $('#form-refresh').trigger('click');
+                        $('.search-refresh').trigger('click');
+                    } else if (data.script) {
+                        if ($('#script-div').size()) {
+                            $('#script-div').html(data.script);
+                        } else {
+                            $('body').append(
+                                '<div class="hidden" id="script-div">' + data
+                                .script + '</div>');
+                        }
                     } else if (data.url) {
                         setTimeout(function () {
                             location.replace(data.url);
@@ -237,7 +245,7 @@ window.renderFiles = function () {
      * 存放预览图的div元素，命名：file_list_*；后面的上传按钮的命名：filePicker_*（这里的*跟隐藏的input的name对应）。方便单页面中存在有多个上传时区分以及使用。
      * input上保存上传后的图片ID以及设置上传时的一些参数，
      */
-    
+
     // 通用绑定，
     $('.js-upload-files').each(function () {
         var $input_file = $(this).find('input'),
