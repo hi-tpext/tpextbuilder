@@ -4,6 +4,7 @@ namespace tpext\builder\displayer;
 
 use think\Model;
 use tpext\builder\common\Form;
+use tpext\builder\common\Search;
 use tpext\builder\form\FieldsContent;
 
 class Fields extends Field
@@ -13,7 +14,7 @@ class Fields extends Field
     /**
      * Undocumented variable
      *
-     * @var Form
+     * @var Form|Search
      */
     protected $form;
 

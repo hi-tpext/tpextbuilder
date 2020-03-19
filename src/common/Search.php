@@ -41,7 +41,7 @@ class Search extends SWapper implements Renderable
      *
      * @var FieldsContent
      */
-    protected $__fields_content__ = null;
+    protected $__fields__ = null;
 
     public function __construct()
     {
@@ -352,13 +352,13 @@ EOT;
 
             $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 3, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
-            if ($this->__fields_content__) {
-                $this->__fields_content__->addRow($row);
+            if ($this->__fields__) {
+                $this->__fields__->addRow($row);
             } else {
                 $this->rows[] = $row;
             }
 
-            $row->setSearch($this);
+            $row->setForm($this);
 
             $displayer = $row->$name($arguments[0], $row->getLabel());
 

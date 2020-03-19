@@ -17,7 +17,7 @@ class SRow extends SWapper implements Renderable
      *
      * @var Search
      */
-    protected $search;
+    protected $form;
 
     public function __construct($name, $label = '', $colSize = 3, $colClass = '', $colAttr = '')
     {
@@ -40,9 +40,9 @@ class SRow extends SWapper implements Renderable
      * @param Search $val
      * @return $this
      */
-    public function setSearch($val)
+    public function setForm($val)
     {
-        $this->search = $val;
+        $this->form = $val;
         return $this;
     }
 
@@ -53,7 +53,19 @@ class SRow extends SWapper implements Renderable
      */
     public function getForm()
     {
-        return $this->search;
+        return $this->form;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        $this->displayer->fill($data);
+        return $this;
     }
 
     public function __call($name, $arguments)
