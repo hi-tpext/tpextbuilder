@@ -87,9 +87,9 @@ class Search extends SWapper implements Renderable
      *
      * @return $this
      */
-    public function fieldsContentEnd()
+    public function fieldsEnd()
     {
-        $this->__fields_content__ = null;
+        $this->__fields__ = null;
         return $this;
     }
 
@@ -160,6 +160,7 @@ class Search extends SWapper implements Renderable
      */
     public function searchButtons()
     {
+        $this->fieldsEnd();
         $this->html('', '', 1)->showLabel(false);
         $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-xs');
         $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-xs')->attr('onclick="location.replace(location.href)"');
@@ -178,6 +179,7 @@ class Search extends SWapper implements Renderable
      */
     public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success btn-xs')
     {
+        $this->fieldsEnd();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->searchButtonsCalled = true;
         return $this;
