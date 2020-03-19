@@ -226,8 +226,10 @@ trait HasBuilder
         } else {
             $builder = $this->builder($this->pageTitle, $this->addText);
             $form = $builder->form();
+            $data = [];
             $this->form = $form;
             $this->builForm(false, $data);
+            $form->fill($data);
             return $builder->render();
         }
     }
