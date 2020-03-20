@@ -36,6 +36,8 @@ class Search extends SWapper implements Renderable
 
     protected $butonsSizeClass = 'btn-sm';
 
+    protected $open = true;
+
     /**
      * Undocumented variable
      *
@@ -115,6 +117,18 @@ class Search extends SWapper implements Renderable
     public function formId($val)
     {
         $this->id = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return void
+     */
+    public function open($val = true)
+    {
+        $this->open = $val;
         return $this;
     }
 
@@ -206,7 +220,10 @@ class Search extends SWapper implements Renderable
      */
     public function beforRender()
     {
-        $this->addClass('hidden');
+        if (!$this->open) {
+            $this->addClass('hidden');
+        }
+
         $empty = empty($this->rows);
 
         if (!$empty) {

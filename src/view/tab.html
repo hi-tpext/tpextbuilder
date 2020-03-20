@@ -1,16 +1,20 @@
-{notempty name="$rows"}
-<ul class="nav nav-tabs {$class}" {$attr|raw}>
-    {volist name="labels" id="label"}
-    <li class="nav-item {$label.active}">
-        <a data-toggle="tab" href="#{$id}-{$key}">{$label.content|raw}</a>
-    </li>
-    {/volist}
-</ul>
-<div class="tab-content">
-    {volist name="rows" id="row"}
-    <div class="tab-pane fade {$row.active}" id="{$id}-{$key}">
-        {:$row.content->render()}
+{notempty name="$labels"}
+<div id="{$id}" class="{$class}" {$attr|raw}>
+    <ul class="nav nav-tabs">
+        {volist name="labels" id="label"}
+        <li class="nav-item {$label.active}">
+            <a {$label.attr|raw} href="{$label.href}">{$label.content|raw}</a>
+        </li>
+        {/volist}
+    </ul>
+    {notempty name="$rows"}
+    <div class="tab-content">
+        {volist name="rows" id="row"}
+        <div class="tab-pane fade {$row.active}" id="{$id}-{$key}">
+            {:$row.content->render()}
+        </div>
+        {/volist}
     </div>
-    {/volist}
+    {/notempty}
 </div>
 {/notempty}

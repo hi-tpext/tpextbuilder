@@ -180,12 +180,14 @@
 
     tpextbuilder.autoSendData = function (data, url, refresh) {
         data.__token__ = w.__token__;
+        lightyear.loading('show');
         $.ajax({
             url: url,
             data: data,
             type: "POST",
             dataType: "json",
             success: function (data) {
+                lightyear.loading('hide');
                 if (data.status || data.code) {
                     lightyear.notify(data.msg || data.message || '操作成功！', 'success');
                     if (refresh) {
@@ -208,6 +210,7 @@
                 }
             },
             error: function () {
+                lightyear.loading('hide');
                 lightyear.notify('网络错误', 'danger');
             }
         });

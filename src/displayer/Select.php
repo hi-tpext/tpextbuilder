@@ -114,7 +114,11 @@ class Select extends Radio
             //某些时候这样未必市合理的。
             if(autoLoad)
             {
-                $.get('{$url}',{q : $('#{$prevID}').val(),eleid : '{$prevID}'}, function (data) {
+                $('#{$selectId}').next('.select2').lyearloading({
+                    opacity: 0.05,
+                    spinnerSize: 'nm'
+                });
+                $.get('{$url}',{q : $('#{$prevID}').val(), eleid : '{$prevID}'}, function (data) {
                     $('#{$selectId}').select2('destroy').empty();
                     var list = data.data ? data.data : data;
                     $('#{$selectId}').select2({

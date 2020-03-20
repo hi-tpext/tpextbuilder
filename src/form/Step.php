@@ -8,12 +8,13 @@ use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\common\Renderable;
 use tpext\builder\form\FieldsContent;
+use tpext\builder\traits\HasDom;
 
 class Step implements Renderable
 {
-    private $view = '';
+    use HasDom;
 
-    protected $class = '';
+    private $view = '';
 
     protected $navigateable = true;
 
@@ -56,10 +57,10 @@ class Step implements Renderable
     public function addFieldsContent($label, $description = '', $isActive = false, $name = '')
     {
         if (empty($name)) {
-            $name = (count($this->rows) + 1);
+            $name = (count($this->labels) + 1);
         }
 
-        if (count($this->rows) == 0) {
+        if (count($this->labels) == 0) {
             $this->active = $name;
         }
 
@@ -267,6 +268,7 @@ EOT;
             'class' => ($this->mode == 'anchor' ? 'step-anchor' : 'step-dots') . ' ' . $this->class,
             'mode' => $this->mode,
             'size' => $this->size,
+            'attr' => $this->getAttrWithStyle(),
         ];
 
         $viewshow = new ViewShow($this->view);

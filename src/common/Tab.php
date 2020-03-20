@@ -13,8 +13,6 @@ class Tab implements Renderable
 
     private $view = '';
 
-    protected $class = '';
-
     protected $rows = [];
 
     protected $labels = [];
@@ -47,6 +45,34 @@ class Tab implements Renderable
      * Undocumented function
      *
      * @param string $label
+     * @param string $href
+     * @param boolean $isActive
+     * @param string $name
+     * @return $this
+     */
+    public function addLink($label, $href, $isActive = false, $name = '')
+    {
+        if (empty($name)) {
+            $name = (count($this->labels) + 1);
+        }
+
+        if (empty($this->active) && count($this->labels) == 0) {
+            $this->active = $name;
+        }
+
+        if ($isActive) {
+            $this->active = $name;
+        }
+
+        $this->labels[$name] = ['content' => $label, 'active' => '', 'href' => $href, 'attr' => ''];
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $label
      * @param boolean $isActive
      * @param string $name
      * @return Row
@@ -54,10 +80,10 @@ class Tab implements Renderable
     public function add($label, $isActive = false, $name = '')
     {
         if (empty($name)) {
-            $name = (count($this->rows) + 1);
+            $name = (count($this->labels) + 1);
         }
 
-        if (empty($this->active) && count($this->rows) == 0) {
+        if (empty($this->active) && count($this->labels) == 0) {
             $this->active = $name;
         }
 
@@ -68,7 +94,7 @@ class Tab implements Renderable
         $row = new Row();
 
         $this->rows[$name] = ['content' => $row, 'active' => ''];
-        $this->labels[$name] = ['content' => $label, 'active' => ''];
+        $this->labels[$name] = ['content' => $label, 'active' => '', 'href' => '#' . $this->getId() . '-' . $name, 'attr' => 'data-toggle="tab"'];
 
         return $row;
     }
@@ -111,7 +137,7 @@ class Tab implements Renderable
         $this->__fields_contents__[] = $content;
 
         $this->rows[$name] = ['content' => $content, 'active' => ''];
-        $this->labels[$name] = ['content' => $label, 'active' => ''];
+        $this->labels[$name] = ['content' => $label, 'active' => '', 'href' => '#' . $this->getId() . '-' . $name, 'attr' => 'data-toggle="tab"'];
 
         return $content;
     }
@@ -181,7 +207,7 @@ class Tab implements Renderable
         $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tab.html']);
 
         $this->labels[$this->active]['active'] = 'active';
-        $this->rows[$this->active]['active'] = 'in active';
+        isset($this->rows[$this->active]) ? $this->rows[$this->active]['active'] = 'in active' : false;
 
         $vars = [
             'labels' => $this->labels,

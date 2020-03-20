@@ -17,6 +17,8 @@ class Builder implements Renderable
 
     protected static $minify = false;
 
+    protected static $aver = '1.0';
+
     /**
      * Undocumented variable
      *
@@ -368,12 +370,12 @@ class Builder implements Renderable
         $this->addCss($this->commonCss());
     }
 
-   /**
-    * Undocumented function
-    *
-    * @param boolean $val
-    * @return void
-    */
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return void
+     */
     public static function minify($val)
     {
         static::$minify = $val;
@@ -387,6 +389,11 @@ class Builder implements Renderable
     public static function isMinify()
     {
         return static::$minify;
+    }
+
+    public static function aver($val)
+    {
+        static::$aver = $val;
     }
 
     /**
@@ -414,6 +421,18 @@ class Builder implements Renderable
                 if (!$field->canMinify()) {
                     $this->addJs($field->getJs());
                 }
+            }
+        }
+
+        foreach ($this->css as &$c) {
+            if (strpos($c, '?') == false && strpos($c, 'http') == false) {
+                $c .= '?aver=' . static::$aver;
+            }
+        }
+
+        foreach ($this->js as &$j) {
+            if (strpos($j, '?') == false && strpos($c, 'http') == false) {
+                $j .= '?aver=' . static::$aver;
             }
         }
 

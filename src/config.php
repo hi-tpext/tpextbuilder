@@ -18,7 +18,7 @@ return [
     //
     'map' => '',
     'amap_js_key' => '//webapi.amap.com/maps?v=1.4.15&key=您申请的key值',
-    'baidu_map_js_key' => '//api.map.baidu.com/api?v=2.0&ak=您申请的key值',
+    'baidu_map_js_key' => '//api.map.baidu.com/api?v=3.0&ak=您的密钥',
     'google_map_js_key' => '//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&key=您申请的key值',
     'tcent_map_js_key' => '//map.qq.com/api/js?v=2.exp&libraries=place&key=您申请的key值',
     'yandex_map_js_key' => '//api-maps.yandex.ru/2.1/?lang=ru_RU',

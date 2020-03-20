@@ -51,6 +51,18 @@ class Map extends Text
     /**
      * Undocumented function
      *
+     * @param int $val
+     * @return void
+     */
+    public function zoom($val)
+    {
+        $this->jsOptions['zoom'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array $options
      * @return $this
      */
@@ -60,29 +72,56 @@ class Map extends Text
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function amap()
     {
         $this->type = 'amap';
+        return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function baidu()
     {
-
+        $this->type = 'baidu';
+        return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function google()
     {
-
+        return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function tcent()
     {
-
+        return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function yandex()
     {
-
+        return $this;
     }
 
     public function beforRender()
@@ -91,6 +130,9 @@ class Map extends Text
 
         if ($this->type == 'amap') {
             $this->amapScript($config['amap_js_key']);
+        } else if ($this->type == 'baidu') {
+            $this->js[] = $config['baidu_map_js_key'];
+            $this->baiduScript();
         }
 
         $this->beforSymbol('<i class="mdi mdi-map"></i>');
@@ -111,9 +153,99 @@ class Map extends Text
         return $vars;
     }
 
-    public function amapScript($jsKey)
+    protected function baiduScript()
     {
-        $script = '';
+        $inputId = $this->getId();
+
+        if (is_array($this->default)) {
+            $this->default = implode(',', $this->default);
+        }
+
+        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+
+        $position = explode(',', $value);
+        if (count($position) != 2) {
+            $value = '102.709629,24.847463';
+        }
+
+        $this->jsOptions = array_merge([
+            'zoom' => 14,
+        ], $this->jsOptions);
+
+        $zoom = $this->jsOptions['zoom'];
+
+        $configs = json_encode($this->jsOptions);
+
+        $configs = substr($configs, 1, strlen($configs) - 2);
+
+        $script = <<<EOT
+
+        var input = $('#{$inputId}');
+
+        var map = new BMap.Map("map-{$inputId}");
+        var point = new BMap.Point({$value});
+        map.centerAndZoom(point, {$zoom});
+
+        var marker = new BMap.Marker(point);        // 创建标注
+        map.addOverlay(marker);
+
+        if(!input.val())
+        {
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function(r){
+                if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                    marker.setPosition(r.point);
+                    map.panTo(r.point);
+                    input.val(r.point.lng + ',' + r.point.lat);
+                }
+                else {
+                    console.log('failed' + this.getStatus());
+                }
+            });
+        }
+
+        marker.enableDragging();
+        marker.addEventListener("dragend", function(e){
+            input.val(e.point.lng + ',' + e.point.lat);
+        })
+
+        map.addEventListener("click", function(e){
+            marker.setPosition(e.point);
+            input.val(e.point.lng + ',' + e.point.lat);
+        });
+
+        var ac = new BMap.Autocomplete({"input" :  "search-{$inputId}", "location" : map});
+
+        var myValue;
+
+        ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+            var _value = e.item.value;
+            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            setPlace();
+        });
+
+        function setPlace(){
+            function myFun(){
+                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                map.centerAndZoom(pp, {$zoom});
+                marker.setPosition(pp);
+                input.val(pp.lng + ',' + pp.lat);
+            }
+            var local = new BMap.LocalSearch(map, { //智能搜索
+                onSearchComplete: myFun
+            });
+            local.search(myValue);
+        }
+
+        map.addControl(new BMap.NavigationControl());
+        map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl());
+EOT;
+        $this->script[] = $script;
+    }
+
+    protected function amapScript($jsKey)
+    {
         $inputId = $this->getId();
 
         if (is_array($this->default)) {
@@ -130,8 +262,10 @@ class Map extends Text
 
         $this->jsOptions = array_merge([
             'center' => $position,
-            'zoom' => 11,
+            'zoom' => 15,
         ], $this->jsOptions);
+
+        $zoom = $this->jsOptions['zoom'];
 
         $configs = json_encode($this->jsOptions);
 
@@ -147,7 +281,7 @@ class Map extends Text
 
             var marker = new AMap.Marker({
                 draggable: true,
-                position: new AMap.LngLat($value),   // 经纬度对象，也可以是经纬度构成的一维数组
+                position: new AMap.LngLat({$value}),   // 经纬度对象，也可以是经纬度构成的一维数组
             });
 
             // 将创建的点标记添加到已有的地图实例：
@@ -181,7 +315,7 @@ class Map extends Text
 
                 var autocomplete= new AMap.Autocomplete(autoOptions);
                 AMap.event.addListener(autocomplete, "select", function(data){
-                    map.setZoomAndCenter(18, data.poi.location);
+                    map.setZoomAndCenter({$zoom}, data.poi.location);
                     marker.setPosition(data.poi.location);
                     input.val(data.poi.location.lng + ',' + data.poi.location.lat);
                 });
