@@ -111,6 +111,7 @@ class Map extends Text
      */
     public function tcent()
     {
+        $this->type = 'tcent';
         return $this;
     }
 
@@ -133,6 +134,8 @@ class Map extends Text
         } else if ($this->type == 'baidu') {
             $this->js[] = $config['baidu_map_js_key'];
             $this->baiduScript();
+        } else if ($this->type == 'tcent') {
+            $this->tcentScript($config['tcent_map_js_key']);
         }
 
         $this->beforSymbol('<i class="mdi mdi-map"></i>');
@@ -151,6 +154,94 @@ class Map extends Text
         ]);
 
         return $vars;
+    }
+
+    protected function tcentScript($jsKey)
+    {
+        $inputId = $this->getId();
+
+        if (is_array($this->default)) {
+            $this->default = implode(',', $this->default);
+        }
+
+        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+
+        $position = explode(',', $value);
+        if (count($position) != 2) {
+            $value = '24.847463,102.709629';
+        } else {
+            $value = $position[1] . ',' . $position[0];
+        }
+
+        $this->jsOptions = array_merge([
+            'zoom' => 15,
+            'panControl' => true,
+            'zoomControl' => true,
+            'scaleControl' => true,
+        ], $this->jsOptions);
+
+        $zoom = $this->jsOptions['zoom'];
+
+        $configs = json_encode($this->jsOptions);
+
+        $configs = substr($configs, 1, strlen($configs) - 2);
+
+        $script = <<<EOT
+
+        window.tcentInit = function(){
+            var input = $('#{$inputId}');
+
+            var center = new qq.maps.LatLng({$value});
+
+            var map = new qq.maps.Map(document.getElementById("map-{$inputId}"), {
+                center : center,
+                {$configs}
+            });
+
+            var marker = new qq.maps.Marker({
+                position: center,
+                draggable: true,
+                map: map
+            });
+
+            if(!input.val())
+            {
+                var citylocation = new qq.maps.CityService();
+                citylocation.setComplete(function(result) {
+                    map.setCenter(result.detail.latLng);
+                    marker.setPosition(result.detail.latLng);
+                    input.val(result.detail.latLng.getLng() + ',' + result.detail.latLng.getLat());
+                });
+                citylocation.searchLocalCity();
+            }
+
+            qq.maps.event.addListener(map, 'click', function(event) {
+                marker.setPosition(event.latLng);
+                input.val(event.latLng.getLng() + ',' + event.latLng.getLat());
+            });
+
+            qq.maps.event.addListener(marker, 'dragend', function() {
+                var pp = marker.getPosition();
+                input.val(pp.getLng() + ',' + pp.getLat());
+            });
+            var ap = new qq.maps.place.Autocomplete(document.getElementById('search-{$inputId}'));
+            var searchService = new qq.maps.SearchService({
+                map : map
+            });
+
+            qq.maps.event.addListener(ap, "confirm", function(res){
+                searchService.search(res.value);
+            });
+        }
+
+        var url = '$jsKey&callback=tcentInit';
+
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        document.body.appendChild(script);
+EOT;
+        $this->script[] = $script;
     }
 
     protected function baiduScript()
@@ -288,6 +379,7 @@ EOT;
             map.add(marker);
 
             map.on('click', function(e) {
+                alert(1);
                 marker.setPosition(e.lnglat);
                 input.val(e.lnglat.getLng() + ',' + e.lnglat.getLat());
             });
