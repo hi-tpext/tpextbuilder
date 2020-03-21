@@ -116,13 +116,11 @@ form textarea.form-control,
     line-height: 33px;
 }
 
-.panel.content .content-header
-{
+.panel.content .content-header {
     background: #fff;
 }
 
-a.sortable.mdi-sort
-{
+a.sortable.mdi-sort {
     color: #999;
 }
 
@@ -134,4 +132,9 @@ a.sortable.mdi-sort
 .table .row-__action__ .btn.btn-xs {
     padding: 0 3px;
     margin: 1px;
+}
+
+.js-upload-files .webuploader-pick {
+    padding: 3px 5px;
+    margin-top: 4px;
 }
