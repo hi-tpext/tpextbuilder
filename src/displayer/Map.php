@@ -122,6 +122,7 @@ class Map extends Text
      */
     public function yandex()
     {
+        $this->type = 'yandex';
         return $this;
     }
 
@@ -136,6 +137,9 @@ class Map extends Text
             $this->baiduScript();
         } else if ($this->type == 'tcent') {
             $this->tcentScript($config['tcent_map_js_key']);
+        } else if ($this->type == 'yandex') {
+            $this->js[] = $config['yandex_map_js_key'];
+            $this->yandexScript();
         }
 
         $this->beforSymbol('<i class="mdi mdi-map"></i>');
@@ -160,11 +164,7 @@ class Map extends Text
     {
         $inputId = $this->getId();
 
-        if (is_array($this->default)) {
-            $this->default = implode(',', $this->default);
-        }
-
-        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+        $value = $this->renderValue();
 
         $position = explode(',', $value);
         if (count($position) != 2) {
@@ -179,8 +179,6 @@ class Map extends Text
             'zoomControl' => true,
             'scaleControl' => true,
         ], $this->jsOptions);
-
-        $zoom = $this->jsOptions['zoom'];
 
         $configs = json_encode($this->jsOptions);
 
@@ -244,15 +242,60 @@ EOT;
         $this->script[] = $script;
     }
 
+    protected function yandexScript()
+    {
+        //未做测试
+        $inputId = $this->getId();
+        $value = $this->renderValue();
+
+        $position = explode(',', $value);
+        if (count($position) != 2) {
+            $position = [24.847463, 102.709629];
+            $value = '24.847463,102.709629';
+        } else {
+            $position = [$position[1], $position[0]];
+            $value = $position[1] . ',' . $position[0];
+        }
+
+        $this->jsOptions = array_merge([
+            'center' => $position,
+            'zoom' => 14,
+        ], $this->jsOptions);
+
+        $configs = json_encode($this->jsOptions);
+
+        $configs = substr($configs, 1, strlen($configs) - 2);
+
+        $script = <<<EOT
+
+        var input = $('#{$inputId}');
+
+        ymaps.ready(function(){
+            var myMap = new ymaps.Map('map-{$inputId}', {
+                {$configs}
+            });
+
+            var myPlacemark = new ymaps.Placemark([{$value}], {
+            }, {
+                preset: 'islands#redDotIcon',
+                draggable: true
+            });
+
+            myPlacemark.events.add(['dragend'], function (e) {
+                input.val(myPlacemark.geometry.getCoordinates()[1] + ',' + myPlacemark.geometry.getCoordinates()[0]);
+            });
+
+            myMap.geoObjects.add(myPlacemark);
+        });
+EOT;
+        $this->script[] = $script;
+    }
+
     protected function baiduScript()
     {
         $inputId = $this->getId();
 
-        if (is_array($this->default)) {
-            $this->default = implode(',', $this->default);
-        }
-
-        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+        $value = $this->renderValue();
 
         $position = explode(',', $value);
         if (count($position) != 2) {
@@ -343,7 +386,7 @@ EOT;
             $this->default = implode(',', $this->default);
         }
 
-        $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+        $value = $this->renderValue();
 
         $position = explode(',', $value);
         if (count($position) != 2) {
