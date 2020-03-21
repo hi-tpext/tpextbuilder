@@ -430,11 +430,15 @@ class Builder implements Renderable
             }
         }
 
+        unset($c);
+
         foreach ($this->js as &$j) {
-            if (strpos($j, '?') == false && strpos($c, 'http') == false) {
+            if (strpos($j, '?') == false && strpos($j, 'http') == false) {
                 $j .= '?aver=' . static::$aver;
             }
         }
+
+        unset($j);
 
         $vars = [
             'title' => $this->title ? $this->title : 'Page',
