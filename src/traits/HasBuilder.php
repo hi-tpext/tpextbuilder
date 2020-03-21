@@ -26,7 +26,7 @@ trait HasBuilder
     protected $editText = '编辑';
     protected $indexText = '列表';
     protected $pagesize = 14;
-    protected $sortOrder = 'id asc';
+    protected $sortOrder = 'id desc';
     protected $enableField = 'enable';
 
     /**
