@@ -32,7 +32,7 @@ return [
         'amap_js_key' => ['type' => 'text', 'label' => '高德地图js'],
         'baidu_map_js_key' => ['type' => 'text', 'label' => '百度地图js'],
         'google_map_js_key' => ['type' => 'text', 'label' => 'google地图js'],
-        'tcent_map_js_key' => ['type' => 'text', 'label' => '腾旭地图js'],
+        'tcent_map_js_key' => ['type' => 'text', 'label' => '腾讯地图js'],
         'yandex_map_js_key' => ['type' => 'text', 'label' => 'yandex地图js'],
     ],
 ];
