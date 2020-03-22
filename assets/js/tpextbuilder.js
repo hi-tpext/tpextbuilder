@@ -251,7 +251,7 @@ window.renderFiles = function () {
 
     // 通用绑定，
     $('.js-upload-files').each(function () {
-        var $input_file = $(this).find('input'),
+        var $input_file = $(this).find('input.file-url-inpu'),
             $input_file_name = $(this).data('name');
 
         var jsOptions = window.uploadConfigs[$input_file_name];
@@ -300,6 +300,11 @@ window.renderFiles = function () {
                 'display': 'block',
             });
 
+            $('#picker_' + $input_file_name).find('.pic-add').css({
+                'height': thumbnailHeight + 'px',
+                'width': thumbnailWidth + 'px'
+            })
+
             var uploader = WebUploader.create({
                 auto: true,
                 chunked: true,
@@ -334,7 +339,7 @@ window.renderFiles = function () {
             });
 
             uploader.on('beforeFileQueued', function (file) {
-                if ($multiple && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
+                if ($file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
                     lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
                     return false;
                 }
@@ -357,7 +362,7 @@ window.renderFiles = function () {
                     $file_list.find('li.pic-item').remove();
                 }
                 $file_list.append($li);
-                $input_file.val('');
+                //$input_file.val('');
                 uploader.makeThumb(file, function (error, src) {
                     if (error) {
                         $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +

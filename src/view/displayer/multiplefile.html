@@ -1,28 +1,17 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]}">
     <div class="js-upload-files" data-name="{$name}">
-        {if condition="$canUpload"}
-        <div>
-            <input type="hidden" name="{$name}" class="{$class}"
-                value="{$value}" id="{$id}" {$attr|raw}>
-            <div id="picker_{$name}"><i class="mdi
-                    mdi-cloud-upload"></i>&nbsp;上传{if
-                condition="$jsOptions.multiple"}多{else/}单{/if}个文件</div>
-        </div>
-        {/if}
         <ul id="file_list_{$name}" class="pull-left list-inline clearfix
             lyear-uploads-pic">
             {volist name="files" id="file"}
             <li class="pic-item" id="flie{$key}">
                 <figure>
                     <div>
-                        <img style="display: none;" class="preview-img"
-                            src="{$file}" />
+                        <img style="display: none;" class="preview-img" src="{$file}" />
                     </div>
                     <figcaption>
                         <a class="btn btn-round btn-square btn-primary
-                            btn-link-pic" data-id="file{$key}"
-                            href="{$file}"><i class="mdi mdi-eye"></i></a>
+                            btn-link-pic" data-id="file{$key}" href="{$file}"><i class="mdi mdi-eye"></i></a>
                         {if condition="$canUpload"}
                         <a class="btn btn-round btn-square btn-danger
                             btn-remove-pic" href="javascript:;"><i class="mdi
@@ -33,17 +22,26 @@
             </li>
             {/volist}
         </ul>
+        {if condition="$canUpload"}
+        <ul class="list-inline clearfix lyear-uploads-pic">
+            <li class="pic-item">
+                <div id="picker_{$name}">
+                    <input type="hidden" name="{$name}" class="{$class} file-url-inpu" value="{$value}" id="{$id}"
+                        {$attr|raw}>
+                    <a class="pic-add" title="点击上传"></a>
+                </div>
+            </li>
+        </ul>
+        {/if}
     </div>
     <script>
         var jsOptions = JSON.parse('{$jsOptions|json_encode|raw}')
 
-        if(!window.uploadConfigs)
-        {
+        if (!window.uploadConfigs) {
             window.uploadConfigs = [];
         }
 
-        window.uploadConfigs['{$name}']= jsOptions;
-
+        window.uploadConfigs['{$name}'] = jsOptions;
     </script>
     {include file="$helptempl" /}
 </div>

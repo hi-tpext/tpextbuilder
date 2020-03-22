@@ -134,7 +134,8 @@ a.sortable.mdi-sort {
     margin: 1px;
 }
 
-.js-upload-files .webuploader-pick {
-    padding: 3px 5px;
-    margin-top: 4px;
+.lyear-uploads-pic .webuploader-pick {
+    padding: 0;
+    margin-top: 0;
+    background:none;
 }

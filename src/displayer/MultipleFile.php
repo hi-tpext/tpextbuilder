@@ -129,7 +129,6 @@ class MultipleFile extends Field
         }
 
         $this->jsOptions['canUpload'] = $this->canUpload && empty($this->tableRowKey);
-
         $vars = array_merge($vars, [
             'jsOptions' => $this->jsOptions,
             'canUpload' => $this->canUpload && empty($this->tableRowKey),
