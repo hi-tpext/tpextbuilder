@@ -644,10 +644,6 @@ EOT;
             static::$labeltempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
-        if (is_array($this->default)) {
-            $this->default = implode(',', $this->default);
-        }
-
         $value = $this->renderValue();
 
         $mapClass = '';
