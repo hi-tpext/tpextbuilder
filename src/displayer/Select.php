@@ -305,7 +305,7 @@ EOT;
         }
 
         $vars = array_merge($vars, [
-            'checked' => $this->checked,
+            'checked' => '-' .$this->checked,
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,

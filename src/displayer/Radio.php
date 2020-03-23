@@ -40,7 +40,7 @@ class Radio extends Field
 
         $vars = array_merge($vars, [
             'inline' => $this->inline ? 'radio-inline' : 'm-t-10',
-            'checked' => $this->checked,
+            'checked' => '-' .$this->checked,
             'options' => $this->options,
         ]);
 

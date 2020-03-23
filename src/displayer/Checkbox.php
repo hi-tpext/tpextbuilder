@@ -77,6 +77,11 @@ class Checkbox extends Field
             $checkall = $count == count($this->options);
         }
 
+        foreach ($this->checked as &$ck) {
+            $ck = '-' . $ck;
+        }
+        unset($ck);
+
         $vars = array_merge($vars, [
             'inline' => $this->inline ? 'checkbox-inline' : 'm-t-10',
             'checkallBtn' => $this->checkallBtn,
