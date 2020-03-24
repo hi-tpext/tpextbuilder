@@ -335,10 +335,6 @@ class Form extends FWapper implements Renderable
     public function bottomButtons($create = true)
     {
         if ($create) {
-            $this->fieldsEnd();
-            $this->tabEnd();
-            $this->divider('', '', 12)->size(0, 12)->showLabel(false);
-            $this->html('', '', 4)->showLabel(false);
             $this->btnSubmit();
             $this->html('', '', 3)->showLabel(false);
             $this->btnReset();
@@ -346,6 +342,14 @@ class Form extends FWapper implements Renderable
 
         $this->botttomButtonsCalled = true;
         return $this;
+    }
+
+    public function bottomOffset($offset = 4)
+    {
+        $this->fieldsEnd();
+        $this->tabEnd();
+        $this->divider('', '', 12)->size(0, 12)->showLabel(false);
+        $this->html('', '', $offset)->showLabel(false);
     }
 
     /**
@@ -358,8 +362,7 @@ class Form extends FWapper implements Renderable
      */
     public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
     {
-        $this->fieldsEnd();
-        $this->tabEnd();
+        $this->bottomOffset();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
         return $this;
