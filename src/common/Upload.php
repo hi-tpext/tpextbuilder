@@ -44,7 +44,9 @@ class Upload
 
     public function __construct($arr = [])
     {
-        $this->path = app()->getRootPath() . 'public/upload/images/' . date('Ym') . '/';
+        $scriptName = $_SERVER['SCRIPT_FILENAME'];
+
+        $this->path = realpath(dirname($scriptName)) . '/uploads/images/' . date('Ym') . '/';
 
         foreach ($arr as $key => $value) {
             $this->setOption($key, $value);

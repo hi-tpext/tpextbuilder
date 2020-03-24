@@ -46,7 +46,7 @@ class Upload extends Controller
             echo json_encode(['status' => 500, 'info' => '上传失败-' . $up->errorInfo, 'class' => 'error']);
             // 失败跟成功同样的方式返回
         } else {
-            $newPath = preg_replace('/^.+?public(\/.+)$/i', '$1', $newPath);
+            $newPath = preg_replace('/^.+?(\/uploads\/.+)$/i', '$1', $newPath);
             switch ($type) {
                 case 'wangeditor':
                     echo json_encode(['url' => $newPath]);
@@ -96,8 +96,10 @@ class Upload extends Controller
             exit('token error');
         }
 
+        $scriptName = $_SERVER['SCRIPT_FILENAME'];
+
         $action = $_GET['action'];
-        $config_file = app()->getRootPath() . 'public/assets/tpextbuilder/js/ueditor/config.json';
+        $config_file = realpath(dirname($scriptName)) . '/assets/tpextbuilder/js/ueditor/config.json';
         $config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
             /* 获取配置信息 */
@@ -161,7 +163,10 @@ class Upload extends Controller
         if (empty($picdata)) {
             echo json_encode(['state' => 400, 'message' => '上传数据为空']);exit;
         }
-        $picurl = $this->base64_image_content($picdata, app()->getRootPath() . 'public/upload/images/' . date('Ym') . '/');
+
+        $scriptName = $_SERVER['SCRIPT_FILENAME'];
+
+        $picurl = $this->base64_image_content($picdata, realpath(dirname($scriptName)) . '/uploads/images/' . date('Ym') . '/');
         if ($picurl) {
             echo json_encode(['state' => 200, 'picurl' => $picurl]);exit;
         } else {
@@ -201,7 +206,9 @@ class Upload extends Controller
 
         $config = Module::getInstance()->getConfig();
 
-        $config['path'] = app()->getRootPath() . "/public/upload/{$type}/" . date('Ym') . '/';
+        $scriptName = $_SERVER['SCRIPT_FILENAME'];
+
+        $config['path'] = realpath(dirname($scriptName)) . "/uploads/{$type}/" . date('Ym') . '/';
 
         $up = new UploadTool($config);
 
@@ -216,7 +223,7 @@ class Upload extends Controller
                 "title" => $up->errorInfo,
             ]);
         } else {
-            $newPath = preg_replace('/^.+?public(\/.+)$/i', '$1', $newPath);
+            $newPath = preg_replace('/^.+?(\/uploads\/.+)$/i', '$1', $newPath);
 
             return json_encode([
                 "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
