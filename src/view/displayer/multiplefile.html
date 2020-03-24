@@ -25,9 +25,9 @@
         {if condition="$canUpload"}
         <ul class="list-inline clearfix lyear-uploads-pic">
             <li class="pic-item">
-                <div id="picker_{$name}">
-                    <input type="hidden" name="{$name}" class="{$class} file-url-inpu" value="{$value}" id="{$id}"
+                <input type="hidden" name="{$name}" class="{$class} file-url-input" value="{$value}" id="{$id}"
                         {$attr|raw}>
+                <div id="picker_{$name}">
                     <a class="pic-add" title="点击上传"></a>
                 </div>
             </li>

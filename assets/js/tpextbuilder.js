@@ -251,7 +251,7 @@ window.renderFiles = function () {
 
     // 通用绑定，
     $('.js-upload-files').each(function () {
-        var $input_file = $(this).find('input.file-url-inpu'),
+        var $input_file = $(this).find('input[type="hidden"]'),
             $input_file_name = $(this).data('name');
 
         var jsOptions = window.uploadConfigs[$input_file_name];
@@ -318,7 +318,7 @@ window.renderFiles = function () {
                     multiple: $multiple
                 },
                 fileSingleSizeLimit: $size,
-                fileNumLimit: jsOptions.fileNumLimit,
+                fileNumLimit: 99,
                 fileSizeLimit: jsOptions.fileSizeLimit,
                 accept: {
                     title: '文件',
@@ -339,7 +339,7 @@ window.renderFiles = function () {
             });
 
             uploader.on('beforeFileQueued', function (file) {
-                if ($file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
+                if (jsOptions.fileNumLimit > 1 && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
                     lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
                     return false;
                 }
@@ -362,7 +362,6 @@ window.renderFiles = function () {
                     $file_list.find('li.pic-item').remove();
                 }
                 $file_list.append($li);
-                //$input_file.val('');
                 uploader.makeThumb(file, function (error, src) {
                     if (error) {
                         $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +
@@ -386,7 +385,7 @@ window.renderFiles = function () {
             uploader.on('uploadSuccess', function (file, response) {
                 var $li = $('#' + file.id);
                 if (response.status == 200) { // 返回200成功
-                    if ($multiple) {
+                    if (jsOptions.fileNumLimit > 1) {
                         if ($input_file.val()) {
                             $input_file.val($input_file.val() + ',' + response.picurl);
                         } else {
