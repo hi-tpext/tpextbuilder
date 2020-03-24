@@ -449,14 +449,6 @@ class Builder implements Renderable
         if (static::$minify) {
             $this->js = $this->customJs;
             $this->css = $this->customCss;
-
-            $using = Wapper::getUsing();
-
-            foreach ($using as $field) {
-                if (!$field->canMinify()) {
-                    $this->addJs($field->getJs());
-                }
-            }
         } else {
             $this->js = array_merge($this->js, $this->customJs);
             $this->css = array_merge($this->css, $this->customCss);

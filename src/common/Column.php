@@ -42,7 +42,7 @@ class Column
     }
 
     /**
-     * 获取一个表格
+     * 获取一个Toolbar
      *
      * @return Toolbar
      */
@@ -54,7 +54,7 @@ class Column
     }
 
     /**
-     * Undocumented function
+     * 获取一个自定义内容
      *
      * @return Content
      */

@@ -590,8 +590,12 @@ EOT;
 
     public function beforRender()
     {
-        if (!empty($this->js) && (!Builder::isMinify() || $this->minify)) {
-            Builder::getInstance()->addJs($this->js);
+        if (!empty($this->js)) {
+            if ($this->minify) {
+                Builder::getInstance()->addJs($this->js);
+            } else {
+                Builder::getInstance()->customJs($this->js);
+            }
         }
 
         if (!empty($this->css)) {

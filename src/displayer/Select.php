@@ -49,14 +49,18 @@ class Select extends Radio
     /**
      * Undocumented function
      *
-     * @param boolean $show
+     * @param string $url
+     * @param string $textField
+     * @param string $IdField
+     * @param integer $delay
+     * @param boolean $loadmore
      * @return $this
      */
-    public function dataUrl($url, $textField = 'text', $KeyField = 'id', $delay = 250, $loadmore = true)
+    public function dataUrl($url, $textField = 'text', $IdField = 'id', $delay = 250, $loadmore = true)
     {
         $this->jsOptions['ajax'] = [
             'url' => $url,
-            'id' => $KeyField,
+            'id' => $IdField,
             'text' => $textField,
             'delay' => $delay,
             'loadmore' => $loadmore,
@@ -111,7 +115,7 @@ class Select extends Radio
             $script = <<<EOT
 
             //是否自动加载下一级。比如省市区三级联动时，开启了的话，选择了云南省，市和区会自动选择：云南省-昆明市-五华区。
-            //某些时候这样未必市合理的。
+            //某些时候这样未必是合理的。
             if(autoLoad)
             {
                 $('#{$selectId}').next('.select2').lyearloading({
@@ -133,7 +137,7 @@ class Select extends Radio
             }
             else
             {
-                //关闭后，省变化了，市和区不会自动加载，比如选择了云南省：云南省-请选择市-请选择区。要一级一级去选
+                //关闭后，省变化了，市和区不会自动加载，比如选择了云南省：云南省-请选择市-请选择区，要一级一级去选
                 $('#{$selectId}').empty().trigger('change');
             }
 
