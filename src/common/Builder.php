@@ -30,7 +30,11 @@ class Builder implements Renderable
 
     protected $js = [];
 
+    protected $customJs = [];
+
     protected $css = [];
+
+    protected $customCss = [];
 
     protected $stylesheet = [];
 
@@ -127,6 +131,21 @@ class Builder implements Renderable
     }
 
     /**
+     * 添加自定义js，不会被minify
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function customJs($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+        $this->customJs = array_merge($this->customJs, $val);
+        return $this;
+    }
+
+    /**
      * Undocumented function
      *
      * @param array|string $val
@@ -138,6 +157,21 @@ class Builder implements Renderable
             $val = [$val];
         }
         $this->css = array_merge($this->css, $val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function添加自定义css，不会被minify
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function customCss($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+        $this->customCss = array_merge($this->customCss, $val);
         return $this;
     }
 
@@ -413,8 +447,9 @@ class Builder implements Renderable
         }
 
         if (static::$minify) {
-            $this->js = [];
-            $this->css = [];
+            $this->js = $this->customJs;
+            $this->css = $this->customCss;
+
             $using = Wapper::getUsing();
 
             foreach ($using as $field) {
@@ -422,6 +457,9 @@ class Builder implements Renderable
                     $this->addJs($field->getJs());
                 }
             }
+        } else {
+            $this->js = array_merge($this->js, $this->customJs);
+            $this->css = array_merge($this->css, $this->customCss);
         }
 
         foreach ($this->css as &$c) {
