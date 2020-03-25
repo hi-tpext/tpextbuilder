@@ -283,18 +283,6 @@ class MultipleToolbar extends Toolbar
         return $this;
     }
 
-    public function btnTools($options, $postUrl = '', $label = '', $class = 'btn-default', $icon = 'mdi-checkbox-marked-outline', $attr = '')
-    {
-        $action = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $postUrl, -1, $count);
-
-        if (!$count) {
-            $action = mt_rand(10, 99);
-        }
-
-        $this->tools($action, $label)->options($options)->addClass($class)->icon($icon)->attr($attr . ' data-export-url="' . $postUrl . '"');
-        return $this;
-    }
-
     /**
      * Undocumented function
      *
