@@ -422,7 +422,6 @@ EOT;
             map.add(marker);
 
             map.on('click', function(e) {
-                alert(1);
                 marker.setPosition(e.lnglat);
                 input.val(e.lnglat.getLng() + ',' + e.lnglat.getLat());
             });
