@@ -358,7 +358,7 @@ window.renderFiles = function () {
                         '</li>'),
                     $img = $li.find('img');
 
-                if (!$multiple) {
+                if (jsOptions.fileNumLimit <= 1) {
                     $file_list.find('li.pic-item').remove();
                 }
                 $file_list.append($li);
@@ -391,7 +391,7 @@ window.renderFiles = function () {
                         } else {
                             $input_file.val(response.picurl);
                         }
-                        $li.find('.btn-remove-pic').attr('data-id', response.id);
+                        $li.find('.btn-remove-pic').attr('data-id', response.id).attr('data-url', response.picurl);
                     } else {
                         $input_file.val(response.picurl);
                     }
@@ -425,7 +425,7 @@ window.renderFiles = function () {
             });
             // 删除操作
             $file_list.delegate('.btn-remove-pic', 'click', function () {
-                var id = $(this).data('id');
+                var url = $(this).data('url');
                 var that = $(this);
                 $.alert({
                     title: '提示',
@@ -435,11 +435,11 @@ window.renderFiles = function () {
                             text: '确认',
                             btnClass: 'btn-primary',
                             action: function () {
-                                if ($multiple) {
+                                if (jsOptions.fileNumLimit > 1) {
                                     var ids = $input_file.val().split(',');
-                                    if (id) {
+                                    if (url) {
                                         for (var i = 0; i < ids.length; i++) {
-                                            if (ids[i] == id) {
+                                            if (ids[i] == url) {
                                                 ids.splice(i, 1);
                                                 break;
                                             }

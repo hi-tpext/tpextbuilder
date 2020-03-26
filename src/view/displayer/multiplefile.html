@@ -11,10 +11,10 @@
                     </div>
                     <figcaption>
                         <a class="btn btn-round btn-square btn-primary
-                            btn-link-pic" data-id="file{$key}" href="{$file}"><i class="mdi mdi-eye"></i></a>
+                            btn-link-pic" data-id="{$key}" href="{$file}"><i class="mdi mdi-eye"></i></a>
                         {if condition="$canUpload"}
                         <a class="btn btn-round btn-square btn-danger
-                            btn-remove-pic" href="javascript:;"><i class="mdi
+                            btn-remove-pic" data-id="{$key}" data-url="{$file}" href="javascript:;"><i class="mdi
                                 mdi-delete"></i></a>
                         {/if}
                     </figcaption>
