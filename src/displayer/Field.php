@@ -14,7 +14,7 @@ class Field implements Fillable
 {
     use HasDom;
 
-    protected $tableRowKey = '';
+    protected $extKey = '';
 
     protected $name = '';
 
@@ -104,7 +104,7 @@ class Field implements Fillable
      */
     public function getId()
     {
-        return 'form-' . preg_replace('/\W/', '', $this->name . $this->tableRowKey);
+        return 'form-' . preg_replace('/\W/', '', $this->name . $this->extKey);
     }
 
     /**
@@ -114,7 +114,7 @@ class Field implements Fillable
      */
     public function getName()
     {
-        return $this->name . $this->tableRowKey;
+        return $this->name . $this->extKey;
     }
 
     /**
@@ -133,9 +133,9 @@ class Field implements Fillable
      * @param string $val
      * @return $this
      */
-    public function tableRowKey($val)
+    public function extKey($val)
     {
-        $this->tableRowKey = $val;
+        $this->extKey = $val;
         return $this;
     }
 
@@ -663,7 +663,7 @@ EOT;
             'label' => $this->label,
             'name' => $this->getName(),
             'requiredStyle' => $this->required ? '' : 'style="visibility: hidden;"',
-            'tableRowKey' => $this->tableRowKey,
+            'extKey' => $this->extKey,
             'value' => $value,
             'class' => ' ' . $this->class . $mapClass,
             'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '') . (empty($this->style) ? '' : ' style="' . $this->style . '"'),

@@ -487,7 +487,7 @@ class Table extends TWapper implements Renderable
 
                 $displayer
                     ->fill($data)
-                    ->tableRowKey('-' . $key)
+                    ->extKey('-' . $key)
                     ->showLabel(false)
                     ->size(0, 0)
                     ->beforRender();
@@ -508,7 +508,7 @@ class Table extends TWapper implements Renderable
 
             if ($this->useActionbar && isset($this->ids[$key])) {
 
-                $actionbar->tableRowKey('-' . $key)->rowdata($data)->beforRender();
+                $actionbar->extKey('-' . $key)->rowdata($data)->beforRender();
 
                 $this->actionbars[$key] = $actionbar->render();
             }

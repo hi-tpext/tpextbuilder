@@ -11,7 +11,7 @@ class Bar implements Renderable
 {
     protected $view = '';
 
-    protected $tableRowKey = '';
+    protected $extKey = '';
 
     protected $class = 'btn-default';
 
@@ -61,7 +61,7 @@ class Bar implements Renderable
      */
     public function getId()
     {
-        return 'bar-' . $this->name . $this->tableRowKey;
+        return 'bar-' . $this->name . $this->extKey;
     }
 
     /**
@@ -203,9 +203,9 @@ class Bar implements Renderable
      * @param string $val
      * @return $this
      */
-    public function tableRowKey($val)
+    public function extKey($val)
     {
-        $this->tableRowKey = $val;
+        $this->extKey = $val;
         return $this;
     }
 

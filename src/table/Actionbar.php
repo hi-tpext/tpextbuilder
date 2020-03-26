@@ -8,7 +8,7 @@ class Actionbar extends Toolbar
 {
     protected $pk;
 
-    protected $tableRowKey = '';
+    protected $extKey = '';
 
     protected $rowid;
 
@@ -39,9 +39,9 @@ class Actionbar extends Toolbar
      * @param string $val
      * @return $this
      */
-    public function tableRowKey($val)
+    public function extKey($val)
     {
-        $this->tableRowKey = $val;
+        $this->extKey = $val;
         return $this;
     }
 
@@ -58,8 +58,8 @@ class Actionbar extends Toolbar
 
         foreach ($this->elms as $elm) {
 
-            if ($this->tableRowKey) {
-                $elm->tableRowKey($this->tableRowKey);
+            if ($this->extKey) {
+                $elm->extKey($this->extKey);
             }
 
             if ($this->rowid) {

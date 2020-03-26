@@ -279,6 +279,18 @@ class Form extends FWapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return $this
+     */
+    public function allContentsEnd()
+    {
+        $this->__fields__ = null;
+        $this->__fields_content__ = null;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return FieldsContent
      */
     public function getFieldsContent()
@@ -346,8 +358,7 @@ class Form extends FWapper implements Renderable
 
     public function bottomOffset($offset = 4)
     {
-        $this->fieldsEnd();
-        $this->tabEnd();
+        $this->allContentsEnd();
         $this->divider('', '', 12)->size(0, 12)->showLabel(false);
         $this->html('', '', $offset)->showLabel(false);
     }
@@ -537,7 +548,7 @@ EOT;
             }
 
             if ($name == 'button') {
-                $displayer->tableRowKey($this->rand);
+                $displayer->extKey($this->rand);
             }
 
             return $displayer;
