@@ -4,6 +4,8 @@ namespace tpext\builder\traits;
 
 trait HasDom
 {
+    protected $name = '';
+
     protected $class = '';
 
     protected $attr = '';
@@ -116,6 +118,8 @@ trait HasDom
     {
         $arr = explode(' ', $this->class);
 
-        return 'row-' . $this->name . ' ' . implode(' ', array_unique($arr));
+        $name = $this->name ? 'row-' . $this->name : '';
+
+        return $name . ' ' . implode(' ', array_unique($arr));
     }
 }

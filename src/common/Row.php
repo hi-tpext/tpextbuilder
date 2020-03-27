@@ -3,9 +3,12 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
+use tpext\builder\traits\HasDom;
 
 class Row
 {
+    use HasDom;
+
     protected $cols = [];
 
     /**
@@ -105,6 +108,8 @@ class Row
 
         $vars = [
             'cols' => $this->cols,
+            'class' => $this->class,
+            'attr' => $this->getAttrWithStyle(),
         ];
 
         return $viewshow->assign($vars)->getContent();

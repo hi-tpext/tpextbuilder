@@ -4,9 +4,12 @@ namespace tpext\builder\common;
 
 use tpext\builder\common\Form;
 use tpext\builder\common\Table;
+use tpext\builder\traits\HasDom;
 
 class Column
 {
+    use HasDom;
+    
     public $size = 12;
 
     protected $elms = [];
