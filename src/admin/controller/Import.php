@@ -64,10 +64,10 @@ class Import extends Controller
             \$fileurl = input('fileurl');
             if (is_file(app()->getRootPath() . 'public' . \$fileurl)) {
                 // 导入逻辑...
-                return \$builder->layer()->closeRefresh(1, '导入成功：' . \$fileurl);
+                return Builder::getInstance()->layer()->closeRefresh(1, '导入成功：' . \$fileurl);
             }
 
-            \$builder = \$this->builder('出错了');
+            \$builder = Builder::getInstance('出错了');
             \$builder->content()->display('&lt;p&gt;' . '未能读取文件:' . \$fileurl . '&lt;/p&gt;');
         }
         </pre>
