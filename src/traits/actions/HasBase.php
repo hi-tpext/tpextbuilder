@@ -163,7 +163,7 @@ trait HasBase
     /**
      * Undocumented function
      *
-     * @return array|Collection
+     * @return array|\think\Collection
      */
     protected function buildDataList()
     {
