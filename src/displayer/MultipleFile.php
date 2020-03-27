@@ -51,8 +51,8 @@ class MultipleFile extends Field
         'fileSingleSizeLimit' => 5 * 1024 * 1024,
         'fileNumLimit' => 5,
         'fileSizeLimit' => 0,
-        'thumbnailWidth' => 165,
-        'thumbnailHeight' => 110,
+        'thumbnailWidth' => 120,
+        'thumbnailHeight' => 120,
     ];
 
     protected $extTypes = [
