@@ -9,7 +9,7 @@ class WangEditor extends Field
     protected $minify = false;
     
     protected $js = [
-        '/assets/builderwangeditor/wangEditor.min.js',
+        '/assets//assets/tpextbuilder/js/wangEditor/wangEditor.min.js',
     ];
 
     protected $jsOptions = [
@@ -33,11 +33,6 @@ class WangEditor extends Field
 
     protected function editorScript()
     {
-        if (!class_exists('tpext\\builder\\wangeditor\\common\\Module')) {
-            $this->script[] = 'layer.alert("未安装wangeditor资源包！<pre>composer require ichynul/builder-wangeditor</pre>");';
-            return;
-        }
-
         $inputId = $this->getId();
 
         if (!isset($this->jsOptions['uploadImgServer']) || empty($this->jsOptions['uploadImgServer'])) {
