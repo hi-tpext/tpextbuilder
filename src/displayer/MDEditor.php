@@ -9,11 +9,11 @@ class MDEditor extends Field
     protected $minify = false;
 
     protected $js = [
-        '/assets/tpextbuilder/js/editor.md/editormd.min.js',
+        '/assets/buildermdeditor/editormd.min.js',
     ];
 
     protected $css = [
-        '/assets/tpextbuilder/js/editor.md/css/editormd.min.css',
+        '/assets/buildermdeditor/css/editormd.min.css',
     ];
 
     /*模板样式里面有一个css会影响editor.md的图标,这里重设下*/
@@ -32,7 +32,7 @@ class MDEditor extends Field
     protected $jsOptions = [
         'height' => 500,
         'width' => 1200,
-        'path' => "/assets/tpextbuilder/js/editor.md/lib/",
+        'path' => "/assets/buildermdeditor/lib/",
         'codeFold' => true,
         'htmlDecode' => 'iframe|on*', // 开启标签
         'imageUpload' => true,
@@ -52,6 +52,11 @@ class MDEditor extends Field
 
     protected function editorScript()
     {
+        if (!class_exists('tpext\\builder\\mdeditor\\common\\Module')) {
+            $this->script[] = 'layer.alert("未安装mdeditor资源包！<pre>composer require ichynul/builder-mdeditor</pre>");';
+            return;
+        }
+
         $inputId = $this->getId();
 
         /**

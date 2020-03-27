@@ -9,7 +9,7 @@ class CKEditor extends Field
     protected $minify = false;
 
     protected $js = [
-        '/assets/tpextbuilder/js/ckeditor/ckeditor.js',
+        '/assets/builderckeditor/ckeditor.js',
     ];
 
     protected $jsOptions = [
@@ -33,10 +33,14 @@ class CKEditor extends Field
 
     protected function editorScript()
     {
+        if (!class_exists('tpext\\builder\\ckeditor\\common\\Module')) {
+            $this->script[] = 'layer.alert("未安装ckeditor资源包！<pre>composer require ichynul/builder-ckeditor</pre>");';
+            return;
+        }
         // 配置可放在config.js中
         // 成功返回格式{"uploaded":1,"fileName":"图片名称","url":"图片访问路径"}
         // 失败返回格式{"uploaded":0,"error":{"message":"失败原因"}}
-        
+
         if (!isset($this->jsOptions['filebrowserImageUploadUrl']) || empty($this->jsOptions['filebrowserImageUploadUrl'])) {
             $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 

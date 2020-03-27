@@ -9,18 +9,18 @@ class MDReader extends Field
     protected $minify = false;
 
     protected $js = [
-        '/assets/tpextbuilder/js/editor.md/lib/marked.min.js',
-        '/assets/tpextbuilder/js/editor.md/lib/prettify.min.js',
-        '/assets/tpextbuilder/js/editor.md/lib/raphael.min.js',
-        '/assets/tpextbuilder/js/editor.md/lib/underscore.min.js',
-        '/assets/tpextbuilder/js/editor.md/lib/sequence-diagram.min.js',
-        '/assets/tpextbuilder/js/editor.md/lib/flowchart.min.js',
-        '/assets/tpextbuilder/js/editor.md/lib/jquery.flowchart.min.js',
-        '/assets/tpextbuilder/js/editor.md/editormd.min.js',
+        '/assets/buildermdeditor/lib/marked.min.js',
+        '/assets/buildermdeditor/lib/prettify.min.js',
+        '/assets/buildermdeditor/lib/raphael.min.js',
+        '/assets/buildermdeditor/lib/underscore.min.js',
+        '/assets/buildermdeditor/lib/sequence-diagram.min.js',
+        '/assets/buildermdeditor/lib/flowchart.min.js',
+        '/assets/buildermdeditor/lib/jquery.flowchart.min.js',
+        '/assets/buildermdeditor/editormd.min.js',
     ];
 
     protected $css = [
-        '/assets/tpextbuilder/js/editor.md/css/editormd.min.css',
+        '/assets/buildermdeditor/css/editormd.min.css',
     ];
 
     /*模板样式里面有一个css会影响editor.md的图标,这里重设下*/
@@ -59,6 +59,11 @@ class MDReader extends Field
 
     protected function editorScript()
     {
+        if (!class_exists('tpext\\builder\\mdeditor\\common\\Module')) {
+            $this->script[] = 'layer.alert("未安装mdeditor资源包！<pre>composer require ichynul/builder-mdeditor</pre>");';
+            return;
+        }
+        
         $inputId = $this->getId();
 
         /**

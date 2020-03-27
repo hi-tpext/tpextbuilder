@@ -9,10 +9,10 @@ class UEditor extends Field
     protected $minify = false;
 
     protected $js = [
-        '/assets/tpextbuilder/js/ueditor/ueditor.config.js',
+        '/assets/builderueditor/ueditor.config.js',
     ];
 
-    protected $configJsPath = '/assets/tpextbuilder/js/ueditor/ueditor.all.min.js';
+    protected $configJsPath = '/assets/builderueditor/ueditor.all.min.js';
 
     protected $uploadUrl = '';
 
@@ -42,6 +42,11 @@ class UEditor extends Field
 
     protected function editorScript()
     {
+        if (!class_exists('tpext\\builder\\ueditor\\common\\Module')) {
+            $this->script[] = 'layer.alert("未安装ueditor资源包！<pre>composer require ichynul/builder-ueditor</pre>");';
+            return;
+        }
+
         $inputId = $this->getId();
 
         $script = <<<EOT
@@ -67,7 +72,7 @@ EOT;
     {
         if (empty($this->uploadUrl)) {
             
-            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());$token = md5('uploadtoken' . time() . uniqid());
+            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
 

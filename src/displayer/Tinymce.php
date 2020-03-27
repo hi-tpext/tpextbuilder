@@ -9,7 +9,7 @@ class Tinymce extends Field
     protected $minify = false;
 
     protected $js = [
-        '/assets/tpextbuilder/js/tinymce/tinymce.min.js',
+        '/assets/buildertinymce/tinymce.min.js',
     ];
 
     protected $jsOptions = [
@@ -41,6 +41,11 @@ class Tinymce extends Field
 
     protected function editorScript()
     {
+        if (!class_exists('tpext\\builder\\tinymce\\common\\Module')) {
+            $this->script[] = 'layer.alert("未安装tinymce资源包！<pre>composer require ichynul/builder-tinymce</pre>");';
+            return;
+        }
+
         $inputId = $this->getId();
 
         if (!isset($this->jsOptions['images_upload_url']) || empty($this->jsOptions['images_upload_url'])) {
