@@ -9,7 +9,7 @@ class WangEditor extends Field
     protected $minify = false;
     
     protected $js = [
-        '/assets//assets/tpextbuilder/js/wangEditor/wangEditor.min.js',
+        '/assets/tpextbuilder/js/wangEditor/wangEditor.min.js',
     ];
 
     protected $jsOptions = [

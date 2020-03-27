@@ -34,10 +34,11 @@ class Upload extends Controller
 
         $config = Module::getInstance()->getConfig();
 
-        $config['allowSuffix'] = explode(',', $config['allowSuffix']);
-        $config['maxSize'] = $config['maxSize'] * 1024 * 1024;
+        $_config['allowSuffix'] = explode(',', $config['allowSuffix']);
+        $_config['maxSize'] = $config['maxSize'] * 1024 * 1024;
+        $_config['isRandName'] = $config['isRandName'];
 
-        $up = new UploadTool($config);
+        $up = new UploadTool($_config);
 
         $newPath = $up->uploadFile($file_input_name);
 
@@ -99,7 +100,7 @@ class Upload extends Controller
         $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
         $action = $_GET['action'];
-        $config_file = realpath(dirname($scriptName)) . '/assets/tpextbuilder/js/ueditor/config.json';
+        $config_file = realpath(dirname($scriptName)) . '/assets/builderueditor/config.json';
         $config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
             /* 获取配置信息 */
@@ -206,11 +207,15 @@ class Upload extends Controller
 
         $config = Module::getInstance()->getConfig();
 
+        $_config['allowSuffix'] = explode(',', $config['allowSuffix']);
+        $_config['maxSize'] = $config['maxSize'] * 1024 * 1024;
+        $_config['isRandName'] = $config['isRandName'];
+
         $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
         $config['path'] = realpath(dirname($scriptName)) . "/uploads/{$type}/" . date('Ym') . '/';
 
-        $up = new UploadTool($config);
+        $up = new UploadTool($_config);
 
         $newPath = $up->uploadFile($file_input_name);
         if ($newPath === false) {
