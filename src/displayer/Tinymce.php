@@ -42,6 +42,7 @@ class Tinymce extends Field
     protected function editorScript()
     {
         if (!class_exists('tpext\\builder\\tinymce\\common\\Module')) {
+            $this->js = [];
             $this->script[] = 'layer.alert("未安装tinymce资源包！<pre>composer require ichynul/builder-tinymce</pre>");';
             return;
         }

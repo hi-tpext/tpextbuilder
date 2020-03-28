@@ -43,6 +43,7 @@ class UEditor extends Field
     protected function editorScript()
     {
         if (!class_exists('tpext\\builder\\ueditor\\common\\Module')) {
+            $this->js = [];
             $this->script[] = 'layer.alert("未安装ueditor资源包！<pre>composer require ichynul/builder-ueditor</pre>");';
             return;
         }
