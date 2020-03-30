@@ -4,82 +4,15 @@ namespace tpext\builder\table;
 
 use think\Collection;
 use think\paginator\driver\Bootstrap;
+use tpext\builder\traits\HasDom;
 
 class Paginator extends Bootstrap
 {
+    use HasDom;
+
     protected $paginatorClass = 'pagination-sm';
 
-    protected $attr = '';
-
-    protected $class = 'text-center';
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function attr($val)
-    {
-        $this->attr = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addAttr($val)
-    {
-        $this->attr .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getAttr()
-    {
-        return $this->attr;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
+    protected $summary = true;
 
     /**
      * Undocumented function
@@ -120,6 +53,30 @@ class Paginator extends Bootstrap
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function summary($val)
+    {
+        $this->summary = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function paginatorClass($val)
+    {
+        $this->paginatorClass = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param int $val
      * @return $this
      */
@@ -128,6 +85,15 @@ class Paginator extends Bootstrap
         $this->total = $val;
         $this->reset();
         return $this;
+    }
+
+    public function getClass()
+    {
+        if (!$this->class) {
+            $this->class = 'text-center';
+        }
+
+        return $this->class;
     }
 
     public function render()
@@ -140,6 +106,14 @@ class Paginator extends Bootstrap
 
         if ($this->paginatorClass) {
             $html = preg_replace('/(.+)(pagination)(.+)/i', '$1$2 ' . $this->paginatorClass . '$3', $html);
+        }
+
+        if ($this->summary) {
+
+            $a = ($this->currentPage - 1) * $this->listRows + 1;
+            $b = $a - 1 + $this->items->count();
+
+            $html = "<span class='pagination-summary'>共{$this->total}条记录，当前显示{$a}~{$b}条记录</span>" . $html;
         }
 
         return $html;

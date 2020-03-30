@@ -5,9 +5,9 @@ namespace tpext\builder\common;
 use think\Collection;
 use think\response\View as ViewShow;
 use tpext\builder\table\Actionbar;
-use tpext\builder\table\TColumn;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
+use tpext\builder\table\TColumn;
 use tpext\builder\table\TWapper;
 use tpext\builder\traits\HasDom;
 
@@ -38,11 +38,11 @@ class Table extends TWapper implements Renderable
 
     protected $headers = [];
 
+    protected $list = [];
+
     protected $cols = [];
 
     protected $data = [];
-
-    protected $lit = [];
 
     protected $pk = 'id';
 
@@ -84,8 +84,6 @@ class Table extends TWapper implements Renderable
      */
     protected $searchForm = null;
 
-    protected $script = [];
-
     protected $partial = false;
 
     public function __construct()
@@ -113,7 +111,7 @@ class Table extends TWapper implements Renderable
      */
     public function getCols()
     {
-        return $this->cols();
+        return $this->cols;
     }
 
     /**
@@ -156,6 +154,17 @@ class Table extends TWapper implements Renderable
      * @return $this
      */
     public function rowCheckbox($val)
+    {
+        $this->rowCheckbox = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * @param boolean $val
+     * @return $this
+     */
+    public function useCheckboxes($val)
     {
         $this->rowCheckbox = $val;
         return $this;
@@ -258,12 +267,39 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function emptyText($val)
+    {
+        $this->emptyText = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array|Collection $data
      * @return $this
      */
     public function data($data = [])
     {
-        return $this->fill($data);
+        $this->data = $data;
+
+        return $this;
+    }
+
+   /**
+    * Undocumented function
+    *
+    * @param array
+    * @return $this
+    */
+    public function setHeaders($val)
+    {
+        $this->headers = $val;
+
+        return $this;
     }
 
     /**
@@ -306,7 +342,7 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return array
+     * @return array|Collection
      */
     public function getData()
     {
@@ -326,7 +362,7 @@ class Table extends TWapper implements Renderable
         $paginator = Paginator::make($this->data, $pageSize, input('__page__', 1), $dataTotal);
 
         if ($paginatorClass) {
-            $paginator->class($paginatorClass);
+            $paginator->paginatorClass($paginatorClass);
         }
 
         $this->paginator = $paginator;
@@ -477,8 +513,6 @@ class Table extends TWapper implements Renderable
 
                 $colunm = $this->cols[$col];
 
-                $colunm->beforRender();
-
                 if (!$colunm instanceof TColumn) {
                     continue;
                 }
@@ -491,12 +525,6 @@ class Table extends TWapper implements Renderable
                     ->showLabel(false)
                     ->size(0, 0)
                     ->beforRender();
-
-                $script = $displayer->getScript();
-
-                if (!empty($script)) {
-                    $this->script = array_merge($this->script, $script);
-                }
 
                 $this->list[$key][$col] = [
                     'displayer' => $displayer,
