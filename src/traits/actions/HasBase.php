@@ -116,7 +116,7 @@ trait HasBase
      * 保存数据 范例
      *
      * @param integer $id
-     * @return void
+     * @return mixed
      */
     private function save($id = 0)
     {
@@ -187,7 +187,7 @@ trait HasBase
      *
      * @param string $title
      * @param string $desc
-     * @return tpext\builder\common\Builder
+     * @return \tpext\builder\common\Builder
      */
     protected function builder($title = '', $desc = '')
     {
