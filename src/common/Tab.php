@@ -102,6 +102,38 @@ class Tab implements Renderable
     /**
      * Undocumented function
      *
+     * @param integer $size
+     * @return Form
+     */
+    public function form($label, $isActive = false, $name = '', $size = 12)
+    {
+        return $this->add($label, $isActive = false, $name)->form($size);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $size
+     * @return Table
+     */
+    public function table($label, $isActive = false, $name = '', $size = 12)
+    {
+        return $this->add($label, $isActive = false, $name)->table($size);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Content
+     */
+    public function content($label, $isActive = false, $name = '', $size = 12)
+    {
+        return $this->add($label, $isActive = false, $name)->content($size);
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param boolean $val
      * @return $this
      */

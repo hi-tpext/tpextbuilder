@@ -100,8 +100,7 @@ form textarea.form-control,
     border-color: #f96868 !important;
 }
 
-.item-field.has-error
-{
+.item-field.has-error {
     border-color: #f96868 !important;
 }
 
@@ -142,19 +141,21 @@ a.sortable.mdi-sort {
 .lyear-uploads-pic .webuploader-pick {
     padding: 0;
     margin-top: 0;
-    background:none;
+    background: none;
 }
 
-.pagination.pagination-sm
-{
+.pagination.pagination-sm {
     margin: 0;
 }
 
-.pagination-summary
-{
+.pagination-summary {
     margin-left: 20px;
     float: left;
     font-size: 12px;
     color: #999;
     line-height: 24px;
+}
+
+.table.form-items>thead>tr>th {
+    padding: 6px;
 }

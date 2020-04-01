@@ -48,11 +48,13 @@
 <table style="display: none;" id="items-{$name}-temple" class="table table-items {$class}" {$attr|raw}>
   <tbody>
     <tr>
-      {volist name="cols" id="col"}
-      <td>{:$col->render()}</td>
+      {volist name="template" id="col"}
+      <td class="{$col.wapper->getClass()} text-center vertical-middle" {$col.wapper->getAttrWithStyle()|raw}>
+        {$col.value|raw}
+      </td>
       {/volist}
       <td class="row-__action__ vertical-middle text-center">
-        <input type="hidden" name="{$name}[new]}][__del__]" value="-1" />
+        <input type="hidden" value="-1" />
         <a class="btn btn-xs btn-danger action-delete" id="bar-delete-0" data-id="new-0" href="javascript:;" title="删除">
           <i class="mdi mdi-delete"></i></a>
       </td>

@@ -162,7 +162,11 @@ class Items extends Field
                 $(this).parents('tr').remove();
            }
         });
-        //var template = jQuery.validator.format($.trim($("#{$id}-temple").clone(true).find('tbody').html()));
+        $("#{$id}-temple .item-field").each(function(){
+            var name = $(this).attr('data-name', $(this).attr('name'));
+            $(this).removeAttr('name');
+        });
+
         var i = 1;
         $(document).on('click', "#{$id}-add", function () {
             var node = $("#{$id}-temple").find('tr').clone();
@@ -170,14 +174,19 @@ class Items extends Field
             var script = $("#{$id}-script").val();
             i += 1;
             fields.each(function(){
-                var name = $(this).attr('name');
+                var name = $(this).data('name');
                 var id = $(this).attr('id');
-                id = id.replace(/-$/, '');
+                id = id.replace('-no-init-script', '');
                 var newid = id + 'new' + i;
                 script = script.replace('#' + id, '#' + newid);
                 $(this).attr('id', newid);
-                name = name.replace(/(.+?)\[new\](.+?)/, '$1' + 'new' + i + '$2');
+                name = name.replace(/(.+?)\[new\](.+?)/, '$1' + '[new' + i + ']$2');
                 $(this).attr('name', name);
+                $(this).removeAttr('data-name');
+                if($(this).hasClass('item-field-required'))
+                {
+                    $(this).attr('required', true);
+                }
             });
             $(this).parents('tr').before(node);
             if(script)

@@ -43,6 +43,8 @@ class ItemsContent extends FWapper
 
     protected $name = '';
 
+    protected $template = [];
+
     /**
      * Undocumented variable
      *
@@ -257,8 +259,8 @@ class ItemsContent extends FWapper
                 $this->list[$key][$col] = [
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
-                    'attr' => $displayer->getAttr(),
-                    'wapper' => $this->cols[$col],
+                    'attr' => $displayer->getAttrWithStyle(),
+                    'wapper' => $colunm,
                 ];
             }
         }
@@ -271,26 +273,30 @@ class ItemsContent extends FWapper
 
             $displayer->clearScript();
 
+            $isRequired = $displayer->isRequired();
+            $displayer->required(false);
+
             $displayer
                 ->extKey('')
                 ->arrayName([$this->name . '[' . 'new' . '][', ']'])
                 ->showLabel(false)
                 ->value('')
                 ->size(0, 0)
-                ->addClass('item-field ' . ($displayer->isRequired() ? ' item-field-required' : ''))
-                ->addAttr('data-label="' . $colunm->getLabel() . '"' . ($displayer->isRequired() ? ' required="true" ' : ''))
+                ->addClass('item-field ' . ($isRequired ? ' item-field-required' : ''))
+                ->addAttr('data-label="' . $colunm->getLabel() . '"')
                 ->beforRender();
 
-            $displayer
-                ->extKey('-'); //模板的id改了，避免被初始化，添加以后再初始化
+            $displayer->extKey('-no-init-script'); //模板的id改了，避免被初始化，添加以后再初始化
+
+            $this->template[] = [
+                'value' => $displayer->render(),
+                'attr' => $displayer->getAttrWithStyle(),
+                'wapper' => $colunm,
+            ];
 
             $script = $displayer->getScript();
 
             $this->script = array_merge($this->script, $script);
-
-            if ($displayer->isRequired()) {
-                $this->form->addJqValidatorRule($displayer->getName(), 'required', true);
-            }
         }
 
         $this->isInitData = true;
@@ -317,6 +323,7 @@ class ItemsContent extends FWapper
             'canAdd' => $this->canAdd,
             'cols' => $this->cols,
             'script' => implode('', array_unique($this->script)),
+            'template' => $this->template,
         ];
 
         return $viewshow->assign($vars)->getContent();

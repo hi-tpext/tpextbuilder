@@ -560,8 +560,8 @@ class Table extends TWapper implements Renderable
                 $this->list[$key][$col] = [
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
-                    'attr' => $displayer->getAttr(),
-                    'wapper' => $this->cols[$col],
+                    'attr' => $displayer->getAttrWithStyle(),
+                    'wapper' => $colunm,
                 ];
             }
 
