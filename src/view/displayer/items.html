@@ -1,7 +1,5 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]} field-raw">
-    <div class="row form-fields">
-        {:$fields_content->render()}
-    </div>
+    {:$items_content->render()}
     {include file="$helptempl" /}
 </div>

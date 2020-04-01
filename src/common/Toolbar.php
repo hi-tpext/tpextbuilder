@@ -5,64 +5,29 @@ namespace tpext\builder\common;
 use think\response\View as ViewShow;
 use tpext\builder\toolbar\Bar;
 use tpext\builder\toolbar\Wapper;
+use tpext\builder\traits\HasDom;
 
 class Toolbar extends Wapper implements Renderable
 {
+    use HasDom;
+
     protected $view = '';
-
-    protected $class = '';
-
-    protected $attr = '';
 
     protected $elms = [];
 
     protected $__elm__;
 
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
+    protected $extKey = '';
 
-    /**
+     /**
      * Undocumented function
      *
      * @param string $val
      * @return $this
      */
-    public function attr($val)
+    public function extKey($val)
     {
-        $this->attr = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addAttr($val)
-    {
-        $this->attr .= ' ' . $val;
+        $this->extKey = $val;
         return $this;
     }
 
@@ -79,11 +44,35 @@ class Toolbar extends Wapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return array
+     */
+    public function getElms()
+    {
+        return $this->elms;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isEmpty()
+    {
+        return empty($this->elms);
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function beforRender()
     {
         foreach ($this->elms as $elm) {
+
+            if ($this->extKey) {
+                $elm->extKey($this->extKey);
+            }
 
             $elm->beforRender();
         }
@@ -100,7 +89,7 @@ class Toolbar extends Wapper implements Renderable
         $vars = [
             'elms' => $this->elms,
             'class' => $this->class,
-            'attr' => $this->attr,
+            'attr' => $this->getAttrWithStyle(),
         ];
 
         return $viewshow->assign($vars)->getContent();

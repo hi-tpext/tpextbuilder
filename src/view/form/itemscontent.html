@@ -1,0 +1,68 @@
+<table id="items-{$name}" class="table form-items {$class}" {$attr|raw}>
+  {notempty name="$headers"}
+  <thead>
+    <tr>
+      {volist name="headers" id="header"}
+      <th class="text-center vertical-middle item-label">
+        {$header|raw}
+      </th>
+      {/volist}
+      {if condition="$cnaDelete"}
+      <th class="text-center vertical-middle">{$actionRowText|raw}</th>
+      {/if}
+    </tr>
+  </thead>
+  {/notempty}
+  <tbody>
+    {volist name="list" id="row"}
+    <tr class="table-row-id" data-id="{$ids[$key]}">
+      {foreach name="row" id="col" key="co"}
+      <td class="{$col.wapper->getClass()} text-center vertical-middle" {$col.wapper->getAttrWithStyle()|raw}>
+        {$col.value|raw}
+      </td>
+      {/foreach}
+      {if condition="$cnaDelete"}
+      <td class="row-__action__ vertical-middle text-center">
+        <input type="hidden" name="{$name}[{$ids[$key]}][__del__]" value="0" />
+        <a class="btn btn-xs btn-danger action-delete" id="bar-delete-{$key}" data-id="{$ids[$key]}" href="javascript:;"
+          title="删除">
+          <i class="mdi mdi-delete"></i></a>
+      </td>
+      {/if}
+    </tr>
+    {/volist}
+    {if condition="$canAdd"}
+    <tr>
+      {volist name="cols" id="col"}
+      <td></td>
+      {/volist}
+      <td class="row-__action__ vertical-middle text-center">
+        <a id="items-{$name}-add" class="btn btn-xs btn-success" href="javascript:;" title="新加一条"><i
+            class="mdi mdi-plus-circle-outline"></i></a>
+      </td>
+    </tr>
+    {/if}
+  </tbody>
+</table>
+{if condition="$canAdd"}
+<table style="display: none;" id="items-{$name}-temple" class="table table-items {$class}" {$attr|raw}>
+  <tbody>
+    <tr>
+      {volist name="cols" id="col"}
+      <td>{:$col->render()}</td>
+      {/volist}
+      <td class="row-__action__ vertical-middle text-center">
+        <input type="hidden" name="{$name}[new]}][__del__]" value="-1" />
+        <a class="btn btn-xs btn-danger action-delete" id="bar-delete-0" data-id="new-0" href="javascript:;" title="删除">
+          <i class="mdi mdi-delete"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<textarea style="display: none;" id="items-{$name}-script">{$script|raw}</textarea>
+{/if}
+{empty name="$list"}
+<div class="items-empty-text">
+  {$emptyText|raw}
+</div>
+{/empty}

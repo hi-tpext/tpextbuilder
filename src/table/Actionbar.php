@@ -8,13 +8,9 @@ class Actionbar extends Toolbar
 {
     protected $pk;
 
-    protected $extKey = '';
-
     protected $rowid;
 
     protected $rowdata;
-
-    protected $script = [];
 
     protected $useLayer = true;
 
@@ -30,18 +26,6 @@ class Actionbar extends Toolbar
     {
         $this->useLayer = $val;
 
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function extKey($val)
-    {
-        $this->extKey = $val;
         return $this;
     }
 
@@ -149,7 +133,7 @@ class Actionbar extends Toolbar
         if (empty($url)) {
             $url = url('edit', ['id' => '__data.pk__']);
         }
-        $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->attr($attr);
+        $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
     }
 
@@ -168,7 +152,7 @@ class Actionbar extends Toolbar
         if (empty($url)) {
             $url = url('view', ['id' => '__data.pk__']);
         }
-        $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->attr($attr);
+        $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
     }
 
@@ -179,7 +163,7 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean $confirm
+     * @param boolean|string $confirm
      * @param string $attr
      * @return $this
      */
@@ -188,7 +172,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('delete');
         }
-        $this->actionBtn('delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
+        $this->actionBtn('delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
     }
 
@@ -199,7 +183,7 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean $confirm
+     * @param boolean|string $confirm
      * @param string $attr
      * @return $this
      */
@@ -208,7 +192,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('disable');
         }
-        $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
+        $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
     }
 
@@ -219,7 +203,7 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean $confirm
+     * @param boolean|string $confirm
      * @param string $attr
      * @return $this
      */
@@ -228,7 +212,7 @@ class Actionbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('enable');
         }
-        $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
+        $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
     }
 
@@ -246,14 +230,14 @@ class Actionbar extends Toolbar
     public function btnLink($name = '', $url, $label = '', $class = 'btn-secondary', $icon = '', $attr = '')
     {
         if (!$name) {
-            $name = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $url, -1, $count);
+            $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
             if (!$count) {
                 $name = mt_rand(10, 99);
             }
         }
 
-        $this->actionBtn($name, $label)->href($url)->icon($icon)->addClass($class)->attr($attr);
+        $this->actionBtn($name, $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
 
         return $this;
     }
@@ -266,22 +250,22 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
+     * @param boolean|string $confirm
      * @param string $attr
-     * @param boolean $confirm
      * @return $this
-     * 
+     *
      */
-    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
+    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $confirm = true, $attr = '')
     {
         if (!$name) {
-            $name = preg_replace('/.+?\/(\w+)\.?\w+$/', '$1', $postUrl, -1, $count);
+            $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $postUrl, -1, $count);
 
             if (!$count) {
                 $name = mt_rand(10, 99);
             }
         }
 
-        $this->actionBtn($name, $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->attr($attr);
+        $this->actionBtn($name, $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
 
         return $this;
     }

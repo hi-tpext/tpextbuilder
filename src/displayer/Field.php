@@ -16,6 +16,8 @@ class Field implements Fillable
 
     protected $extKey = '';
 
+    protected $extNameKey = '';
+
     protected $name = '';
 
     protected $label = '';
@@ -35,8 +37,6 @@ class Field implements Fillable
     protected $default = '';
 
     protected $icon = '';
-
-    protected $rules = '';
 
     protected $autoPost = '';
 
@@ -74,6 +74,10 @@ class Field implements Fillable
 
     protected $minify = true;
 
+    protected $arrayName = false;
+
+    protected $rand = '';
+
     public function __construct($name, $label = '')
     {
         if (empty($label)) {
@@ -104,7 +108,7 @@ class Field implements Fillable
      */
     public function getId()
     {
-        return 'form-' . preg_replace('/\W/', '', $this->name . $this->extKey);
+        return 'form-' . preg_replace('/\W/', '', $this->name) . $this->extKey;
     }
 
     /**
@@ -114,7 +118,23 @@ class Field implements Fillable
      */
     public function getName()
     {
-        return $this->name . $this->extKey;
+        if ($this->arrayName) {
+            return $this->arrayName[0] . $this->name . $this->arrayName[1];
+        }
+
+        return $this->name . $this->extNameKey;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $val
+     * @return $this
+     */
+    public function arrayName($val)
+    {
+        $this->arrayName = $val;
+        return $this;
     }
 
     /**
@@ -136,6 +156,18 @@ class Field implements Fillable
     public function extKey($val)
     {
         $this->extKey = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function extNameKey($val)
+    {
+        $this->extNameKey = $val;
         return $this;
     }
 
@@ -191,18 +223,6 @@ class Field implements Fillable
     public function name($val)
     {
         $this->name = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function rules($val)
-    {
-        $this->rules = $val;
         return $this;
     }
 
@@ -467,6 +487,17 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
+     * @return $this
+     */
+    public function clearScript()
+    {
+        $this->script = [];
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param integer $labelMin
      * @return $this
      */
@@ -657,6 +688,7 @@ EOT;
                 $mapClass = ' ' . $this->mapClassWhen[1];
             }
         }
+        $extendAttr = ($this->isRequired() ? ' required="true"' : '') . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '');
 
         $vars = [
             'id' => $this->getId(),
@@ -664,9 +696,10 @@ EOT;
             'name' => $this->getName(),
             'requiredStyle' => $this->required ? '' : 'style="visibility: hidden;"',
             'extKey' => $this->extKey,
+            'extNameKey' => $this->extNameKey,
             'value' => $value,
-            'class' => ' ' . $this->class . $mapClass,
-            'attr' => $this->attr . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '') . (empty($this->style) ? '' : ' style="' . $this->style . '"'),
+            'class' => ' ' . $this->getClass() . $mapClass,
+            'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
             'size' => $this->size,
             'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label text-right' : $this->labelClass,

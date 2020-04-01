@@ -53,6 +53,7 @@ class Wapper
         'password' => \tpext\builder\displayer\Password::class,
         'fields' => \tpext\builder\displayer\Fields::class,
         'map' => \tpext\builder\displayer\Map::class,
+        'items' => \tpext\builder\displayer\Items::class,
     ];
 
     protected static $defaultFieldClass = [];

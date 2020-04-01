@@ -38,6 +38,10 @@ class Search extends SWapper implements Renderable
 
     protected $open = true;
 
+    protected $rand = 0;
+
+    protected $tableRand = 0;
+
     /**
      * Undocumented variable
      *
@@ -48,6 +52,18 @@ class Search extends SWapper implements Renderable
     public function __construct()
     {
         $this->class = 'form-horizontal';
+        $this->rand = input('__search__', mt_rand(1000, 9999));
+        $this->id .= $this->rand;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return int
+     */
+    public function getRand()
+    {
+        return $this->rand;
     }
 
     /**
@@ -104,6 +120,7 @@ class Search extends SWapper implements Renderable
     public function search($val)
     {
         $this->search = $val->getTableId();
+        $this->tableRand = $val->getRand();
         $this->ajax = true;
         return $this;
     }
@@ -172,12 +189,14 @@ class Search extends SWapper implements Renderable
      *
      * @return $this
      */
-    public function searchButtons()
+    public function searchButtons($create = true)
     {
-        $this->fieldsEnd();
-        $this->html('', '', 1)->showLabel(false);
-        $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-xs');
-        $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-xs')->attr('onclick="location.replace(location.href)"');
+        if ($create) {
+            $this->fieldsEnd();
+            $this->html('', '', 1)->showLabel(false);
+            $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-xs');
+            $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-xs')->attr('onclick="location.replace(location.href)"');
+        }
 
         $this->searchButtonsCalled = true;
         return $this;
@@ -235,7 +254,8 @@ class Search extends SWapper implements Renderable
         }
 
         $this->hidden('__page__')->value(1);
-        $this->hidden('__search__')->value(1);
+        $this->hidden('__search__')->value($this->rand);
+        $this->hidden('__table__')->value($this->tableRand);
         $this->hidden('__sort__');
         $this->addClass('search-form');
         $this->button('refresh', 'refresh', 1)->addClass('search-refresh')->getWapper()->class('hidden');
@@ -264,21 +284,21 @@ class Search extends SWapper implements Renderable
         $script = <<<EOT
         $('body').on('click', '#{$this->search} ul.pagination li a', function(){
             var page = $(this).attr('href').replace(/.*\?page=(\d+).*/,'$1');
-            $('#form-__page__').val(page);
+            $('#{$form} form input[name="__page__"]').val(page);
             window.forms['{$form}'].formSubmit();
             return false;
         });
 
-        $('body').on('click', '#btn-refresh,#form-refresh', function(){
+        $('body').on('click', '#btn-refresh{$this->tableRand},#form-refresh{$this->rand}', function(){
             window.forms['{$form}'].formSubmit();
         });
 
-        if($('#{$form} form').hasClass('form-empty'))
+        if(!$('#{$form} form').hasClass('form-empty'))
         {
-            $('#btn-search').remove();
+            $('#btn-search{$this->tableRand}').removeClass('hidden');
         }
 
-        $('body').on('click', '#btn-search', function(){
+        $('body').on('click', '#btn-search{$this->tableRand}', function(){
             if($('#{$form} form').hasClass('hidden'))
             {
                 $('#{$form} form').removeClass('hidden');
@@ -289,19 +309,19 @@ class Search extends SWapper implements Renderable
             }
         });
 
-        $('body').on('click', '#btn-export', function(){
+        $('body').on('click', '#btn-export{$this->tableRand}', function(){
             var url = $(this).data('export-url');
             window.forms['{$form}'].exportPost(url, '');
         });
 
-        $('body').on('click', '#dropdown-exports-div .dropdown-menu li a', function(){
-            var url = $('#dropdown-exports').data('export-url');
+        $('body').on('click', '#dropdown-exports{$this->tableRand}-div .dropdown-menu li a', function(){
+            var url = $('#dropdown-exports{$this->tableRand}').data('export-url');
             var fileType = $(this).data('key');
             window.forms['{$form}'].exportPost(url, fileType);
         });
 
-        $('body').on('click', '#form-submit', function(){
-            $('#form-__page__').val(1);
+        $('body').on('click', '#form-submit{$this->rand}', function(){
+            $('#$form form input[name="__page__"]').val(1);
             return window.forms['{$form}'].formSubmit();
         });
 
@@ -320,7 +340,7 @@ class Search extends SWapper implements Renderable
                 $(this).removeClass('mdi-sort').addClass('mdi-sort-descending');
             }
 
-            $('#form-__sort__').val(sort);
+            $('#$form form input[name="__sort__"]').val(1);
             window.forms['{$form}'].formSubmit();
         });
 
@@ -382,6 +402,8 @@ EOT;
             if ($this->defaultDisplayerSize) {
                 $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);
             }
+
+            $displayer->extKey($this->rand);
 
             return $displayer;
         }

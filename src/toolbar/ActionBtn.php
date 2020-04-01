@@ -88,11 +88,11 @@ class ActionBtn extends Bar
         return $this;
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @param string $url
-     * @param boolean $confirm
+     * @param boolean|string $confirm
      * @return $this
      */
     public function postRowid($url, $confirm = true)
@@ -108,9 +108,13 @@ class ActionBtn extends Bar
         $script = '';
         $class = 'action-' . $this->name;
 
+        if (empty($this->confirm)) {
+            $this->confirm = '';
+        }
+
         $script = <<<EOT
 
-        tpextbuilder.postRowid('{$class}', '{$this->postRowid}', {$this->confirm});
+        tpextbuilder.postRowid('{$class}', '{$this->postRowid}', '{$this->confirm}');
 
 EOT;
         $this->script[] = $script;

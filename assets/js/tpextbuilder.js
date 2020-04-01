@@ -92,10 +92,13 @@
             val = values.join(',');
 
             if (confirm) {
-                var text = $('#' + id).text().trim() || $(this).attr('title');
+                if (confirm == '1') {
+                    var text = $('#' + id).text().trim() || $(this).attr('title');
+                    confirm = '确定要执行批量<strong>' + text + '</strong>操作吗？';
+                }
                 $.alert({
                     title: '操作提示',
-                    content: '确定要执行批量<strong>' + text + '</strong>操作吗？',
+                    content: confirm,
                     buttons: {
                         confirm: {
                             text: '确认',
@@ -148,10 +151,13 @@
         $('body').on('click', 'td.row-__action__ .' + classname, function () {
             var val = $(this).data('id');
             if (confirm) {
-                var text = $(this).text().trim() || $(this).attr('title') || '此';
+                if (confirm == '1') {
+                    var text = $(this).text().trim() || $(this).attr('title') || '此';
+                    confirm = '确定要执行<strong>' + text + '</strong>操作吗？';
+                }
                 $.alert({
                     title: '操作提示',
-                    content: '确定要执行<strong>' + text + '</strong>操作吗？',
+                    content: confirm,
                     buttons: {
                         confirm: {
                             text: '确认',
@@ -188,17 +194,20 @@
             dataType: "json",
             success: function (data) {
                 lightyear.loading('hide');
+                if (data.__token__) {
+                    w.__token__ = data.__token__;
+                }
                 if (data.status || data.code) {
                     lightyear.notify(data.msg || data.message || '操作成功！', 'success');
                     if (refresh) {
                         $('.search-refresh').trigger('click');
-                    } else if (data.script) {
+                    } else if (data.script || data.data.script) {
+                        var script = data.script || data.data.script;
                         if ($('#script-div').size()) {
-                            $('#script-div').html(data.script);
+                            $('#script-div').html(script);
                         } else {
                             $('body').append(
-                                '<div class="hidden" id="script-div">' + data
-                                .script + '</div>');
+                                '<div class="hidden" id="script-div">' + data.script + '</div>');
                         }
                     } else if (data.url) {
                         setTimeout(function () {

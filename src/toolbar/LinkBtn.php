@@ -24,7 +24,7 @@ class LinkBtn extends Bar
      * Undocumented function
      *
      * @param string $url
-     * @param boolean $confirm
+     * @param boolean|string $confirm
      * @return $this
      */
     public function postChecked($url, $confirm = true)
@@ -40,9 +40,13 @@ class LinkBtn extends Bar
         $script = '';
         $inputId = $this->getId();
 
+        if (empty($this->confirm)) {
+            $this->confirm = '';
+        }
+
         $script = <<<EOT
 
-        tpextbuilder.postChecked('{$inputId}', '{$this->postChecked}', {$this->confirm});
+        tpextbuilder.postChecked('{$inputId}', '{$this->postChecked}', '{$this->confirm}');
 
 EOT;
         $this->script[] = $script;

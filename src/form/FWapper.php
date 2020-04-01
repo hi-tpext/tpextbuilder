@@ -52,6 +52,7 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\Matches        matches($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Fields         fields($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Map            map($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
+ * @method \tpext\builder\displayer\Items          items($name, $label = '', $cloSize = 12, $colClass = '', $colAttr = '')
  */
 
 class FWapper extends Base

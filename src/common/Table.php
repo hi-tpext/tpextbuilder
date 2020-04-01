@@ -50,14 +50,24 @@ class Table extends TWapper implements Renderable
 
     protected $actionbars = [];
 
-    protected $rowCheckbox = true;
+    protected $useCheckbox = true;
 
     protected $emptyText = "<p class='text-center'><span>暂无相关数据~</span></p>";
 
+    /**
+     * Undocumented variable
+     *
+     * @var MultipleToolbar
+     */
     protected $toolbar = null;
 
     protected $useToolbar = true;
 
+    /**
+     * Undocumented variable
+     *
+     * @var Actionbar
+     */
     protected $actionbar = null;
 
     protected $useActionbar = true;
@@ -69,6 +79,10 @@ class Table extends TWapper implements Renderable
     protected $sortable = ['id'];
 
     protected $sortOrder = '';
+
+    protected $rand = 0;
+
+    protected $searchRand = 0;
 
     /**
      * Undocumented variable
@@ -89,6 +103,18 @@ class Table extends TWapper implements Renderable
     public function __construct()
     {
         $this->class = 'table-striped table-hover table-bordered';
+        $this->rand = input('__table__', mt_rand(1000, 9999));
+        $this->id .= $this->rand;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return int
+     */
+    public function getRand()
+    {
+        return $this->rand;
     }
 
     /**
@@ -155,7 +181,7 @@ class Table extends TWapper implements Renderable
      */
     public function rowCheckbox($val)
     {
-        $this->rowCheckbox = $val;
+        $this->useCheckbox = $val;
         return $this;
     }
 
@@ -164,9 +190,9 @@ class Table extends TWapper implements Renderable
      * @param boolean $val
      * @return $this
      */
-    public function useCheckboxes($val)
+    public function useCheckbox($val)
     {
-        $this->rowCheckbox = $val;
+        $this->useCheckbox = $val;
         return $this;
     }
 
@@ -289,12 +315,12 @@ class Table extends TWapper implements Renderable
         return $this;
     }
 
-   /**
-    * Undocumented function
-    *
-    * @param array
-    * @return $this
-    */
+    /**
+     * Undocumented function
+     *
+     * @param array
+     * @return $this
+     */
     public function setHeaders($val)
     {
         $this->headers = $val;
@@ -389,6 +415,7 @@ class Table extends TWapper implements Renderable
     {
         if (empty($this->toolbar)) {
             $this->toolbar = new MultipleToolbar();
+            $this->toolbar->extKey($this->rand);
         }
 
         return $this->toolbar;
@@ -430,6 +457,7 @@ class Table extends TWapper implements Renderable
         if (empty($this->searchForm)) {
             $this->searchForm = new Search();
             $this->searchForm->search($this);
+            $this->searchRand = $this->searchForm->getRand();
         }
         return $this->searchForm;
     }
@@ -449,7 +477,7 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param boolean $val
+     * @param string $val
      * @return $this
      */
     protected function actionRowText($val)
@@ -519,9 +547,12 @@ class Table extends TWapper implements Renderable
 
                 $displayer = $colunm->getDisplayer();
 
+                $displayer->clearScript();
+
                 $displayer
                     ->fill($data)
-                    ->extKey('-' . $key)
+                    ->extKey($this->rand . '-' . $key)
+                    ->extNameKey('-' . $key)
                     ->showLabel(false)
                     ->size(0, 0)
                     ->beforRender();
@@ -536,7 +567,7 @@ class Table extends TWapper implements Renderable
 
             if ($this->useActionbar && isset($this->ids[$key])) {
 
-                $actionbar->extKey('-' . $key)->rowdata($data)->beforRender();
+                $actionbar->extKey($this->rand . '-' . $key)->rowdata($data)->beforRender();
 
                 $this->actionbars[$key] = $actionbar->render();
             }
@@ -561,7 +592,7 @@ class Table extends TWapper implements Renderable
         $viewshow = new ViewShow($template);
 
         if (!$this->paginator) {
-            $this->paginator = Paginator::make($this->data, 999, 1, 999);
+            $this->paginator = Paginator::make($this->data, count($this->data), 1, count($this->data));
         }
 
         $sort = input('__sort__', $this->sortOrder);
@@ -573,6 +604,9 @@ class Table extends TWapper implements Renderable
             if (count($arr) == 2) {
                 $sortKey = $arr[0];
                 $sortOrder = $arr[1];
+                if (!in_array($sortKey, $this->sortable)) {
+                    $this->sortable[] = $sortKey;
+                }
             }
         }
 
@@ -590,7 +624,7 @@ class Table extends TWapper implements Renderable
             'sortKey' => $sortKey,
             'sortOrder' => $sortOrder,
             'sort' => $sort,
-            'rowCheckbox' => $this->rowCheckbox && $this->useToolbar,
+            'useCheckbox' => $this->useCheckbox && $this->useToolbar,
             'name' => time() . mt_rand(1000, 9999),
             'tdClass' => $this->verticalAlign . ' ' . $this->textAlign,
             'verticalAlign' => $this->verticalAlign,
@@ -602,6 +636,8 @@ class Table extends TWapper implements Renderable
             'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,
             'actionbars' => $this->actionbars,
             'actionRowText' => $this->actionRowText,
+            'rand' => $this->rand,
+            'searchRand' => $this->searchRand,
         ];
 
         if ($this->partial) {

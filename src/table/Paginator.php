@@ -112,8 +112,11 @@ class Paginator extends Bootstrap
 
             $a = ($this->currentPage - 1) * $this->listRows + 1;
             $b = $a - 1 + $this->items->count();
-
-            $html = "<span class='pagination-summary'>共{$this->total}条记录，当前显示{$a}~{$b}条记录</span>" . $html;
+            if ($this->total != $this->items->count()) {
+                $html = "<span class='pagination-summary'>共{$this->total}条记录，当前显示{$a}~{$b}条记录</span>" . $html;
+            } else {
+                $html = "<span class='pagination-summary'>共{$this->total}条记录</span>" . $html;
+            }
         }
 
         return $html;

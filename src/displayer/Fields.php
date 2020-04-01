@@ -11,6 +11,8 @@ class Fields extends Field
 {
     protected $view = 'fields';
 
+    protected $data = [];
+
     /**
      * Undocumented variable
      *
@@ -32,8 +34,6 @@ class Fields extends Field
         $this->form = $this->getWapper()->getForm();
         $this->__fields_content__ = $this->form->createFields();
 
-        $this->name = 'fields' . mt_rand(100, 999);
-
         return $this;
     }
 
@@ -41,7 +41,7 @@ class Fields extends Field
      * Undocumented function
      *
      * @param Field ...$fields
-     * @return void
+     * @return $this
      */
     public function with(...$fields)
     {
@@ -52,19 +52,63 @@ class Fields extends Field
     /**
      * Undocumented function
      *
+     * @return FieldsContent
+     */
+    public function getContent()
+    {
+        return $this->__items_content__;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array|Model $data
      * @return $this
      */
-    public function fill($data = [])
+    public function value($val)
     {
-        $this->__fields_content__->fill($data);
+        return $this->fill($val);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|Model $data
+     * @param boolean $overWrite
+     * @return $this
+     */
+    public function fill($data = [], $overWrite = false)
+    {
+        if (!$overWrite && !empty($this->data)) {
+            return $this;
+        }
+
+        if (!empty($this->name) && isset($data[$this->name]) &&
+            (is_array($data[$this->name]) || $data[$this->name] instanceof Model)) {
+            $this->data = $data[$this->name];
+        } else {
+            $this->data = $data;
+        }
+
+        $this->__fields_content__->fill($this->data);
 
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     public function beforRender()
     {
         $this->__fields_content__->beforRender();
+        parent::beforRender();
         return $this;
     }
 

@@ -1,6 +1,6 @@
 <div id="{$id}" class="row">
-    <form action="{$action}" method="{$method|default='POST'}" enctype="multipart/form-data"
-        class="{$class} {$attr|raw}">
+    <form action="{$action}" method="{$method|default='POST'}" enctype="multipart/form-data" class="{$class}"
+        {$attr|raw}>
 
         {volist name="rows" id="row"}
         {if condition="$row instanceof tpext\builder\common\Tab"}
@@ -61,13 +61,14 @@
                                     } else if (data.layer_close_go) {
                                         that.closeLayerGo(data.msg || data.message || '操作成功！', data
                                             .layer_close_go);
-                                    } else if (data.script) {
+                                    } else if (data.script || data.data.script) {
+                                        var script = data.script || data.data.script;
                                         if ($('#script-div').size()) {
-                                            $('#script-div').html(data.script);
+                                            $('#script-div').html(script);
                                         } else {
                                             $('body').append(
-                                                '<div class="hidden" id="script-div">' + data
-                                                .script + '</div>');
+                                                '<div class="hidden" id="script-div">' +
+                                                script + '</div>');
                                         }
                                     } else if (data.url) {
                                         lightyear.notify(data.msg || data.message || '操作成功！',

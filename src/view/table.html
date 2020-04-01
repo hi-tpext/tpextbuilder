@@ -12,28 +12,27 @@
         {notempty name="$headers"}
         <thead>
             <tr>
-                {if condition="$rowCheckbox"}
+                {if condition="$useCheckbox"}
                 <th class="table-checkbox">
                     <label class="lyear-checkbox checkbox-primary">
-                        <input type="checkbox" id="checkall-{$name}"
-                            data-check="check-{$name}" class="checkall
+                        <input type="checkbox" id="checkall-{$name}" data-check="check-{$name}" class="checkall
                             table-row-checkall"><span></span>
                     </label>
                 </th>
                 {/if}
                 {volist name="headers" id="header"}
                 <th class="{$headTextAlign}">
-                    {$header}
+                    {$header|raw}
                     {in name="$key" value="$sortable"}
-                        {if condition="$key eq $sortKey"}
-                            {if condition="$sortOrder eq 'asc'"}
-                            <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-ascending pull-right"></a>
-                            {else/}
-                            <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-descending pull-right"></a>
-                            {/if}
-                        {else/}
-                        <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort pull-right"></a>
-                        {/if}
+                    {if condition="$key eq $sortKey"}
+                    {if condition="$sortOrder eq 'asc'"}
+                    <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-ascending pull-right"></a>
+                    {else/}
+                    <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-descending pull-right"></a>
+                    {/if}
+                    {else/}
+                    <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort pull-right"></a>
+                    {/if}
                     {/in}
                 </th>
                 {/volist}
@@ -46,24 +45,22 @@
         <tbody>
             {volist name="list" id="row"}
             <tr class="table-row-id" data-id="{$ids[$key]}">
-                {if condition="$rowCheckbox"}
+                {if condition="$useCheckbox"}
                 <td class="table-checkbox {$tdClass}">
                     <label class="lyear-checkbox checkbox-primary">
-                        <input type="checkbox" id="{$name}-{$key}"
-                            value="{$ids[$key]}"
+                        <input type="checkbox" id="{$name}-{$key}" value="{$ids[$key]}"
                             class="check-{$name} table-row"><span></span>
                     </label>
                 </td>
                 {/if}
                 {foreach name="row" id="col" key="co"}
-                <td class="col-md-{$col.wapper->getColSize()} {$tdClass} {$col.wapper->getClass()}"
-                    {$col.wapper->getAttrWithStyle()|raw}>
+                <td class="col-md-{$col.wapper->getColSize()} {$tdClass} {$col.wapper->getClass()}" {$col.wapper->
+                    getAttrWithStyle()|raw}>
                     {$col.value|raw}
                 </td>
                 {/foreach}
                 {notempty name="$actionbars"}
-                <td class="text-center row-__action__ {$verticalAlign}
-                    {$textAlign}">
+                <td class="text-center row-__action__ {$verticalAlign}">
                     {$actionbars[$key]|raw}
                 </td>
                 {/notempty}
@@ -71,25 +68,24 @@
             {/volist}
         </tbody>
     </table>
-    {empty name="$data"}
-    <div>
+    {empty name="$list"}
+    <div class="table-empty-text">
         {$emptyText|raw}
     </div>
     {/empty}
     {notempty name="paginator"}
-    <nav class="{:$paginator->getClass()}" {:$paginator->getAttr()}>
+    <nav class="{:$paginator->getClass()}" {:$paginator->getAttrWithStyle()}>
         {:$paginator->render()}
     </nav>
     {/notempty}
     <script>
-        var partial = {$partial};
+        var partial = '{$partial}' == 1;
 
-        document.getElementById('form-__sort__').value = '{$sort}';
-        
-        if(partial)
-        {
-            $('#form-__page__').val('{$paginator->currentPage()}');
-            
+        document.getElementById('form-__sort__{$searchRand}').value = '{$sort}';
+
+        if (partial) {
+            $('#form-__page__{$searchRand}').val('{$paginator->currentPage()}');
+
             $('#{$id} input.checkall').each(function (i, e) {
                 var checkall = $(e);
                 var checkboxes = $('.' + checkall.data('check'));
@@ -111,7 +107,9 @@
             });
 
             $('#{$id} input.table-row-checkall').trigger('change');
-            window.renderFiles();
+            if (window.renderFiles) {
+                window.renderFiles();
+            }
         }
     </script>
 </div>

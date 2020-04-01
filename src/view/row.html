@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row {$class}" {$attr|raw}>
     {volist name="$cols" id="col"}
-    <div class="col-md-{$col->getSize()}">
+    <div class="col-md-{$col->getSize()} {$col->getClass()}" {$col->getAttrWithStyle()|raw}>
       {volist name="col->getElms()" id="elm"}
         {:$elm->render()}
       {/volist}

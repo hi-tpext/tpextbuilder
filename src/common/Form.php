@@ -10,6 +10,7 @@ use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Fillable;
 use tpext\builder\form\FRow;
 use tpext\builder\form\FWapper;
+use tpext\builder\form\ItemsContent;
 use tpext\builder\form\Step;
 use tpext\builder\traits\HasDom;
 
@@ -42,6 +43,10 @@ class Form extends FWapper implements Renderable
 
     protected $butonsSizeClass = 'btn-sm';
 
+    protected $rand = 0;
+
+    protected $searchRand = 0;
+
     /**
      * Undocumented variable
      *
@@ -70,10 +75,28 @@ class Form extends FWapper implements Renderable
      */
     protected $__fields__ = null;
 
+    /**
+     * Undocumented variable
+     *
+     * @var ItemsContent
+     */
+    protected $__items__ = null;
+
     public function __construct()
     {
         $this->class = 'form-horizontal';
         $this->rand = mt_rand(1000, 9999);
+        $this->id .= $this->rand;
+    }
+
+     /**
+     * Undocumented function
+     *
+     * @return int
+     */
+    public function getRand()
+    {
+        return $this->rand;
     }
 
     /**
@@ -244,11 +267,34 @@ class Form extends FWapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return ItemsContent
+     */
+    public function createItems()
+    {
+        $this->__items__ = new ItemsContent();
+        $this->__items__->setForm($this);
+        return $this->__items__;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function fieldsEnd()
     {
         $this->__fields__ = null;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function itemsEnd()
+    {
+        $this->__items__ = null;
         return $this;
     }
 
@@ -285,6 +331,7 @@ class Form extends FWapper implements Renderable
     {
         $this->__fields__ = null;
         $this->__fields_content__ = null;
+        $this->__items__content = null;
         return $this;
     }
 
@@ -331,7 +378,7 @@ class Form extends FWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return array
+     * @return array|Model
      */
     public function getData()
     {
@@ -467,6 +514,13 @@ class Form extends FWapper implements Renderable
             rules: {$rules},
             errorPlacement: function errorPlacement(error, element) {
                 var parent = $(element).parents('.form-group');
+                if($(element).hasClass('item-field'))
+                {
+                    $('#help-block .error-label').html(parent.find('.control-label').text() + $(element).data('label') + '这是必填字段');
+                    $(element).addClass('has-error');
+                    return;
+                }
+
                 parent.addClass('has-error');
                 $('#help-block').removeClass('hidden');
                 $('#help-block .error-label').html(parent.find('.control-label').text() + error.text());
@@ -479,7 +533,15 @@ class Form extends FWapper implements Renderable
             },
             unhighlight: function(element) {
                 $(element).next('.tagsinput').removeClass('is-invalid');
+                if($(element).hasClass('item-field'))
+                {
+                    $(element).removeClass('has-error');
+                }
                 $(element).parents('.form-group').removeClass('has-error');
+                if($('.form-group.has-error').size() == 0 && $('.item-field.has-error').size() == 0)
+                {
+                    $('#help-block .error-label').html('');
+                }
             },
             submitHandler: function(form) {
                 return window.forms['{$form}'].formSubmit();
@@ -532,10 +594,16 @@ EOT;
             $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
             if ($this->__fields__) {
+
                 $this->__fields__->addRow($row);
+            } else if ($this->__items__) {
+
+                $this->__items__->addCol($arguments[0], $row);
             } else if ($this->__fields_content__) {
+
                 $this->__fields_content__->addRow($row);
             } else {
+
                 $this->rows[] = $row;
             }
 

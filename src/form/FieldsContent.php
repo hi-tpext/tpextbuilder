@@ -11,6 +11,8 @@ use tpext\builder\displayer\Field;
 
 class FieldsContent extends FWapper implements Renderable
 {
+    protected $view = 'fieldscontent';
+
     protected $rows = [];
 
     protected $data = [];
@@ -103,9 +105,19 @@ class FieldsContent extends FWapper implements Renderable
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array|Model
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'fieldscontent.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', $this->view . '.html']);
 
         $viewshow = new ViewShow($template);
 
@@ -122,7 +134,7 @@ class FieldsContent extends FWapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 3, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
             $this->rows[] = $row;
 
