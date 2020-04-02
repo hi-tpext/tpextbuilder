@@ -657,6 +657,16 @@ EOT;
     {
         if (is_array($this->default)) {
             $this->default = implode(',', $this->default);
+        } else if ($this->default === true) {
+            $this->default = 1;
+        } else if ($this->default === false) {
+            $this->default = 0;
+        }
+
+        if ($this->value === true) {
+            $this->value = 1;
+        } else if ($this->value === false) {
+            $this->value = 0;
         }
 
         $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
