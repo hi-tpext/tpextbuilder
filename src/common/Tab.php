@@ -107,7 +107,7 @@ class Tab implements Renderable
      */
     public function form($label, $isActive = false, $name = '', $size = 12)
     {
-        return $this->add($label, $isActive = false, $name)->form($size);
+        return $this->add($label, $isActive, $name)->form($size);
     }
 
     /**
@@ -118,7 +118,7 @@ class Tab implements Renderable
      */
     public function table($label, $isActive = false, $name = '', $size = 12)
     {
-        return $this->add($label, $isActive = false, $name)->table($size);
+        return $this->add($label, $isActive, $name)->table($size);
     }
 
     /**
@@ -128,7 +128,7 @@ class Tab implements Renderable
      */
     public function content($label, $isActive = false, $name = '', $size = 12)
     {
-        return $this->add($label, $isActive = false, $name)->content($size);
+        return $this->add($label, $isActive, $name)->content($size);
     }
 
     /**
