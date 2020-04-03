@@ -340,7 +340,7 @@ class Search extends SWapper implements Renderable
                 $(this).removeClass('mdi-sort').addClass('mdi-sort-descending');
             }
 
-            $('#$form form input[name="__sort__"]').val(1);
+            $('#$form form input[name="__sort__"]').val(sort);
             window.forms['{$form}'].formSubmit();
         });
 
