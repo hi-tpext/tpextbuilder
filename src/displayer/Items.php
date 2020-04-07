@@ -133,12 +133,17 @@ class Items extends Field
     /**
      * Undocumented function
      *
-     * @param Collection $list
+     * @param Collection $data
      * @param string $IdField
+     * @param boolean $overWrite
      * @return $this
      */
-    public function dataWithId($data, $IdField = 'id')
+    public function dataWithId($data, $IdField = 'id', $overWrite = false)
     {
+        if (!$overWrite && !empty($this->data)) {
+            return $this;
+        }
+
         $list = [];
         foreach ($data as $d) {
             if (empty($IdField)) {
@@ -148,6 +153,8 @@ class Items extends Field
             $list[$d[$IdField]] = $d;
         }
         $this->data = $list;
+
+        $this->__items_content__->fill($this->data);
 
         return $this;
     }
