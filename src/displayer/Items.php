@@ -135,7 +135,7 @@ class Items extends Field
      *
      * @param Collection $list
      * @param string $IdField
-     * @return void
+     * @return $this
      */
     public function dataWithId($data, $IdField = 'id')
     {
