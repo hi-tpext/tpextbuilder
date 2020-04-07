@@ -117,6 +117,7 @@ class Items extends Field
         if (!$overWrite && !empty($this->data)) {
             return $this;
         }
+
         if (!empty($this->name) && isset($data[$this->name]) &&
             (is_array($data[$this->name]) || $data[$this->name] instanceof Collection)) {
             $this->data = $data[$this->name];
@@ -125,6 +126,28 @@ class Items extends Field
         }
 
         $this->__items_content__->fill($this->data);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Collection $list
+     * @param string $IdField
+     * @return void
+     */
+    public function dataWithId($data, $IdField = 'id')
+    {
+        $list = [];
+        foreach ($data as $d) {
+            if (empty($IdField)) {
+                $IdField = $d->getPk();
+            }
+
+            $list[$d[$IdField]] = $d;
+        }
+        $this->data = $list;
 
         return $this;
     }
@@ -189,6 +212,7 @@ class Items extends Field
                 }
             });
             $(this).parents('tr').before(node);
+            $('.items-empty-text').hide();
             if(script)
             {
                 if ($('#script-div').size()) {
