@@ -1,6 +1,6 @@
 (function (w) {
 
-    var tpextbuilder = function () {};
+    var tpextbuilder = function () { };
     tpextbuilder.autoPost = function (classname, url, refresh) {
 
         $('body').on('change', 'td.' + classname + ' :checkbox', function () {
@@ -201,21 +201,23 @@
                     lightyear.notify(data.msg || data.message || '操作成功！', 'success');
                     if (refresh) {
                         $('.search-refresh').trigger('click');
-                    } else if (data.script || data.data.script) {
-                        var script = data.script || data.data.script;
-                        if ($('#script-div').size()) {
-                            $('#script-div').html(script);
-                        } else {
-                            $('body').append(
-                                '<div class="hidden" id="script-div">' + data.script + '</div>');
-                        }
-                    } else if (data.url) {
-                        setTimeout(function () {
-                            location.replace(data.url);
-                        }, data.wait * 1000 || 2000);
                     }
                 } else {
                     lightyear.notify(data.msg || data.message || '操作失败', 'warning');
+                }
+                if (data.script || data.data.script) {
+                    var script = data.script || data.data.script;
+                    if ($('#script-div').size()) {
+                        $('#script-div').html(script);
+                    } else {
+                        $('body').append(
+                            '<div class="hidden" id="script-div">' + data.script + '</div>');
+                    }
+                }
+                if (data.url) {
+                    setTimeout(function () {
+                        location.replace(data.url);
+                    }, data.wait * 1000 || 2000);
                 }
             },
             error: function () {
@@ -355,16 +357,16 @@ window.renderFiles = function () {
             });
             uploader.on('fileQueued', function (file) {
                 var $li = $('<li class="pic-item" id="' + file.id + '">' +
-                        '  <figure>' +
-                        '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
-                        '    <img>' +
-                        '</div>' +
-                        '    <figcaption>' +
-                        '      <a class="btn btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
-                        '      <a class="btn btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
-                        '    </figcaption>' +
-                        '  </figure>' +
-                        '</li>'),
+                    '  <figure>' +
+                    '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
+                    '    <img>' +
+                    '</div>' +
+                    '    <figcaption>' +
+                    '      <a class="btn btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
+                    '      <a class="btn btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
+                    '    </figcaption>' +
+                    '  </figure>' +
+                    '</li>'),
                     $img = $li.find('img');
 
                 if (jsOptions.fileNumLimit <= 1) {
