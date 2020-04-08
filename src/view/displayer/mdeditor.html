@@ -1,8 +1,8 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]}">
     <div id="{$id}-div">
-        <textarea class="form-control {$class}" placeholder="请输入{$label}" rows="{$options.rows|default=3}"
-            name="{$name}" id="{$id}" {$attr|raw}>{$value|raw}</textarea>
+        <textarea class="form-control hidden {$class}" placeholder="请输入{$label}" name="{$name}" id="{$id}"
+            {$attr|raw}>{$value|raw}</textarea>
     </div>
     {include file="$helptempl" /}
 </div>
