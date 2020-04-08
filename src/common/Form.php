@@ -517,7 +517,7 @@ class Form extends FWapper implements Renderable
                 if($(element).hasClass('item-field'))
                 {
                     $('#help-block .error-label').html(parent.find('.control-label').text() + $(element).data('label') + '这是必填字段');
-                    $(element).addClass('has-error');
+                    $(element).parents('td').addClass('has-error');
                     return;
                 }
 
@@ -535,7 +535,7 @@ class Form extends FWapper implements Renderable
                 $(element).next('.tagsinput').removeClass('is-invalid');
                 if($(element).hasClass('item-field'))
                 {
-                    $(element).removeClass('has-error');
+                    $(element).parents('td').removeClass('has-error');
                 }
                 $(element).parents('.form-group').removeClass('has-error');
                 if($('.form-group.has-error').size() == 0 && $('.item-field.has-error').size() == 0)
