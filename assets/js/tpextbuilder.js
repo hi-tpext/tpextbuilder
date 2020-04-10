@@ -145,7 +145,7 @@
                 $('#' + id).addClass('disabled');
             }
         });
-    }
+    };
 
     tpextbuilder.postRowid = function (classname, url, confirm) {
         $('body').on('click', 'td.row-__action__ .' + classname, function () {
@@ -213,11 +213,6 @@
                         $('body').append(
                             '<div class="hidden" id="script-div">' + data.script + '</div>');
                     }
-                }
-                if (data.url) {
-                    setTimeout(function () {
-                        location.replace(data.url);
-                    }, data.wait * 1000 || 2000);
                 }
             },
             error: function () {
