@@ -604,7 +604,7 @@ class Table extends TWapper implements Renderable
             if (count($arr) == 2) {
                 $sortKey = $arr[0];
                 $sortOrder = $arr[1];
-                if (!in_array($sortKey, $this->sortable)) {
+                if (!empty($this->sortable) && !in_array($sortKey, $this->sortable)) {
                     $this->sortable[] = $sortKey;
                 }
             }
