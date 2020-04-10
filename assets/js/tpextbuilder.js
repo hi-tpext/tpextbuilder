@@ -202,11 +202,6 @@
                     if (refresh) {
                         $('.search-refresh').trigger('click');
                     }
-                    else if (data.url) {
-                        setTimeout(function () {
-                            location.replace(data.url);
-                        }, data.wait * 1000 || 2000);
-                    }
                 } else {
                     lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                 }
