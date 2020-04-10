@@ -78,11 +78,6 @@
                                             '<div class="hidden" id="script-div">' + script + '</div>');
                                     }
                                 }
-                                if (data.url) {
-                                    setTimeout(function () {
-                                        location.replace(data.url);
-                                    }, data.wait * 1000 || 2000);
-                                }
                             } else {
                                 $('#' + that.search).replaceWith(data);
                             }
