@@ -52,6 +52,11 @@ form.search-form .fields-list .form-group {
     line-height: 33px;
 }
 
+.field-raw .control-label
+{
+    padding-top: 0;
+}
+
 .table .field-raw,
 .table .field-show {
     min-height: 30px;
@@ -97,10 +102,6 @@ form textarea.form-control,
 }
 
 .has-error .select2 span.select2-selection {
-    border-color: #f96868 !important;
-}
-
-.item-field.has-error {
     border-color: #f96868 !important;
 }
 
