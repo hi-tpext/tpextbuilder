@@ -163,11 +163,11 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      */
-    public function btnDelete($postUrl = '', $label = '', $class = 'btn-danger', $icon = 'mdi-delete', $confirm = true, $attr = 'title="删除"')
+    public function btnDelete($postUrl = '', $label = '', $class = 'btn-danger', $icon = 'mdi-delete', $attr = 'title="删除"', $confirm = true)
     {
         if (empty($postUrl)) {
             $postUrl = url('delete');
@@ -183,11 +183,11 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      */
-    public function btnDisable($postUrl = '', $label = '', $class = 'btn-warning', $icon = 'mdi-block-helper', $confirm = true, $attr = 'title="禁用"')
+    public function btnDisable($postUrl = '', $label = '', $class = 'btn-warning', $icon = 'mdi-block-helper', $attr = 'title="禁用"', $confirm = true)
     {
         if (empty($postUrl)) {
             $postUrl = url('disable');
@@ -203,11 +203,11 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      */
-    public function btnEnable($postUrl = '', $label = '', $class = 'btn-success', $icon = 'mdi-check', $confirm = true, $attr = 'title="启用"')
+    public function btnEnable($postUrl = '', $label = '', $class = 'btn-success', $icon = 'mdi-check', $attr = 'title="启用"', $confirm = true)
     {
         if (empty($postUrl)) {
             $postUrl = url('enable');
@@ -250,12 +250,12 @@ class Actionbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      *
      */
-    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $confirm = true, $attr = '')
+    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         if (!$name) {
             $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $postUrl, -1, $count);
