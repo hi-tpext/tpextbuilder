@@ -178,7 +178,7 @@ class Field implements Fillable
      * @param boolean $refresh
      * @return $this
      */
-    public function autoPost($url = '', $refresh = true)
+    public function autoPost($url = '', $refresh = false)
     {
         if (empty($url)) {
             $url = url('autoPost');
