@@ -59,7 +59,7 @@ class MDReader extends Field
 
     protected function editorScript()
     {
-        if (!class_exists('tpext\\builder\\mdeditor\\common\\Module')) {
+        if (!class_exists('tpext\\builder\\mdeditor\\common\\Resource')) {
             $this->js = [];
             $this->css = [];
             $this->script[] = 'layer.alert("未安装mdeditor资源包！<pre>composer require ichynul/builder-mdeditor</pre>");';

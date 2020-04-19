@@ -33,7 +33,7 @@ class CKEditor extends Field
 
     protected function editorScript()
     {
-        if (!class_exists('tpext\\builder\\ckeditor\\common\\Module')) {
+        if (!class_exists('tpext\\builder\\ckeditor\\common\\Resource')) {
             $this->js = [];
             $this->script[] = 'layer.alert("未安装ckeditor资源包！<pre>composer require ichynul/builder-ckeditor</pre>");';
             return;
