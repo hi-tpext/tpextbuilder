@@ -62,6 +62,12 @@
                                         that.closeLayerGo(data.msg || data.message || '操作成功！', data
                                             .layer_close_go);
                                     }
+                                    else if (data.url) {
+                                        that.closeLayer(data.msg || data.message || '操作成功！');
+                                        setTimeout(function () {
+                                            location.replace(data.url);
+                                        }, data.wait * 1000 || 2000);
+                                    }
                                     else {
                                         lightyear.notify(data.msg || data.message || '操作成功！',
                                             'success');
@@ -69,7 +75,7 @@
                                 } else {
                                     lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                                 }
-                                if (data.script || data.data.script) {
+                                if (data.script || (data.data && data.data.script)) {
                                     var script = data.script || data.data.script;
                                     if ($('#script-div').size()) {
                                         $('#script-div').html(script);

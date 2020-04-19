@@ -637,7 +637,7 @@ class Table extends TWapper implements Renderable
             'actionbars' => $this->actionbars,
             'actionRowText' => $this->actionRowText,
             'rand' => $this->rand,
-            'searchRand' => $this->searchRand,
+            'searchRand' => $this->searchRand ? $this->searchRand : input('__search__'),
         ];
 
         if ($this->partial) {

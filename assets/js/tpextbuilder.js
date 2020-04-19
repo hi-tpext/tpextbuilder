@@ -205,7 +205,7 @@
                 } else {
                     lightyear.notify(data.msg || data.message || '操作失败', 'warning');
                 }
-                if (data.script || data.data.script) {
+                if (data.script || (data.data && data.data.script)) {
                     var script = data.script || data.data.script;
                     if ($('#script-div').size()) {
                         $('#script-div').html(script);
