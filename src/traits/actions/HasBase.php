@@ -109,7 +109,7 @@ trait HasBase
     protected function builSearch()
     {
         $search = $this->search;
-        $search->text('some_key_words')->placeholder('输入姓名|电话|邮箱查询');
+        //$search->text('some_key_words')->placeholder('输入姓名|电话|邮箱查询');
     }
 
     /**

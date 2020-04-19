@@ -28,21 +28,21 @@ trait HasOptions
      *
      * @param Collection $optionsData
      * @param string $textField
-     * @param string $IdField
+     * @param string $idField
      * @return $this
      */
-    public function optionsData($optionsData, $textField = '', $IdField = 'id')
+    public function optionsData($optionsData, $textField = '', $idField = 'id')
     {
         $options = [];
         foreach ($optionsData as $data) {
-            if (empty($IdField)) {
-                $IdField = $data->getPk();
+            if (empty($idField)) {
+                $idField = $data->getPk();
             }
             if (empty($textField)) {
                 $textField = isset($data['opt_text']) ? 'opt_text' : 'name'; //模型需要实现[getOptTextAttr]，否则看是否刚好有name这个字段;
             }
 
-            $options[$data[$IdField]] = $data[$textField];
+            $options[$data[$idField]] = $data[$textField];
         }
         $this->options = $options;
 

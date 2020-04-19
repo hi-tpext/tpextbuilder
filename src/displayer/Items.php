@@ -134,11 +134,11 @@ class Items extends Field
      * Undocumented function
      *
      * @param Collection $data
-     * @param string $IdField
+     * @param string $idField
      * @param boolean $overWrite
      * @return $this
      */
-    public function dataWithId($data, $IdField = 'id', $overWrite = false)
+    public function dataWithId($data, $idField = 'id', $overWrite = false)
     {
         if (!$overWrite && !empty($this->data)) {
             return $this;
@@ -147,10 +147,10 @@ class Items extends Field
         $list = [];
         foreach ($data as $d) {
             if (empty($IdField)) {
-                $IdField = $d->getPk();
+                $idField = $d->getPk();
             }
 
-            $list[$d[$IdField]] = $d;
+            $list[$d[$idField]] = $d;
         }
         $this->data = $list;
 
