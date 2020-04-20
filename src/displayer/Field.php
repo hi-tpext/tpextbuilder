@@ -571,7 +571,7 @@ EOT;
     /**
      * Undocumented function
      *
-     * @param array|string $value
+     * @param array|string $values
      * @param string $class
      * @param string $field
      * @return $this
@@ -708,7 +708,7 @@ EOT;
         $mapClass = '';
 
         if (!empty($this->mapClassWhen)) {
-            if ($this->mapClassWhen[1] == $this->name) {
+            if ($this->mapClassWhen[2] == $this->name) {
                 $this->mapClassValue = $value;
             }
 
