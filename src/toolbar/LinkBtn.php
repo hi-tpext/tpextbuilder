@@ -17,7 +17,7 @@ class LinkBtn extends Bar
      */
     public function getId()
     {
-        return 'btn-' . $this->name . preg_replace('/\W/', '', $this->extKey);
+        return 'btn-' . $this->name . preg_replace('/[^\w\-]/', '', $this->extKey);
     }
 
     /**

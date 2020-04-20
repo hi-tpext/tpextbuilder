@@ -61,7 +61,7 @@ class Bar implements Renderable
      */
     public function getId()
     {
-        return 'bar-' . $this->name . $this->extKey;
+        return 'bar-' . $this->name . preg_replace('/[^\w\-]/', '', $this->extKey);
     }
 
     /**

@@ -31,7 +31,7 @@
 
         window.forms['{$id}'] = {
             ajax: '{$ajax}' == '1',
-            search: '{$search}',
+            searchFor: '{$searchFor}',
             export: 0,
             action: '{$action}',
             formSubmit: function () {
@@ -85,7 +85,7 @@
                                     }
                                 }
                             } else {
-                                $('#' + that.search).replaceWith(data);
+                                $('#' + that.searchFor).replaceWith(data);
                             }
                         },
                         error: function () {

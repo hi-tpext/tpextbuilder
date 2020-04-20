@@ -15,7 +15,7 @@ class DropdownBtns extends Bar
      */
     public function getId()
     {
-        return 'dropdown-' . $this->name . preg_replace('/\W/', '', $this->extKey);
+        return 'dropdown-' . $this->name . preg_replace('/[^\w\-]/', '', $this->extKey);
     }
 
     /**

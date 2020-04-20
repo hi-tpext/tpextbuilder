@@ -43,10 +43,6 @@ class Form extends FWapper implements Renderable
 
     protected $butonsSizeClass = 'btn-sm';
 
-    protected $rand = 0;
-
-    protected $searchRand = 0;
-
     /**
      * Undocumented variable
      *
@@ -85,18 +81,6 @@ class Form extends FWapper implements Renderable
     public function __construct()
     {
         $this->class = 'form-horizontal';
-        $this->rand = mt_rand(1000, 9999);
-        $this->id .= $this->rand;
-    }
-
-     /**
-     * Undocumented function
-     *
-     * @return int
-     */
-    public function getRand()
-    {
-        return $this->rand;
     }
 
     /**
@@ -573,7 +557,7 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
             'id' => $this->getFormId(),
             'ajax' => $this->ajax ? 1 : 0,
-            'search' => '',
+            'searchFor' => '',
         ];
 
         return $viewshow->assign($vars)->getContent();
@@ -616,7 +600,7 @@ EOT;
             }
 
             if ($name == 'button') {
-                $displayer->extKey($this->rand);
+                $displayer->extKey('-' . $this->id);
             }
 
             return $displayer;

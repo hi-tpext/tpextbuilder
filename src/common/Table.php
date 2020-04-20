@@ -80,10 +80,6 @@ class Table extends TWapper implements Renderable
 
     protected $sortOrder = '';
 
-    protected $rand = 0;
-
-    protected $searchRand = 0;
-
     /**
      * Undocumented variable
      *
@@ -103,18 +99,7 @@ class Table extends TWapper implements Renderable
     public function __construct()
     {
         $this->class = 'table-striped table-hover table-bordered';
-        $this->rand = input('__table__', mt_rand(1000, 9999));
-        $this->id .= $this->rand;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return int
-     */
-    public function getRand()
-    {
-        return $this->rand;
+        $this->id = input('__table__', 'the-table');
     }
 
     /**
@@ -415,7 +400,7 @@ class Table extends TWapper implements Renderable
     {
         if (empty($this->toolbar)) {
             $this->toolbar = new MultipleToolbar();
-            $this->toolbar->extKey($this->rand);
+            $this->toolbar->extKey('-' . $this->id);
         }
 
         return $this->toolbar;
@@ -457,7 +442,6 @@ class Table extends TWapper implements Renderable
         if (empty($this->searchForm)) {
             $this->searchForm = new Search();
             $this->searchForm->search($this);
-            $this->searchRand = $this->searchForm->getRand();
         }
         return $this->searchForm;
     }
@@ -551,7 +535,7 @@ class Table extends TWapper implements Renderable
 
                 $displayer
                     ->fill($data)
-                    ->extKey($this->rand . '-' . $key)
+                    ->extKey($this->id . '-' . $key)
                     ->extNameKey('-' . $key)
                     ->showLabel(false)
                     ->size(0, 0)
@@ -567,7 +551,7 @@ class Table extends TWapper implements Renderable
 
             if ($this->useActionbar && isset($this->ids[$key])) {
 
-                $actionbar->extKey($this->rand . '-' . $key)->rowdata($data)->beforRender();
+                $actionbar->extKey($this->id . '-' . $key)->rowdata($data)->beforRender();
 
                 $this->actionbars[$key] = $actionbar->render();
             }
@@ -636,8 +620,6 @@ class Table extends TWapper implements Renderable
             'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,
             'actionbars' => $this->actionbars,
             'actionRowText' => $this->actionRowText,
-            'rand' => $this->rand,
-            'searchRand' => $this->searchRand ? $this->searchRand : input('__search__'),
         ];
 
         if ($this->partial) {
