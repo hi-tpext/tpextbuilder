@@ -70,6 +70,8 @@ class Field implements Fillable
 
     protected $mapClassWhen = [];
 
+    protected $mapClassValue = '';
+
     protected $required = false;
 
     protected $minify = true;
@@ -525,6 +527,13 @@ class Field implements Fillable
             $this->value = $value;
         }
 
+        if (!empty($this->mapClassWhen)) {
+            $field = $this->mapClassWhen[2];
+            if ($field != $this->name && isset($data[$field])) {
+                $this->mapClassValue = $data[$field];
+            }
+        }
+
         return $this;
     }
 
@@ -562,16 +571,21 @@ EOT;
     /**
      * Undocumented function
      *
-     * @param array|string $value acses
+     * @param array|string $value
      * @param string $class
+     * @param string $field
      * @return $this
      */
-    public function mapClassWhen($values, $class)
+    public function mapClassWhen($values, $class, $field = '')
     {
+        if (empty($field)) {
+            $field = $this->name;
+        }
+
         if (!is_array($values)) {
             $values = [$values];
         }
-        $this->mapClassWhen = [$values, $class];
+        $this->mapClassWhen = [$values, $class, $field];
         return $this;
     }
 
@@ -694,7 +708,11 @@ EOT;
         $mapClass = '';
 
         if (!empty($this->mapClassWhen)) {
-            if (in_array($value, $this->mapClassWhen[0])) {
+            if ($this->mapClassWhen[1] == $this->name) {
+                $this->mapClassValue = $value;
+            }
+
+            if (in_array($this->mapClassValue, $this->mapClassWhen[0])) {
                 $mapClass = ' ' . $this->mapClassWhen[1];
             }
         }
