@@ -134,7 +134,7 @@ trait HasBase
         }
 
         if ($id) {
-            $res = $this->dataModel->where(['id' => $id])->update($data);
+            $res = $this->dataModel->update($data, ['id' => $id]);
         } else {
             $res = $this->dataModel->create($data);
         }

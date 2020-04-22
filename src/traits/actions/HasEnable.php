@@ -17,7 +17,7 @@ trait HasEnable
         }
         $res = 0;
         foreach ($ids as $id) {
-            if ($this->dataModel->where([$this->dataModel->getPk() => $id])->update([$this->enableField => 1])) {
+            if ($this->dataModel->update([$this->enableField => 1], [$this->dataModel->getPk() => $id])) {
                 $res += 1;
             }
         }
@@ -37,7 +37,7 @@ trait HasEnable
         }
         $res = 0;
         foreach ($ids as $id) {
-            if ($this->dataModel->where([$this->dataModel->getPk() => $id])->update([$this->enableField => 0])) {
+            if ($this->dataModel->update([$this->enableField => 0], [$this->dataModel->getPk() => $id])) {
                 $res += 1;
             }
         }

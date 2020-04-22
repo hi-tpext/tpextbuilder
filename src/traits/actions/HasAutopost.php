@@ -20,7 +20,8 @@ trait HasAutopost
         if (!empty($this->postAllowFields) && !in_array($name, $this->postAllowFields)) {
             $this->error('不允许的操作');
         }
-        $res = $this->dataModel->where([$this->dataModel->getPk() => $id])->update([$name => $value]);
+
+        $res = $this->dataModel->update([$name => $value], [$this->dataModel->getPk() => $id]);
 
         if ($res) {
             $this->success('修改成功');
