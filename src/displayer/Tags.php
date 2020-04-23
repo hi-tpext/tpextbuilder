@@ -52,9 +52,7 @@ class Tags extends Field
     {
         $inputId = $this->getId();
 
-        $this->jsOptions['placeholder'] = $this->placeholder;
-
-        unset($this->jsOptions['locale']);
+        $this->jsOptions['defaultText'] = empty($this->placeholder) ? $this->label : $this->placeholder;
 
         $configs = json_encode($this->jsOptions);
 

@@ -1,5 +1,4 @@
-.form-horizontal .checkbox-inline,
-.form-horizontal .radio-inline {
+.form-horizontal .checkbox-inline, .form-horizontal .radio-inline {
     padding-top: 0;
     margin-top: 10px;
 }
@@ -10,14 +9,12 @@ form.search-form .form-group {
     margin-bottom: 10px;
 }
 
-form.search-form .fields-list .form-group {
+form.search-form .form-fields .form-group {
     margin-left: -15px;
     margin-right: 15px;
 }
 
-.checkbox-div,
-.radio-div,
-.button-div {
+.checkbox-div, .radio-div, .button-div {
     min-height: 33px;
 }
 
@@ -25,40 +22,32 @@ form.search-form .fields-list .form-group {
     margin-top: 5px;
 }
 
-.table .checkbox-div,
-.table .radio-div,
-.table .button-div {
+.table .checkbox-div, .table .radio-div, .table .button-div {
     min-height: 30px;
 }
 
-.vertical-middle,
-.table>tbody>tr>td.vertical-middle {
+.vertical-middle, .table>tbody>tr>td.vertical-middle {
     vertical-align: middle;
 }
 
-.vertical-top,
-.table>tbody>tr>td.vertical-top {
+.vertical-top, .table>tbody>tr>td.vertical-top {
     vertical-align: top;
 }
 
-.vertical-bottom,
-.table>tbody>tr>td.vertical-bottom {
+.vertical-bottom, .table>tbody>tr>td.vertical-bottom {
     vertical-align: bottom;
 }
 
-.field-raw,
-.field-show {
+.field-raw, .field-show {
     min-height: 33px;
     line-height: 33px;
 }
 
-.field-raw .control-label
-{
+.field-raw .control-label {
     padding-top: 0;
 }
 
-.table .field-raw,
-.table .field-show {
+.table .field-raw, .table .field-show {
     min-height: 30px;
     line-height: 30px;
 }
@@ -79,8 +68,7 @@ form .form-control {
     height: 30px;
 }
 
-form textarea.form-control,
-.table textarea.form-control {
+form textarea.form-control, .table textarea.form-control {
     height: auto;
 }
 
@@ -159,4 +147,17 @@ a.sortable.mdi-sort {
 
 .table.form-items>thead>tr>th {
     padding: 6px;
+}
+
+div.tagsinput {
+    line-height: inherit;
+}
+
+.field-raw .form-group, .field-show .form-group {
+    line-height: inherit;
+}
+
+.col-fields {
+    margin-left: 0;
+    margin-right: 0;
 }
