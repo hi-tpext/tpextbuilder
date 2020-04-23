@@ -497,11 +497,11 @@ class Form extends FWapper implements Renderable
             focusInvalid: false,  // 禁用无效元素的聚焦
             rules: {$rules},
             errorPlacement: function errorPlacement(error, element) {
-                var parent = $(element).parents('.form-group');
+                var parent = $(element).parentsUntil('.form-group');
                 if($(element).hasClass('item-field'))
                 {
                     $('#help-block .error-label').html(parent.find('.control-label').text() + $(element).data('label') + '这是必填字段');
-                    $(element).parents('td').addClass('has-error');
+                    $(element).parentsUntil('td').addClass('has-error');
                     return;
                 }
 
@@ -519,9 +519,9 @@ class Form extends FWapper implements Renderable
                 $(element).next('.tagsinput').removeClass('is-invalid');
                 if($(element).hasClass('item-field'))
                 {
-                    $(element).parents('td').removeClass('has-error');
+                    $(element).parentsUntil('td').removeClass('has-error');
                 }
-                $(element).parents('.form-group').removeClass('has-error');
+                $(element).parentsUntil('.form-group').removeClass('has-error');
                 if($('.form-group.has-error').size() == 0 && $('.item-field.has-error').size() == 0)
                 {
                     $('#help-block .error-label').html('');
