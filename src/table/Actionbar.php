@@ -190,7 +190,7 @@ class Actionbar extends Toolbar
     public function btnDisable($postUrl = '', $label = '', $class = 'btn-warning', $icon = 'mdi-block-helper', $attr = 'title="禁用"', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('disable');
+            $postUrl = url('enable', ['state' => 0]);
         }
         $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
@@ -210,9 +210,24 @@ class Actionbar extends Toolbar
     public function btnEnable($postUrl = '', $label = '', $class = 'btn-success', $icon = 'mdi-check', $attr = 'title="启用"', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('enable');
+            $postUrl = url('enable', ['state' => 1]);
         }
         $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $enableTitle
+     * @param string $disableTitle
+     * @return $this
+     */
+    public function btnEnableAndDisable($enableTitle = '启用', $disableTitle = '禁用')
+    {
+        $this->btnEnable()->getCurrent()->addAttr('title="' . $enableTitle . '"');
+        $this->btnDisable()->getCurrent()->addAttr('title="' . $disableTitle . '"');
+
         return $this;
     }
 

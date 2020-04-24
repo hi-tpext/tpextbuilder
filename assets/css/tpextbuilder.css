@@ -4,9 +4,13 @@
 }
 
 form.search-form .form-group {
+    margin-bottom: 10px;
+}
+
+.form-horizontal .form-group
+{
     margin-left: 0;
     margin-right: 0;
-    margin-bottom: 10px;
 }
 
 .checkbox-div, .radio-div, .button-div {
@@ -113,11 +117,12 @@ form textarea.form-control, .table textarea.form-control {
 
 .select2-container--default .select2-selection.select2-selection--multiple .select2-selection__choice
 {
-    margin-top: 1px;
+    margin-top: 2px;
 }
 .select2-selection.select2-selection--multiple .select2-selection__choice
 {
-    line-height: 27px;
+    line-height: 25px;
+    font-size: 12px;
 }
 
 .select2-container--default .select2-search--inline .select2-search__field
@@ -184,4 +189,6 @@ div.tagsinput {
 .col-fields {
     margin-left: 0;
     margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }

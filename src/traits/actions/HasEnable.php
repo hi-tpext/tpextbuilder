@@ -8,7 +8,7 @@ namespace tpext\builder\traits\actions;
 
 trait HasEnable
 {
-    public function enable()
+    public function enable($state)
     {
         $ids = input('post.ids', '');
         $ids = array_filter(explode(',', $ids), 'strlen');
@@ -17,27 +17,7 @@ trait HasEnable
         }
         $res = 0;
         foreach ($ids as $id) {
-            if ($this->dataModel->update([$this->enableField => 1], [$this->dataModel->getPk() => $id])) {
-                $res += 1;
-            }
-        }
-        if ($res) {
-            $this->success('成功操作' . $res . '条数据');
-        } else {
-            $this->error('操作失败');
-        }
-    }
-
-    public function disable()
-    {
-        $ids = input('post.ids', '');
-        $ids = array_filter(explode(',', $ids), 'strlen');
-        if (empty($ids)) {
-            $this->error('参数有误');
-        }
-        $res = 0;
-        foreach ($ids as $id) {
-            if ($this->dataModel->update([$this->enableField => 0], [$this->dataModel->getPk() => $id])) {
+            if ($this->dataModel->update([$this->enableField => $state], [$this->dataModel->getPk() => $id])) {
                 $res += 1;
             }
         }

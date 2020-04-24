@@ -78,7 +78,7 @@ class Field implements Fillable
 
     protected $arrayName = false;
 
-    protected $rand = '';
+    protected $to = '';
 
     public function __construct($name, $label = '')
     {
@@ -202,6 +202,18 @@ class Field implements Fillable
             $val = implode(',', $val);
         }
         $this->value = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function to($val)
+    {
+        $this->to = $val;
         return $this;
     }
 
@@ -684,6 +696,10 @@ EOT;
         }
 
         $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+
+        if (!empty($this->to)) {
+            $value = str_replace('__val__', $value, $this->to);
+        }
 
         return $value;
     }

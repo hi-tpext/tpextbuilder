@@ -48,8 +48,8 @@
                 {if condition="$useCheckbox"}
                 <td class="table-checkbox {$tdClass}">
                     <label class="lyear-checkbox checkbox-primary">
-                        <input type="checkbox" id="{$name}-{$key}" value="{$ids[$key]}"
-                            class="check-{$name} table-row"><span></span>
+                        <input type="checkbox" id="{$name}-{$key}" value="{$ids[$key]}" {in name="$ids[$key]" value="$checked"
+                            }checked{/in} class="check-{$name} table-row"><span></span>
                     </label>
                 </td>
                 {/if}

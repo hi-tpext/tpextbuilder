@@ -50,6 +50,8 @@ class Table extends TWapper implements Renderable
 
     protected $actionbars = [];
 
+    protected $checked = [];
+
     protected $useCheckbox = true;
 
     protected $emptyText = "<p class='text-center'><span>暂无相关数据~</span></p>";
@@ -272,6 +274,18 @@ class Table extends TWapper implements Renderable
         }
 
         $this->sortable = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function checked($val)
+    {
+        $this->checked = is_array($val) ? $val : explode(',', $val);
         return $this;
     }
 
@@ -620,6 +634,7 @@ class Table extends TWapper implements Renderable
             'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,
             'actionbars' => $this->actionbars,
             'actionRowText' => $this->actionRowText,
+            'checked' => $this->checked,
         ];
 
         if ($this->partial) {

@@ -103,11 +103,11 @@ class MultipleToolbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      */
-    public function btnDelete($postUrl = '', $label = '删除', $class = 'btn-danger', $icon = 'mdi-delete', $confirm = true, $attr = '')
+    public function btnDelete($postUrl = '', $label = '删除', $class = 'btn-danger', $icon = 'mdi-delete', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
             $postUrl = url('delete');
@@ -123,14 +123,14 @@ class MultipleToolbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      */
-    public function btnDisable($postUrl = '', $label = '禁用', $class = 'btn-warning', $icon = 'mdi-block-helper', $confirm = true, $attr = '')
+    public function btnDisable($postUrl = '', $label = '禁用', $class = 'btn-warning', $icon = 'mdi-block-helper', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('disable');
+            $postUrl = url('enable', ['state' => 0]);
         }
         $this->linkBtn('disable', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
@@ -143,16 +143,31 @@ class MultipleToolbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      */
-    public function btnEnable($postUrl = '', $label = '启用', $class = 'btn-success', $icon = 'mdi-check', $confirm = true, $attr = '')
+    public function btnEnable($postUrl = '', $label = '启用', $class = 'btn-success', $icon = 'mdi-check', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('enable');
+            $postUrl = url('enable', ['state' => 1]);
         }
         $this->linkBtn('enable', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $enableTitle
+     * @param string $disableTitle
+     * @return $this
+     */
+    public function btnEnableAndDisable($enableTitle = '启用', $disableTitle = '禁用')
+    {
+        $this->btnEnable()->getCurrent()->addAttr('title="' . $enableTitle . '"')->label($enableTitle);
+        $this->btnDisable()->getCurrent()->addAttr('title="' . $disableTitle . '"')->label($disableTitle);
+
         return $this;
     }
 
@@ -288,12 +303,12 @@ class MultipleToolbar extends Toolbar
      * @param string $label
      * @param string $class
      * @param string $icon
-     * @param boolean|string $confirm
      * @param string $attr
+     * @param boolean|string $confirm
      * @return $this
      *
      */
-    public function btnPostChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $confirm = true, $attr = '')
+    public function btnPostChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 

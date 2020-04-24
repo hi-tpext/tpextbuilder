@@ -506,7 +506,7 @@ class Form extends FWapper implements Renderable
                 }
                 parent.addClass('has-error');
                 $('#help-block').removeClass('hidden');
-                $('#help-block .error-label').html(parent.find('.control-label').text() + error.text());
+                $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + error.text());
             },
             highlight: function(element) {
                 var el = $(element);
