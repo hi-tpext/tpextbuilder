@@ -497,14 +497,13 @@ class Form extends FWapper implements Renderable
             focusInvalid: false,  // 禁用无效元素的聚焦
             rules: {$rules},
             errorPlacement: function errorPlacement(error, element) {
-                var parent = $(element).parentsUntil('.form-group');
+                var parent = $(element).closest('div.form-group');
                 if($(element).hasClass('item-field'))
                 {
-                    $('#help-block .error-label').html(parent.find('.control-label').text() + $(element).data('label') + '这是必填字段');
-                    $(element).parentsUntil('td').addClass('has-error');
+                    $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + $(element).data('label') + '这是必填字段');
+                    $(element).closest('td').addClass('has-error');
                     return;
                 }
-
                 parent.addClass('has-error');
                 $('#help-block').removeClass('hidden');
                 $('#help-block .error-label').html(parent.find('.control-label').text() + error.text());
@@ -519,9 +518,9 @@ class Form extends FWapper implements Renderable
                 $(element).next('.tagsinput').removeClass('is-invalid');
                 if($(element).hasClass('item-field'))
                 {
-                    $(element).parentsUntil('td').removeClass('has-error');
+                    $(element).closest('td').removeClass('has-error');
                 }
-                $(element).parentsUntil('.form-group').removeClass('has-error');
+                $(element).closest('div.form-group').removeClass('has-error');
                 if($('.form-group.has-error').size() == 0 && $('.item-field.has-error').size() == 0)
                 {
                     $('#help-block .error-label').html('');

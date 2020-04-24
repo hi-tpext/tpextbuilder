@@ -730,7 +730,7 @@ EOT;
             'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
             'size' => $this->size,
-            'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label text-right' : $this->labelClass,
+            'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label text-right' : $this->labelClass . ' full-label',
             'labelAttr' => empty($this->labelAttr) ? '' : ' ' . $this->labelAttr,
             'help' => $this->help,
             'showLabel' => $this->showLabel,
