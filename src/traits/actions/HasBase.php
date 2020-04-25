@@ -173,7 +173,12 @@ trait HasBase
         $where = $this->filterWhere();
         $table = $this->table;
 
+        $pagesize = input('__pagesize__/d', 0);
+
+        $this->pagesize = $pagesize ?: $this->pagesize;
+
         $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
+        
         $this->buildTable($data);
         $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagesize);

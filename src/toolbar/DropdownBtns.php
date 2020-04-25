@@ -8,6 +8,12 @@ class DropdownBtns extends Bar
 
     protected $items = [];
 
+    protected $groupClass = '';
+
+    protected $groupAttr = '';
+
+    protected $groupStyle = '';
+
     /**
      * Undocumented function
      *
@@ -16,18 +22,6 @@ class DropdownBtns extends Bar
     public function getId()
     {
         return 'dropdown-' . $this->name . preg_replace('/[^\w\-]/', '', $this->extKey);
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
     }
 
     /**
@@ -45,6 +39,98 @@ class DropdownBtns extends Bar
     /**
      * Undocumented function
      *
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function isEmpty()
+    {
+        return empty($this->items);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function groupClass($val)
+    {
+        $this->groupClass = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function groupAttr($val)
+    {
+        $this->groupAttr = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function groupStyle($val)
+    {
+        $this->groupStyle = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addGroupClass($val)
+    {
+        $this->groupClass .= ' ' . $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addGroupAttr($val)
+    {
+        $this->groupAttr .= ' ' . $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function addGroupStyle($val)
+    {
+        $this->groupStyle .= $val;
+        return $this;
+    }
+
+    public function getGroupAttrWithStyle()
+    {
+        return $this->groupAttr . (empty($this->groupStyle) ? '' : ' style="' . $this->groupStyle . '"');
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return mixed
      */
     public function render()
@@ -53,6 +139,8 @@ class DropdownBtns extends Bar
 
         $vars = array_merge($vars, [
             'items' => $this->items,
+            'groupAttr' => $this->getGroupAttrWithStyle(),
+            'groupClass' => $this->groupClass,
         ]);
 
         $viewshow = $this->getViewInstance();

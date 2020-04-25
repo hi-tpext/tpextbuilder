@@ -6,16 +6,15 @@ use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\common\Renderable;
+use tpext\builder\traits\HasDom;
 
 class Bar implements Renderable
 {
+    use HasDom;
+
     protected $view = '';
 
     protected $extKey = '';
-
-    protected $class = 'btn-default';
-
-    protected $name = '';
 
     protected $icon = '';
 
@@ -24,10 +23,6 @@ class Bar implements Renderable
     protected $__href__ = '';
 
     protected $label = '';
-
-    protected $attr = '';
-
-    protected $style = '';
 
     protected $script = [];
 
@@ -39,6 +34,7 @@ class Bar implements Renderable
     {
         $this->name = $name;
         $this->label = $label;
+        $this->class = 'btn-default';
     }
 
     public function created()
@@ -92,30 +88,6 @@ class Bar implements Renderable
      * @param string $val
      * @return $this
      */
-    public function style($val)
-    {
-        $this->style = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    function class ($val)
-    {
-        $this->class = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
     public function icon($val)
     {
         $this->icon = $val;
@@ -137,18 +109,6 @@ class Bar implements Renderable
     /**
      * Undocumented function
      *
-     * @param string $val
-     * @return $this
-     */
-    public function attr($val)
-    {
-        $this->attr = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @param boolean $val
      * @param array $size
      * @return $this
@@ -158,42 +118,6 @@ class Bar implements Renderable
         $this->useLayer = $val;
         $this->layerSize = $size;
 
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addClass($val)
-    {
-        $this->class .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addAttr($val)
-    {
-        $this->attr .= ' ' . $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $val
-     * @return $this
-     */
-    public function addStyle($val)
-    {
-        $this->attr .= $val;
         return $this;
     }
 
@@ -263,7 +187,7 @@ class Bar implements Renderable
     public function commonVars()
     {
         $this->useLayer = $this->useLayer && !empty($this->href) && !preg_match('/javascript:.*/i', $this->href) && !preg_match('/^#.*/i', $this->href);
-        
+
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,

@@ -9,6 +9,7 @@ use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
 use tpext\builder\table\TColumn;
 use tpext\builder\table\TWapper;
+use tpext\builder\toolbar\DropdownBtns;
 use tpext\builder\traits\HasDom;
 
 /**
@@ -54,6 +55,8 @@ class Table extends TWapper implements Renderable
 
     protected $useCheckbox = true;
 
+    protected $pageSize = 0;
+
     protected $emptyText = "<p class='text-center'><span>暂无相关数据~</span></p>";
 
     /**
@@ -82,6 +85,8 @@ class Table extends TWapper implements Renderable
 
     protected $sortOrder = '';
 
+    protected $partial = false;
+
     /**
      * Undocumented variable
      *
@@ -96,7 +101,12 @@ class Table extends TWapper implements Renderable
      */
     protected $searchForm = null;
 
-    protected $partial = false;
+    /**
+     * Undocumented variable
+     *
+     * @var DropdownBtns
+     */
+    protected $pagesizeDropdown = null;
 
     public function __construct()
     {
@@ -159,17 +169,6 @@ class Table extends TWapper implements Renderable
     public function getTableId()
     {
         return $this->id;
-    }
-
-    /**
-     * Undocumented function
-     * @param boolean $val
-     * @return $this
-     */
-    public function rowCheckbox($val)
-    {
-        $this->useCheckbox = $val;
-        return $this;
     }
 
     /**
@@ -390,6 +389,8 @@ class Table extends TWapper implements Renderable
             $paginator->paginatorClass($paginatorClass);
         }
 
+        $this->pageSize = $pageSize;
+
         $this->paginator = $paginator;
 
         return $this;
@@ -447,20 +448,6 @@ class Table extends TWapper implements Renderable
     }
 
     /**
-     * 获取一个搜索
-     *
-     * @return Search
-     */
-    public function getSearch()
-    {
-        if (empty($this->searchForm)) {
-            $this->searchForm = new Search();
-            $this->searchForm->search($this);
-        }
-        return $this->searchForm;
-    }
-
-    /**
      * Undocumented function
      *
      * @param boolean $val
@@ -482,6 +469,37 @@ class Table extends TWapper implements Renderable
     {
         $this->actionRowText = $val;
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $items
+     * @return DropdownBtns
+     */
+    public function pagesizeDropdown($items)
+    {
+        if (empty($this->pagesizeDropdown)) {
+            $this->pagesizeDropdown = new DropdownBtns('pagesize', '每页显示<b class="pagesize-text">' . $this->pageSize . '</b>条');
+        }
+
+        $this->pagesizeDropdown->items($items)->class('btn-xs btn-secondary')->addGroupClass('dropup pull-right m-r-10');
+
+        return $this->pagesizeDropdown;
+    }
+
+    /**
+     * 获取一个搜索
+     *
+     * @return Search
+     */
+    public function getSearch()
+    {
+        if (empty($this->searchForm)) {
+            $this->searchForm = new Search();
+            $this->searchForm->search($this);
+        }
+        return $this->searchForm;
     }
 
     /**
@@ -549,7 +567,7 @@ class Table extends TWapper implements Renderable
 
                 $displayer
                     ->fill($data)
-                    ->extKey($this->id . '-' . $key)
+                    ->extKey('-' . $this->id . '-' . $key)
                     ->extNameKey('-' . $key)
                     ->showLabel(false)
                     ->size(0, 0)
@@ -565,7 +583,7 @@ class Table extends TWapper implements Renderable
 
             if ($this->useActionbar && isset($this->ids[$key])) {
 
-                $actionbar->extKey($this->id . '-' . $key)->rowdata($data)->beforRender();
+                $actionbar->extKey('-' . $this->id . '-' . $key)->rowdata($data)->beforRender();
 
                 $this->actionbars[$key] = $actionbar->render();
             }
@@ -608,6 +626,17 @@ class Table extends TWapper implements Renderable
             }
         }
 
+        if ($this->pageSize && empty($this->pagesizeDropdown)) {
+            $items = [
+                0 => '默认', 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30'
+                , 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120',
+            ];
+
+            ksort($items);
+
+            $this->pagesizeDropdown($items);
+        }
+
         $vars = [
             'class' => $this->class,
             'attr' => $this->getAttrWithStyle(),
@@ -635,6 +664,7 @@ class Table extends TWapper implements Renderable
             'actionbars' => $this->actionbars,
             'actionRowText' => $this->actionRowText,
             'checked' => $this->checked,
+            'pagesizeDropdown' => $this->pagesizeDropdown,
         ];
 
         if ($this->partial) {

@@ -228,6 +228,7 @@ class Search extends SWapper implements Renderable
         }
 
         $this->hidden('__page__')->value(1);
+        $this->hidden('__pagesize__')->value(0);
         $this->hidden('__search__')->value($this->id);
         $this->hidden('__table__')->value($this->tableId);
         $this->hidden('__sort__');
@@ -263,6 +264,22 @@ class Search extends SWapper implements Renderable
             $('#{$form} form input[name="__page__"]').val(page);
             window.forms['{$form}'].formSubmit();
             return false;
+        });
+
+        $('body').on('click', '#{$this->tableId} #dropdown-pagesize-div .dropdown-menu li a', function(){
+            var pagesize = $(this).data('key');
+            var oldsize = $('#{$form} form input[name="__pagesize__"]').val();
+            if(pagesize == oldsize)
+            {
+                return;
+            }
+            if(pagesize > oldsize)
+            {
+                $('#{$form} form input[name="__page__"]').val(1);
+            }
+            $('#{$form} form input[name="__pagesize__"]').val(pagesize);
+            $('#{$this->tableId} #dropdown-pagesize-div').find('.pagesize-text').text(pagesize);
+            window.forms['{$form}'].formSubmit();
         });
 
         $('body').on('click', '#btn-refresh{$extKey},#form-refresh{$extKey}', function(){

@@ -74,8 +74,8 @@
     </div>
     {/empty}
     {notempty name="paginator"}
-    <nav class="{:$paginator->getClass()}" {:$paginator->getAttrWithStyle()}>
-        {:$paginator->render()}
+    <nav class="pagination-navi {:$paginator->getClass()}" {:$paginator->getAttrWithStyle()}>
+        {:$paginator->render()}{:$pagesizeDropdown->render()}
     </nav>
     {/notempty}
     <script>

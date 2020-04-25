@@ -269,7 +269,8 @@ class MultipleToolbar extends Toolbar
             $postUrl = url('export');
         }
 
-        $this->dropdownBtns('exports', $label)->items($items)->addClass($class)->icon($icon)->addAttr($attr . ' data-export-url="' . $postUrl . '"');
+        $this->dropdownBtns('exports', $label)->items($items)->addClass($class)->icon($icon)
+            ->addAttr($attr . ' data-export-url="' . $postUrl . '"')->addGroupClass('pull-right m-r-10');
         return $this;
     }
 
