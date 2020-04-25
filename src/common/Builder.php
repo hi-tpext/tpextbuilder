@@ -4,6 +4,7 @@ namespace tpext\builder\common;
 
 use think\facade\View;
 use think\response\View as ViewShow;
+use tpext\builder\tree\ZTree;
 
 class Builder implements Renderable
 {
@@ -341,6 +342,17 @@ class Builder implements Renderable
     public function toolbar($size = 12)
     {
         return $this->column($size)->toolbar();
+    }
+
+    /**
+     * 获取一个树
+     *
+     * @param integer col大小
+     * @return ZTree
+     */
+    public function tree($size = 12)
+    {
+        return $this->column($size)->tree();
     }
 
     /**

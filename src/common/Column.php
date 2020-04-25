@@ -5,11 +5,12 @@ namespace tpext\builder\common;
 use tpext\builder\common\Form;
 use tpext\builder\common\Table;
 use tpext\builder\traits\HasDom;
+use tpext\builder\tree\ZTree;
 
 class Column
 {
     use HasDom;
-    
+
     public $size = 12;
 
     protected $elms = [];
@@ -54,6 +55,18 @@ class Column
         $toolbar = new Toolbar();
         $this->elms[] = $toolbar;
         return $toolbar;
+    }
+
+    /**
+     * 获取一个ZTree
+     *
+     * @return ZTree
+     */
+    public function tree()
+    {
+        $tree = new ZTree();
+        $this->elms[] = $tree;
+        return $tree;
     }
 
     /**

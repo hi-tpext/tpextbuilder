@@ -4,6 +4,7 @@ namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
 use tpext\builder\traits\HasDom;
+use tpext\builder\tree\ZTree;
 
 class Row
 {
@@ -54,6 +55,16 @@ class Row
     public function toolbar($size = 12)
     {
         return $this->column($size)->table();
+    }
+
+    /**
+     * 获取一个树
+     *
+     * @return ZTree
+     */
+    public function tree($size = 12)
+    {
+        return $this->column($size)->tree();
     }
 
     /**
