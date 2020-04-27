@@ -108,6 +108,8 @@ class Table extends TWapper implements Renderable
      */
     protected $pagesizeDropdown = null;
 
+    protected $usePagesizeDropdown = true;
+
     public function __construct()
     {
         $this->class = 'table-striped table-hover table-bordered';
@@ -474,11 +476,16 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $items
+     * @param array|boolean $items
      * @return DropdownBtns
      */
     public function pagesizeDropdown($items)
     {
+        if (empty($items) || $items == false) {
+            $this->usePagesizeDropdown = false;
+            return;
+        }
+
         if (empty($this->pagesizeDropdown)) {
             $this->pagesizeDropdown = new DropdownBtns('pagesize', '每页显示<b class="pagesize-text">' . $this->pageSize . '</b>条');
         }
@@ -608,7 +615,10 @@ class Table extends TWapper implements Renderable
         $viewshow = new ViewShow($template);
 
         if (!$this->paginator) {
-            $this->paginator = Paginator::make($this->data, count($this->data), 1, count($this->data));
+            $count = count($this->data);
+            $this->paginator = Paginator::make($this->data, $count, 1, $count);
+            $this->pageSize = $count;
+            $this->usePagesizeDropdown = false;
         }
 
         $sort = input('__sort__', $this->sortOrder);
@@ -626,7 +636,7 @@ class Table extends TWapper implements Renderable
             }
         }
 
-        if ($this->pageSize && empty($this->pagesizeDropdown)) {
+        if ($this->usePagesizeDropdown && $this->pageSize && empty($this->pagesizeDropdown)) {
             $items = [
                 0 => '默认', 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30'
                 , 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120',
@@ -664,7 +674,7 @@ class Table extends TWapper implements Renderable
             'actionbars' => $this->actionbars,
             'actionRowText' => $this->actionRowText,
             'checked' => $this->checked,
-            'pagesizeDropdown' => $this->pagesizeDropdown,
+            'pagesizeDropdown' => $this->usePagesizeDropdown ? $this->pagesizeDropdown : null,
         ];
 
         if ($this->partial) {
