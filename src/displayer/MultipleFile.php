@@ -128,10 +128,10 @@ class MultipleFile extends Field
             $this->files = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 
-        $this->jsOptions['canUpload'] = $this->canUpload && empty($this->extKey);
+        $this->jsOptions['canUpload'] = !$this->readonly && $this->canUpload && empty($this->extKey);
         $vars = array_merge($vars, [
             'jsOptions' => $this->jsOptions,
-            'canUpload' => $this->canUpload && empty($this->extKey),
+            'canUpload' => !$this->readonly && $this->canUpload && empty($this->extKey),
             'files' => $this->files,
         ]);
 

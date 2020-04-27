@@ -385,7 +385,15 @@ class Table extends TWapper implements Renderable
      */
     public function paginator($dataTotal, $pageSize = 10, $paginatorClass = '')
     {
+        if (!$pageSize) {
+            $pageSize = 10;
+        }
+
         $paginator = Paginator::make($this->data, $pageSize, input('__page__', 1), $dataTotal);
+
+        if ($dataTotal < 10) {
+            $this->usePagesizeDropdown = false;
+        }
 
         if ($paginatorClass) {
             $paginator->paginatorClass($paginatorClass);
@@ -477,13 +485,13 @@ class Table extends TWapper implements Renderable
      * Undocumented function
      *
      * @param array|boolean $items
-     * @return DropdownBtns
+     * @return DropdownBtns|null
      */
     public function pagesizeDropdown($items)
     {
-        if (empty($items) || $items == false) {
+        if ($items === false) {
             $this->usePagesizeDropdown = false;
-            return;
+            return null;
         }
 
         if (empty($this->pagesizeDropdown)) {

@@ -204,6 +204,20 @@ class ItemsContent extends FWapper
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        foreach ($this->rows as $row) {
+            $row->getDisplayer()->readonly($val);
+        }
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function beforRender()

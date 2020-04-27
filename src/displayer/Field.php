@@ -752,6 +752,7 @@ EOT;
             'showLabel' => $this->showLabel,
             'helptempl' => static::$helptempl,
             'labeltempl' => static::$labeltempl,
+            'readonly' => $this->readonly,
         ];
 
         return $vars;

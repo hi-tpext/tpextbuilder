@@ -98,6 +98,18 @@ class Fields extends Field
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        $this->__fields_content__->readonly($val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function getData()

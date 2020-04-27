@@ -22,6 +22,7 @@ trait HasBase
     protected $pageTitle = 'Page';
     protected $addText = '添加';
     protected $editText = '编辑';
+    protected $viewText = '查看';
     protected $indexText = '列表';
     protected $pagesize = 14;
     protected $sortOrder = 'id desc';

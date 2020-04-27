@@ -108,6 +108,20 @@ class FieldsContent extends FWapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        foreach ($this->rows as $row) {
+            $row->getDisplayer()->readonly($val);
+        }
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array|Model
      */
     public function getData()

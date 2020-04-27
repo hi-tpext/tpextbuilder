@@ -133,6 +133,18 @@ class Items extends Field
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        $this->__items_content__->readonly($val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param Collection $data
      * @param string $idField
      * @param boolean $overWrite

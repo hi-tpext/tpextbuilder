@@ -10,9 +10,10 @@ trait HasBuilder
 
     //列表
     use \tpext\builder\traits\actions\HasIndex;
-    //添加/修改
+    //添加/修改/查看
     use \tpext\builder\traits\actions\HasAdd;
     use \tpext\builder\traits\actions\HasEdit;
+    use \tpext\builder\traits\actions\HasView;
     //字段编辑
     use \tpext\builder\traits\actions\HasAutopost;
     //禁用/启用

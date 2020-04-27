@@ -64,7 +64,9 @@ EOT;
     {
         $this->js[] = $this->configJsPath;
 
-        $this->editorScript();
+        if (!$this->readonly) {
+            $this->editorScript();
+        }
 
         return parent::beforRender();
     }

@@ -71,7 +71,10 @@ EOT;
 
     public function beforRender()
     {
-        $this->tagsScript();
+        if(!$this->readonly)
+        {
+            $this->tagsScript();
+        }
 
         return parent::beforRender();
     }

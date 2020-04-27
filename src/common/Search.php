@@ -228,7 +228,7 @@ class Search extends SWapper implements Renderable
         }
 
         $this->hidden('__page__')->value(1);
-        $this->hidden('__pagesize__')->value(0);
+        $this->hidden('__pagesize__');
         $this->hidden('__search__')->value($this->id);
         $this->hidden('__table__')->value($this->tableId);
         $this->hidden('__sort__');

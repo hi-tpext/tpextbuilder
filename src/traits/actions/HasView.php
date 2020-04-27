@@ -3,17 +3,18 @@
 namespace tpext\builder\traits\actions;
 
 /**
- * 编辑
+ * 查看
  */
 
-trait HasEdit
+trait HasView
 {
-    public function edit($id)
+    public function view($id)
     {
         if (request()->isPost()) {
-            return $this->save($id);
+            $this->error('不允许的操作');
         } else {
-            $builder = $this->builder($this->pageTitle, $this->editText);
+            $builder = $this->builder($this->pageTitle, $this->viewText);
+            $data = $this->dataModel->get($id);
             $data = $this->dataModel->get($id);
             if (!$data) {
                 return $builder->layer()->close(0, '数据不存在');
@@ -22,7 +23,8 @@ trait HasEdit
             $this->form = $form;
             $this->builForm(true, $data);
             $form->fill($data);
-            
+            $form->readonly();
+
             return $builder->render();
         }
     }

@@ -192,3 +192,10 @@ div.tagsinput {
     padding-left: 0;
     padding-right: 0;
 }
+
+.editor-readonly
+{
+    background-color: #eee;
+    padding: 5px 12px;
+    min-height: 200px;
+}

@@ -50,6 +50,18 @@ class MDEditor extends Field
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        $this->readonly = $this->canUpload = !$val;
+        return $this;
+    }
+
     protected function editorScript()
     {
         if (!class_exists('tpext\\builder\\mdeditor\\common\\Resource')) {
@@ -91,7 +103,9 @@ EOT;
 
     public function beforRender()
     {
-        $this->editorScript();
+        if (!$this->readonly) {
+            $this->editorScript();
+        }
 
         return parent::beforRender();
     }

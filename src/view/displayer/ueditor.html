@@ -1,8 +1,12 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]}">
+    {if condition="$readonly"}
+    <div class="field-show editor-readonly">{$value|raw}</div>
+    {else/}
     <script name="{$name}" id="{$id}" type="text/plain">{$value|raw}</script>
     <script type="text/javascript">
         window.uploadUrl = '{$uploadUrl}'
     </script>
+    {/if}
     {include file="$helptempl" /}
 </div>

@@ -66,7 +66,9 @@ EOT;
 
     public function beforRender()
     {
-        $this->editorScript();
+        if (!$this->readonly) {
+            $this->editorScript();
+        }
 
         return parent::beforRender();
     }

@@ -43,6 +43,8 @@ class Form extends FWapper implements Renderable
 
     protected $butonsSizeClass = 'btn-sm';
 
+    protected $readonly = false;
+
     /**
      * Undocumented variable
      *
@@ -103,6 +105,23 @@ class Form extends FWapper implements Renderable
     public function getRows()
     {
         return $this->rows;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        foreach ($this->rows as $row) {
+            $row->getDisplayer()->readonly($val);
+        }
+        
+        $this->readonly = $val;
+
+        return $this;
     }
 
     /**
@@ -378,9 +397,17 @@ class Form extends FWapper implements Renderable
     public function bottomButtons($create = true)
     {
         if ($create) {
-            $this->btnSubmit();
-            $this->html('', '', 3)->showLabel(false);
-            $this->btnReset();
+            if(!$this->readonly)
+            {
+                $this->btnSubmit();
+                $this->html('', '', 3)->showLabel(false);
+                $this->btnReset();
+            }
+            else
+            {
+                $this->bottomOffset(5);
+                $this->btnLayerClose();
+            }
         }
 
         $this->botttomButtonsCalled = true;
