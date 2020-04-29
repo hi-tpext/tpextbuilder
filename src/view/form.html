@@ -63,7 +63,7 @@
                                             .layer_close_go);
                                     }
                                     else if (data.url) {
-                                        that.closeLayer(data.msg || data.message || '操作成功！');
+                                        lightyear.notify(data.msg || data.message || '操作成功！');
                                         setTimeout(function () {
                                             location.replace(data.url);
                                         }, data.wait * 1000 || 2000);

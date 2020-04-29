@@ -524,6 +524,7 @@ class Form extends FWapper implements Renderable
             focusInvalid: false,  // 禁用无效元素的聚焦
             rules: {$rules},
             errorPlacement: function errorPlacement(error, element) {
+                $('#help-block').removeClass('hidden');
                 var parent = $(element).closest('div.form-group');
                 if($(element).hasClass('item-field'))
                 {
@@ -532,7 +533,6 @@ class Form extends FWapper implements Renderable
                     return;
                 }
                 parent.addClass('has-error');
-                $('#help-block').removeClass('hidden');
                 $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + error.text());
             },
             highlight: function(element) {

@@ -624,8 +624,8 @@ class Table extends TWapper implements Renderable
 
         if (!$this->paginator) {
             $count = count($this->data);
-            $this->paginator = Paginator::make($this->data, $count, 1, $count);
-            $this->pageSize = $count;
+            $this->pageSize = $count ? $count : 10;
+            $this->paginator = Paginator::make($this->data, $this->pageSize, 1, $count);
             $this->usePagesizeDropdown = false;
         }
 

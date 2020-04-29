@@ -205,30 +205,51 @@ class Items extends Field
            }
         });
         $("#{$id}-temple .item-field").each(function(){
-            var name = $(this).attr('data-name', $(this).attr('name'));
+            $(this).attr('data-name', $(this).attr('name'));
             $(this).removeAttr('name');
         });
 
         var i = 1;
+        var script ='';
+
+        function reset(obj)
+        {
+            if($(obj).hasClass('lyear-switch') || $(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
+            {
+                var boxes = $(obj).find('input');
+                boxes.each(function(){
+                    $(this).attr('data-name', $(this).attr('name'));
+                    $(this).removeAttr('name');
+                    reset(this, script);
+                });
+                return;
+            }
+            var name = $(obj).data('name');
+            var id = $(obj).attr('id');
+            if(!id)
+            {
+                return;
+            }
+            id = id.replace('-no-init-script', '');
+            var newid = id + 'new' + i;
+            script = script.replace('#' + id, '#' + newid);
+            $(obj).attr('id', newid);
+            name = name.replace(/(.+?)\[new\](.+?)/, '$1' + '[new' + i + ']$2');
+            $(obj).attr('name', name);
+            $(obj).removeAttr('data-name');
+            if($(obj).hasClass('item-field-required'))
+            {
+                $(obj).attr('required', true);
+            }
+        }
+
         $(document).on('click', "#{$id}-add", function () {
             var node = $("#{$id}-temple").find('tr').clone();
             var fields = node.find('.item-field');
-            var script = $("#{$id}-script").val();
+            script = $("#{$id}-script").val();
             i += 1;
             fields.each(function(){
-                var name = $(this).data('name');
-                var id = $(this).attr('id');
-                id = id.replace('-no-init-script', '');
-                var newid = id + 'new' + i;
-                script = script.replace('#' + id, '#' + newid);
-                $(this).attr('id', newid);
-                name = name.replace(/(.+?)\[new\](.+?)/, '$1' + '[new' + i + ']$2');
-                $(this).attr('name', name);
-                $(this).removeAttr('data-name');
-                if($(this).hasClass('item-field-required'))
-                {
-                    $(this).attr('required', true);
-                }
+                reset(this);
             });
             $(this).parents('tr').before(node);
             $('.items-empty-text').hide();

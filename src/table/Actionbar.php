@@ -152,7 +152,7 @@ class Actionbar extends Toolbar
         if (empty($url)) {
             $url = url('view', ['id' => '__data.pk__']);
         }
-        $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
+        $this->actionBtn('view', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
     }
 
