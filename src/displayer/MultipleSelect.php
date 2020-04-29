@@ -25,10 +25,6 @@ class MultipleSelect extends Select
 
     public function render()
     {
-        if ($this->select2) {
-            $this->select2Script();
-        }
-
         $vars = $this->commonVars();
 
         if (!($this->value === '' || $this->value === null || $this->value === [])) {
