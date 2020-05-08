@@ -293,6 +293,7 @@ window.renderFiles = function () {
                         'height': thumbnailHeight + 'px',
                         'width': thumbnailWidth + 'px',
                     });
+                    $btn.attr('target', '_blank');
                 }
             }
         });

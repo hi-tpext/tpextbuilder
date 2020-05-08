@@ -48,4 +48,40 @@ trait HasOptions
 
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $options
+     * @return $this
+     */
+    public function beforOptions($options)
+    {
+        $this->options = $options + $this->options;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $options
+     * @return $this
+     */
+    public function afterOptions($options)
+    {
+        $this->options = $this->options + $options;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $options
+     * @return $this
+     */
+    public function mergeOptions($options)
+    {
+        $this->options = array_merge($this->options, $options);
+        return $this;
+    }
 }
