@@ -281,6 +281,7 @@ window.renderFiles = function () {
                 $img = $li.find('img.preview-img');
                 if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg)$/i.test(href)) {
                     $btn.removeClass('btn-link-pic');
+                    $btn.attr('target', '_blank');
                     $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +
                         thumbnailHeight + 'px"><div  class="filename" style="width:100%;font-size:12px;text-align:center;position:absolute;top:' + (thumbnailHeight / 2 - 10) + 'px;">' + href + '</div></div>');
                 } else {
@@ -293,7 +294,6 @@ window.renderFiles = function () {
                         'height': thumbnailHeight + 'px',
                         'width': thumbnailWidth + 'px',
                     });
-                    $btn.attr('target', '_blank');
                 }
             }
         });
