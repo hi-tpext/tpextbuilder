@@ -27,6 +27,8 @@ class Upload
     protected $maxSize = 20 * 1024 * 1024;
     //是否启用随机名
     protected $isRandName = true;
+
+    protected $fileByDate = 0;
     //加上文件前缀
     protected $prefix = 'file';
 
@@ -44,10 +46,6 @@ class Upload
 
     public function __construct($arr = [])
     {
-        $scriptName = $_SERVER['SCRIPT_FILENAME'];
-
-        $this->path = realpath(dirname($scriptName)) . '/uploads/images/' . date('Ym') . '/';
-
         foreach ($arr as $key => $value) {
             $this->setOption($key, $value);
         }
@@ -87,16 +85,6 @@ class Upload
      */
     public function uploadFile($key)
     {
-        //判断有没有设置路径  path
-        if (empty($this->path)) {
-            $this->setOption('errorNumber', -1);
-            return false;
-        }
-        //判断该路径是否存在，是否可写
-        if (!$this->check()) {
-            $this->setOption('errorNumber', -2);
-            return false;
-        }
         //判断$_FILES 里面的 error 信息是否为 0，如果为 0，说明文件信息在服务器端可以直接获取，提取信息保存到成员属性中
         $error = $_FILES[$key]['error'];
         if ($error) {
@@ -110,6 +98,41 @@ class Upload
         if (!$this->checkSize() /*|| !$this->checkMime() */ || !$this->checkSuffix()) {
             return false;
         }
+
+        if (!$this->path) {
+
+            $dirName = 'images';
+            if (!in_array($this->suffix, ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp'])) {
+                $dirName = 'files';
+            }
+
+            $scriptName = $_SERVER['SCRIPT_FILENAME'];
+
+            $date = '';
+
+            if ($this->fileByDate == 2) {
+                $date = date('Ymd');
+            } else if ($this->fileByDate == 3) {
+                $date = date('Y/m');
+            } else if ($this->fileByDate == 4) {
+                $date = date('Y/md');
+            } else if ($this->fileByDate == 5) {
+                $date = date('Ym/d');
+            } else if ($this->fileByDate == 6) {
+                $date = date('Y/m/d');
+            } else {
+                $date = date('Ym');
+            }
+
+            $this->path = realpath(dirname($scriptName)) . "/uploads/{$dirName}/" . $date . '/';
+        }
+
+        //判断该路径是否存在，是否可写
+        if (!$this->check()) {
+            $this->setOption('errorNumber', -2);
+            return false;
+        }
+
         //得到新的文件名字
         $this->newName = $this->createNewName();
         //判断是否是上传文件，并且移动上传文件

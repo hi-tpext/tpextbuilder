@@ -36,7 +36,7 @@ trait HasDelete
     /**
      * 判断是否可以删除 ，可使用模型的befroDelete事件替代
      *
-     * @param [type] $id
+     * @param mixed $id
      * @return boolean
      */
     protected function canDel($id)
@@ -51,7 +51,7 @@ trait HasDelete
     /**
      * 删除以后，可使用模型的afterDelete事件替代
      *
-     * @param [type] $id
+     * @param mixed $id
      * @return boolean
      */
     protected function afterDel($id)

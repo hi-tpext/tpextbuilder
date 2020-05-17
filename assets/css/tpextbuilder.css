@@ -199,3 +199,7 @@ div.tagsinput {
     padding: 5px 12px;
     min-height: 200px;
 }
+.items-empty-text
+{
+    text-align: center;
+}

@@ -35,8 +35,9 @@ class Upload extends Controller
         $config = Module::getInstance()->getConfig();
 
         $_config['allowSuffix'] = explode(',', $config['allowSuffix']);
-        $_config['maxSize'] = $config['maxSize'] * 1024 * 1024;
-        $_config['isRandName'] = $config['isRandName'];
+        $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
+        $_config['isRandName'] = $config['is_rand_name'];
+        $_config['fileByDate'] = $config['file_by_date'];
 
         $up = new UploadTool($_config);
 
@@ -208,12 +209,29 @@ class Upload extends Controller
         $config = Module::getInstance()->getConfig();
 
         $_config['allowSuffix'] = explode(',', $config['allowSuffix']);
-        $_config['maxSize'] = $config['maxSize'] * 1024 * 1024;
-        $_config['isRandName'] = $config['isRandName'];
+        $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
+        $_config['isRandName'] = $config['is_rand_name'];
+        $_config['fileByDate'] = $config['file_by_date'];
 
         $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
-        $config['path'] = realpath(dirname($scriptName)) . "/uploads/{$type}/" . date('Ym') . '/';
+        $date = '';
+
+        if ($config['file_by_date'] == 2) {
+            $date = date('Ymd');
+        } else if ($config['file_by_date'] == 3) {
+            $date = date('Y/m');
+        } else if ($config['file_by_date'] == 4) {
+            $date = date('Y/md');
+        } else if ($config['file_by_date'] == 5) {
+            $date = date('Ym/d');
+        } else if ($config['file_by_date'] == 6) {
+            $date = date('Y/m/d');
+        } else {
+            $date = date('Ym');
+        }
+
+        $_config['path'] = realpath(dirname($scriptName)) . "/uploads/{$type}/" . $date . '/';
 
         $up = new UploadTool($_config);
 

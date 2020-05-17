@@ -622,10 +622,14 @@ class Table extends TWapper implements Renderable
 
         $viewshow = new ViewShow($template);
 
+        $count = count($this->data);
         if (!$this->paginator) {
-            $count = count($this->data);
             $this->pageSize = $count ? $count : 10;
             $this->paginator = Paginator::make($this->data, $this->pageSize, 1, $count);
+            $this->usePagesizeDropdown = false;
+        }
+
+        if ($count <= 6) {
             $this->usePagesizeDropdown = false;
         }
 
