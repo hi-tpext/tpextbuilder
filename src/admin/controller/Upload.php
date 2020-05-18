@@ -34,7 +34,7 @@ class Upload extends Controller
 
         $config = Module::getInstance()->getConfig();
 
-        $_config['allowSuffix'] = explode(',', $config['allowSuffix']);
+        $_config['allowSuffix'] = explode(',', $config['allow_suffix']);
         $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];
@@ -208,7 +208,7 @@ class Upload extends Controller
 
         $config = Module::getInstance()->getConfig();
 
-        $_config['allowSuffix'] = explode(',', $config['allowSuffix']);
+        $_config['allowSuffix'] = explode(',', $config['allow_suffix']);
         $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'allowSuffix' =>
+    'allow_suffix' =>
     //
     "jpg,jpeg,gif,wbmp,webpg,png,bmp," .
     //
@@ -26,8 +26,8 @@ return [
     //
     //配置描述
     '__config__' => [
-        'allowSuffix' => ['type' => 'textarea', 'label' => '允许上传的文件后缀', 'size' => [2, 10], 'help' => '以英文,号分割'],
-        'maxSize' => ['type' => 'number', 'label' => '上传文件大小限制(MB)'],
+        'allow_suffix' => ['type' => 'textarea', 'label' => '允许上传的文件后缀', 'size' => [2, 10], 'help' => '以英文,号分割'],
+        'max_size' => ['type' => 'number', 'label' => '上传文件大小限制(MB)'],
         'is_rand_name' => ['type' => 'radio', 'label' => '随机文件名', 'options' => [0 => '否', 1 => '是']],
         'file_by_date' => ['type' => 'radio', 'label' => '文件目录归档', 'options' => [1 => 'Ym(年月)', 2 => 'Ymd(年月日)', 3 => 'Y/m(年/月)', 4 => 'Y/md(年/月日)', 5 => 'Ym/d(年月/日)', 6 => 'Y/m/d(年/月/日)']],
         'map' => ['type' => 'divider', 'label' => '地图api，按需配置'],
