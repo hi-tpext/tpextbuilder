@@ -629,7 +629,7 @@ class Table extends TWapper implements Renderable
             $this->usePagesizeDropdown = false;
         }
 
-        if ($count <= 6) {
+        if ($this->paginator->total() <= 6) {
             $this->usePagesizeDropdown = false;
         }
 
