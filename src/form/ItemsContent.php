@@ -275,6 +275,7 @@ class ItemsContent extends FWapper
                     'value' => $displayer->render(),
                     'attr' => $displayer->getAttrWithStyle(),
                     'wapper' => $colunm,
+                    'can_delete' => isset($data['can_delete']) ? $data['can_delete'] : 1,
                 ];
             }
         }
@@ -335,7 +336,6 @@ class ItemsContent extends FWapper
             'cnaDelete' => $this->cnaDelete,
             'actionRowText' => $this->actionRowText,
             'canAdd' => $this->canAdd,
-            'cols' => $this->cols,
             'script' => implode('', array_unique($this->script)),
             'template' => $this->template,
         ];

@@ -24,9 +24,14 @@
       {if condition="$cnaDelete"}
       <td class="row-__action__ vertical-middle text-center">
         <input type="hidden" name="{$name}[{$ids[$key]}][__del__]" value="0" />
+        {if condition="$col.can_delete"}
         <a class="btn btn-xs btn-danger action-delete" id="bar-delete-{$key}" data-id="{$ids[$key]}" href="javascript:;"
           title="删除">
-          <i class="mdi mdi-delete"></i></a>
+          <i class="mdi mdi-delete"></i>
+        </a>
+        {else/}
+        <a class="btn btn-xs btn-danger disabled" title="不允许删除"><i class="mdi mdi-delete"></i></a>
+        {/if}
       </td>
       {/if}
     </tr>
