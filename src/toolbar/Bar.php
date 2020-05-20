@@ -103,6 +103,11 @@ class Bar implements Renderable
     public function href($val)
     {
         $this->href = $val;
+
+        if (!Builder::checkUrl($this->href)) {
+            $this->addClass('hidden disabled');
+        }
+
         return $this;
     }
 

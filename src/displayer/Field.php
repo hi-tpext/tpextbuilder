@@ -183,7 +183,7 @@ class Field implements Fillable
     public function autoPost($url = '', $refresh = false)
     {
         if (empty($url)) {
-            $url = url('autoPost');
+            $url = url('autopost');
         }
         $this->autoPost = $url;
         $this->autoPostRefresh = $refresh;
@@ -660,7 +660,12 @@ EOT;
         }
 
         if ($this->autoPost) {
-            $this->autoPostScript();
+
+            if (Builder::checkUrl($this->autoPost)) {
+                $this->autoPostScript();
+            } else {
+                $this->readonly();
+            }
         }
 
         if (!empty($this->script)) {

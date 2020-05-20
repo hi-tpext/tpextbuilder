@@ -2,6 +2,8 @@
 
 namespace tpext\builder\toolbar;
 
+use tpext\builder\common\Builder;
+
 class LinkBtn extends Bar
 {
     protected $view = 'linkbtn';
@@ -58,7 +60,11 @@ EOT;
     {
         if ($this->postChecked) {
 
-            $this->postCheckedScript();
+            if (Builder::checkUrl($this->postChecked)) {
+                $this->postCheckedScript();;
+            } else {
+                $this->addClass('hidden disabled');
+            }
         }
 
         return parent::beforRender();

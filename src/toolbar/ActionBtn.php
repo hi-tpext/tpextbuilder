@@ -2,6 +2,8 @@
 
 namespace tpext\builder\toolbar;
 
+use tpext\builder\common\Builder;
+
 class ActionBtn extends Bar
 {
     protected $view = 'actionbtn';
@@ -126,7 +128,11 @@ EOT;
     {
         if ($this->postRowid) {
 
-            $this->postRowidScript();
+            if (Builder::checkUrl($this->postRowid)) {
+                $this->postRowidScript();;
+            } else {
+                $this->addClass('hidden disabled');
+            }
         }
 
         $this->parseMapClass($this->data);

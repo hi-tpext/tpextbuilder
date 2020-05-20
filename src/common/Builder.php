@@ -16,10 +16,6 @@ class Builder implements Renderable
 
     protected $csrf_token = '';
 
-    protected static $minify = false;
-
-    protected static $aver = '1.0';
-
     /**
      * Undocumented variable
      *
@@ -41,11 +37,22 @@ class Builder implements Renderable
 
     protected $script = [];
 
-    protected static $instance = null;
-
     protected $notify = [];
 
     protected $layer;
+
+    /**
+     * Undocumented variable
+     *
+     * @var Auth
+     */
+    protected static $auth;
+
+    protected static $minify = false;
+
+    protected static $aver = '1.0';
+
+    protected static $instance = null;
 
     protected function __construct($title, $desc)
     {
@@ -66,10 +73,10 @@ class Builder implements Renderable
             static::$instance = new static($title, $desc);
         } else {
             if ($title) {
-                static::$instance->setTitle($title);
+                static::$instance->title($title);
             }
             if ($desc) {
-                static::$instance->setDesc($desc);
+                static::$instance->desc($desc);
             }
         }
 
@@ -82,7 +89,7 @@ class Builder implements Renderable
      * @param string $val
      * @return $this
      */
-    public function setTitle($val)
+    public function title($val)
     {
         $this->title = $val;
         return $this;
@@ -94,7 +101,7 @@ class Builder implements Renderable
      * @param string $val
      * @return $this
      */
-    public function setDesc($val)
+    public function desc($val)
     {
         $this->desc = $val;
         return $this;
@@ -437,9 +444,44 @@ class Builder implements Renderable
         return static::$minify;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return void
+     */
     public static function aver($val)
     {
         static::$aver = $val;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string|Auth $class
+     * @return void
+     */
+    public static function auth($class)
+    {
+        static::$auth = $class;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $url
+     * @return boolean
+     */
+    public static function checkUrl($url)
+    {
+        if (!empty(static::$auth)) {
+
+            $path = explode('/', trim($url, '/'));
+
+            return count($path) >= 3 && static::$auth::checkUrl("/{$path[0]}/{$path[1]}/{$path[2]}");
+        }
+
+        return true;
     }
 
     /**
