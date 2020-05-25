@@ -3,6 +3,7 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
+use tpext\builder\inface\Renderable;
 use tpext\builder\toolbar\Bar;
 use tpext\builder\toolbar\Wapper;
 use tpext\builder\traits\HasDom;
@@ -19,7 +20,7 @@ class Toolbar extends Wapper implements Renderable
 
     protected $extKey = '';
 
-     /**
+    /**
      * Undocumented function
      *
      * @param string $val

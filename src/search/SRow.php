@@ -2,8 +2,8 @@
 
 namespace tpext\builder\search;
 
-use tpext\builder\common\Renderable;
 use tpext\builder\common\Search;
+use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
 

@@ -3,6 +3,7 @@
 namespace tpext\builder\common;
 
 use think\response\View as ViewShow;
+use tpext\builder\inface\Renderable;
 
 class Content implements Renderable
 {

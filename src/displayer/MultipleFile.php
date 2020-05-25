@@ -27,6 +27,8 @@ class MultipleFile extends Field
 
     protected $canUpload = true;
 
+    protected $showInput = true;
+
     protected $files = [];
 
     protected $jsOptions = [
@@ -51,8 +53,8 @@ class MultipleFile extends Field
         'fileSingleSizeLimit' => 5 * 1024 * 1024,
         'fileNumLimit' => 5,
         'fileSizeLimit' => 0,
-        'thumbnailWidth' => 120,
-        'thumbnailHeight' => 120,
+        'thumbnailWidth' => 80,
+        'thumbnailHeight' => 80,
     ];
 
     protected $extTypes = [
@@ -83,6 +85,18 @@ class MultipleFile extends Field
     public function canUpload($val)
     {
         $this->canUpload = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function showInput($val)
+    {
+        $this->showInput = $val;
         return $this;
     }
 
@@ -132,6 +146,7 @@ class MultipleFile extends Field
         $vars = array_merge($vars, [
             'jsOptions' => $this->jsOptions,
             'canUpload' => !$this->readonly && $this->canUpload && empty($this->extKey),
+            'showInput' => !$this->readonly && $this->showInput && empty($this->extKey),
             'files' => $this->files,
         ]);
 

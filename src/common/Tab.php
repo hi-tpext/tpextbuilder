@@ -5,6 +5,7 @@ namespace tpext\builder\common;
 use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\form\FieldsContent;
+use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 
 class Tab implements Renderable

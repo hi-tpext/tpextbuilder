@@ -4,6 +4,7 @@ namespace tpext\builder\common;
 
 use tpext\builder\common\Form;
 use tpext\builder\common\Table;
+use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\tree\ZTree;
 

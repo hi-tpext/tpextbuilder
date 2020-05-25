@@ -6,8 +6,8 @@ use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\common\Form;
 use tpext\builder\common\Module;
-use tpext\builder\common\Renderable;
 use tpext\builder\displayer\Field;
+use tpext\builder\inface\Renderable;
 
 class FieldsContent extends FWapper implements Renderable
 {

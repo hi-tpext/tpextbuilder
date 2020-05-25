@@ -257,7 +257,7 @@ window.renderFiles = function () {
 
     // 通用绑定，
     $('.js-upload-files').each(function () {
-        var $input_file = $(this).find('input[type="hidden"]'),
+        var $input_file = $(this).find('input.file-url-input'),
             $input_file_name = $(this).data('name');
 
         var jsOptions = window.uploadConfigs[$input_file_name];
@@ -279,7 +279,7 @@ window.renderFiles = function () {
             if ($btn && $btn.attr('href')) {
                 var href = $btn.attr('href');
                 $img = $li.find('img.preview-img');
-                if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg)$/i.test(href)) {
+                if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(href)) {
                     $btn.removeClass('btn-link-pic');
                     $btn.attr('target', '_blank');
                     $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +
@@ -358,8 +358,8 @@ window.renderFiles = function () {
                     '    <img>' +
                     '</div>' +
                     '    <figcaption>' +
-                    '      <a class="btn btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
-                    '      <a class="btn btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
+                    '      <a class="btn btn-xs btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
+                    '      <a class="btn btn-xs btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
                     '    </figcaption>' +
                     '  </figure>' +
                     '</li>'),

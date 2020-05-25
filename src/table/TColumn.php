@@ -2,17 +2,17 @@
 
 namespace tpext\builder\table;
 
-use tpext\builder\common\Renderable;
+use tpext\builder\common\Table;
+use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
-use tpext\builder\common\Table;
 
 class TColumn extends TWapper implements Renderable
 {
     use HasDom;
     use HasRow;
 
-     /**
+    /**
      * Undocumented variable
      *
      * @var Table

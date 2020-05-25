@@ -2,7 +2,7 @@
 
 namespace tpext\builder\form;
 
-use tpext\builder\common\Renderable;
+use tpext\builder\inface\Renderable;
 
 interface Fillable extends Renderable
 {

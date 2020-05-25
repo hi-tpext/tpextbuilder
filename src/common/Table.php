@@ -4,6 +4,7 @@ namespace tpext\builder\common;
 
 use think\Collection;
 use think\response\View as ViewShow;
+use tpext\builder\inface\Renderable;
 use tpext\builder\table\Actionbar;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;

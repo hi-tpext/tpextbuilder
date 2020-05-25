@@ -3,7 +3,7 @@
 namespace tpext\builder\form;
 
 use tpext\builder\common\Form;
-use tpext\builder\common\Renderable;
+use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
 

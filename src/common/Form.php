@@ -12,6 +12,7 @@ use tpext\builder\form\FRow;
 use tpext\builder\form\FWapper;
 use tpext\builder\form\ItemsContent;
 use tpext\builder\form\Step;
+use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 
 /**
@@ -118,7 +119,7 @@ class Form extends FWapper implements Renderable
         foreach ($this->rows as $row) {
             $row->getDisplayer()->readonly($val);
         }
-        
+
         $this->readonly = $val;
 
         return $this;
@@ -397,14 +398,11 @@ class Form extends FWapper implements Renderable
     public function bottomButtons($create = true)
     {
         if ($create) {
-            if(!$this->readonly)
-            {
+            if (!$this->readonly) {
                 $this->btnSubmit();
                 $this->html('', '', 3)->showLabel(false);
                 $this->btnReset();
-            }
-            else
-            {
+            } else {
                 $this->bottomOffset(5);
                 $this->btnLayerClose();
             }

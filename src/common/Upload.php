@@ -2,6 +2,8 @@
 
 namespace tpext\builder\common;
 
+use tpext\builder\common\model\Attachment;
+
 class Upload
 {
     //文件上传保存路径
@@ -9,7 +11,7 @@ class Upload
     //允许文件上传的后缀
     protected $allowSuffix = [
         //
-        'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp',
+        'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp', 'ico',
         //
         "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
         //
@@ -138,7 +140,20 @@ class Upload
         //判断是否是上传文件，并且移动上传文件
         if (is_uploaded_file($this->tmpName)) {
             if (move_uploaded_file($this->tmpName, $this->path . $this->newName)) {
-                return $this->path . $this->newName;
+                $url = "/uploads/{$dirName}/" . $date . '/' . $this->newName;
+                Attachment::create([
+                    'name' => mb_substr($this->oldName, 0, 55),
+                    'admin_id' => session('?admin_id') ? session('admin_id') : 0,
+                    'user_id' => session('?user_id') ? session('user_id') : 0,
+                    'mime' => $this->mime,
+                    'suffix' => $this->suffix,
+                    'size' => $this->size / (1024 ** 2),
+                    'sha1' => hash_file('sha1', $this->path . $this->newName),
+                    'storage' => 'local',
+                    'url' => $url,
+                ]);
+
+                return $url;
             } else {
                 $this->setOption('errorNumber', -7);
                 return false;
@@ -158,10 +173,11 @@ class Upload
     {
         //判断是否使用随机名
         if ($this->isRandName) {
-            $name = $this->prefix . uniqid() . '.' . $this->suffix;
+            $name = $this->prefix . uniqid(mt_rand()) . '.' . $this->suffix;
         } else {
-            $name = $this->prefix . $this->oldName;
+            $name = str_replace(['\\', '/', '.' . $this->suffix, '..', ' ', '.'], '', $this->oldName) . '.' . $this->suffix;
         }
+        
         return $name;
     }
 
@@ -246,7 +262,28 @@ class Upload
             $this->setOption('errorNumber', -5);
             return false;
         }
+        /* 对图像文件进行严格检测 */
+        if (in_array(strtolower($this->suffix), ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->tmpName), [1, 2, 3, 4, 6, 13])) {
+            $this->setOption('errorNumber', -5);
+            return false;
+        }
+
         return true;
+    }
+
+    // 判断图像类型
+    protected function getImageType($image)
+    {
+        if (function_exists('exif_imagetype')) {
+            return exif_imagetype($image);
+        }
+
+        try {
+            $info = getimagesize($image);
+            return $info ? $info[2] : false;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

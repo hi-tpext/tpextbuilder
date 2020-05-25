@@ -7,6 +7,7 @@ use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Fillable;
+use tpext\builder\inface\Renderable;
 use tpext\builder\search\SRow;
 use tpext\builder\search\SWapper;
 use tpext\builder\traits\HasDom;

@@ -3,7 +3,7 @@
 return [
     'allow_suffix' =>
     //
-    "jpg,jpeg,gif,wbmp,webpg,png,bmp," .
+    "jpg,jpeg,gif,wbmp,webpg,png,bmp,ico" .
     //
     "flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogv,mov,wmv,mp4,webm," .
     //

@@ -1,6 +1,18 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]}">
     <div class="js-upload-files" data-name="{$name}">
+        {if condition="$canUpload"}
+        <div class="input-group col-md-12">
+            {if condition="$showInput"}
+            <input type="text" class="form-control {$class} file-url-input"
+                placeholder="{$placeholder|default='请上传'.$label}" value="{$value}" name="{$name}" id="{$id}"
+                {$attr|raw}>
+            {else/}
+            <input type="hidden" class="form-control {$class} file-url-input" value="{$value}" name="{$name}" id="{$id}"
+                {$attr|raw}>
+            {/if}
+        </div>
+        {/if}
         <ul id="file_list_{$name}" class="pull-left list-inline clearfix
             lyear-uploads-pic">
             {volist name="files" id="file"}
@@ -10,10 +22,10 @@
                         <img style="display: none;" class="preview-img" src="{$file}" />
                     </div>
                     <figcaption>
-                        <a class="btn btn-round btn-square btn-primary
+                        <a class="btn btn-xs btn-round btn-square btn-primary
                             btn-link-pic" data-id="{$key}" href="{$file}"><i class="mdi mdi-eye"></i></a>
                         {if condition="$canUpload"}
-                        <a class="btn btn-round btn-square btn-danger
+                        <a class="btn btn-xs btn-round btn-square btn-danger
                             btn-remove-pic" data-id="{$key}" data-url="{$file}" href="javascript:;"><i class="mdi
                                 mdi-delete"></i></a>
                         {/if}
@@ -25,8 +37,6 @@
         {if condition="$canUpload"}
         <ul class="list-inline clearfix lyear-uploads-pic">
             <li class="pic-item">
-                <input type="hidden" name="{$name}" class="{$class} file-url-input" value="{$value}" id="{$id}"
-                        {$attr|raw}>
                 <div id="picker_{$name}">
                     <a class="pic-add" title="点击上传"></a>
                 </div>

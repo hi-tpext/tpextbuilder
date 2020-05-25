@@ -1,6 +1,6 @@
 <?php
 
-namespace tpext\builder\common;
+namespace tpext\builder\inface;
 
 interface Renderable
 {
