@@ -3,17 +3,18 @@ namespace tpext\builder\admin\controller;
 
 use think\Controller;
 use tpext\builder\common\Builder;
+use tpext\builder\common\Module;
 
 class Import extends Controller
 {
     public function page()
     {
-        $acceptedExts = input('acceptedExts');
+        $acceptedExts = input('acceptedExts', '');
         $fileSize = input('fileSize');
         $pageToken = input('pageToken');
         $successUrl = input('successUrl');
 
-        if (empty($acceptedExts) || empty($fileSize) || empty($pageToken) || empty($successUrl)) {
+        if ($fileSize == '' || empty($pageToken) || empty($successUrl)) {
             $this->error('参数有误');
         }
 
@@ -25,8 +26,18 @@ class Import extends Controller
             $this->error('验证失败');
         }
 
-        $acceptedExts = explode(',', $acceptedExts);
+        $config = Module::getInstance()->getConfig();
 
+        if ($fileSize == 0 || $fileSize == '' || $fileSize > $config['max_size']) {
+            $fileSize = $config['max_size'];
+        }
+
+        if ($acceptedExts == '*' || $acceptedExts == '*/*' || empty($acceptedExts)) {
+
+            $acceptedExts = $config['allow_suffix'];
+        }
+
+        $acceptedExts = explode(',', $acceptedExts);
         $acceptedExts = '.' . implode(',.', $acceptedExts);
 
         $successUrl = urldecode($successUrl);

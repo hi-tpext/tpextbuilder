@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `__PREFIX__attachment` (
   `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '后台用户id',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '前台用户id',
   `name` varchar(55) NOT NULL DEFAULT '' COMMENT '名称',
-  `mime` varchar(25) NOT NULL DEFAULT '' COMMENT 'mime类型',
+  `mime` varchar(125) NOT NULL DEFAULT '' COMMENT 'mime类型',
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '后缀',
   `size` double(10,3) unsigned DEFAULT '0' COMMENT '大小',
   `sha1` varchar(40) NOT NULL DEFAULT '' COMMENT 'sha1',

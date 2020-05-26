@@ -141,8 +141,9 @@ class Upload
         if (is_uploaded_file($this->tmpName)) {
             if (move_uploaded_file($this->tmpName, $this->path . $this->newName)) {
                 $url = "/uploads/{$dirName}/" . $date . '/' . $this->newName;
+                $name = str_replace(['.' . $this->suffix], '', $this->oldName);
                 Attachment::create([
-                    'name' => mb_substr($this->oldName, 0, 55),
+                    'name' => mb_substr($name, 0, 55),
                     'admin_id' => session('?admin_id') ? session('admin_id') : 0,
                     'user_id' => session('?user_id') ? session('user_id') : 0,
                     'mime' => $this->mime,
@@ -177,7 +178,7 @@ class Upload
         } else {
             $name = str_replace(['\\', '/', '.' . $this->suffix, '..', ' ', '.'], '', $this->oldName) . '.' . $this->suffix;
         }
-        
+
         return $name;
     }
 
