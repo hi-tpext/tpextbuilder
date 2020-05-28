@@ -199,7 +199,25 @@ div.tagsinput {
     padding: 5px 12px;
     min-height: 200px;
 }
+
 .items-empty-text
 {
     text-align: center;
+}
+
+.help-block
+{
+    font-size: 12px;
+}
+
+td.row-file .lyear-uploads-pic
+{
+    margin: 0;
+    padding: 0;
+}
+
+td.row-file .lyear-uploads-pic li.pic-item
+{
+    margin: 0;
+    padding: 0;
 }

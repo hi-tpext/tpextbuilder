@@ -15,7 +15,7 @@ return [
     ,
     'max_size' => 20,
     'is_rand_name' => 1,
-    'file_by_date' => 2,
+    'file_by_date' => 5,
     //
     'map' => '',
     'amap_js_key' => '//webapi.amap.com/maps?v=1.4.15&key=您申请的key值',
