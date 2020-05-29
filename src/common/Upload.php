@@ -45,6 +45,7 @@ class Upload
     protected $mime; //文件 mime
     protected $tmpName; //文件临时路径
     protected $newName; //文件新名字
+    protected $dirName;
 
     public function __construct($arr = [])
     {
@@ -101,33 +102,33 @@ class Upload
             return false;
         }
 
-        if (!$this->path) {
+        if (!$this->dirName) {
 
-            $dirName = 'images';
+            $this->dirName = 'images';
             if (!in_array($this->suffix, ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp'])) {
-                $dirName = 'files';
+                $this->dirName = 'files';
             }
-
-            $scriptName = $_SERVER['SCRIPT_FILENAME'];
-
-            $date = '';
-
-            if ($this->fileByDate == 2) {
-                $date = date('Ymd');
-            } else if ($this->fileByDate == 3) {
-                $date = date('Y/m');
-            } else if ($this->fileByDate == 4) {
-                $date = date('Y/md');
-            } else if ($this->fileByDate == 5) {
-                $date = date('Ym/d');
-            } else if ($this->fileByDate == 6) {
-                $date = date('Y/m/d');
-            } else {
-                $date = date('Ym');
-            }
-
-            $this->path = realpath(dirname($scriptName)) . "/uploads/{$dirName}/" . $date . '/';
         }
+
+        $scriptName = $_SERVER['SCRIPT_FILENAME'];
+
+        $date = '';
+
+        if ($this->fileByDate == 2) {
+            $date = date('Ymd');
+        } else if ($this->fileByDate == 3) {
+            $date = date('Y/m');
+        } else if ($this->fileByDate == 4) {
+            $date = date('Y/md');
+        } else if ($this->fileByDate == 5) {
+            $date = date('Ym/d');
+        } else if ($this->fileByDate == 6) {
+            $date = date('Y/m/d');
+        } else {
+            $date = date('Ym');
+        }
+
+        $this->path = realpath(dirname($scriptName)) . "/uploads/{$this->dirName}/" . $date . '/';
 
         //判断该路径是否存在，是否可写
         if (!$this->check()) {
@@ -140,7 +141,7 @@ class Upload
         //判断是否是上传文件，并且移动上传文件
         if (is_uploaded_file($this->tmpName)) {
             if (move_uploaded_file($this->tmpName, $this->path . $this->newName)) {
-                $url = "/uploads/{$dirName}/" . $date . '/' . $this->newName;
+                $url = "/uploads/{$this->dirName}/" . $date . '/' . $this->newName;
                 $name = str_replace(['.' . $this->suffix], '', $this->oldName);
                 Attachment::create([
                     'name' => mb_substr($name, 0, 55),

@@ -211,26 +211,7 @@ class Upload extends Controller
         $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];
-
-        $scriptName = $_SERVER['SCRIPT_FILENAME'];
-
-        $date = '';
-
-        if ($config['file_by_date'] == 2) {
-            $date = date('Ymd');
-        } else if ($config['file_by_date'] == 3) {
-            $date = date('Y/m');
-        } else if ($config['file_by_date'] == 4) {
-            $date = date('Y/md');
-        } else if ($config['file_by_date'] == 5) {
-            $date = date('Ym/d');
-        } else if ($config['file_by_date'] == 6) {
-            $date = date('Y/m/d');
-        } else {
-            $date = date('Ym');
-        }
-
-        $_config['path'] = realpath(dirname($scriptName)) . "/uploads/{$type}/" . $date . '/';
+        $_config['dirName'] = $type;
 
         $up = new UploadTool($_config);
 
