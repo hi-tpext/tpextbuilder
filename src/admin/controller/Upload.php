@@ -1,4 +1,5 @@
 <?php
+
 namespace tpext\builder\admin\controller;
 
 use think\Controller;
@@ -103,39 +104,44 @@ class Upload extends Controller
         $config_file = realpath(dirname($scriptName)) . '/assets/builderueditor/config.json';
         $config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
-            /* 获取配置信息 */
+                /* 获取配置信息 */
             case 'config':
                 $result = $config;
                 break;
 
-            /* 上传图片 */
+                /* 上传图片 */
             case 'uploadimage':
-            /* 上传涂鸦 */
+                /* 上传涂鸦 */
             case 'uploadscrawl':
-                echo $this->saveFile('images');exit;
+                echo $this->saveFile('images');
+                exit;
                 break;
 
-            /* 上传视频 */
+                /* 上传视频 */
             case 'uploadvideo':
-                echo $this->saveFile('videos');exit;
+                echo $this->saveFile('videos');
+                exit;
                 break;
 
-            /* 上传附件 */
+                /* 上传附件 */
             case 'uploadfile':
-                echo $this->saveFile('files');exit;
+                echo $this->saveFile('files');
+                exit;
                 break;
 
-            /* 列出图片 */
+                /* 列出图片 */
             case 'listimage':
-                echo $this->showFile('listimage', $config);exit;
+                echo $this->showFile('listimage', $config);
+                exit;
                 break;
 
-            /* 列出附件 */
+                /* 列出附件 */
             case 'listfile':
-                echo $this->showFile('listfile', $config);exit;
+                echo $this->showFile('listfile', $config);
+                exit;
                 break;
 
-            /* 抓取远程附件 */
+                /* 抓取远程附件 */
             case 'catchimage':
                 $result = $this->catchFile();
                 break;
@@ -162,16 +168,19 @@ class Upload extends Controller
         $picdata = $_POST['picdata'];
 
         if (empty($picdata)) {
-            echo json_encode(['state' => 400, 'message' => '上传数据为空']);exit;
+            echo json_encode(['state' => 400, 'message' => '上传数据为空']);
+            exit;
         }
 
         $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
         $picurl = $this->base64_image_content($picdata, realpath(dirname($scriptName)) . '/uploads/images/' . date('Ym') . '/');
         if ($picurl) {
-            echo json_encode(['state' => 200, 'picurl' => $picurl]);exit;
+            echo json_encode(['state' => 200, 'picurl' => $picurl]);
+            exit;
         } else {
-            echo json_encode(['state' => 500, 'message' => '上传失败']);exit;
+            echo json_encode(['state' => 500, 'message' => '上传失败']);
+            exit;
         }
     }
 
@@ -249,14 +258,14 @@ class Upload extends Controller
     {
         /* 判断类型 */
         switch ($type) {
-            /* 列出附件 */
+                /* 列出附件 */
             case 'listfile':
                 $allowFiles = $config['fileManagerAllowFiles'];
                 $listSize = $config['fileManagerListSize'];
                 $path = realpath('./upload/files/');
                 break;
 
-            /* 列出图片 */
+                /* 列出图片 */
             case 'listimage':
             default:
                 $allowFiles = $config['imageManagerAllowFiles'];
@@ -325,5 +334,104 @@ class Upload extends Controller
             }
         }
         return $files;
+    }
+
+
+    public function ext($type)
+    {
+        $img = imagecreate(100, 100);
+
+        $total = unpack('L', hash('adler32', $type, true))[1];
+        $hue = $total % 360;
+
+        list($r, $g, $b) = $this->hsv2rgb($hue / 360, 0.3, 0.9);
+
+        imagecolorallocate($img, $r, $g, $b);
+
+        $col = imagecolorallocatealpha($img, 255, 255, 255, 0);
+
+        $font_size = 20;
+
+        $ttfPath = Module::getInstance()->getRoot() . '/assets/f.ttf';
+
+        $text_info = $this->get_text_info($font_size, 0, $ttfPath, $type);
+
+        imagettftext($img, $font_size, 0, (100 - $text_info['w']) / 2, 60, $col, $ttfPath, $type);
+
+        ob_start();
+        // 输出图像
+        imagepng($img);
+        $content = ob_get_clean();
+        imagedestroy($img);
+
+        return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
+    }
+
+    private function get_text_info($size, $angle, $font, $text)
+    {
+        //获取文字信息
+        $info = imagettfbbox($size, $angle, $font, $text);
+        $minx = min($info[0], $info[2], $info[4], $info[6]);
+        $maxx = max($info[0], $info[2], $info[4], $info[6]);
+        $miny = min($info[1], $info[3], $info[5], $info[7]);
+        $maxy = max($info[1], $info[3], $info[5], $info[7]);
+
+        /* 计算文字初始坐标和尺寸 */
+        return array(
+            'x' => $minx,
+            'y' => abs($miny),
+            'w' => $maxx - $minx,
+            'h' => $maxy - $miny,
+        );
+    }
+
+    private function hsv2rgb($h, $s, $v)
+    {
+        $r = $g = $b = 0;
+
+        $i = floor($h * 6);
+        $f = $h * 6 - $i;
+        $p = $v * (1 - $s);
+        $q = $v * (1 - $f * $s);
+        $t = $v * (1 - (1 - $f) * $s);
+
+        switch ($i % 6) {
+            case 0:
+                $r = $v;
+                $g = $t;
+                $b = $p;
+                break;
+            case 1:
+                $r = $q;
+                $g = $v;
+                $b = $p;
+                break;
+            case 2:
+                $r = $p;
+                $g = $v;
+                $b = $t;
+                break;
+            case 3:
+                $r = $p;
+                $g = $q;
+                $b = $v;
+                break;
+            case 4:
+                $r = $t;
+                $g = $p;
+                $b = $v;
+                break;
+            case 5:
+                $r = $v;
+                $g = $p;
+                $b = $q;
+                break;
+        }
+
+        return [
+            floor($r * 255),
+            floor($g * 255),
+            floor($b * 255)
+        ];
     }
 }

@@ -1,12 +1,12 @@
-(function(w) {
+(function (w) {
 
-    var tpextbuilder = function() {};
-    tpextbuilder.autoPost = function(classname, url, refresh) {
+    var tpextbuilder = function () { };
+    tpextbuilder.autoPost = function (classname, url, refresh) {
 
-        $('body').on('change', 'td.' + classname + ' :checkbox', function() {
+        $('body').on('change', 'td.' + classname + ' :checkbox', function () {
             var name = $(this).attr('name');
             var values = [];
-            $('td.' + classname + " input[name='" + name + "']:checked").each(function(i, e) {
+            $('td.' + classname + " input[name='" + name + "']:checked").each(function (i, e) {
                 values.push($(e).val());
             });
             var val = values.join(',');
@@ -19,7 +19,7 @@
             }, url, refresh);
         });
 
-        $('body').on('change', 'td.' + classname + ' :radio', function() {
+        $('body').on('change', 'td.' + classname + ' :radio', function () {
             var name = $(this).attr('name');
             var val = $('td.' + classname + " input[name='" + name + "']:checked").val();
             name = name.split('-')[0];
@@ -31,7 +31,7 @@
             }, url, refresh);
         });
 
-        $('body').on('blur', 'td.' + classname + ' input[type="text"]', function() {
+        $('body').on('blur', 'td.' + classname + ' input[type="text"]', function () {
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
@@ -43,7 +43,7 @@
             }, url, refresh);
         });
 
-        $('body').on('blur', 'td.' + classname + ' textarea', function() {
+        $('body').on('blur', 'td.' + classname + ' textarea', function () {
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
@@ -55,7 +55,7 @@
             }, url, refresh);
         });
 
-        $('body').on('change', 'td.' + classname + ' select', function() {
+        $('body').on('change', 'td.' + classname + ' select', function () {
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
@@ -68,17 +68,17 @@
         });
     };
 
-    tpextbuilder.postChecked = function(id, url, confirm) {
+    tpextbuilder.postChecked = function (id, url, confirm) {
         var obj = $('#' + id);
         if (!obj.size()) {
             return;
         }
-        $('body').on('click', '#' + id, function() {
+        $('body').on('click', '#' + id, function () {
             var val = '';
 
             var values = [];
 
-            $("input.table-row:checked").each(function(i, e) {
+            $("input.table-row:checked").each(function (i, e) {
                 values.push($(e).val());
             });
 
@@ -103,7 +103,7 @@
                         confirm: {
                             text: '确认',
                             btnClass: 'btn-primary',
-                            action: function() {
+                            action: function () {
                                 tpextbuilder.autoSendData({
                                     ids: val
                                 }, url, 1);
@@ -111,7 +111,7 @@
                         },
                         cancel: {
                             text: '取消',
-                            action: function() {
+                            action: function () {
 
                             }
                         }
@@ -130,7 +130,7 @@
             $('#' + id).removeClass('disabled');
         }
 
-        $('body').on('change', 'input.table-row', function() {
+        $('body').on('change', 'input.table-row', function () {
             if ($("input.table-row:checked").size() == 0) {
                 $('#' + id).addClass('disabled');
             } else {
@@ -138,7 +138,7 @@
             }
         });
 
-        $('body').on('change', 'input.table-row-checkall', function() {
+        $('body').on('change', 'input.table-row-checkall', function () {
             if ($("input.table-row:checked").is(':checked')) {
                 $('#' + id).removeClass('disabled');
             } else {
@@ -147,8 +147,8 @@
         });
     };
 
-    tpextbuilder.postRowid = function(classname, url, confirm) {
-        $('body').on('click', 'td.row-__action__ .' + classname, function() {
+    tpextbuilder.postRowid = function (classname, url, confirm) {
+        $('body').on('click', 'td.row-__action__ .' + classname, function () {
             var val = $(this).data('id');
             if (confirm) {
                 if (confirm == '1') {
@@ -162,7 +162,7 @@
                         confirm: {
                             text: '确认',
                             btnClass: 'btn-primary',
-                            action: function() {
+                            action: function () {
                                 tpextbuilder.autoSendData({
                                     ids: val
                                 }, url, 1);
@@ -170,7 +170,7 @@
                         },
                         cancel: {
                             text: '取消',
-                            action: function() {
+                            action: function () {
 
                             }
                         }
@@ -184,7 +184,7 @@
         });
     };
 
-    tpextbuilder.autoSendData = function(data, url, refresh) {
+    tpextbuilder.autoSendData = function (data, url, refresh) {
         data.__token__ = w.__token__;
         lightyear.loading('show');
         $.ajax({
@@ -192,7 +192,7 @@
             data: data,
             type: "POST",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 lightyear.loading('hide');
                 if (data.__token__) {
                     w.__token__ = data.__token__;
@@ -215,7 +215,7 @@
                     }
                 }
             },
-            error: function() {
+            error: function () {
                 lightyear.loading('hide');
                 lightyear.notify('网络错误', 'danger');
             }
@@ -224,7 +224,7 @@
 
     w.tpextbuilder = tpextbuilder;
 
-    w.layerOpen = function(obj, size) {
+    w.layerOpen = function (obj, size) {
         var href = $(obj).data('url');
 
         var text = $(obj).text() || $(obj).attr('title');
@@ -245,7 +245,7 @@
 
 })(window);
 
-window.renderFiles = function() {
+window.renderFiles = function () {
 
     /*
      * 示例上传成功采用返回ID的形式，即上传成功以附件表形式存储，返回给前端ID值。
@@ -256,7 +256,7 @@ window.renderFiles = function() {
      */
 
     // 通用绑定，
-    $('.js-upload-files').each(function() {
+    $('.js-upload-files').each(function () {
         var $input_file = $(this).find('input.file-url-input'),
             $input_file_name = $(this).data('name');
 
@@ -273,7 +273,7 @@ window.renderFiles = function() {
         var thumbnailWidth = (jsOptions.thumbnailWidth || 165) * ratio;
         var thumbnailHeight = (jsOptions.thumbnailHeight || 110) * ratio;
 
-        $file_list.find('li.pic-item').each(function(ii, ee) {
+        $file_list.find('li.pic-item').each(function (ii, ee) {
             var $li = $(ee);
             var $btn = $li.find('a.btn-link-pic');
             if ($btn && $btn.attr('href')) {
@@ -282,19 +282,19 @@ window.renderFiles = function() {
                 if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(href)) {
                     $btn.removeClass('btn-link-pic');
                     $btn.attr('target', '_blank');
-                    $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +
-                        thumbnailHeight + 'px"><div  class="filename" style="width:100%;font-size:12px;text-align:center;position:absolute;top:15px;">' + href.replace(/.+?\/([\w\-]+\.\w+)$/, '$1') + '</div></div>');
+                    $img.attr('src', '/index.php/tpextbuilder/admin/upload/ext/type/' + href.replace(/.+?\.(\w+)$/, '$1'));
                 } else {
-                    $img.css({
-                        'display': 'block',
-                        'max-height': 'auto',
-                        'max-width': thumbnailWidth + 'px',
-                        'margin': '0 auto'
-                    }).parent('div').css({
-                        'height': thumbnailHeight + 'px',
-                        'width': thumbnailWidth + 'px',
-                    });
+                    
                 }
+                $img.css({
+                    'display': 'block',
+                    'max-height': 'auto',
+                    'max-width': thumbnailWidth + 'px',
+                    'margin': '0 auto'
+                }).parent('div').css({
+                    'height': thumbnailHeight + 'px',
+                    'width': thumbnailWidth + 'px',
+                });
             }
         });
 
@@ -345,35 +345,34 @@ window.renderFiles = function() {
                 }
             });
 
-            uploader.on('beforeFileQueued', function(file) {
+            uploader.on('beforeFileQueued', function (file) {
                 if (jsOptions.fileNumLimit > 1 && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
                     lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
                     return false;
                 }
             });
-            uploader.on('fileQueued', function(file) {
+            uploader.on('fileQueued', function (file) {
                 var $li = $('<li class="pic-item" id="' + file.id + '">' +
-                        '  <figure>' +
-                        '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
-                        '    <img>' +
-                        '</div>' +
-                        '    <figcaption>' +
-                        '      <a class="btn btn-xs btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
-                        '      <a class="btn btn-xs btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
-                        '    </figcaption>' +
-                        '  </figure>' +
-                        '</li>'),
+                    '  <figure>' +
+                    '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
+                    '    <img>' +
+                    '</div>' +
+                    '    <figcaption>' +
+                    '      <a class="btn btn-xs btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
+                    '      <a class="btn btn-xs btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
+                    '    </figcaption>' +
+                    '  </figure>' +
+                    '</li>'),
                     $img = $li.find('img');
 
                 if (jsOptions.fileNumLimit <= 1) {
                     $file_list.find('li.pic-item').remove();
                 }
                 $file_list.append($li);
-                uploader.makeThumb(file, function(error, src) {
-                    if (error) {
-                        $img.replaceWith('<div class="cantpreview" style="position:relative;width:' + thumbnailWidth + 'px;height:' +
-                            thumbnailHeight + 'px"><div class="filename" style="width:100%;font-size:12px;text-align:center;position:absolute;top:15px;">不能预览</div></div>');
-                        return;
+                uploader.makeThumb(file, function (error, src) {
+                    if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src) && error) {
+                        src = '/index.php/tpextbuilder/admin/upload/ext/type/' + src.replace(/.+?\.(\w+)$/, '$1');
+                        $img.addClass('cantpreview');
                     }
                     $img.attr('src', src);
                     $img.css({
@@ -385,11 +384,11 @@ window.renderFiles = function() {
                 }, thumbnailWidth, thumbnailHeight);
                 $('<div class="progress progress-sm"><div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div></div>').appendTo($li);
             });
-            uploader.on('uploadProgress', function(file, percentage) {
+            uploader.on('uploadProgress', function (file, percentage) {
                 var $percent = $('#' + file.id).find('.progress-bar');
                 $percent.css('width', percentage * 100 + '%');
             });
-            uploader.on('uploadSuccess', function(file, response) {
+            uploader.on('uploadSuccess', function (file, response) {
                 var $li = $('#' + file.id);
                 if (response.status == 200) { // 返回200成功
                     if (jsOptions.fileNumLimit > 1) {
@@ -406,16 +405,15 @@ window.renderFiles = function() {
                 $('<div class="' + response.class + '"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.fileNumLimit + ')').appendTo($li.find('figure'));
                 if ($li.find('.cantpreview').size() > 0) {
                     $li.find('a.btn-link-pic').attr('href', response.picurl).removeClass('btn-link-pic').attr('target', '_blank');
-                    $li.find('.filename').text(response.picurl.replace(/.+?\/([\w\-]+\.\w+)$/, '$1'));
                 } else {
                     $li.find('a.btn-link-pic').attr('href', response.picurl);
                 }
             });
-            uploader.on('uploadError', function(file) {
+            uploader.on('uploadError', function (file) {
                 var $li = $('#' + file.id);
                 $('<div class="error">上传失败</div>').appendTo($li).find('figure');
             });
-            uploader.on('error', function(type) {
+            uploader.on('error', function (type) {
                 switch (type) {
                     case 'Q_TYPE_DENIED':
                         lightyear.notify('文件类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger');
@@ -425,13 +423,13 @@ window.renderFiles = function() {
                         break;
                 }
             });
-            uploader.on('uploadComplete', function(file) {
-                setTimeout(function() {
+            uploader.on('uploadComplete', function (file) {
+                setTimeout(function () {
                     $('#' + file.id).find('.progress').remove();
                 }, 500);
             });
             // 删除操作
-            $file_list.delegate('.btn-remove-pic', 'click', function() {
+            $file_list.delegate('.btn-remove-pic', 'click', function () {
                 var url = $(this).data('url');
                 var that = $(this);
                 $.alert({
@@ -441,7 +439,7 @@ window.renderFiles = function() {
                         confirm: {
                             text: '确认',
                             btnClass: 'btn-primary',
-                            action: function() {
+                            action: function () {
                                 if (jsOptions.fileNumLimit > 1) {
                                     var ids = $input_file.val().split(',');
                                     if (url) {
@@ -462,7 +460,7 @@ window.renderFiles = function() {
                         },
                         cancel: {
                             text: '取消',
-                            action: function() {
+                            action: function () {
 
                             }
                         }
@@ -482,20 +480,20 @@ window.renderFiles = function() {
     });
 };
 
-$(function() {
+$(function () {
     //动态选择框，上下级选中状态变化
-    $('input.checkall').each(function(i, e) {
+    $('input.checkall').each(function (i, e) {
         var checkall = $(e);
         var checkboxes = $('.' + checkall.data('check'));
         var count = checkboxes.size();
 
-        checkall.on('change', function() {
+        checkall.on('change', function () {
             checkboxes.prop('checked', checkall.is(':checked'));
         });
 
-        checkboxes.on('change', function() {
+        checkboxes.on('change', function () {
             var ss = 0;
-            checkboxes.each(function(ii, ee) {
+            checkboxes.each(function (ii, ee) {
                 if ($(ee).is(':checked')) {
                     ss += 1;
                 }
@@ -504,7 +502,7 @@ $(function() {
         });
 
         var ss = 0;
-        checkboxes.each(function(ii, ee) {
+        checkboxes.each(function (ii, ee) {
             if ($(ee).is(':checked')) {
                 ss += 1;
             }
@@ -512,13 +510,13 @@ $(function() {
         checkall.prop('checked', count > 0 && ss == count);
     });
 
-    $("form select").on("select2:opening", function(e) {
+    $("form select").on("select2:opening", function (e) {
         if ($(this).attr('readonly') || $(this).is(':hidden')) {
             e.preventDefault();
         }
     });
 
-    $('input[type="text"],textarea').each(function() {
+    $('input[type="text"],textarea').each(function () {
         if ($(this).attr('maxlength')) {
             $(this).maxlength({
                 warningClass: "label label-info",
@@ -528,16 +526,16 @@ $(function() {
         }
     });
 
-    $('.btn-loading').click(function() {
+    $('.btn-loading').click(function () {
         $(this).lyearloading({
             opacity: 0.2,
             spinnerSize: 'nm'
         });
     });
 
-    $('select').each(function(i, e) {
+    $('select').each(function (i, e) {
         if ($(e).attr('readonly')) {
-            setTimeout(function() {
+            setTimeout(function () {
                 $(e).parent('div').find('span.select2-selection__choice__remove').first().css('display', 'none');
                 $(e).parent('div').find('li.select2-search').first().css('display', 'none');
                 $(e).parent('div').find('span.select2-selection__clear').first().css('display', 'none');
@@ -546,7 +544,7 @@ $(function() {
         }
     });
 
-    $('body').on('click', '.btn-close-layer', function() {
+    $('body').on('click', '.btn-close-layer', function () {
         if (parent && parent.layer) {
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             parent.layer.close(index);

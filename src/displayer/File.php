@@ -22,6 +22,10 @@ class File extends MultipleFile
             'multiple' => false,
         ]);
 
+        if (!empty($this->extKey)) {
+            $this->getWapper()->style('width:' . $this->jsOptions['thumbnailWidth'] . 'px;');
+        }
+
         return parent::render();
     }
 }
