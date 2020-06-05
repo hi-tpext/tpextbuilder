@@ -91,6 +91,20 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented variable
      *
+     * @var Row
+     */
+    protected $addTop;
+
+    /**
+     * Undocumented variable
+     *
+     * @var Row
+     */
+    protected $addBottom;
+
+    /**
+     * Undocumented variable
+     *
      * @var Paginator
      */
     protected $paginator;
@@ -611,6 +625,36 @@ class Table extends TWapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return Row
+     */
+    public function addTop()
+    {
+        if (empty($this->addTop)) {
+            $this->addTop = new Row();
+            $this->addTop->class('table-top');
+        }
+
+        return $this->addTop;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Row
+     */
+    public function addBottom()
+    {
+        if (empty($this->addBottom)) {
+            $this->addBottom = new Row();
+            $this->addBottom->class('table-bottom');
+        }
+
+        return $this->addBottom;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return string|ViewShow
      */
     public function render()
@@ -651,8 +695,7 @@ class Table extends TWapper implements Renderable
 
         if ($this->usePagesizeDropdown && $this->pageSize && empty($this->pagesizeDropdown)) {
             $items = [
-                0 => '默认', 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30'
-                , 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120',
+                0 => '默认', 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30', 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120',
             ];
 
             ksort($items);
@@ -688,6 +731,8 @@ class Table extends TWapper implements Renderable
             'actionRowText' => $this->actionRowText,
             'checked' => $this->checked,
             'pagesizeDropdown' => $this->usePagesizeDropdown ? $this->pagesizeDropdown : null,
+            'addTop' => $this->addTop,
+            'addBottom' => $this->addBottom
         ];
 
         if ($this->partial) {
