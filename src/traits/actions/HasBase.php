@@ -27,6 +27,7 @@ trait HasBase
     protected $pagesize = 14;
     protected $sortOrder = 'id desc';
     protected $enableField = 'enable';
+    protected $pk = '';
 
     /**
      * Undocumented variable
@@ -170,7 +171,7 @@ trait HasBase
     {
         $page = input('__page__/d', 1);
         $page = $page < 1 ? 1 : $page;
-        $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->dataModel->getPk() . ' desc');
+        $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
         $where = $this->filterWhere();
         $table = $this->table;
 
@@ -179,7 +180,7 @@ trait HasBase
         $this->pagesize = $pagesize ?: $this->pagesize;
 
         $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
-        
+
         $this->buildTable($data);
         $table->fill($data);
         $table->paginator($this->dataModel->where($where)->count(), $this->pagesize);
@@ -198,5 +199,23 @@ trait HasBase
     protected function builder($title = '', $desc = '')
     {
         return \tpext\builder\common\Builder::getInstance($title, $desc);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    protected function getPk()
+    {
+        if (empty($this->pk)) {
+            if ($this->dataModel) {
+                $this->pk = $this->dataModel->getPk();
+            } else {
+                $this->pk = 'id';
+            }
+        }
+
+        return $this->pk;
     }
 }

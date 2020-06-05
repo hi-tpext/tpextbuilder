@@ -26,7 +26,7 @@ trait HasAutopost
             $this->error('不允许的操作');
         }
 
-        $res = $this->dataModel->update([$name => $value], [$this->dataModel->getPk() => $id]);
+        $res = $this->dataModel->update([$name => $value], [$this->getPk() => $id]);
 
         if ($res) {
             $this->success('修改成功');

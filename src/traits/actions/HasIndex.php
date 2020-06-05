@@ -13,7 +13,7 @@ trait HasIndex
         $builder = $this->builder($this->pageTitle, $this->indexText);
 
         $this->table = $builder->table();
-        $this->table->pk($this->dataModel->getPk());
+        $this->table->pk($this->getPk());
         $this->search = $this->table->getSearch();
 
         $this->builSearch();
