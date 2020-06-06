@@ -28,7 +28,7 @@ class Bar implements Renderable
 
     protected $useLayer = true;
 
-    protected $layerSize = ['90%', '90%'];
+    protected $layerSize;
 
     public function __construct($name, $label = '')
     {
@@ -115,13 +115,16 @@ class Bar implements Renderable
      * Undocumented function
      *
      * @param boolean $val
-     * @param array $size
+     * @param array|string $size
      * @return $this
      */
-    public function useLayer($val, $size = ['90%', '90%'])
+    public function useLayer($val, $size = [])
     {
         $this->useLayer = $val;
-        $this->layerSize = $size;
+
+        if (!empty($size)) {
+            $this->layerSize = is_array($size) ? implode(',', $size) : $size;
+        }
 
         return $this;
     }
@@ -193,6 +196,11 @@ class Bar implements Renderable
     {
         $this->useLayer = $this->useLayer && !empty($this->href) && !preg_match('/javascript:.*/i', $this->href) && !preg_match('/^#.*/i', $this->href);
 
+        if (empty($this->layerSize)) {
+            $config =   Module::getInstance()->getConfig();
+            $this->layerSize = $config['layer_size'];
+        }
+
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,
@@ -200,9 +208,9 @@ class Bar implements Renderable
             'class' => ' ' . $this->class,
             'href' => empty($this->__href__) ? $this->href : $this->__href__,
             'icon' => $this->icon,
-            'attr' => $this->attr . (empty($this->style) ? '' : ' style="' . $this->style . '"'),
+            'attr' => $this->getAttrWithStyle(),
             'useLayer' => $this->useLayer,
-            'layerSize' => implode(',', $this->layerSize),
+            'layerSize' => $this->layerSize,
         ];
 
         return $vars;

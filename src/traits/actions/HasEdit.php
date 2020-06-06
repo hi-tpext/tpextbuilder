@@ -20,7 +20,7 @@ trait HasEdit
             }
             $form = $builder->form();
             $this->form = $form;
-            $this->builForm(true, $data);
+            $this->builForm(1, $data);
             $form->fill($data);
             
             return $builder->render();

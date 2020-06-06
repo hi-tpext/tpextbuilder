@@ -21,7 +21,7 @@ trait HasView
             }
             $form = $builder->form();
             $this->form = $form;
-            $this->builForm(true, $data);
+            $this->builForm(2, $data);
             $form->fill($data);
             $form->readonly();
 
