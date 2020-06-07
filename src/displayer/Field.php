@@ -223,7 +223,8 @@ class Field implements Fillable
      * @param string|int|mixed $val
      * @return $this
      */
-    function default($val = '') {
+    function default($val = '')
+    {
         $this->default = $val;
         return $this;
     }
@@ -703,7 +704,7 @@ EOT;
         $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
 
         if (!empty($this->to)) {
-            $value = str_replace('__val__', $value, $this->to);
+            $value = str_replace(['__val__', '{val}'], $value, $this->to);
         }
 
         return $value;
