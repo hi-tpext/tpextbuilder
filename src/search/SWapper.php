@@ -5,7 +5,7 @@ namespace tpext\builder\search;
 use tpext\builder\common\Wapper as Base;
 
 /**
- * trait HasMethods.
+ * Methods.
  *
  * @method \tpext\builder\displayer\Text           text($name, $label = '', $colSize = 3, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Checkbox       checkbox($name, $label = '', $colSize = 3, $colClass = '', $colAttr = '')
@@ -35,7 +35,7 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\Fields         fields($name, $label = '', $colSize = 12, $colClass = '', $colAttr = '')
  */
 
-class SWapper extends Base
+class SWrapper extends Base
 {
 
 }

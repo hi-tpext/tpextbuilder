@@ -11,7 +11,7 @@ use tpext\builder\form\FRow;
 use tpext\builder\table\Actionbar;
 use tpext\builder\traits\HasDom;
 
-class ItemsContent extends FWapper
+class ItemsContent extends FWrapper
 {
     use HasDom;
 

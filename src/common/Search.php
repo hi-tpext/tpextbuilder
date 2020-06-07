@@ -9,13 +9,13 @@ use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Fillable;
 use tpext\builder\inface\Renderable;
 use tpext\builder\search\SRow;
-use tpext\builder\search\SWapper;
+use tpext\builder\search\SWrapper;
 use tpext\builder\traits\HasDom;
 
 /**
  * Form class
  */
-class Search extends SWapper implements Renderable
+class Search extends SWrapper implements Renderable
 {
     use HasDom;
 

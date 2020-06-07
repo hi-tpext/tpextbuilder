@@ -7,7 +7,7 @@ use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
 
-class FRow extends FWapper implements Renderable
+class FRow extends FWrapper implements Renderable
 {
     use HasDom;
     use HasRow;

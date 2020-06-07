@@ -9,7 +9,7 @@ use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Fillable;
 use tpext\builder\form\FRow;
-use tpext\builder\form\FWapper;
+use tpext\builder\form\FWrapper;
 use tpext\builder\form\ItemsContent;
 use tpext\builder\form\Step;
 use tpext\builder\inface\Renderable;
@@ -18,7 +18,7 @@ use tpext\builder\traits\HasDom;
 /**
  * Form class
  */
-class Form extends FWapper implements Renderable
+class Form extends FWrapper implements Renderable
 {
     use HasDom;
 

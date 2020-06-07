@@ -9,7 +9,7 @@ use tpext\builder\common\Module;
 use tpext\builder\displayer\Field;
 use tpext\builder\inface\Renderable;
 
-class FieldsContent extends FWapper implements Renderable
+class FieldsContent extends FWrapper implements Renderable
 {
     protected $view = 'fieldscontent';
 

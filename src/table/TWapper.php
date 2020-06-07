@@ -5,7 +5,7 @@ namespace tpext\builder\table;
 use tpext\builder\common\Wapper as Base;
 
 /**
- * trait HasMethods.
+ * Methods.
  *
  * @method \tpext\builder\displayer\Field          field($name, $label = '', $colSize = 12, $colClass = '', $colAttr = '')
  * @method \tpext\builder\displayer\Text           text($name, $label = '', $colSize = 12, $colClass = '', $colAttr = '')
@@ -38,7 +38,7 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\Matches        matches($name, $label = '', $colSize = 12, $colClass = '', $colAttr = '')
  */
 
-class TWapper extends Base
+class TWrapper extends Base
 {
     
 }

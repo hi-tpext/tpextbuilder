@@ -9,14 +9,14 @@ use tpext\builder\table\Actionbar;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
 use tpext\builder\table\TColumn;
-use tpext\builder\table\TWapper;
+use tpext\builder\table\TWrapper;
 use tpext\builder\toolbar\DropdownBtns;
 use tpext\builder\traits\HasDom;
 
 /**
  * Table class
  */
-class Table extends TWapper implements Renderable
+class Table extends TWrapper implements Renderable
 {
     use HasDom;
 
