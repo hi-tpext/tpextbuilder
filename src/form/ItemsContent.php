@@ -257,6 +257,7 @@ class ItemsContent extends FWrapper
                 $displayer->clearScript();
 
                 $displayer
+                    ->value('')
                     ->fill($data)
                     ->extKey($key)
                     ->arrayName([$this->name . '[' . $this->ids[$key] . '][', ']'])

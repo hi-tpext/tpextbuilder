@@ -158,7 +158,7 @@ class Items extends Field
 
         $list = [];
         foreach ($data as $d) {
-            if (empty($IdField)) {
+            if (empty($idField)) {
                 $idField = $d->getPk();
             }
 

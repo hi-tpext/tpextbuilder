@@ -596,6 +596,7 @@ class Table extends TWrapper implements Renderable
                 $displayer->clearScript();
 
                 $displayer
+                    ->value('')
                     ->fill($data)
                     ->extKey('-' . $this->id . '-' . $key)
                     ->extNameKey('-' . $key)
