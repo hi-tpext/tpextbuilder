@@ -276,7 +276,7 @@ class ItemsContent extends FWrapper
                     'value' => $displayer->render(),
                     'attr' => $displayer->getAttrWithStyle(),
                     'wapper' => $colunm,
-                    'can_delete' => isset($data['can_delete']) ? $data['can_delete'] : 1,
+                    '__can_delete__' => isset($data['__can_delete__']) ? $data['__can_delete__'] : 1,
                 ];
             }
         }
@@ -294,7 +294,7 @@ class ItemsContent extends FWrapper
 
             $displayer
                 ->extKey('')
-                ->arrayName([$this->name . '[' . 'new' . '][', ']'])
+                ->arrayName([$this->name . '[' . '__new__' . '][', ']'])
                 ->showLabel(false)
                 ->value('')
                 ->size(0, 0)

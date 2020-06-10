@@ -25,11 +25,11 @@
         </div>
     </div>
     <script>
-        if (!window.forms) {
-            window.forms = [];
+        if (!window.__forms__) {
+            window.__forms__ = [];
         }
 
-        window.forms['{$id}'] = {
+        window.__forms__['{$id}'] = {
             ajax: '{$ajax}' == '1',
             searchFor: '{$searchFor}',
             export: 0,

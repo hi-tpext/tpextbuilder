@@ -231,10 +231,10 @@ class Items extends Field
                 return;
             }
             id = id.replace('-no-init-script', '');
-            var newid = id + 'new' + i;
+            var newid = id + '__new__' + i;
             script = script.replace('#' + id, '#' + newid);
             $(obj).attr('id', newid);
-            name = name.replace(/(.+?)\[new\](.+?)/, '$1' + '[new' + i + ']$2');
+            name = name.replace(/(.+?)\[__new__\](.+?)/, '$1' + '[__new__' + i + ']$2');
             $(obj).attr('name', name);
             $(obj).removeAttr('data-name');
             if($(obj).hasClass('item-field-required'))

@@ -552,7 +552,7 @@ class Form extends FWrapper implements Renderable
                 }
             },
             submitHandler: function(form) {
-                return window.forms['{$form}'].formSubmit();
+                return window.__forms__['{$form}'].formSubmit();
             }
         });
 

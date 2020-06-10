@@ -263,7 +263,7 @@ class Search extends SWrapper implements Renderable
         $('body').on('click', '#{$this->tableId} ul.pagination li a', function(){
             var page = $(this).attr('href').replace(/.*\?page=(\d+).*/,'$1');
             $('#{$form} form input[name="__page__"]').val(page);
-            window.forms['{$form}'].formSubmit();
+            window.__forms__['{$form}'].formSubmit();
             return false;
         });
 
@@ -280,11 +280,11 @@ class Search extends SWrapper implements Renderable
             }
             $('#{$form} form input[name="__pagesize__"]').val(pagesize);
             $('#{$this->tableId} #dropdown-pagesize-div').find('.pagesize-text').text(pagesize);
-            window.forms['{$form}'].formSubmit();
+            window.__forms__['{$form}'].formSubmit();
         });
 
         $('body').on('click', '#btn-refresh{$extKey},#form-refresh{$extKey}', function(){
-            window.forms['{$form}'].formSubmit();
+            window.__forms__['{$form}'].formSubmit();
         });
 
         if(!$('#{$form} form').hasClass('form-empty'))
@@ -305,18 +305,18 @@ class Search extends SWrapper implements Renderable
 
         $('body').on('click', '#btn-export{$extKey}', function(){
             var url = $(this).data('export-url');
-            window.forms['{$form}'].exportPost(url, '');
+            window.__forms__['{$form}'].exportPost(url, '');
         });
 
         $('body').on('click', '#dropdown-exports{$extKey}-div .dropdown-menu li a', function(){
             var url = $('#dropdown-exports{$extKey}').data('export-url');
             var fileType = $(this).data('key');
-            window.forms['{$form}'].exportPost(url, fileType);
+            window.__forms__['{$form}'].exportPost(url, fileType);
         });
 
         $('body').on('click', '#form-submit{$extKey}', function(){
             $('#$form form input[name="__page__"]').val(1);
-            return window.forms['{$form}'].formSubmit();
+            return window.__forms__['{$form}'].formSubmit();
         });
 
         $('body').on('click', '.table .sortable', function(){
@@ -335,7 +335,7 @@ class Search extends SWrapper implements Renderable
             }
 
             $('#$form form input[name="__sort__"]').val(sort);
-            window.forms['{$form}'].formSubmit();
+            window.__forms__['{$form}'].formSubmit();
         });
 
 EOT;
