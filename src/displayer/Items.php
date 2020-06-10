@@ -205,10 +205,8 @@ class Items extends Field
            }
         });
         $("#{$id}-temple .item-field").each(function(i, obj){
-            console.log($(this).html());
             if($(obj).hasClass('lyear-switch') || $(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
             {
-                alert($(this).html());
                 var boxes = $(obj).find('input');
                 boxes.each(function(){
                     $(this).attr('data-name', $(this).attr('name'));
