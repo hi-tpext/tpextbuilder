@@ -204,9 +204,22 @@ class Items extends Field
                 $(this).parents('tr').remove();
            }
         });
-        $("#{$id}-temple .item-field").each(function(){
-            $(this).attr('data-name', $(this).attr('name'));
-            $(this).removeAttr('name');
+        $("#{$id}-temple .item-field").each(function(i, obj){
+            console.log($(this).html());
+            if($(obj).hasClass('lyear-switch') || $(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
+            {
+                alert($(this).html());
+                var boxes = $(obj).find('input');
+                boxes.each(function(){
+                    $(this).attr('data-name', $(this).attr('name'));
+                    $(this).removeAttr('name');
+                });
+            }
+            else
+            {
+                $(obj).attr('data-name', $(obj).attr('name'));
+                $(obj).removeAttr('name');
+            }
         });
 
         var i = 1;
@@ -220,7 +233,7 @@ class Items extends Field
                 boxes.each(function(){
                     $(this).attr('data-name', $(this).attr('name'));
                     $(this).removeAttr('name');
-                    reset(this, script);
+                    reset(this);
                 });
                 return;
             }
