@@ -12,19 +12,20 @@ class Actionbar extends Toolbar
 
     protected $rowdata;
 
-    protected $useLayer = true;
-
     protected $mapClass = [];
 
     /**
      * Undocumented function
      *
      * @param boolean $val
+     * @param array|string $size
      * @return $this
      */
-    public function useLayer($val)
+    public function useLayerAll($val, $size = [])
     {
-        $this->useLayer = $val;
+        foreach ($this->elms as $elm) {
+            $elm->useLayer($val, $size);
+        }
 
         return $this;
     }
@@ -57,8 +58,6 @@ class Actionbar extends Toolbar
             if ($this->mapClass) {
                 $elm->mapClass($this->mapClass);
             }
-
-            $elm->useLayer($this->useLayer);
         }
 
         return parent::beforRender();

@@ -6,8 +6,6 @@ use tpext\builder\common\Toolbar;
 
 class MultipleToolbar extends Toolbar
 {
-    protected $useLayer = true;
-
     protected $hasSearch = false;
 
     protected $btnSearch = null;
@@ -16,12 +14,15 @@ class MultipleToolbar extends Toolbar
      * Undocumented function
      *
      * @param boolean $val
+     * @param array|string $size
      * @return $this
      */
-    public function useLayer($val)
+    public function useLayerAll($val, $size = [])
     {
-        $this->useLayer = $val;
-
+        foreach ($this->elms as $elm) {
+            $elm->useLayer($val, $size);
+        }
+        
         return $this;
     }
 
@@ -51,13 +52,6 @@ class MultipleToolbar extends Toolbar
 
         if ($this->hasSearch && !$this->btnSearch) {
             $this->btnToggleSearch();
-        }
-
-        foreach ($this->elms as $elm) {
-
-            if (!$this->useLayer) {
-                $elm->useLayer(false);
-            }
         }
 
         return parent::beforRender();
