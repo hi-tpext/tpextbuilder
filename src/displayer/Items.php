@@ -29,7 +29,7 @@ class Items extends Field
     {
         parent::created();
 
-        $this->form = $this->getWapper()->getForm();
+        $this->form = $this->getWrapper()->getForm();
         $this->__items_content__ = $this->form->createItems();
         $this->__items_content__->name($this->name);
 

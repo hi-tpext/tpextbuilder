@@ -23,7 +23,7 @@ class File extends MultipleFile
         ]);
 
         if (!empty($this->extKey)) {
-            $this->getWapper()->style('width:' . $this->jsOptions['thumbnailWidth'] . 'px;');
+            $this->getWrapper()->style('width:' . $this->jsOptions['thumbnailWidth'] . 'px;');
         }
 
         return parent::render();

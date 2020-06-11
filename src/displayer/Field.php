@@ -60,7 +60,7 @@ class Field implements Fillable
 
     protected $disabled = '';
 
-    protected $wapper = null;
+    protected $wrapper = null;
 
     protected $useDefauleFieldClass = true;
 
@@ -323,7 +323,7 @@ class Field implements Fillable
     public function errorClass($val)
     {
         $this->errorClass = $val;
-        $this->wapper->errorClass($val);
+        $this->wrapper->errorClass($val);
         return $this;
     }
 
@@ -410,13 +410,24 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
-     * @param \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn $wapper
+     * @param \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn $wrapper
      * @return $this
      */
-    public function setWapper($wapper)
+    public function setWrapper($wrapper)
     {
-        $this->wapper = $wapper;
+        $this->wrapper = $wrapper;
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     * @deprecated 1.6.1 使用getWrapper
+     * @see　getWrapper
+     * @return \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn
+     */
+    public function getWapper()
+    {
+        return $this->wrapper;
     }
 
     /**
@@ -424,9 +435,9 @@ class Field implements Fillable
      *
      * @return \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn
      */
-    public function getWapper()
+    public function getWrapper()
     {
-        return $this->wapper;
+        return $this->wrapper;
     }
 
     /**

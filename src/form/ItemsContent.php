@@ -275,7 +275,7 @@ class ItemsContent extends FWrapper
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
                     'attr' => $displayer->getAttrWithStyle(),
-                    'wapper' => $colunm,
+                    'wrapper' => $colunm,
                     '__can_delete__' => isset($data['__can_delete__']) ? $data['__can_delete__'] : 1,
                 ];
             }
@@ -307,7 +307,7 @@ class ItemsContent extends FWrapper
             $this->template[] = [
                 'value' => $displayer->render(),
                 'attr' => $displayer->getAttrWithStyle(),
-                'wapper' => $colunm,
+                'wrapper' => $colunm,
             ];
 
             $script = $displayer->getScript();

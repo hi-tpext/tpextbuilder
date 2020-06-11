@@ -608,7 +608,7 @@ class Table extends TWrapper implements Renderable
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
                     'attr' => $displayer->getAttrWithStyle(),
-                    'wapper' => $colunm,
+                    'wrapper' => $colunm,
                 ];
             }
 

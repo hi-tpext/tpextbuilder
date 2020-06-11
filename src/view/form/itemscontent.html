@@ -17,7 +17,7 @@
     {volist name="list" id="row"}
     <tr class="table-row-id" data-id="{$ids[$key]}">
       {foreach name="row" id="col" key="co"}
-      <td class="{$col.wapper->getClass()} text-center vertical-middle" {$col.wapper->getAttrWithStyle()|raw}>
+      <td class="{$col.wrapper->getClass()} text-center vertical-middle" {$col.wrapper->getAttrWithStyle()|raw}>
         {$col.value|raw}
       </td>
       {/foreach}
@@ -54,7 +54,7 @@
   <tbody>
     <tr>
       {volist name="template" id="col"}
-      <td class="{$col.wapper->getClass()} text-center vertical-middle" {$col.wapper->getAttrWithStyle()|raw}>
+      <td class="{$col.wrapper->getClass()} text-center vertical-middle" {$col.wrapper->getAttrWithStyle()|raw}>
         {$col.value|raw}
       </td>
       {/volist}

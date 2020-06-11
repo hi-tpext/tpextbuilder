@@ -106,7 +106,7 @@ trait HasRow
     public function createDisplayer($class, $arguments)
     {
         $displayer = new $class($arguments[0], $arguments[1]);
-        $displayer->setWapper($this);
+        $displayer->setWrapper($this);
         $displayer->created();
 
         $this->displayer = $displayer;

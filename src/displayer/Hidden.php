@@ -13,6 +13,6 @@ class Hidden extends Field
 
     public function created()
     {
-        $this->getWapper()->addStyle('display:none;');
+        $this->getWrapper()->addStyle('display:none;');
     }
 }
