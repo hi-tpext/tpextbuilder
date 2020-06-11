@@ -60,11 +60,23 @@ class Wapper
 
     protected static $using = [];
 
+    /**
+     * Undocumented function
+     *
+     * @param string $class
+     * @return void
+     */
     public static function addUsing($class)
     {
         static::$using[] = $class;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @return boolean
+     */
     public static function isDisplayer($name)
     {
         if (empty(static::$displayers)) {
@@ -74,6 +86,12 @@ class Wapper
         return in_array($name, static::$displayers);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $type
+     * @return string
+     */
     public static function hasDefaultFieldClass($type)
     {
         if (isset(static::$defaultFieldClass[$type])) {
@@ -83,6 +101,12 @@ class Wapper
         return '';
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $pair
+     * @return void
+     */
     public static function extend($pair)
     {
         static::$displayerMap = array_merge(static::$displayerMap, $pair);
@@ -93,12 +117,23 @@ class Wapper
         return static::$displayerMap;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
     public static function getUsing()
     {
         return static::$using;
     }
 
-    public static function setdefaultFieldClass($pair)
+    /**
+     * Undocumented function
+     *
+     * @param array $pair
+     * @return void
+     */
+    public static function setDefaultFieldClass($pair)
     {
         static::$defaultFieldClass = array_merge(static::$defaultFieldClass, $pair);
     }

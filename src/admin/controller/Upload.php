@@ -350,13 +350,7 @@ class Upload extends Controller
 
         $col = imagecolorallocatealpha($img, 255, 255, 255, 0);
 
-        $font_size = 20;
-
-        $ttfPath = Module::getInstance()->getRoot() . '/assets/f.ttf';
-
-        $text_info = $this->get_text_info($font_size, 0, $ttfPath, $type);
-
-        imagettftext($img, $font_size, 0, (100 - $text_info['w']) / 2, 60, $col, $ttfPath, $type);
+        imagestring($img, 5, 35, 40, $type, $col);
 
         ob_start();
         // 输出图像
@@ -365,24 +359,6 @@ class Upload extends Controller
         imagedestroy($img);
 
         return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
-    }
-
-    private function get_text_info($size, $angle, $font, $text)
-    {
-        //获取文字信息
-        $info = imagettfbbox($size, $angle, $font, $text);
-        $minx = min($info[0], $info[2], $info[4], $info[6]);
-        $maxx = max($info[0], $info[2], $info[4], $info[6]);
-        $miny = min($info[1], $info[3], $info[5], $info[7]);
-        $maxy = max($info[1], $info[3], $info[5], $info[7]);
-
-        /* 计算文字初始坐标和尺寸 */
-        return array(
-            'x' => $minx,
-            'y' => abs($miny),
-            'w' => $maxx - $minx,
-            'h' => $maxy - $miny,
-        );
     }
 
     private function hsv2rgb($h, $s, $v)

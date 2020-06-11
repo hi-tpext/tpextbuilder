@@ -333,7 +333,7 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array
+     * @param array $val
      * @return $this
      */
     public function setHeaders($val)
