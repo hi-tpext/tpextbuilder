@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'layer_size' => '1000px,98%',
+    'layer_size' => '1100px,98%',
     'allow_suffix' =>
     //
     "jpg,jpeg,gif,wbmp,webpg,png,bmp,ico" .

@@ -223,7 +223,8 @@ class Field implements Fillable
      * @param string|int|mixed $val
      * @return $this
      */
-    function default($val = '')
+    function
+    default($val = '')
     {
         $this->default = $val;
         return $this;
@@ -529,7 +530,11 @@ class Field implements Fillable
      */
     public function fullSize($labelMin = 3)
     {
-        $this->size = [$labelMin, 12 - $labelMin];
+        if (empty($this->size) || (is_numeric($this->size[0]) && is_numeric($this->size[1]))) {
+            
+            $this->size = [$labelMin, 12 - $labelMin];
+        }
+
         return $this;
     }
 

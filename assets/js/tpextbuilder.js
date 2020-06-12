@@ -490,7 +490,7 @@ window.chooseFile = function (id, $input_file_name, size) {
         title: '选择文件',
         shadeClose: false,
         shade: 0.3,
-        area: size || ['90%', '90%'],
+        area: size || ['98%', '90%'],
         content: '/tpextbuilder/admin/attachment/index/choose/1/id/' + id + '/limit/' + jsOptions.fileNumLimit + '/ext/' + jsOptions.ext.join(','),
         end: function () {
             window.refreshFiles(jsOptions, $file_list, $('#' + id));

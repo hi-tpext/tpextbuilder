@@ -7,6 +7,7 @@ use tpext\builder\common\model\Attachment as AttachmentModel;
 use tpext\builder\traits\actions\HasAutopost;
 use tpext\builder\traits\actions\HasBase;
 use tpext\builder\traits\actions\HasIndex;
+use tpext\builder\common\Module;
 
 class Attachment extends Controller
 {
@@ -45,10 +46,8 @@ class Attachment extends Controller
             $where[] = ['suffix', 'in', explode(',', $ext)];
         }
 
-        $admin_id = $ext = input('admin_id/d');
-
-        if ($admin_id) {
-            $where[] = ['admin_id', 'eq', $admin_id];
+        if (!empty($searchData['suffix'])) {
+            $where[] = ['suffix', 'in', $searchData['suffix']];
         }
 
         return $where;
@@ -63,8 +62,25 @@ class Attachment extends Controller
     {
         $search = $this->search;
 
-        $search->text('name', '文件名', 4)->maxlength(55);
-        $search->text('url', 'url链接', 4)->maxlength(200);
+        $search->text('name', '文件名', 4, 'col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->labelClass('col-xs-4')->maxlength(55);
+        $search->text('url', 'url链接', 4, 'col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->maxlength(200);
+
+        $exts = [];
+        $arr = [];
+
+        $ext = input('ext');
+        if ($ext) {
+            $arr =  explode(',', $ext);
+        } else {
+            $config = Module::getInstance()->getConfig();
+            $arr =  explode(',', $config['allow_suffix']);
+        }
+
+        foreach ($arr as $a) {
+            $exts[$a] = $a;
+        }
+
+        $search->multipleSelect('suffix', '后缀', 4, 'col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->labelClass('col-xs-4')->options($exts);
     }
     /**
      * 构建表格
