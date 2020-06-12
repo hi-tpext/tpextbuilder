@@ -283,12 +283,9 @@ window.renderFiles = function () {
                     $btn.removeClass('btn-link-pic');
                     $btn.attr('target', '_blank');
                     $img.attr('src', '/index.php/tpextbuilder/admin/upload/ext/type/' + href.replace(/.+?\.(\w+)$/, '$1'));
-                } else {
-                    
                 }
                 $img.css({
                     'display': 'block',
-                    'max-height': 'auto',
                     'max-width': thumbnailWidth + 'px',
                     'margin': '0 auto'
                 }).parent('div').css({
@@ -298,6 +295,7 @@ window.renderFiles = function () {
             }
         });
 
+
         if (jsOptions.canUpload) {
 
             $file_list_upli.css({
@@ -306,11 +304,6 @@ window.renderFiles = function () {
                 'padding-left': '10px',
                 'display': 'block',
             });
-
-            $('#picker_' + $input_file_name).find('.pic-add').css({
-                'height': thumbnailHeight + 'px',
-                'width': thumbnailWidth + 'px'
-            })
 
             var uploader = WebUploader.create({
                 auto: true,
@@ -354,7 +347,7 @@ window.renderFiles = function () {
             uploader.on('fileQueued', function (file) {
                 var $li = $('<li class="pic-item" id="' + file.id + '">' +
                     '  <figure>' +
-                    '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
+                    '<div>' +
                     '    <img>' +
                     '</div>' +
                     '    <figcaption>' +
@@ -377,9 +370,11 @@ window.renderFiles = function () {
                     $img.attr('src', src);
                     $img.css({
                         'display': 'block',
-                        'min-height': 'auto',
                         'max-width': thumbnailWidth + 'px',
                         'margin': '0 auto'
+                    }).parent('div').css({
+                        'height': thumbnailHeight + 'px',
+                        'width': thumbnailWidth + 'px',
                     });
                 }, thumbnailWidth, thumbnailHeight);
                 $('<div class="progress progress-sm"><div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div></div>').appendTo($li);
@@ -479,6 +474,73 @@ window.renderFiles = function () {
         });
     });
 };
+
+window.chooseFile = function (id, $input_file_name, size) {
+    var jsOptions = window.uploadConfigs[$input_file_name];
+
+    var $file_list = $('#file_list_' + $input_file_name);
+
+    if (jsOptions.fileNumLimit > 1 && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
+        lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
+        return false;
+    }
+
+    layer.open({
+        type: 2,
+        title: '选择文件',
+        shadeClose: false,
+        shade: 0.3,
+        area: size || ['90%', '90%'],
+        content: '/tpextbuilder/admin/attachment/index/choose/1/id/' + id + '/limit/' + jsOptions.fileNumLimit + '/ext/' + jsOptions.ext.join(','),
+        end: function () {
+            window.refreshFiles(jsOptions, $file_list, $('#' + id));
+        }
+    });
+};
+
+window.refreshFiles = function (jsOptions, $file_list, $input_file) {
+
+    var ratio = window.devicePixelRatio || 1;
+    var thumbnailWidth = (jsOptions.thumbnailWidth || 165) * ratio;
+    var thumbnailHeight = (jsOptions.thumbnailHeight || 110) * ratio;
+
+    var filesArr = $input_file.val().split(',');
+
+    $file_list.find('li.pic-item').remove();
+
+    for (var i in filesArr) {
+        var src = filesArr[i];
+        var $li = $('<li class="pic-item" id="fild' + i + '">' +
+            '  <figure>' +
+            '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
+            '    <img class="preview-img" />' +
+            '</div>' +
+            '    <figcaption>' +
+            '      <a class="btn btn-xs btn-round btn-square btn-primary btn-link-pic" href="' + src + '"><i class="mdi mdi-eye"></i></a>' +
+            '      <a class="btn btn-xs btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
+            '    </figcaption>' +
+            '  </figure>' +
+            '</li>');
+        var $img = $li.find('img');
+        var $btn = $li.find('a.btn-link-pic');
+        $file_list.append($li);
+        if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src) && error) {
+            src = '/index.php/tpextbuilder/admin/upload/ext/type/' + src.replace(/.+?\.(\w+)$/, '$1');
+            $img.addClass('cantpreview');
+            $btn.removeClass('btn-link-pic');
+            $btn.attr('target', '_blank');
+        }
+        $img.attr('src', src);
+        $img.css({
+            'display': 'block',
+            'max-width': thumbnailWidth + 'px',
+            'margin': '0 auto'
+        }).parent('div').css({
+            'height': thumbnailHeight + 'px',
+            'width': thumbnailWidth + 'px',
+        });
+    }
+}
 
 $(function () {
     //动态选择框，上下级选中状态变化

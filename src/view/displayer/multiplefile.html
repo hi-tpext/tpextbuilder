@@ -1,5 +1,5 @@
 {include file="$labeltempl" /}
-<div class="col-md-{$size[1]}">
+<div class="col-md-{$size[1]} ">
     <div class="js-upload-files" data-name="{$name}">
         {if condition="$canUpload"}
         <div class="input-group col-md-12">
@@ -7,14 +7,20 @@
             <input type="text" class="form-control {$class} file-url-input"
                 placeholder="{$placeholder|default='请上传'.$label}" value="{$value}" name="{$name}" id="{$id}"
                 {$attr|raw}>
-            {else/}
-            <input type="hidden" class="form-control {$class} file-url-input" value="{$value}" name="{$name}" id="{$id}"
+            {/if}
+            <span title="点击上传新文件" class="input-group-addon opt-btn" onclick="$('#picker_{$name} .webuploader-element-invisible').trigger('click')"><i class="mdi mdi-folder-open"></i>上传</span>
+            {if condition="$showChooseBtn"}
+            <span title="点击选择已经上传的文件" class="input-group-addon opt-btn" onclick="chooseFile('{$id}' ,'{$name}')"><i class="mdi mdi mdi-file-find"></i>选择</span>
+            {/if}
+            {if condition="!$showInput"}
+            <input type="text" class="form-control {$class} file-url-input pull-right" style="visibility: hidden;"
+                placeholder="{$placeholder|default='请上传'.$label}" value="{$value}" name="{$name}" id="{$id}"
                 {$attr|raw}>
             {/if}
+            <div style="display: none;"><a id="picker_{$name}"></a></div>
         </div>
         {/if}
-        <ul id="file_list_{$name}" class="pull-left list-inline clearfix
-            lyear-uploads-pic">
+        <ul id="file_list_{$name}" class="pull-left list-inline lyear-uploads-pic">
             {volist name="files" id="file"}
             <li class="pic-item" id="flie{$key}">
                 <figure>
@@ -34,15 +40,6 @@
             </li>
             {/volist}
         </ul>
-        {if condition="$canUpload"}
-        <ul class="list-inline clearfix lyear-uploads-pic">
-            <li class="pic-item">
-                <div id="picker_{$name}">
-                    <a class="pic-add" title="点击上传"></a>
-                </div>
-            </li>
-        </ul>
-        {/if}
     </div>
     <script>
         var jsOptions = JSON.parse('{$jsOptions|json_encode|raw}')

@@ -221,3 +221,16 @@ td.row-file .lyear-uploads-pic li.pic-item
     margin: 0;
     padding: 0;
 }
+
+.js-upload-files
+{
+    display: block;
+    float: left;
+    width: 100%;
+    padding: 1px;
+}
+
+.js-upload-files .input-group-addon.opt-btn {
+   cursor: pointer;
+   padding: 6px 3px
+}

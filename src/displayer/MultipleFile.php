@@ -29,6 +29,8 @@ class MultipleFile extends Field
 
     protected $showInput = true;
 
+    protected $showChooseBtn = true;
+
     protected $files = [];
 
     protected $jsOptions = [
@@ -46,7 +48,8 @@ class MultipleFile extends Field
             //
             "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md",
             //
-            "xml", "json"],
+            "xml", "json"
+        ],
         'multiple' => true,
         'mimeTypes' => '*/*',
         'swf_url' => '/assets/tpextbuilder/js/webuploader/Uploader.swf',
@@ -71,7 +74,9 @@ class MultipleFile extends Field
      * @param array $val
      * @return $this
      */
-    function default($val = []) {
+    function
+    default($val = [])
+    {
         $this->default = $val;
         return $this;
     }
@@ -102,6 +107,18 @@ class MultipleFile extends Field
 
     /**
      * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function showChooseBtn($val)
+    {
+        $this->showChooseBtn = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
      * fileNumLimit
      * @param int $val
      * @return $this
@@ -109,6 +126,73 @@ class MultipleFile extends Field
     public function limit($val)
     {
         $this->jsOptions['fileNumLimit'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function smallSize()
+    {
+        $this->jsOptions['thumbnailWidth'] = 50;
+        $this->jsOptions['thumbnailHeight'] = 50;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function mediumSize()
+    {
+        $this->jsOptions['thumbnailWidth'] = 120;
+        $this->jsOptions['thumbnailHeight'] = 120;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function bigSize()
+    {
+        $this->jsOptions['thumbnailWidth'] = 240;
+        $this->jsOptions['thumbnailHeight'] = 240;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function largeSize()
+    {
+        $this->jsOptions['thumbnailWidth'] = 480;
+        $this->jsOptions['thumbnailHeight'] = 480;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $w
+     * @param integer $h
+     * @return $this
+     */
+    public function thumbSize($w, $h)
+    {
+        $this->jsOptions['thumbnailWidth'] = $w;
+        $this->jsOptions['thumbnailHeight'] = $h;
+
         return $this;
     }
 
@@ -126,7 +210,9 @@ class MultipleFile extends Field
 
     public function render()
     {
-        if (!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url'])) {
+        $this->canUpload = !$this->readonly && $this->canUpload && empty($this->extKey);
+
+        if ($this->canUpload && (!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url']))) {
             $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
             session('uploadtoken', $token);
@@ -142,11 +228,13 @@ class MultipleFile extends Field
             $this->files = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 
-        $this->jsOptions['canUpload'] = !$this->readonly && $this->canUpload && empty($this->extKey);
+        $this->jsOptions['canUpload'] = $this->canUpload;
+
         $vars = array_merge($vars, [
             'jsOptions' => $this->jsOptions,
-            'canUpload' => !$this->readonly && $this->canUpload && empty($this->extKey),
-            'showInput' => !$this->readonly && $this->showInput && empty($this->extKey),
+            'canUpload' => $this->canUpload,
+            'showInput' => $this->showInput,
+            'showChooseBtn' => $this->showChooseBtn,
             'files' => $this->files,
         ]);
 

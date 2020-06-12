@@ -19,6 +19,6 @@ class Module extends baseModule
     protected $assets = 'assets';
 
     protected $modules = [
-        'admin' => ['upload', 'import'],
+        'admin' => ['upload', 'import', 'attachment'],
     ];
 }
