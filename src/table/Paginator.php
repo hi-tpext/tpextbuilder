@@ -33,6 +33,7 @@ class Paginator extends Bootstrap
         $this->currentPage = $this->setCurrentPage($this->currentPage);
         $this->hasMore = $this->currentPage < $this->lastPage;
     }
+
     /**
      * Undocumented function
      *
@@ -87,6 +88,11 @@ class Paginator extends Bootstrap
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     public function getClass()
     {
         if (!$this->class) {
@@ -96,6 +102,11 @@ class Paginator extends Bootstrap
         return $this->class;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return mixed
+     */
     public function render()
     {
         if (!$this->total) {
@@ -114,6 +125,9 @@ class Paginator extends Bootstrap
             $b = $a - 1 + $this->items->count();
             if ($this->total != $this->items->count()) {
                 $html = "<span class='pagination-summary'>共{$this->total}条记录，当前显示{$a}~{$b}条记录</span>" . $html;
+                if ($this->lastPage > 1) {
+                    $html .= "<ul class='pagination pagination-sm'><li><a data-last='{$this->lastPage}' class='goto-page'>&nbsp;&nbsp;输入&nbsp;&nbsp;</a></li></ul>";
+                }
             } else {
                 $html = "<span class='pagination-summary'>共{$this->total}条记录</span>" . $html;
             }

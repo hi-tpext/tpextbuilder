@@ -350,7 +350,7 @@ class Upload extends Controller
 
         $col = imagecolorallocatealpha($img, 255, 255, 255, 0);
 
-        imagestring($img, 5, 35, 40, $type, $col);
+        imagestring($img, 5, strlen($type) > 3 ? 30 : 35, 40, $type, $col);
 
         ob_start();
         // 输出图像

@@ -260,11 +260,45 @@ class Search extends SWrapper implements Renderable
         $extKey = '-' . $this->tableId;
 
         $script = <<<EOT
-        $('body').on('click', '#{$this->tableId} ul.pagination li a', function(){
+        $('body').on('click', '#{$this->tableId} ul.pagination li a:not(.goto-page)', function(){
             var page = $(this).attr('href').replace(/.*\?page=(\d+).*/,'$1');
             $('#{$form} form input[name="__page__"]').val(page);
             window.__forms__['{$form}'].formSubmit();
             return false;
+        });
+
+        $('body').on('click', '#{$this->tableId} ul.pagination .goto-page', function(){
+            var last = $(this).data('last');
+            $.confirm({
+                title: '跳转页面',
+                content: '<div class="form-group">' +
+                '<input id="page-input" type="text" placeholder="请输入页码(1~' + last + ')" class="name form-control"/>' +
+                '</div>',
+                buttons: {
+                    formSubmit: {
+                        text: '跳转',
+                        btnClass: 'btn-success',
+                        action: function () {
+                            var page = $('#page-input').val().replace(/\D/,'');
+                            if(!page || page <1)
+                            {
+                                $.alert('输入有误');
+                                return false;
+                            }
+                            else if(page > last)
+                            {
+                                $.alert('页码不能超过:' + last);
+                                return false;
+                            }
+                            $('#{$form} form input[name="__page__"]').val(page);
+                            window.__forms__['{$form}'].formSubmit();
+                        }
+                    },
+                    cancel: {
+                        text: '取消'
+                    },
+                }
+            });
         });
 
         $('body').on('click', '#{$this->tableId} #dropdown-pagesize-div .dropdown-menu li a', function(){
