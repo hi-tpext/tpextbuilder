@@ -18,9 +18,9 @@ class Button extends Field
 
     protected $loading = false;
 
-    public function created()
+    public function created($fieldType = '')
     {
-        parent::created();
+        parent::created($fieldType);
 
         if (in_array($this->name, ['submit', 'reset'])) {
             $this->type = $this->name;

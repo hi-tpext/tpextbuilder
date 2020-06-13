@@ -25,9 +25,9 @@ class Items extends Field
      */
     protected $__items_content__;
 
-    public function created()
+    public function created($fieldType = '')
     {
-        parent::created();
+        parent::created($fieldType);
 
         $this->form = $this->getWrapper()->getForm();
         $this->__items_content__ = $this->form->createItems();

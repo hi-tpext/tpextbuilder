@@ -21,8 +21,10 @@ trait HasRow
 
     /**
      * Undocumented function
+     * @example 1 [int] 4 =>class="col-4"
+     * @example 2 [string] '4 xls-4' =>  class="col-4 xls-4"
      *
-     * @param int $val
+     * @param int|string $val
      * @return $this
      */
     public function cloSize($val)
@@ -34,7 +36,7 @@ trait HasRow
     /**
      * Undocumented function
      *
-     * @return string
+     * @return int|string
      */
     public function getColSize()
     {
@@ -93,6 +95,11 @@ trait HasRow
         return $this->displayer;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return mixed
+     */
     public function render()
     {
         return $this->displayer->render();
@@ -103,11 +110,18 @@ trait HasRow
         return $this->render();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $class
+     * @param array $arguments
+     * @return void
+     */
     public function createDisplayer($class, $arguments)
     {
         $displayer = new $class($arguments[0], $arguments[1]);
         $displayer->setWrapper($this);
-        $displayer->created();
+        $displayer->created($class);
 
         $this->displayer = $displayer;
 

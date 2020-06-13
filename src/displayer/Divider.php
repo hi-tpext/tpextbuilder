@@ -6,9 +6,9 @@ class Divider extends Field
 {
     protected $view = 'divider';
 
-    public function created()
+    public function created($fieldType = '')
     {
-        parent::created();
+        parent::created($fieldType);
 
         $this->value = $this->label ? $this->label : $this->name;
 

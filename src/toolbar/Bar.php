@@ -37,13 +37,13 @@ class Bar implements Renderable
         $this->class = 'btn-default';
     }
 
-    public function created()
+    public function created($barType = '')
     {
-        $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
+        $barType = $barType ? $barType : get_called_class();;
 
-        $fieldType = lcfirst($fieldType);
+        $barType = lcfirst($barType);
 
-        $defaultClass = Wapper::hasDefaultFieldClass($fieldType);
+        $defaultClass = Wapper::hasDefaultFieldClass($barType);
 
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;

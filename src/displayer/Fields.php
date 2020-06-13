@@ -27,9 +27,9 @@ class Fields extends Field
      */
     protected $__fields_content__;
 
-    public function created()
+    public function created($fieldType = '')
     {
-        parent::created();
+        parent::created($fieldType);
 
         $this->form = $this->getWapper()->getForm();
         $this->__fields_content__ = $this->form->createFields();

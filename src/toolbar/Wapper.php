@@ -23,11 +23,16 @@ class Wapper
     ];
 
     protected static $defaultFieldClass = [
-        'linkBtn' => 'btn-xs',
-        'actionBtn' => 'btn-xs',
-        'dropdownBtns' => 'btn-xs',
+        \tpext\builder\toolbar\LinkBtn::class => 'btn-xs',
+        \tpext\builder\toolbar\ActionBtn::class => 'btn-xs',
     ];
 
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @return boolean
+     */
     public static function isDisplayer($name)
     {
         if (empty(static::$displayers)) {
@@ -37,6 +42,13 @@ class Wapper
         return in_array($name, static::$displayers);
     }
 
+
+    /**
+     * Undocumented function
+     *
+     * @param string $type
+     * @return string
+     */
     public static function hasDefaultFieldClass($type)
     {
         if (isset(static::$defaultFieldClass[$type])) {
@@ -46,11 +58,23 @@ class Wapper
         return '';
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $pair
+     * @return void
+     */
     public static function extend($pair)
     {
         static::$displayerMap = array_merge(static::$displayerMap, $pair);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $pair
+     * @return void
+     */
     public static function setdefaultFieldClass($pair)
     {
         static::$defaultFieldClass = array_merge(static::$defaultFieldClass, $pair);

@@ -9,6 +9,7 @@ use tpext\builder\common\Module;
 use tpext\builder\common\Wapper;
 use tpext\builder\form\Fillable;
 use tpext\builder\traits\HasDom;
+use think\facade\Lang;
 
 class Field implements Fillable
 {
@@ -83,16 +84,16 @@ class Field implements Fillable
     public function __construct($name, $label = '')
     {
         if (empty($label)) {
-            $label = ucfirst($name);
+            $label = Lang::get(ucfirst($name));
         }
 
         $this->name = $name;
         $this->label = $label;
     }
 
-    public function created()
+    public function created($fieldType = '')
     {
-        $fieldType = preg_replace('/.+?\\\(\w+)$/', '$1', get_called_class());
+        $fieldType = $fieldType ? $fieldType : get_called_class();
 
         $fieldType = lcfirst($fieldType);
 
