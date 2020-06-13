@@ -423,17 +423,6 @@ class Field implements Fillable
 
     /**
      * Undocumented function
-     * @deprecated 1.6.1 使用getWrapper
-     * @see　getWrapper
-     * @return \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn
-     */
-    public function getWapper()
-    {
-        return $this->wrapper;
-    }
-
-    /**
-     * Undocumented function
      *
      * @return \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn
      */
@@ -532,7 +521,7 @@ class Field implements Fillable
     public function fullSize($labelMin = 3)
     {
         if (empty($this->size) || (is_numeric($this->size[0]) && is_numeric($this->size[1]))) {
-            
+
             $this->size = [$labelMin, 12 - $labelMin];
         }
 
@@ -779,5 +768,17 @@ EOT;
         ];
 
         return $vars;
+    }
+
+    public function __call($name, $arguments)
+    {
+        //兼容
+        if ($name == 'getWapper') {
+            \think\facade\Log::warning('getWapper:已弃用，使用getWrapper替换');
+            return $this->getWrapper();
+        } else if ($name == 'setWapper') {
+            \think\facade\Log::warning('setWapper:已弃用，使用setWrapper替换');
+            return $this->setWrapper($arguments[0]);
+        }
     }
 }

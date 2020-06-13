@@ -228,6 +228,8 @@ class MultipleFile extends Field
             $this->files = is_array($this->default) ? $this->default : explode(',', $this->default);
         }
 
+        $this->files = array_filter($this->files, 'strlen');
+
         $this->jsOptions['canUpload'] = $this->canUpload;
 
         $vars = array_merge($vars, [
