@@ -1,12 +1,23 @@
 <?php
+
 namespace tpext\builder\admin\controller;
 
 use think\Controller;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 
+/**
+ * Undocumented class
+ * @title 导入
+ */
 class Import extends Controller
 {
+    /**
+     * Undocumented function
+     *
+     * @title 上传文件弹窗
+     * @return mixed
+     */
     public function page()
     {
         $acceptedExts = input('acceptedExts', '');
@@ -57,6 +68,12 @@ class Import extends Controller
         return $this->fetch();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @title 上传成功
+     * @return mixed
+     */
     public function afterSuccess()
     {
         $builder = Builder::getInstance('提示');

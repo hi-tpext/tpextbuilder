@@ -8,8 +8,18 @@ use tpext\builder\common\Upload as UploadTool;
 
 /* 参照 Light-Year-Example 相关上传处理方式*/
 
+/**
+ * Undocumented class
+ * @title 上传
+ */
 class Upload extends Controller
 {
+    /**
+     * Undocumented function
+     *
+     * @title 上传文件
+     * @return mixed
+     */
     public function upfiles($type = '', $token = '')
     {
         if (empty($token)) {
@@ -88,6 +98,12 @@ class Upload extends Controller
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @title ueditor上传相关
+     * @return mixed
+     */
     public function ueditor($token = '')
     {
         if (empty($token)) {
@@ -163,6 +179,12 @@ class Upload extends Controller
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @title base64上传
+     * @return mixed
+     */
     public function base64()
     {
         $picdata = $_POST['picdata'];
@@ -182,6 +204,36 @@ class Upload extends Controller
             echo json_encode(['state' => 500, 'message' => '上传失败']);
             exit;
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @title 文件缩略图
+     * @return mixed
+     */
+    public function ext($type)
+    {
+        $img = imagecreate(100, 100);
+
+        $total = unpack('L', hash('adler32', $type, true))[1];
+        $hue = $total % 360;
+
+        list($r, $g, $b) = $this->hsv2rgb($hue / 360, 0.3, 0.9);
+
+        imagecolorallocate($img, $r, $g, $b);
+
+        $col = imagecolorallocatealpha($img, 255, 255, 255, 0);
+
+        imagestring($img, 5, strlen($type) > 3 ? 30 : 35, 40, $type, $col);
+
+        ob_start();
+        // 输出图像
+        imagepng($img);
+        $content = ob_get_clean();
+        imagedestroy($img);
+
+        return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
     }
 
     private function base64_image_content($base64_image_content, $path)
@@ -334,31 +386,6 @@ class Upload extends Controller
             }
         }
         return $files;
-    }
-
-
-    public function ext($type)
-    {
-        $img = imagecreate(100, 100);
-
-        $total = unpack('L', hash('adler32', $type, true))[1];
-        $hue = $total % 360;
-
-        list($r, $g, $b) = $this->hsv2rgb($hue / 360, 0.3, 0.9);
-
-        imagecolorallocate($img, $r, $g, $b);
-
-        $col = imagecolorallocatealpha($img, 255, 255, 255, 0);
-
-        imagestring($img, 5, strlen($type) > 3 ? 30 : 35, 40, $type, $col);
-
-        ob_start();
-        // 输出图像
-        imagepng($img);
-        $content = ob_get_clean();
-        imagedestroy($img);
-
-        return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
     }
 
     private function hsv2rgb($h, $s, $v)

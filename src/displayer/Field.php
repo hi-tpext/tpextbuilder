@@ -2,6 +2,7 @@
 
 namespace tpext\builder\displayer;
 
+use think\facade\Lang;
 use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
@@ -9,8 +10,10 @@ use tpext\builder\common\Module;
 use tpext\builder\common\Wapper;
 use tpext\builder\form\Fillable;
 use tpext\builder\traits\HasDom;
-use think\facade\Lang;
 
+/**
+ * Field class
+ */
 class Field implements Fillable
 {
     use HasDom;

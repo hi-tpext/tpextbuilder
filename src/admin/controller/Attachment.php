@@ -9,6 +9,10 @@ use tpext\builder\traits\actions\HasBase;
 use tpext\builder\traits\actions\HasIndex;
 use tpext\builder\common\Module;
 
+/**
+ * Undocumented class
+ * @title 文件管理
+ */
 class Attachment extends Controller
 {
     use HasBase;
@@ -126,6 +130,12 @@ class Attachment extends Controller
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @title 选中文件
+     * @return mixed
+     */
     public function choose($id, $limit)
     {
         $ids = input('post.ids/d', '0');
@@ -150,6 +160,12 @@ class Attachment extends Controller
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @title 上传成功
+     * @return mixed
+     */
     public function uploadSuccess()
     {
         $builder = $this->builder('上传成功');
