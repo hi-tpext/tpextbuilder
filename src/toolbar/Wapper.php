@@ -25,6 +25,7 @@ class Wapper
     protected static $defaultFieldClass = [
         \tpext\builder\toolbar\LinkBtn::class => 'btn-xs',
         \tpext\builder\toolbar\ActionBtn::class => 'btn-xs',
+        \tpext\builder\toolbar\DropdownBtns::class => 'btn-xs'
     ];
 
     /**

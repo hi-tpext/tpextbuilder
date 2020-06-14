@@ -62,6 +62,9 @@ class Icon extends Text
             console.error('字体图标配置加载失败');
         });
 
+        $('#{$inputId}').on('change',function(){
+            $('#{$inputId}-selected').text($(this).val());
+        });
 
 EOT;
         $this->script[] = $script;

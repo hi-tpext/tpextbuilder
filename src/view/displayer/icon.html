@@ -1,6 +1,6 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]}">
-    <input type="text" class="form-control {$class}" placeholder="{$placeholder|default='请选择'.$label}" value="{$value}" name="{$name}"
-        id="{$id}" {$attr|raw}>
+    <input type="hidden" class="form-control {$class}" placeholder="{$placeholder|default='请选择'.$label}" value="{$value}" name="{$name}"
+        id="{$id}" {$attr|raw}><span id="{$id}-selected" class="m-l-10 label label-default"></span>
     {include file="$helptempl" /}
 </div>

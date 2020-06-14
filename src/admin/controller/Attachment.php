@@ -62,13 +62,13 @@ class Attachment extends Controller
     {
         $search = $this->search;
 
-        $search->text('name', '文件名', 4, 'col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->labelClass('col-xs-4')->maxlength(55);
-        $search->text('url', 'url链接', 4, 'col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->maxlength(200);
+        $search->text('name', '文件名', '6 col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->maxlength(55);
+        $search->text('url', 'url链接', '6 col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->maxlength(200);
 
         $exts = [];
         $arr = [];
 
-        $ext = input('ext');
+        $ext = input('get.ext');
         if ($ext) {
             $arr =  explode(',', $ext);
         } else {
@@ -80,7 +80,7 @@ class Attachment extends Controller
             $exts[$a] = $a;
         }
 
-        $search->multipleSelect('suffix', '后缀', 4, 'col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->labelClass('col-xs-4')->options($exts);
+        $search->multipleSelect('suffix', '后缀', '6 col-xs-6')->size('4 col-xs-4', '8 col-xs-8')->options($exts);
     }
     /**
      * 构建表格
@@ -91,17 +91,19 @@ class Attachment extends Controller
     {
         $table = $this->table;
 
-        $choose = input('choose', 0);
+        $choose = input('get.choose', 0);
 
         $table->show('id', 'ID');
         $table->text('name', '文件名')->autoPost();
-        $table->show('mime', 'mime类型');
-        $table->show('size', '大小')->to('{val}MB');
-        $table->raw('url', '链接')->to('<a href="{val}" target="_blank">{val}</a>');
         $table->file('file', '文件')->thumbSize(50, 50);
-        $table->show('suffix', '后缀')->getWrapper()->addStyle('width:80px');
-        $table->show('storage', '位置');
+        if (!$choose) {
+            $table->show('mime', 'mime类型');
+            $table->show('size', '大小')->to('{val}MB');
+            $table->show('suffix', '后缀')->getWrapper()->addStyle('width:80px');
+            $table->show('storage', '位置');
+        }
 
+        $table->raw('url', '链接')->to('<a href="{val}" target="_blank">{val}</a>');
         $table->show('create_time', '添加时间')->getWrapper()->addStyle('width:160px');
 
         $table->getToolbar()

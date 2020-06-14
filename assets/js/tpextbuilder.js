@@ -236,7 +236,7 @@
             title: text,
             shadeClose: false,
             shade: 0.3,
-            area: size || ['90%', '90%'],
+            area: size || ['90%', '98%'],
             content: href
         });
 
@@ -377,7 +377,7 @@ window.renderFiles = function () {
                         'width': thumbnailWidth + 'px',
                     });
                 }, thumbnailWidth, thumbnailHeight);
-                $('<div class="progress progress-sm"><div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div></div>').appendTo($li);
+                $('<div class="progress progress-xs"><div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div></div>').appendTo($li);
             });
             uploader.on('uploadProgress', function (file, percentage) {
                 var $percent = $('#' + file.id).find('.progress-bar');
@@ -397,16 +397,22 @@ window.renderFiles = function () {
                         $input_file.val(response.picurl);
                     }
                 }
-                $('<div class="' + response.class + '"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.fileNumLimit + ')').appendTo($li.find('figure'));
+                $('<div class="' + response.class + ' upload-result"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.fileNumLimit + ')').appendTo($li.find('figure'));
                 if ($li.find('.cantpreview').size() > 0) {
                     $li.find('a.btn-link-pic').attr('href', response.picurl).removeClass('btn-link-pic').attr('target', '_blank');
                 } else {
                     $li.find('a.btn-link-pic').attr('href', response.picurl);
                 }
+                setTimeout(function () {
+                    $li.find('.upload-result').remove();
+                }, 3000);
             });
             uploader.on('uploadError', function (file) {
                 var $li = $('#' + file.id);
-                $('<div class="error">上传失败</div>').appendTo($li).find('figure');
+                $('<div class="error upload-result">上传失败</div>').appendTo($li).find('figure');
+                setTimeout(function () {
+                    $li.remove();
+                }, 3000);
             });
             uploader.on('error', function (type) {
                 switch (type) {
@@ -475,7 +481,7 @@ window.renderFiles = function () {
     });
 };
 
-window.chooseFile = function (id, $input_file_name, size) {
+window.chooseFile = function (id, $input_file_name) {
     var jsOptions = window.uploadConfigs[$input_file_name];
 
     var $file_list = $('#file_list_' + $input_file_name);
@@ -485,15 +491,23 @@ window.chooseFile = function (id, $input_file_name, size) {
         return false;
     }
 
+    var obj = $('#' + id);
+
+    var size = ['100%', '100%'];
+
+    if (obj.data('layer-size')) {
+        size = obj.data('layer-size').split(',');
+    }
+
     layer.open({
         type: 2,
-        title: '选择文件',
+        title: '文件选择',
         shadeClose: false,
         shade: 0.3,
-        area: size || ['98%', '90%'],
-        content: '/tpextbuilder/admin/attachment/index/choose/1/id/' + id + '/limit/' + jsOptions.fileNumLimit + '/ext/' + jsOptions.ext.join(','),
+        area: size,
+        content: '/tpextbuilder/admin/attachment/index?choose=1&id=' + id + '&limit=' + jsOptions.fileNumLimit + '&ext=' + jsOptions.ext.join(','),
         end: function () {
-            window.refreshFiles(jsOptions, $file_list, $('#' + id));
+            window.refreshFiles(jsOptions, $file_list, obj);
         }
     });
 };
