@@ -1,6 +1,6 @@
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]} clearfix">
-    <input type="hidden" name="{$name}" value="" {$attr|raw}>
+    <input type="hidden" name="{$name}[]" value="">
     <select class="form-control {$class}" name="{$name}[]" id="{$id}"
         multiple="multiple" {$attr|raw}>
         {if condition="$group"}
@@ -19,5 +19,6 @@
             {/volist}
         {/if}
     </select>
+    <input type="hidden" name="{$name}[]" value="">
     {include file="$helptempl" /}
 </div>
