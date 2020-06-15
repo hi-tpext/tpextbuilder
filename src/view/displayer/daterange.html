@@ -1,0 +1,12 @@
+{include file="$labeltempl" /}
+<div class="col-md-{$size[1]}">
+    <div class="input-group col-md-12" id="{$id}-piker">
+        {$befor|raw}
+        <input type="hidden" value="{$value}" name="{$name}" id="{$id}" {$attr|raw}>
+        <input class="form-control {$class}" type="text" id="{$id}-start" placeholder="从" {$attr|raw}>
+        <span class="input-group-addon"><i class="mdi mdi-minus"></i></span>
+        <input class="form-control {$class}" type="text" id="{$id}-end" placeholder="至" {$attr|raw}>
+        {$after|raw}
+    </div>
+    {include file="$helptempl" /}
+</div>

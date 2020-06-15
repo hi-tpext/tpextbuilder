@@ -14,7 +14,7 @@ class DateTimeRange extends Text
         '/assets/tpextbuilder/js/bootstrap-daterangepicker/daterangepicker.css',
     ];
 
-    protected $size = [2, 6];
+    protected $size = [2, 4];
 
     protected $format = 'YYYY-MM-DD HH:mm:ss';
 
@@ -22,7 +22,9 @@ class DateTimeRange extends Text
 
     protected $timePicker = true;
 
-    protected $separator = ' ~ ';
+    protected $separator = ',';
+
+    protected $timespan = '';
 
     protected $jsOptions = [
         'opens' => 'right',
@@ -81,24 +83,6 @@ class DateTimeRange extends Text
                 'separator' => $this->separator,
             ]);
 
-        $value = $this->renderValue();
-
-        if ($value) {
-            $values = explode($this->separator, $value);
-
-            if (count($values) == 2) {
-                $this->jsOptions['startDate'] = $values[0];
-                $this->jsOptions['endDate'] = $values[1];
-            }
-        } else {
-            if (!isset($this->jsOptions['startDate'])) {
-                $this->jsOptions['startDate'] = date('Y-m-d H:i:s', strtotime('-1 month'));
-            }
-            if (!isset($this->jsOptions['endDate'])) {
-                $this->jsOptions['endDate'] = date('Y-m-d H:i:s');
-            }
-        }
-
         $configs = json_encode($this->jsOptions);
 
         $configs = substr($configs, 1, strlen($configs) - 2);
@@ -129,14 +113,49 @@ EOT;
 
     /**
      * Undocumented function
-     * ' ~ '
+     * ','
      * @param string $val
      * @return $this
      */
-    public function separator($val = ' ~ ')
+    public function separator($val = ',')
     {
         $this->separator = $val;
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function timespan($val = 'Y-m-d H:i:s')
+    {
+        $this->timespan = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    protected function renderValue()
+    {
+        $value = parent::renderValue();
+
+        if ($this->timespan && $value) {
+            $arr = explode($this->separator, $value);
+            if (isset($arr[0]) && is_numeric($arr[0])) {
+                $arr[0] = date($this->timespan, $arr[0]);
+            }
+            if (isset($arr[1]) && is_numeric($arr[1])) {
+                $arr[1] = date($this->timespan, $arr[1]);
+            }
+            $value = implode($this->separator, $arr);
+        }
+
+        return $value;
     }
 
     public function beforRender()
