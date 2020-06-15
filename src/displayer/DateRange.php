@@ -27,7 +27,7 @@ class DateRange extends Text
 
     protected $jsOptions = [
         'weekStart' => 1,
-        'autoclose' => 'true',
+        'autoclose' => true,
         'language' => 'zh-CN'
     ];
 
