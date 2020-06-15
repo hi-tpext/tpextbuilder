@@ -10,6 +10,41 @@ class SwitchBtn extends Field
 
     protected $checked = '';
 
+    protected $pair = [1, 0];
+
+    /**
+     * Undocumented function
+     * @example 1 [1,0] / ['yes','no'] ...
+     * @param array $val
+     * @return $this
+     */
+    public function pair($val)
+    {
+        if (count($val) == 2) {
+            $this->pair = $val;
+        }
+
+        return $this;
+    }
+
+    protected function boxScript()
+    {
+        $inputId = $this->getId();
+
+        $script = <<<EOT
+
+        $('#{$inputId}').val($('#{$inputId}-box').is(':checked') ? '{$this->pair[0]}' : '{$this->pair[1]}');
+
+        $('#{$inputId}-box').on('change', function(){
+            $('#{$inputId}').val($('#{$inputId}-box').is(':checked') ? '{$this->pair[0]}' : '{$this->pair[1]}');
+        });
+
+EOT;
+        $this->script[] = $script;
+
+        return $script;
+    }
+
     public function render()
     {
         $vars = $this->commonVars();
@@ -27,5 +62,12 @@ class SwitchBtn extends Field
         $viewshow = $this->getViewInstance();
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function beforRender()
+    {
+        $this->boxScript();
+
+        return parent::beforRender();
     }
 }

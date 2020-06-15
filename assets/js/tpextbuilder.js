@@ -4,19 +4,34 @@
     tpextbuilder.autoPost = function (classname, url, refresh) {
 
         $('body').on('change', 'td.' + classname + ' :checkbox', function () {
-            var name = $(this).attr('name');
-            var values = [];
-            $('td.' + classname + " input[name='" + name + "']:checked").each(function (i, e) {
-                values.push($(e).val());
-            });
-            var val = values.join(',');
-            name = name.split('-')[0];
-            var dataid = $(this).parents('tr.table-row-id').data('id');
-            tpextbuilder.autoSendData({
-                id: dataid,
-                name: name,
-                value: val
-            }, url, refresh);
+            if ($(this).hasClass('switch-box')) {
+                var text = $(this).next('input[type="hidden"]');
+                var name = text.attr('name');
+                var val = text.val();
+                name = name.split('-')[0];
+                var dataid = $(this).parents('tr.table-row-id').data('id');
+                tpextbuilder.autoSendData({
+                    id: dataid,
+                    name: name,
+                    value: val
+                }, url, refresh);
+            }
+            else {
+                var name = $(this).attr('name');
+                var values = [];
+                $('td.' + classname + " input[name='" + name + "']:checked").each(function (i, e) {
+                    values.push($(e).val());
+                });
+                var val = values.join(',');
+                name = name.split('-')[0];
+                var dataid = $(this).parents('tr.table-row-id').data('id');
+                tpextbuilder.autoSendData({
+                    id: dataid,
+                    name: name,
+                    value: val
+                }, url, refresh);
+            }
+
         });
 
         $('body').on('change', 'td.' + classname + ' :radio', function () {
