@@ -33,11 +33,9 @@ class SwitchBtn extends Field
 
         $script = <<<EOT
 
-        $('#{$inputId}').val($('#{$inputId}-box').is(':checked') ? '{$this->pair[0]}' : '{$this->pair[1]}');
-
-        $('#{$inputId}-box').on('change', function(){
-            $('#{$inputId}').val($('#{$inputId}-box').is(':checked') ? '{$this->pair[0]}' : '{$this->pair[1]}');
-        });
+        $('#{$inputId}').next('label').find('input').on('change', function(){
+            $('#{$inputId}').val($(this).is(':checked') ? '{$this->pair[0]}' : '{$this->pair[1]}');
+        }).trigger('change');
 
 EOT;
         $this->script[] = $script;

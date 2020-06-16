@@ -205,13 +205,19 @@ class Items extends Field
            }
         });
         $("#{$id}-temple .item-field").each(function(i, obj){
-            if($(obj).hasClass('lyear-switch') || $(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
+            if($(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
             {
                 var boxes = $(obj).find('input');
                 boxes.each(function(){
                     $(this).attr('data-name', $(this).attr('name'));
                     $(this).removeAttr('name');
                 });
+            }
+            else if($(obj).hasClass('lyear-switch'))
+            {
+                var input = $(obj).prev('input');
+                $(input).attr('data-name', $(input).attr('name'));
+                $(input).removeAttr('name');
             }
             else
             {
@@ -225,7 +231,7 @@ class Items extends Field
 
         function reset(obj)
         {
-            if($(obj).hasClass('lyear-switch') || $(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
+            if($(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
             {
                 var boxes = $(obj).find('input');
                 boxes.each(function(){
@@ -233,6 +239,14 @@ class Items extends Field
                     $(this).removeAttr('name');
                     reset(this);
                 });
+                return;
+            }
+            else if($(obj).hasClass('lyear-switch'))
+            {
+                var input = $(obj).prev('input');
+                $(input).attr('data-name', $(input).attr('name'));
+                $(input).removeAttr('name');
+                reset(input);
                 return;
             }
             var name = $(obj).data('name');
@@ -243,7 +257,7 @@ class Items extends Field
             }
             id = id.replace('-no-init-script', '');
             var newid = id + '__new__' + i;
-            script = script.replace('#' + id, '#' + newid);
+            script = script.replace(new RegExp('#' + id,"gm"), '#' + newid);
             $(obj).attr('id', newid);
             name = name.replace(/(.+?)\[__new__\](.+?)/, '$1' + '[__new__' + i + ']$2');
             $(obj).attr('name', name);
@@ -272,7 +286,7 @@ class Items extends Field
                     $('body').append('<div class="hidden" id="script-div">' + '\<script\>' + script + '\</script\>' + '</div>');
                 }
             }
-            //console.log(script);
+            console.log(script);
             //复制出来的，需要对应的初始化脚本
         });
 
