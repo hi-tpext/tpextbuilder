@@ -5,7 +5,7 @@
 
         $('body').on('change', 'td.' + classname + ' :checkbox', function () {
             if ($(this).hasClass('switch-box')) {
-                var text = $(this).next('input[type="hidden"]');
+                var text = $(this).parent('label').prev('input[type="hidden"]');
                 var name = text.attr('name');
                 var val = text.val();
                 name = name.split('-')[0];

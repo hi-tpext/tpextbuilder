@@ -286,7 +286,7 @@ class Items extends Field
                     $('body').append('<div class="hidden" id="script-div">' + '\<script\>' + script + '\</script\>' + '</div>');
                 }
             }
-            console.log(script);
+            //console.log(script);
             //复制出来的，需要对应的初始化脚本
         });
 
