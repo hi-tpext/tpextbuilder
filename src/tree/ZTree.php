@@ -16,6 +16,8 @@ class ZTree implements Renderable
 
     protected $beforeClick = 'alert("未绑定`beforeClick`事件。点击了"+treeNode.id);';
 
+    protected $trigger = '';
+
     protected $id = 'the-tree';
 
     protected $partial = false;
@@ -105,6 +107,25 @@ class ZTree implements Renderable
     {
         $this->beforeClick = $script;
 
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $element
+     * @return $this;
+     */
+    public function trigger($element)
+    {
+        $this->trigger = $element;
+        $this->beforeClick = <<<EOT
+
+                    $('{$element}').val(treeNode.id);
+                    $('{$element}').trigger('change');
+                    $('.row-submit').trigger('click');
+
+EOT;
         return $this;
     }
 

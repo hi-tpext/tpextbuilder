@@ -250,6 +250,8 @@
             type: 2,
             title: text,
             shadeClose: false,
+            offset: 'b', //右下角弹出
+            maxmin: true,
             shade: 0.3,
             area: size || ['90%', '98%'],
             content: href
@@ -520,6 +522,7 @@ window.chooseFile = function (id, $input_file_name) {
         shadeClose: false,
         shade: 0.3,
         area: size,
+        offset: 't', //右下角弹出
         content: '/tpextbuilder/admin/attachment/index?choose=1&id=' + id + '&limit=' + jsOptions.fileNumLimit + '&ext=' + jsOptions.ext.join(','),
         end: function () {
             window.refreshFiles(jsOptions, $file_list, obj);
@@ -533,9 +536,13 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
     var thumbnailWidth = (jsOptions.thumbnailWidth || 165) * ratio;
     var thumbnailHeight = (jsOptions.thumbnailHeight || 110) * ratio;
 
-    var filesArr = $input_file.val().split(',');
-
     $file_list.find('li.pic-item').remove();
+
+    if ($input_file.val().trim() == '') {
+        return;
+    }
+
+    var filesArr = $input_file.val().split(',');
 
     for (var i in filesArr) {
         var src = filesArr[i];

@@ -159,8 +159,8 @@ class MultipleToolbar extends Toolbar
      */
     public function btnEnableAndDisable($enableTitle = '启用', $disableTitle = '禁用')
     {
-        $this->btnEnable()->getCurrent()->addAttr('title="' . $enableTitle . '"')->label($enableTitle);
-        $this->btnDisable()->getCurrent()->addAttr('title="' . $disableTitle . '"')->label($disableTitle);
+        $this->btnEnable()->getCurrent()->attr('title="' . $enableTitle . '"')->label($enableTitle);
+        $this->btnDisable()->getCurrent()->attr('title="' . $disableTitle . '"')->label($disableTitle);
 
         return $this;
     }

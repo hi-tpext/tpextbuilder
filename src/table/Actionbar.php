@@ -224,8 +224,8 @@ class Actionbar extends Toolbar
      */
     public function btnEnableAndDisable($enableTitle = '启用', $disableTitle = '禁用')
     {
-        $this->btnEnable()->getCurrent()->addAttr('title="' . $enableTitle . '"');
-        $this->btnDisable()->getCurrent()->addAttr('title="' . $disableTitle . '"');
+        $this->btnEnable()->getCurrent()->attr('title="' . $enableTitle . '"');
+        $this->btnDisable()->getCurrent()->attr('title="' . $disableTitle . '"');
 
         return $this;
     }
