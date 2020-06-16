@@ -5,16 +5,19 @@
 
         $('body').on('change', 'td.' + classname + ' :checkbox', function () {
             if ($(this).hasClass('switch-box')) {
-                var text = $(this).parent('label').prev('input[type="hidden"]');
-                var name = text.attr('name');
-                var val = text.val();
-                name = name.split('-')[0];
-                var dataid = $(this).parents('tr.table-row-id').data('id');
-                tpextbuilder.autoSendData({
-                    id: dataid,
-                    name: name,
-                    value: val
-                }, url, refresh);
+                var that = this;
+                setTimeout(function () {
+                    var text = $(that).parent('label').prev('input[type="hidden"]');
+                    var name = text.attr('name');
+                    var val = text.val();
+                    name = name.split('-')[0];
+                    var dataid = $(that).parents('tr.table-row-id').data('id');
+                    tpextbuilder.autoSendData({
+                        id: dataid,
+                        name: name,
+                        value: val
+                    }, url, refresh);
+                }, 100);
             }
             else {
                 var name = $(this).attr('name');
@@ -250,8 +253,8 @@
             type: 2,
             title: text,
             shadeClose: false,
-            offset: 'b', //右下角弹出
             maxmin: true,
+            anim: 5,    //渐显
             shade: 0.3,
             area: size || ['90%', '98%'],
             content: href
@@ -521,8 +524,8 @@ window.chooseFile = function (id, $input_file_name) {
         title: '文件选择',
         shadeClose: false,
         shade: 0.3,
+        anim: 2,    //从最底部往上滑入
         area: size,
-        offset: 't', //右下角弹出
         content: '/tpextbuilder/admin/attachment/index?choose=1&id=' + id + '&limit=' + jsOptions.fileNumLimit + '&ext=' + jsOptions.ext.join(','),
         end: function () {
             window.refreshFiles(jsOptions, $file_list, obj);
