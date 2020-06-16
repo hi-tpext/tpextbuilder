@@ -2,7 +2,7 @@
 <div class="col-md-{$size[1]}">
     <input type="hidden" name="{$name}" id="{$id}" {$attr|raw}>
     <label class="lyear-switch {$class}">
-        <input type="checkbox" class="switch-box" id="{$id}-box" {if condition="$checked" }checked{/if} {$attr|raw}>
+        <input type="checkbox" data-yes="{$pair[0]}" data-no="{$pair[1]}" class="switch-box" id="{$id}-box" {if condition="$checked" }checked{/if} {$attr|raw}>
         <span></span>
     </label>
     {include file="$helptempl" /}

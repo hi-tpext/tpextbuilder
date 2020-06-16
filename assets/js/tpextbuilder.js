@@ -5,19 +5,16 @@
 
         $('body').on('change', 'td.' + classname + ' :checkbox', function () {
             if ($(this).hasClass('switch-box')) {
-                var that = this;
-                setTimeout(function () {
-                    var text = $(that).parent('label').prev('input[type="hidden"]');
-                    var name = text.attr('name');
-                    var val = text.val();
-                    name = name.split('-')[0];
-                    var dataid = $(that).parents('tr.table-row-id').data('id');
-                    tpextbuilder.autoSendData({
-                        id: dataid,
-                        name: name,
-                        value: val
-                    }, url, refresh);
-                }, 100);
+                var text = $(this).parent('label').prev('input[type="hidden"]');
+                var name = text.attr('name');
+                var val = $(this).is(':checked') ? $(this).data('yes') : $(this).data('no');
+                name = name.split('-')[0];
+                var dataid = $(this).parents('tr.table-row-id').data('id');
+                tpextbuilder.autoSendData({
+                    id: dataid,
+                    name: name,
+                    value: val
+                }, url, refresh);
             }
             else {
                 var name = $(this).attr('name');

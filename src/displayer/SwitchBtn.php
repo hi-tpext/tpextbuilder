@@ -57,6 +57,7 @@ EOT;
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,
+            'pair' => $this->pair
         ]);
 
         $viewshow = $this->getViewInstance();
