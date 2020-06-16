@@ -10,6 +10,11 @@ trait HasAutopost
 {
     public function autopost()
     {
+        return $this->_autopost();
+    }
+
+    protected function _autopost()
+    {
         $id = input('post.id/d', '');
         $name = input('post.name', '');
         $value = input('post.value', '');

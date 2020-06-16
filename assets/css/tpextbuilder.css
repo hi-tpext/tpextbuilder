@@ -210,13 +210,13 @@ div.tagsinput {
     font-size: 12px;
 }
 
-td.row-file .lyear-uploads-pic
+td ul.lyear-uploads-pic
 {
     margin: 0;
     padding: 0;
 }
 
-td.row-file .lyear-uploads-pic li.pic-item
+td ul.lyear-uploads-pic li.pic-item
 {
     margin: 0;
     padding: 0;
