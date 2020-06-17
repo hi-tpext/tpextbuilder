@@ -97,6 +97,7 @@ class Import extends Controller
 
             \$builder = Builder::getInstance('出错了');
             \$builder->content()->display('&lt;p&gt;' . '未能读取文件:' . \$fileurl . '&lt;/p&gt;');
+            return \$builder->render();
         }
         </pre>
 

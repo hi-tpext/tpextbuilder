@@ -233,3 +233,8 @@ td ul.lyear-uploads-pic li.pic-item
 .js-upload-files .input-group-addon.opt-btn {
    cursor: pointer;
 }
+
+td .lyear-checkbox, td .lyear-radio
+{
+    padding-left: 15px;
+}

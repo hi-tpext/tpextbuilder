@@ -173,9 +173,7 @@ EOT;
 
         $builder->addScript($script);
 
-        $builder->addStyleSheet('.ztree li ul{
-            padding:0;
-        }
+        $builder->addStyleSheet('
         .ztree li a.curSelectedNode
         {
             color : green;
