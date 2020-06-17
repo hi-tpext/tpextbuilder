@@ -23,10 +23,6 @@ trait HasAutopost
             $this->error('参数有误');
         }
 
-        if ($name == $this->enableField) {
-            $value = $value ? 1 : 0;
-        }
-
         if (!empty($this->postAllowFields) && !in_array($name, $this->postAllowFields)) {
             $this->error('不允许的操作');
         }

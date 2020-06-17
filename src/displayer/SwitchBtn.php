@@ -14,15 +14,13 @@ class SwitchBtn extends Field
 
     /**
      * Undocumented function
-     * @example 1 [1,0] / ['yes','no'] ...
+     * @example 1 (1, 0) / ('yes', 'no') / ('on', 'off') etc...
      * @param array $val
      * @return $this
      */
-    public function pair($val)
+    public function pair($on = 1, $off = 0)
     {
-        if (count($val) == 2) {
-            $this->pair = $val;
-        }
+        $this->pair = [$on, $off];
 
         return $this;
     }

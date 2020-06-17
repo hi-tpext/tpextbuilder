@@ -7,7 +7,7 @@
             if ($(this).hasClass('switch-box')) {
                 var text = $(this).parent('label').prev('input[type="hidden"]');
                 var name = text.attr('name');
-                var val = $(this).is(':checked') ? $(this).data('yes') : $(this).data('no');
+                var val = $(this).is(':checked') ? $(this).data('on') : $(this).data('off');
                 name = name.split('-')[0];
                 var dataid = $(this).parents('tr.table-row-id').data('id');
                 tpextbuilder.autoSendData({
