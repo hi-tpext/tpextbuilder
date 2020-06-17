@@ -57,6 +57,7 @@ form.search-form .form-group {
 
 span.select2-container {
     min-width: 100%;
+    max-width: 100%;
 }
 
 form .form-control {
@@ -232,6 +233,8 @@ td ul.lyear-uploads-pic li.pic-item
 
 .js-upload-files .input-group-addon.opt-btn {
    cursor: pointer;
+   border: none;
+   border-right: 1px solid #ebebeb;
 }
 
 td .lyear-checkbox, td .lyear-radio

@@ -15,8 +15,9 @@ class WangEditor extends Field
     protected $jsOptions = [
         'uploadImgMaxSize' => 20 * 1024 * 1024,
         'uploadImgMaxLength' => 10,
-        'uploadImgTimeout' => 3000,
+        'uploadImgTimeout' => 30000,
         'uploadFileName' => 'file',
+        'zIndex' => 99
     ];
 
     /**
