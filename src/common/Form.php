@@ -65,7 +65,7 @@ class Form extends FWrapper implements Renderable
      *
      * @var FieldsContent
      */
-    protected $__fields_content__ = null;
+    protected $__tabs_content__ = null;
 
     /**
      * Undocumented variable
@@ -73,6 +73,13 @@ class Form extends FWrapper implements Renderable
      * @var FieldsContent
      */
     protected $__fields__ = null;
+
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    protected $__fields__bag__ = [];
 
     /**
      * Undocumented variable
@@ -220,8 +227,8 @@ class Form extends FWrapper implements Renderable
             $this->rows[] = $this->tab;
         }
 
-        $this->__fields_content__ = $this->tab->addFieldsContent($label, $active, $name);
-        $this->__fields_content__->setForm($this);
+        $this->__tabs_content__ = $this->tab->addFieldsContent($label, $active, $name);
+        $this->__tabs_content__->setForm($this);
         return $this->tab;
     }
 
@@ -251,8 +258,8 @@ class Form extends FWrapper implements Renderable
             $this->rows[] = $this->step;
         }
 
-        $this->__fields_content__ = $this->step->addFieldsContent($label, $description, $active, $name);
-        $this->__fields_content__->setForm($this);
+        $this->__tabs_content__ = $this->step->addFieldsContent($label, $description, $active, $name);
+        $this->__tabs_content__->setForm($this);
         return $this->step;
     }
 
@@ -265,6 +272,7 @@ class Form extends FWrapper implements Renderable
     {
         $this->__fields__ = new FieldsContent();
         $this->__fields__->setForm($this);
+        $this->__fields__bag__[] = $this->__fields__;
         return $this->__fields__;
     }
 
@@ -287,7 +295,8 @@ class Form extends FWrapper implements Renderable
      */
     public function fieldsEnd()
     {
-        $this->__fields__ = null;
+        array_pop($this->__fields__bag__);
+        $this->__fields__ = array_pop($this->__fields__bag__);
         return $this;
     }
 
@@ -309,7 +318,7 @@ class Form extends FWrapper implements Renderable
      */
     public function tabEnd()
     {
-        $this->__fields_content__ = null;
+        $this->__tabs_content__ = null;
 
         return $this;
     }
@@ -321,7 +330,7 @@ class Form extends FWrapper implements Renderable
      */
     public function stepEnd()
     {
-        $this->__fields_content__ = null;
+        $this->__tabs_content__ = null;
 
         return $this;
     }
@@ -334,7 +343,7 @@ class Form extends FWrapper implements Renderable
     public function allContentsEnd()
     {
         $this->__fields__ = null;
-        $this->__fields_content__ = null;
+        $this->__tabs_content__ = null;
         $this->__items__content = null;
         return $this;
     }
@@ -346,7 +355,7 @@ class Form extends FWrapper implements Renderable
      */
     public function getFieldsContent()
     {
-        return $this->__fields_content__;
+        return $this->__tabs_content__;
     }
 
     /**
@@ -607,9 +616,9 @@ EOT;
             } else if ($this->__items__) {
 
                 $this->__items__->addCol($arguments[0], $row);
-            } else if ($this->__fields_content__) {
+            } else if ($this->__tabs_content__) {
 
-                $this->__fields_content__->addRow($row);
+                $this->__tabs_content__->addRow($row);
             } else {
 
                 $this->rows[] = $row;

@@ -129,6 +129,8 @@ class Table extends TWrapper implements Renderable
     {
         $this->class = 'table-striped table-hover table-bordered';
         $this->id = input('__table__', 'the-table');
+
+        $this->emptyText = Module::config('table_empty_text');
     }
 
     /**
