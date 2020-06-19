@@ -27,7 +27,8 @@ trait HasAutopost
             $this->error('不允许的操作');
         }
 
-        $res = $this->dataModel->update([$name => $value], [$this->getPk() => $id]);
+        //单独修改一个字段，好多字段是未设置的，处理模型事件容易出错。不触发模型事件，不触发[update_time]修改
+        $res = $this->dataModel->where([$this->getPk() => $id])->update([$name => $value]);
 
         if ($res) {
             $this->success('修改成功');
