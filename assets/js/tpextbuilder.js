@@ -46,28 +46,38 @@
             }, url, refresh);
         });
 
-        $('body').on('blur', 'td.' + classname + ' input[type="text"]', function () {
-            var name = $(this).attr('name');
-            var val = $(this).val();
-            name = name.split('-')[0];
-            var dataid = $(this).parents('tr.table-row-id').data('id');
-            tpextbuilder.autoSendData({
-                id: dataid,
-                name: name,
-                value: val
-            }, url, refresh);
+        var timer = null;
+
+        $('body').on('change', 'td.' + classname + ' input[type="text"]', function () {
+            clearTimeout(timer);
+            var that = this;
+            timer = setTimeout(function () {
+                var name = $(that).attr('name');
+                var val = $(that).val();
+                name = name.split('-')[0];
+                var dataid = $(that).parents('tr.table-row-id').data('id');
+                tpextbuilder.autoSendData({
+                    id: dataid,
+                    name: name,
+                    value: val
+                }, url, refresh);
+            }, 200);
         });
 
         $('body').on('blur', 'td.' + classname + ' textarea', function () {
-            var name = $(this).attr('name');
-            var val = $(this).val();
-            name = name.split('-')[0];
-            var dataid = $(this).parents('tr.table-row-id').data('id');
-            tpextbuilder.autoSendData({
-                id: dataid,
-                name: name,
-                value: val
-            }, url, refresh);
+            clearTimeout(timer);
+            var that = this;
+            timer = setTimeout(function () {
+                var name = $(that).attr('name');
+                var val = $(that).val();
+                name = name.split('-')[0];
+                var dataid = $(that).parents('tr.table-row-id').data('id');
+                tpextbuilder.autoSendData({
+                    id: dataid,
+                    name: name,
+                    value: val
+                }, url, refresh);
+            }, 200);
         });
 
         $('body').on('change', 'td.' + classname + ' select', function () {
@@ -650,6 +660,11 @@ $(function () {
             parent.layer.close(index);
         }
     });
+
+    $(".form-control.readonly").attr('readonly', 'readonly');
+    $(".form-control.disabled").attr('disabled', 'disabled');
+    $(".form-control.not-readonly").removeAttr('readonly');
+    $(".form-control.not-disabled").removeAttr('disabled')
 
     window.renderFiles();
 });

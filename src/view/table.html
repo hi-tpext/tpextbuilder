@@ -113,6 +113,10 @@
             if (window.renderFiles) {
                 window.renderFiles();
             }
+            $("table .form-control.readonly").attr('readonly', 'readonly');
+            $("table .form-control.disabled").attr('disabled', 'disabled');
+            $("table .form-control.not-readonly").removeAttr('readonly');
+            $("table .form-control.not-disabled").removeAttr('disabled')
         }
     </script>
 </div>
