@@ -267,10 +267,6 @@ class ItemsContent extends FWrapper
                     ->addAttr('data-label="' . $colunm->getLabel() . '"')
                     ->beforRender();
 
-                if ($displayer->isRequired()) {
-                    $this->headers[$col] = $displayer->getLabel() . '<strong title="必填" class="field-required">*</strong>';
-                }
-
                 $this->list[$key][$col] = [
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
@@ -281,7 +277,7 @@ class ItemsContent extends FWrapper
             }
         }
 
-        foreach ($this->cols as $colunm) {
+        foreach ($this->cols as $key => $colunm) {
             if (!$colunm instanceof FRow) {
                 continue;
             }
@@ -290,6 +286,11 @@ class ItemsContent extends FWrapper
             $displayer->clearScript();
 
             $isRequired = $displayer->isRequired();
+
+            if ($isRequired) {
+                $this->headers[$key] = $displayer->getLabel() . '<strong title="必填" class="field-required">*</strong>';
+            }
+
             $displayer->required(false);
 
             $displayer

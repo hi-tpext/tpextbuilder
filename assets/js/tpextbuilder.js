@@ -379,9 +379,10 @@ window.renderFiles = function () {
                     $file_list.find('li.pic-item').remove();
                 }
                 $file_list.append($li);
+                console.log(file);
                 uploader.makeThumb(file, function (error, src) {
-                    if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src) && error) {
-                        src = '/index.php/tpextbuilder/admin/upload/ext/type/' + src.replace(/.+?\.(\w+)$/, '$1');
+                    if (!/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(file.ext) && error) {
+                        src = '/index.php/tpextbuilder/admin/upload/ext/type/' + file.ext;
                         $img.addClass('cantpreview');
                     }
                     $img.attr('src', src);
@@ -510,7 +511,7 @@ window.chooseFile = function (id, $input_file_name) {
 
     var obj = $('#' + id);
 
-    var size = ['100%', '100%'];
+    var size = ['98%', '98%'];
 
     if (obj.data('layer-size')) {
         size = obj.data('layer-size').split(',');

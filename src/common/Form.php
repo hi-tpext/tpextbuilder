@@ -270,9 +270,12 @@ class Form extends FWrapper implements Renderable
      */
     public function createFields()
     {
+        if($this->__fields__)
+        {
+            $this->__fields__bag__[] = $this->__fields__;
+        }
         $this->__fields__ = new FieldsContent();
         $this->__fields__->setForm($this);
-        $this->__fields__bag__[] = $this->__fields__;
         return $this->__fields__;
     }
 
@@ -295,7 +298,6 @@ class Form extends FWrapper implements Renderable
      */
     public function fieldsEnd()
     {
-        array_pop($this->__fields__bag__);
         $this->__fields__ = array_pop($this->__fields__bag__);
         return $this;
     }
@@ -353,7 +355,7 @@ class Form extends FWrapper implements Renderable
      *
      * @return FieldsContent
      */
-    public function getFieldsContent()
+    public function getTabsContent()
     {
         return $this->__tabs_content__;
     }

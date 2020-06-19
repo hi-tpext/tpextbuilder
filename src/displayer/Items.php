@@ -186,7 +186,7 @@ class Items extends Field
         $id = 'items-' . $this->name;
 
         $script = <<<EOT
-        $(document).on('click', "#{$id} .row-__action__ a.action-delete", function () {
+        $(document).on('click', "#{$id} .row-__action__ span.action-delete", function () {
            var del = $(this).prev('input').val();
            if(del === '0') {
                 $(this).prev('input').val(1);

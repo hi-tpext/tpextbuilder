@@ -241,3 +241,22 @@ td .lyear-checkbox, td .lyear-radio
 {
     padding-left: 15px;
 }
+
+.tree-div
+{
+    position: relative;
+    border-right: 1px solid #ebebeb;
+    width: 100%;
+    overflow: hidden;
+    min-height: 600px;
+    padding: 0;
+    margin: 0;
+    top: -15px;
+}
+
+.tree-div .hide-left
+{
+    float: right;
+    cursor: pointer;
+    color: #999;
+}

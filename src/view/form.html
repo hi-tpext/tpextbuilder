@@ -81,6 +81,12 @@
                                         that.closeLayerGo(data.msg || data.message || '操作失败！', data
                                             .layer_close_go, 'danger');
                                     }
+                                    else if (data.url) {
+                                        lightyear.notify(data.msg || data.message || '操作失败', 'danger');
+                                        setTimeout(function () {
+                                            location.replace(data.url);
+                                        }, data.wait * 1000 || 2000);
+                                    }
                                     else {
                                         lightyear.notify(data.msg || data.message || '操作失败', 'danger');
                                     }

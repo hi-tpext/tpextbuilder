@@ -69,7 +69,7 @@ class Step implements Renderable
         }
 
         $content = new FieldsContent();
-        $this->content[] = $content;
+        $this->__fields_contents__[] = $content;
 
         $this->rows[$name] = ['content' => $content, 'description' => $description, 'active' => ''];
         $this->labels[$name] = ['content' => $label, 'active' => ''];

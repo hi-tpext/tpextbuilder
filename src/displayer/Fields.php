@@ -31,7 +31,7 @@ class Fields extends Field
     {
         parent::created($fieldType);
 
-        $this->form = $this->getWapper()->getForm();
+        $this->form = $this->getWrapper()->getForm();
         $this->__fields_content__ = $this->form->createFields();
 
         return $this;
