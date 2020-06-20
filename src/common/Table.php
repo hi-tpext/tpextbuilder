@@ -12,6 +12,7 @@ use tpext\builder\table\TColumn;
 use tpext\builder\table\TWrapper;
 use tpext\builder\toolbar\DropdownBtns;
 use tpext\builder\traits\HasDom;
+use tpext\common\ExtLoader;
 
 /**
  * Table class
@@ -541,6 +542,9 @@ class Table extends TWrapper implements Renderable
      */
     public function beforRender()
     {
+
+        ExtLoader::trigger('tpext_table_befor_render', $this);
+
         $this->initData();
 
         Builder::getInstance()->addJs($this->js);
@@ -566,6 +570,8 @@ class Table extends TWrapper implements Renderable
 
     protected function initData()
     {
+        ExtLoader::trigger('tpext_table_init_data', $this);
+
         $this->list = [];
 
         $pk = $this->pk;

@@ -7,6 +7,7 @@ use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
+use tpext\common\ExtLoader;
 
 class Bar implements Renderable
 {
@@ -37,9 +38,15 @@ class Bar implements Renderable
         $this->class = 'btn-default';
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $fieldType
+     * @return $this
+     */
     public function created($barType = '')
     {
-        $barType = $barType ? $barType : get_called_class();;
+        $barType = $barType ? $barType : get_called_class();
 
         $barType = lcfirst($barType);
 
@@ -48,6 +55,10 @@ class Bar implements Renderable
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;
         }
+
+        ExtLoader::trigger('tpext_bar_created', $this);
+
+        return $this;
     }
 
     /**
@@ -165,6 +176,8 @@ class Bar implements Renderable
             Builder::getInstance()->addScript($this->script);
         }
 
+        ExtLoader::trigger('tpext_bar_befor_render', $this);
+
         return $this;
     }
 
@@ -197,7 +210,7 @@ class Bar implements Renderable
         $this->useLayer = $this->useLayer && !empty($this->href) && !preg_match('/javascript:.*/i', $this->href) && !preg_match('/^#.*/i', $this->href);
 
         if (empty($this->layerSize)) {
-            $config =   Module::getInstance()->getConfig();
+            $config = Module::getInstance()->getConfig();
             $this->layerSize = $config['layer_size'];
         }
 
@@ -213,7 +226,7 @@ class Bar implements Renderable
             'href' => empty($this->__href__) ? $this->href : $this->__href__,
             'icon' => $this->icon,
             'attr' => $this->getAttrWithStyle(),
-            'useLayer' => $this->useLayer
+            'useLayer' => $this->useLayer,
         ];
 
         return $vars;

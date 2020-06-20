@@ -10,6 +10,7 @@ use tpext\builder\common\Module;
 use tpext\builder\common\Wapper;
 use tpext\builder\form\Fillable;
 use tpext\builder\traits\HasDom;
+use tpext\common\ExtLoader;
 
 /**
  * Field class
@@ -94,6 +95,12 @@ class Field implements Fillable
         $this->label = $label;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $fieldType
+     * @return $this
+     */
     public function created($fieldType = '')
     {
         $fieldType = $fieldType ? $fieldType : get_called_class();
@@ -105,6 +112,10 @@ class Field implements Fillable
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;
         }
+
+        ExtLoader::trigger('tpext_displayer_created', $this);
+
+        return $this;
     }
 
     /**
@@ -228,8 +239,7 @@ class Field implements Fillable
      * @return $this
      */
     function
-    default($val = '')
-    {
+default($val = '') {
         $this->default = $val;
         return $this;
     }
@@ -686,6 +696,8 @@ EOT;
             Builder::getInstance()->addStyleSheet($this->stylesheet);
         }
 
+        ExtLoader::trigger('tpext_displayer_befor_render', $this);
+
         return $this;
     }
 
@@ -768,7 +780,7 @@ EOT;
             'helptempl' => static::$helptempl,
             'labeltempl' => static::$labeltempl,
             'readonly' => $this->readonly,
-            'disabled' => $this->disabled
+            'disabled' => $this->disabled,
         ];
 
         return $vars;

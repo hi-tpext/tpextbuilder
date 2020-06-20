@@ -14,6 +14,7 @@ use tpext\builder\form\ItemsContent;
 use tpext\builder\form\Step;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
+use tpext\common\ExtLoader;
 
 /**
  * Form class
@@ -382,6 +383,7 @@ class Form extends FWrapper implements Renderable
     public function fill($data = [])
     {
         $this->data = $data;
+
         return $this;
     }
 
@@ -496,6 +498,8 @@ class Form extends FWrapper implements Renderable
      */
     public function beforRender()
     {
+        ExtLoader::trigger('tpext_form_befor_render', $this);
+
         if (!$this->botttomButtonsCalled && empty($this->step)) {
             $this->bottomButtons(true);
         }

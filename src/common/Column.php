@@ -7,6 +7,7 @@ use tpext\builder\common\Table;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\tree\ZTree;
+use tpext\common\ExtLoader;
 
 class Column
 {
@@ -30,6 +31,7 @@ class Column
     public function form()
     {
         $form = new Form();
+        ExtLoader::trigger('tpext_create_form', $form);
         $this->elms[] = $form;
         return $form;
     }
@@ -42,6 +44,7 @@ class Column
     public function table()
     {
         $table = new Table();
+        ExtLoader::trigger('tpext_create_table', $table);
         $this->elms[] = $table;
         return $table;
     }
@@ -54,6 +57,7 @@ class Column
     public function toolbar()
     {
         $toolbar = new Toolbar();
+        ExtLoader::trigger('tpext_create_toolbar', $toolbar);
         $this->elms[] = $toolbar;
         return $toolbar;
     }
@@ -66,6 +70,7 @@ class Column
     public function tree()
     {
         $tree = new ZTree();
+        ExtLoader::trigger('tpext_create_ztree', $tree);
         $this->elms[] = $tree;
         return $tree;
     }
@@ -83,7 +88,7 @@ class Column
     }
 
     /**
-     * Undocumented function
+     * 获取一个 tab
      *
      * @return Tab
      */
