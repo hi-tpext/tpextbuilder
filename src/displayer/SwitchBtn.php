@@ -25,6 +25,16 @@ class SwitchBtn extends Field
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getPair()
+    {
+        return $this->pair;
+    }
+
     protected function boxScript()
     {
         $inputId = $this->getId();
@@ -55,7 +65,7 @@ EOT;
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,
-            'pair' => $this->pair
+            'pair' => $this->pair,
         ]);
 
         $viewshow = $this->getViewInstance();

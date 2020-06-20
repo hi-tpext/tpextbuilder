@@ -128,7 +128,7 @@ EOT;
      *
      * @return string
      */
-    protected function renderValue()
+    public function renderValue()
     {
         $value = parent::renderValue();
 

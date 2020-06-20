@@ -516,7 +516,7 @@ class Table extends TWrapper implements Renderable
             $this->pagesizeDropdown = new DropdownBtns('pagesize', '每页显示<b class="pagesize-text">' . $this->pageSize . '</b>条');
         }
 
-        $this->pagesizeDropdown->items($items)->class('btn-xs btn-secondary')->addGroupClass('dropup pull-right m-r-10');
+        $this->pagesizeDropdown->items($items)->class('btn-xs btn-default')->addGroupClass('dropup pull-right m-r-10');
 
         return $this->pagesizeDropdown;
     }

@@ -8,16 +8,11 @@ class Matches extends Raw
 {
     use HasOptions;
 
-    /**
-     * Undocumented function
-     *
-     * @return mixed
-     */
-    public function render()
+    public function renderValue()
     {
-        $vars = $this->commonVars();
+        $value = parent::renderValue();
 
-        $values = explode(',', $vars['value']);
+        $values = explode(',', $value);
         $texts = [];
 
         foreach ($values as $value) {
@@ -26,11 +21,6 @@ class Matches extends Raw
             }
         }
 
-        $this->value = $vars['value'] = implode(', ', $texts);
-
-        $viewshow = $this->getViewInstance();
-
-        return $viewshow->assign($vars)->getContent();
+        return implode(', ', $texts);
     }
-
 }

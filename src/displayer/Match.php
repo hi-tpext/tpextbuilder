@@ -8,23 +8,16 @@ class Match extends Raw
 {
     use HasOptions;
 
-    /**
-     * Undocumented function
-     *
-     * @return mixed
-     */
-    public function render()
+    public function renderValue()
     {
-        $vars = $this->commonVars();
-        if (isset($this->options[$vars['value']])) {
-            $this->value = $vars['value'] = $this->options[$vars['value']];
+        $value = parent::renderValue();
+
+        if (isset($this->options[$value])) {
+            $value = $this->options[$value];
         } else if (isset($this->options['__default__'])) {
-            $this->value = $vars['value'] = $this->options['__default__'];
+            $value = $this->options['__default__'];
         }
 
-        $viewshow = $this->getViewInstance();
-
-        return $viewshow->assign($vars)->getContent();
+        return $value;
     }
-
 }

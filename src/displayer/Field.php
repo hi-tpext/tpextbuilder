@@ -706,7 +706,7 @@ EOT;
      *
      * @return string
      */
-    protected function renderValue()
+    public function renderValue()
     {
         if (is_array($this->default)) {
             $this->default = implode(',', $this->default);
@@ -746,19 +746,20 @@ EOT;
             static::$labeltempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
-        $value = $this->renderValue();
-
         $mapClass = '';
 
         if (!empty($this->mapClassWhen)) {
             if ($this->mapClassWhen[2] == $this->name) {
-                $this->mapClassValue = $value;
+                $this->mapClassValue = $this->value;
             }
 
             if (in_array($this->mapClassValue, $this->mapClassWhen[0])) {
                 $mapClass = ' ' . $this->mapClassWhen[1];
             }
         }
+
+        $value = $this->renderValue();
+
         $extendAttr = ($this->isRequired() ? ' required="true"' : '') . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '');
 
         $vars = [

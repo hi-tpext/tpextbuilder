@@ -35,7 +35,7 @@ class Search extends SWrapper implements Renderable
 
     protected $defaultDisplayerSize = null;
 
-    protected $butonsSizeClass = 'btn-sm';
+    protected $butonsSizeClass = 'btn-xs';
 
     protected $open = true;
 
@@ -169,8 +169,8 @@ class Search extends SWrapper implements Renderable
         if ($create) {
             $this->fieldsEnd();
             $this->html('', '', 1)->showLabel(false);
-            $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-success btn-xs');
-            $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default btn-xs')->attr('onclick="location.replace(location.href)"');
+            $this->button('submit', '筛&nbsp;&nbsp;选', 1)->class('btn-info ' . $this->butonsSizeClass);
+            $this->button('button', '重&nbsp;&nbsp;置', 1)->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"');
         }
 
         $this->searchButtonsCalled = true;
@@ -185,7 +185,7 @@ class Search extends SWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success btn-xs')
+    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-info')
     {
         $this->fieldsEnd();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
@@ -201,7 +201,7 @@ class Search extends SWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnReset($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning btn-xs')
+    public function btnReset($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning')
     {
         $this->button('reset', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"');
         return $this;

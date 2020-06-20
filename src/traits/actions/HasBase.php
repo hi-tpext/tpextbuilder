@@ -28,6 +28,7 @@ trait HasBase
     protected $sortOrder = 'id desc';
     protected $enableField = 'enable';
     protected $pk = '';
+    protected $isExporting = false;
 
     /**
      * Undocumented variable
@@ -83,7 +84,7 @@ trait HasBase
     /**
      * Undocumented function
      *
-     * @param boolean $isEdit
+     * @param boolean|int $isEdit 0:add,1:edit,2:view
      * @param array $data
      * @return void
      */

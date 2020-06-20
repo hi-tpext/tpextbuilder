@@ -279,3 +279,8 @@ td ul.lyear-uploads-pic li.pic-item
     font-size: 13px;
     line-height: 17px !important;
 }
+
+.table.form-items .select2-hidden-accessible,.table.form-items .select2.select2-container
+{
+    max-width: 100px;
+}

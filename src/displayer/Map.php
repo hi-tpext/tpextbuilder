@@ -160,7 +160,7 @@ class Map extends Text
         return $vars;
     }
 
-    protected function tcentScript($jsKey)
+    public function tcentScript($jsKey)
     {
         $inputId = $this->getId();
 

@@ -2,6 +2,7 @@
 
 namespace tpext\builder\table;
 
+use tpext\builder\common\Builder;
 use tpext\builder\common\Toolbar;
 
 class MultipleToolbar extends Toolbar
@@ -9,6 +10,10 @@ class MultipleToolbar extends Toolbar
     protected $hasSearch = false;
 
     protected $btnSearch = null;
+
+    protected $hasExport = false;
+
+    protected $btnExport = null;
 
     /**
      * Undocumented function
@@ -22,7 +27,7 @@ class MultipleToolbar extends Toolbar
         foreach ($this->elms as $elm) {
             $elm->useLayer($val, $size);
         }
-        
+
         return $this;
     }
 
@@ -32,9 +37,22 @@ class MultipleToolbar extends Toolbar
      * @param boolean $val
      * @return $this
      */
-    public function hasSearch($val)
+    public function hasSearch($val = true)
     {
         $this->hasSearch = $val;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function hasExport($val = true)
+    {
+        $this->hasExport = $val;
 
         return $this;
     }
@@ -52,6 +70,19 @@ class MultipleToolbar extends Toolbar
 
         if ($this->hasSearch && !$this->btnSearch) {
             $this->btnToggleSearch();
+        }
+
+        if ($this->hasExport && !$this->btnExport) {
+            $items = ['csv' => 'csv文件'];
+
+            if (class_exists('\\PHPExcel')) {
+                $items = array_merge($items, [
+                    'xls' => 'xls文件',
+                    'xlsx' => 'xlsx文件',
+                ]);
+            }
+
+            $this->btnExports($items);
         }
 
         return parent::beforRender();
@@ -247,20 +278,43 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnExport($postUrl = '', $label = '导出', $class = 'btn-pink', $icon = 'mdi-export', $attr = 'title="导出"')
+    public function btnExport($postUrl = '', $label = '导出', $class = 'btn-default', $icon = 'mdi-export', $attr = 'title="导出"')
     {
         if (empty($postUrl)) {
             $postUrl = url('export');
+        }
+
+        $this->btnExport = true;
+
+        if (!Builder::checkUrl($postUrl)) {
+            return $this;
         }
 
         $this->linkBtn('export', $label)->addClass($class)->icon($icon)->addAttr($attr . ' data-export-url="' . $postUrl . '"');
         return $this;
     }
 
-    public function btnExports($items, $postUrl = '', $label = '导出', $class = 'btn-secondary', $icon = 'mdi-export', $attr = 'title="导出"')
+    /**
+     * Undocumented function
+     *
+     * @param array $items ['csv' => 'CSV文件']
+     * @param string $postUrl
+     * @param string $label
+     * @param string $class
+     * @param string $icon
+     * @param string $attr
+     * @return $this
+     */
+    public function btnExports($items, $postUrl = '', $label = '导出', $class = 'btn-default', $icon = 'mdi-export', $attr = 'title="导出"')
     {
         if (empty($postUrl)) {
             $postUrl = url('export');
+        }
+
+        $this->btnExport = true;
+
+        if (!Builder::checkUrl($postUrl)) {
+            return $this;
         }
 
         $this->dropdownBtns('exports', $label)->items($items)->addClass($class)->icon($icon)
@@ -278,7 +332,7 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnLink($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '')
+    public function btnLink($url, $label = '', $class = 'btn-default', $icon = 'mdi-checkbox-marked-outline', $attr = '')
     {
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
@@ -303,7 +357,7 @@ class MultipleToolbar extends Toolbar
      * @return $this
      *
      */
-    public function btnPostChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
+    public function btnPostChecked($url, $label = '', $class = 'btn-default', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 

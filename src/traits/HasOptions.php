@@ -26,6 +26,34 @@ trait HasOptions
     /**
      * Undocumented function
      *
+     * @param array $texts
+     * @return $this
+     */
+    public function texts($texts)
+    {
+        $options = [];
+        foreach ($texts as $text) {
+            $options[$text] = $text;
+        }
+
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param Collection $optionsData
      * @param string $textField
      * @param string $idField

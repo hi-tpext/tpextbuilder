@@ -51,7 +51,7 @@
 {if condition="$canAdd"}
 <table style="display: none;" id="items-{$name}-temple" class="table table-items {$class}" {$attr|raw}>
   <tbody>
-    <tr>
+    <tr class="table-row-id">
       {volist name="template" id="col"}
       <td class="{$col.wrapper->getClass()} text-center vertical-middle" {$col.wrapper->getAttrWithStyle()|raw}>
         {$col.value|raw}

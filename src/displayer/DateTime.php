@@ -16,7 +16,7 @@ class DateTime extends Text
     ];
 
     protected $size = [2, 3];
-    
+
     protected $format = 'YYYY-MM-DD HH:mm:ss';
 
     protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-clock"></i></span>';
@@ -120,7 +120,7 @@ EOT;
      *
      * @return string
      */
-    protected function renderValue()
+    public function renderValue()
     {
         $value = parent::renderValue();
 
