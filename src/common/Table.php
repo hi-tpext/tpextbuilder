@@ -127,7 +127,7 @@ class Table extends TWrapper implements Renderable
 
     public function __construct()
     {
-        $this->class = 'table-striped table-hover table-bordered';
+        $this->class = 'table-striped table-hover table-bordered table-condensed table-responsive';
         $this->id = input('__table__', 'the-table');
 
         $this->emptyText = Module::config('table_empty_text');
@@ -735,7 +735,7 @@ class Table extends TWrapper implements Renderable
             'checked' => $this->checked,
             'pagesizeDropdown' => $this->usePagesizeDropdown ? $this->pagesizeDropdown : null,
             'addTop' => $this->addTop,
-            'addBottom' => $this->addBottom
+            'addBottom' => $this->addBottom,
         ];
 
         if ($this->partial) {

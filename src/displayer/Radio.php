@@ -7,7 +7,7 @@ use tpext\builder\traits\HasOptions;
 class Radio extends Field
 {
     use HasOptions;
-    
+
     protected $view = 'radio';
 
     protected $class = 'lyear-radio radio-default';
@@ -15,7 +15,7 @@ class Radio extends Field
     protected $inline = true;
 
     protected $checked = '';
-   
+
     /**
      * Undocumented function
      *
@@ -39,7 +39,7 @@ class Radio extends Field
         }
 
         $vars = array_merge($vars, [
-            'inline' => $this->inline ? 'radio-inline' : 'm-t-10',
+            'inline' => $this->inline ? 'radio-inline' : '',
             'checked' => '-' .$this->checked,
             'options' => $this->options,
         ]);

@@ -620,7 +620,7 @@ $(function () {
         checkall.prop('checked', count > 0 && ss == count);
     });
 
-    $("form select").on("select2:opening", function (e) {
+    $("body").on("select2:opening", 'form select', function (e) {
         if ($(this).attr('readonly') || $(this).is(':hidden')) {
             e.preventDefault();
         }
@@ -636,7 +636,7 @@ $(function () {
         }
     });
 
-    $('.btn-loading').click(function () {
+    $('body').on('click', '.btn-loading', function () {
         $(this).lyearloading({
             opacity: 0.2,
             spinnerSize: 'nm'

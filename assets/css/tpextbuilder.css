@@ -4,7 +4,7 @@
 }
 
 form.search-form .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 7px;
 }
 
 .form-horizontal .form-group
@@ -76,6 +76,7 @@ form textarea.form-control, .table textarea.form-control {
     padding: 5px;
     line-height: 1.42857143;
     word-wrap: break-word;
+    font-size: 13px;
 }
 
 .table .table-checkbox label.lyear-checkbox {
@@ -237,9 +238,20 @@ td ul.lyear-uploads-pic li.pic-item
    border-right: 1px solid #ebebeb;
 }
 
-td .lyear-checkbox, td .lyear-radio
+.lyear-checkbox,.lyear-radio
 {
-    padding-left: 15px;
+    margin-top: 7px;
+    padding-left: 20px !important;
+}
+.checkbox-inline + .checkbox-inline, .radio-inline + .radio-inline
+{
+    margin-left: 5px !important;
+}
+
+.table .checkbox-div .lyear-checkbox, .table .radio-div .lyear-radio
+{
+    padding-left: 10px !important;
+    margin: 2px 0 !important;
 }
 
 .tree-div
@@ -259,4 +271,11 @@ td .lyear-checkbox, td .lyear-radio
     float: right;
     cursor: pointer;
     color: #999;
+}
+
+.search-form .lyear-checkbox, .search-form .lyear-radio
+{
+    padding-left: 20px;
+    font-size: 13px;
+    line-height: 17px !important;
 }

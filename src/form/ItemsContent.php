@@ -61,7 +61,7 @@ class ItemsContent extends FWrapper
 
     public function __construct()
     {
-        $this->class = 'table-striped table-hover table-bordered';
+        $this->class = 'table-striped table-hover table-bordered table-condensed table-responsive';
     }
 
     /**

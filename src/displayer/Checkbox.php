@@ -83,7 +83,7 @@ class Checkbox extends Field
         unset($ck);
 
         $vars = array_merge($vars, [
-            'inline' => $this->inline ? 'checkbox-inline' : 'm-t-10',
+            'inline' => $this->inline ? 'checkbox-inline' : '',
             'checkallBtn' => $this->checkallBtn,
             'checkall' => $checkall,
             'checked' => $this->checked,

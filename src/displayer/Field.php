@@ -768,6 +768,7 @@ EOT;
             'helptempl' => static::$helptempl,
             'labeltempl' => static::$labeltempl,
             'readonly' => $this->readonly,
+            'disabled' => $this->disabled
         ];
 
         return $vars;

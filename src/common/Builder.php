@@ -527,7 +527,7 @@ class Builder implements Renderable
         unset($j);
 
         $vars = [
-            'title' => $this->title ? $this->title : 'Page',
+            'title' => $this->title ? $this->title : '',
             'desc' => $this->desc,
             'rows' => $this->rows,
             'js' => array_unique($this->js),

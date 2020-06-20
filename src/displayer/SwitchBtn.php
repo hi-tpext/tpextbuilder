@@ -6,7 +6,7 @@ class SwitchBtn extends Field
 {
     protected $view = 'switchbtn';
 
-    protected $class = 'switch-solid switch-primary';
+    protected $class = 'switch-outline switch-primary';
 
     protected $checked = '';
 
