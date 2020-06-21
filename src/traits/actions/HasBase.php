@@ -170,13 +170,24 @@ trait HasBase
      */
     protected function buildDataList()
     {
-        $page = input('__page__/d', 1);
+        $page = input('post.__page__/d', 1);
         $page = $page < 1 ? 1 : $page;
         $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
+
         $where = $this->filterWhere();
+
+        if ($this->isExporting) {
+            $__ids__ = input('post.__ids__');
+            if (!empty($__ids__)) {
+                $where[] = ['id', 'in', $__ids__];
+            }
+            $page = 1;
+            $this->pagesize = PHP_INT_MAX;
+        }
+
         $table = $this->table;
 
-        $pagesize = input('__pagesize__/d', 0);
+        $pagesize = input('post.__pagesize__/d', 0);
 
         $this->pagesize = $pagesize ?: $this->pagesize;
 

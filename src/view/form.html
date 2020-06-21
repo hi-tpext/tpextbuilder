@@ -40,11 +40,11 @@
                 if (!that.export && that.ajax) {
                     lightyear.loading('show');
 
-                    var data = $('#{$id} form').serialize();
+                    var postdata = $('#{$id} form').serialize();
 
                     $.ajax({
                         url: '{$action}' || location.href,
-                        data: data,
+                        data: postdata,
                         type: 'POST',
                         dataType: 'html',
                         success: function (data) {
@@ -115,11 +115,10 @@
 
                 return true;
             },
-            exportPost: function (url, file_type) {
+            exportPost: function (url, file_type, ajax) {
                 this.export = 1;
                 lightyear.loading('show');
                 var form = $('#{$id} form');
-                form.attr('action', url);
 
                 var values = [];
                 $("input.table-row:checked").each(function (i, e) {
@@ -130,7 +129,7 @@
                 __file_type__.type = "hidden";
                 __file_type__.id = "__file_type__";
                 __file_type__.name = '__file_type__';
-                __file_type__.value = file_type || '';
+                __file_type__.value = file_type || 'csv';
                 form.append(__file_type__);
 
                 var __ids__ = document.createElement("input");
@@ -140,16 +139,51 @@
                 __ids__.value = values.join(',');
                 form.append(__ids__);
 
-                form.trigger('submit');
+                if(ajax)
+                {
+                    var postdata = $('#{$id} form').serialize();
+                    $.ajax({
+                        url: url,
+                        data: postdata,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (data) {
+                            lightyear.loading('hide');
+                            if(data.code)
+                            {
+                                var filename = data.data.replace(/.+?([^\/]+)$/, '$1');
+                                layer.open({
+                                    type: 1,
+                                    title: '文件下载',
+                                    shadeClose: false,
+                                    area: ['400px','150px'],
+                                    content: '<div class="alert alert-success " role="alert" style="widht:94%;margin:2%;"><p>文件已生成，点击下载：</p><a onclick="layer.closeAll();" target="_blank" href="' + data.data + '">' + filename + '</a></div>',
+                                });
+                            }
+                            else
+                            {
+                                layer.alert('错误-' + data.msg);
+                            }
+                        },
+                        error:function(){
+                            lightyear.loading('hide');
+                            lightyear.notify('网络错误', 'danger');
+                        }
+                    });
+                }
+                else
+                {
+                    form.attr('action', url);
+                    form.trigger('submit');
+                    form.attr('action', this.action);
+                    setTimeout(function () {
+                        lightyear.loading('hide');
+                    }, 2000);
+                }
 
-                form.attr('action', this.action);
                 $(__ids__).remove();
                 $(__file_type__).remove();
                 this.export = 0;
-
-                setTimeout(function () {
-                    lightyear.loading('hide');
-                }, 2000);
             },
             closeLayer: function (msg, style) {
                 if (parent) {

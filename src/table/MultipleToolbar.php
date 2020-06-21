@@ -11,7 +11,7 @@ class MultipleToolbar extends Toolbar
 
     protected $btnSearch = null;
 
-    protected $hasExport = false;
+    protected $hasExport = true;
 
     protected $btnExport = null;
 
@@ -75,7 +75,7 @@ class MultipleToolbar extends Toolbar
         if ($this->hasExport && !$this->btnExport) {
             $items = ['csv' => 'csv文件'];
 
-            if (class_exists('\\PHPExcel')) {
+            if (class_exists('\\PHPExcel') || class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet')) {
                 $items = array_merge($items, [
                     'xls' => 'xls文件',
                     'xlsx' => 'xlsx文件',

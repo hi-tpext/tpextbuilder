@@ -346,13 +346,13 @@ class Search extends SWrapper implements Renderable
 
         $('body').on('click', '#btn-export{$extKey}', function(){
             var url = $(this).data('export-url');
-            window.__forms__['{$form}'].exportPost(url, '');
+            window.__forms__['{$form}'].exportPost(url, '', 1);
         });
 
         $('body').on('click', '#dropdown-exports{$extKey}-div .dropdown-menu li a', function(){
             var url = $('#dropdown-exports{$extKey}').data('export-url');
             var fileType = $(this).data('key');
-            window.__forms__['{$form}'].exportPost(url, fileType);
+            window.__forms__['{$form}'].exportPost(url, fileType, 1);
         });
 
         $('body').on('click', '#form-submit{$extKey}', function(){

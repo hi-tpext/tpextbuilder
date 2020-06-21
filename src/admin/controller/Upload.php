@@ -4,7 +4,7 @@ namespace tpext\builder\admin\controller;
 
 use think\Controller;
 use tpext\builder\common\Module;
-use tpext\builder\common\Upload as UploadTool;
+use tpext\builder\logic\Upload as UploadTool;
 
 /* 参照 Light-Year-Example 相关上传处理方式*/
 

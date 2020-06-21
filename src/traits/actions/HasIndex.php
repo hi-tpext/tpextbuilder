@@ -18,8 +18,6 @@ trait HasIndex
         $this->table->pk($this->getPk());
         $this->search = $this->table->getSearch();
 
-        $this->table->getToolbar()->hasExport(true);
-
         $this->builSearch();
         $this->buildDataList();
 

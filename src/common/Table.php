@@ -252,7 +252,7 @@ class Table extends TWrapper implements Renderable
      */
     public function verticalAlign($val)
     {
-        return $this->verticalAlign = $val;
+        $this->verticalAlign = $val;
         return $this;
     }
 
@@ -264,7 +264,7 @@ class Table extends TWrapper implements Renderable
      */
     public function textAlign($val)
     {
-        return $this->textAlign = $val;
+        $this->textAlign = $val;
         return $this;
     }
 
@@ -276,7 +276,7 @@ class Table extends TWrapper implements Renderable
      */
     public function headTextAlign($val)
     {
-        return $this->headTextAlign = $val;
+        $this->headTextAlign = $val;
         return $this;
     }
 
@@ -293,6 +293,19 @@ class Table extends TWrapper implements Renderable
         }
 
         $this->sortable = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function hasExport($val = true)
+    {
+        $this->getToolbar()->hasExport($val);
+
         return $this;
     }
 
