@@ -91,6 +91,20 @@ class Step implements Renderable
         return $this;
     }
 
+     /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        foreach ($this->__fields_contents__ as $content) {
+            $content->readonly($val);
+        }
+        return $this;
+    }
+
     /**
      * Undocumented function
      *
@@ -217,6 +231,16 @@ EOT;
     public function getClass()
     {
         return empty($this->class) ? '' : ' ' . $this->class;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getRows()
+    {
+        return $this->rows;
     }
 
     /**

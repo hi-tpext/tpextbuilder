@@ -209,9 +209,10 @@ class ItemsContent extends FWrapper
      */
     public function readonly($val = true)
     {
-        foreach ($this->rows as $row) {
-            $row->getDisplayer()->readonly($val);
+        foreach ($this->cols as $col) {
+            $col->getDisplayer()->readonly($val);
         }
+
         return $this;
     }
 

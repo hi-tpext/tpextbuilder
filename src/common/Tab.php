@@ -192,6 +192,20 @@ class Tab implements Renderable
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = true)
+    {
+        foreach ($this->__fields_contents__ as $content) {
+            $content->readonly($val);
+        }
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param string $val
      * @return $this
      */

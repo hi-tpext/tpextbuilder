@@ -56,7 +56,7 @@ class Fields extends Field
      */
     public function getContent()
     {
-        return $this->__items_content__;
+        return $this->__fields_content__;
     }
 
     /**

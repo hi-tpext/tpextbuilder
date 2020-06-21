@@ -24,7 +24,7 @@ trait HasExport
 
             $displayer = $col->getDisplayer();
 
-            if ($displayer instanceof \tpext\builder\displayer\Checkbox) {
+            if ($displayer instanceof \tpext\builder\displayer\Checkbox || $displayer instanceof \tpext\builder\displayer\MultipleSelect) {
 
                 $displayer = (new \tpext\builder\displayer\Matches($displayer->getName(), $col->getLabel()))->options($displayer->getOptions());
             } else if ($displayer instanceof \tpext\builder\displayer\Radio) {
@@ -34,7 +34,7 @@ trait HasExport
 
                 $pair = $displayer->getPair();
                 $options = [$pair[0] => '是', $pair[1] => '否'];
-                $displayer = (new \tpext\builder\displayer\Matches($displayer->getName(), $col->getLabel()))->options($options);
+                $displayer = (new \tpext\builder\displayer\Match($displayer->getName(), $col->getLabel()))->options($options);
             }
 
             $displayers[] = $displayer;

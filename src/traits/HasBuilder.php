@@ -15,7 +15,7 @@ trait HasBuilder
     use \tpext\builder\traits\actions\HasEdit;
 
     //查看
-    //use \tpext\builder\traits\actions\HasView; //不常用，单独引用吧
+    use \tpext\builder\traits\actions\HasView;
 
     //字段编辑
     use \tpext\builder\traits\actions\HasAutopost;

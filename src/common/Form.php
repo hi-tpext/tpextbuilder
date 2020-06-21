@@ -125,6 +125,16 @@ class Form extends FWrapper implements Renderable
     public function readonly($val = true)
     {
         foreach ($this->rows as $row) {
+
+            if ($row instanceof Tab || $row instanceof Step) {
+                $row->readonly($val);
+                continue;
+            }
+
+            if (!$row instanceof FRow) {
+                continue;
+            }
+
             $row->getDisplayer()->readonly($val);
         }
 
@@ -271,8 +281,7 @@ class Form extends FWrapper implements Renderable
      */
     public function createFields()
     {
-        if($this->__fields__)
-        {
+        if ($this->__fields__) {
             $this->__fields__bag__[] = $this->__fields__;
         }
         $this->__fields__ = new FieldsContent();
