@@ -254,6 +254,11 @@ td ul.lyear-uploads-pic li.pic-item
     margin: 2px 0 !important;
 }
 
+.table.form-items .checkbox-div .lyear-checkbox, .table.form-items .radio-div .lyear-radio
+{
+    padding-left: 20px !important;
+}
+
 .tree-div
 {
     position: relative;
