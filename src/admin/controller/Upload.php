@@ -120,44 +120,44 @@ class Upload extends Controller
         $config_file = realpath(dirname($scriptName)) . '/assets/builderueditor/config.json';
         $config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
-                /* 获取配置信息 */
+            /* 获取配置信息 */
             case 'config':
                 $result = $config;
                 break;
 
-                /* 上传图片 */
+            /* 上传图片 */
             case 'uploadimage':
-                /* 上传涂鸦 */
+            /* 上传涂鸦 */
             case 'uploadscrawl':
                 echo $this->saveFile('images');
                 exit;
                 break;
 
-                /* 上传视频 */
+            /* 上传视频 */
             case 'uploadvideo':
                 echo $this->saveFile('videos');
                 exit;
                 break;
 
-                /* 上传附件 */
+            /* 上传附件 */
             case 'uploadfile':
                 echo $this->saveFile('files');
                 exit;
                 break;
 
-                /* 列出图片 */
+            /* 列出图片 */
             case 'listimage':
                 echo $this->showFile('listimage', $config);
                 exit;
                 break;
 
-                /* 列出附件 */
+            /* 列出附件 */
             case 'listfile':
                 echo $this->showFile('listfile', $config);
                 exit;
                 break;
 
-                /* 抓取远程附件 */
+            /* 抓取远程附件 */
             case 'catchimage':
                 $result = $this->catchFile();
                 break;
@@ -214,18 +214,18 @@ class Upload extends Controller
      */
     public function ext($type)
     {
-        $img = imagecreate(100, 100);
+        $img = null;
+        $path = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', $type . '.png']);
+        if (!file_exists($path)) {
+            $path = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', '0.png']);
+        }
+        $img = imagecreatefromstring(file_get_contents($path));
 
-        $total = unpack('L', hash('adler32', $type, true))[1];
-        $hue = $total % 360;
+        $tag_white = imagecolorallocatealpha($img, 240, 240, 240,127);
 
-        list($r, $g, $b) = $this->hsv2rgb($hue / 360, 0.3, 0.9);
+        //imagesavealpha($img, false);
 
-        imagecolorallocate($img, $r, $g, $b);
-
-        $col = imagecolorallocatealpha($img, 255, 255, 255, 0);
-
-        imagestring($img, 5, strlen($type) > 3 ? 30 : 35, 40, $type, $col);
+        imagefill($img, 0, 0, $tag_white);//在目标新图填充空白色
 
         ob_start();
         // 输出图像
@@ -310,14 +310,14 @@ class Upload extends Controller
     {
         /* 判断类型 */
         switch ($type) {
-                /* 列出附件 */
+            /* 列出附件 */
             case 'listfile':
                 $allowFiles = $config['fileManagerAllowFiles'];
                 $listSize = $config['fileManagerListSize'];
                 $path = realpath('./upload/files/');
                 break;
 
-                /* 列出图片 */
+            /* 列出图片 */
             case 'listimage':
             default:
                 $allowFiles = $config['imageManagerAllowFiles'];
@@ -386,55 +386,5 @@ class Upload extends Controller
             }
         }
         return $files;
-    }
-
-    private function hsv2rgb($h, $s, $v)
-    {
-        $r = $g = $b = 0;
-
-        $i = floor($h * 6);
-        $f = $h * 6 - $i;
-        $p = $v * (1 - $s);
-        $q = $v * (1 - $f * $s);
-        $t = $v * (1 - (1 - $f) * $s);
-
-        switch ($i % 6) {
-            case 0:
-                $r = $v;
-                $g = $t;
-                $b = $p;
-                break;
-            case 1:
-                $r = $q;
-                $g = $v;
-                $b = $p;
-                break;
-            case 2:
-                $r = $p;
-                $g = $v;
-                $b = $t;
-                break;
-            case 3:
-                $r = $p;
-                $g = $q;
-                $b = $v;
-                break;
-            case 4:
-                $r = $t;
-                $g = $p;
-                $b = $v;
-                break;
-            case 5:
-                $r = $v;
-                $g = $p;
-                $b = $q;
-                break;
-        }
-
-        return [
-            floor($r * 255),
-            floor($g * 255),
-            floor($b * 255)
-        ];
     }
 }
