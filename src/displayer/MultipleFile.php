@@ -212,6 +212,12 @@ class MultipleFile extends Field
     {
         $this->canUpload = !$this->readonly && $this->canUpload && empty($this->extKey);
 
+        if (!$this->canUpload) {
+            if (empty($this->default)) {
+                $this->default = '/assets/tpextbuilder/images/ext/0.png';
+            }
+        }
+
         if ($this->canUpload && (!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url']))) {
             $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
