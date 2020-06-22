@@ -51,16 +51,16 @@ class Select extends Radio
      *
      * @param string $url
      * @param string $textField
-     * @param string $IdField
+     * @param string $idField
      * @param integer $delay
      * @param boolean $loadmore
      * @return $this
      */
-    public function dataUrl($url, $textField = 'text', $IdField = 'id', $delay = 250, $loadmore = true)
+    public function dataUrl($url, $textField = 'text', $idField = 'id', $delay = 250, $loadmore = true)
     {
         $this->jsOptions['ajax'] = [
             'url' => $url,
-            'id' => $IdField,
+            'id' => $idField,
             'text' => $textField,
             'delay' => $delay,
             'loadmore' => $loadmore,

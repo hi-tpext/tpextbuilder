@@ -20,6 +20,10 @@ class Toolbar extends Wapper implements Renderable
 
     protected $extKey = '';
 
+    protected $elms_right = [];
+
+    protected $elms_left = [];
+
     /**
      * Undocumented function
      *
@@ -75,6 +79,12 @@ class Toolbar extends Wapper implements Renderable
                 $elm->extKey($this->extKey);
             }
 
+            if ($elm->isPullRight()) {
+                $this->elms_right[] = $elm;
+            } else {
+                $this->elms_left[] = $elm;
+            }
+
             $elm->beforRender();
         }
 
@@ -89,6 +99,8 @@ class Toolbar extends Wapper implements Renderable
 
         $vars = [
             'elms' => $this->elms,
+            'elms_left' => $this->elms_left,
+            'elms_right' => $this->elms_right,
             'class' => $this->class,
             'attr' => $this->getAttrWithStyle(),
         ];

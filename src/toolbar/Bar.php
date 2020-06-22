@@ -31,6 +31,8 @@ class Bar implements Renderable
 
     protected $layerSize;
 
+    protected $pullRight = false;
+
     public function __construct($name, $label = '')
     {
         $this->name = $name;
@@ -155,6 +157,28 @@ class Bar implements Renderable
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function pullRight($val = true)
+    {
+        $this->pullRight = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isPullRight()
+    {
+        return $this->pullRight;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function getScript()
@@ -227,6 +251,7 @@ class Bar implements Renderable
             'icon' => $this->icon,
             'attr' => $this->getAttrWithStyle(),
             'useLayer' => $this->useLayer,
+            'pullRight' => $this->pullRight
         ];
 
         return $vars;

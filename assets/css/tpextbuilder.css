@@ -188,9 +188,17 @@ div.tagsinput {
     line-height: inherit;
 }
 
-.col-fields {
-    margin-left: 0;
-    margin-right: 0;
+.fields-div {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+.fields-div {
+    margin-left: -15px;
+    margin-right: -15px;
     padding-left: 0;
     padding-right: 0;
 }
