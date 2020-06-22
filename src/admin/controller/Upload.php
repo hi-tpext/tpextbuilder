@@ -214,26 +214,34 @@ class Upload extends Controller
      */
     public function ext($type)
     {
-        $img = null;
-        $path = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', $type . '.png']);
-        if (!file_exists($path)) {
-            $path = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', '0.png']);
+        $file = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', $type . '.png']);
+        if (!file_exists($file)) {
+            $file = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', '0.png']);
         }
-        $img = imagecreatefromstring(file_get_contents($path));
-
-        $tag_white = imagecolorallocatealpha($img, 240, 240, 240,127);
-
-        //imagesavealpha($img, false);
-
-        imagefill($img, 0, 0, $tag_white);//在目标新图填充空白色
 
         ob_start();
-        // 输出图像
-        imagepng($img);
-        $content = ob_get_clean();
-        imagedestroy($img);
 
-        return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
+        $gmt_mtime = gmdate('r', filemtime($file));
+        $ETag = '"' . md5($gmt_mtime . $file) . '"';
+
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $_SERVER['HTTP_IF_MODIFIED_SINCE'] === $gmt_mtime) {
+            header('ETag: ' . $ETag, true, 304);
+            exit;
+        }
+
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] === $ETag) {
+            header('ETag: ' . $ETag, true, 304);
+            exit;
+        } else {
+            header('ETag: ' . $ETag);
+            header("Content-type: image/png");
+            header("Cache-Control: private, max-age=10800, pre-check=10800");
+            header("Pragma: private");
+            header("Expires: " . date(DATE_RFC822, strtotime("+2day")));
+            readfile($file);
+            exit;
+        }
+
     }
 
     private function base64_image_content($base64_image_content, $path)

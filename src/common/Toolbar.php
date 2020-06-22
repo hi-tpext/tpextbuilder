@@ -73,6 +73,8 @@ class Toolbar extends Wapper implements Renderable
      */
     public function beforRender()
     {
+        $this->elms_left = $this->elms_right = [];
+
         foreach ($this->elms as $elm) {
 
             if ($this->extKey) {

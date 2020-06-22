@@ -1,12 +1,10 @@
 {notempty name="$elms"}
 <div class="toolbar-btn-action {$class}" {$attr|raw}>
-    <div>
-        {volist name="elms_left" id="elm"}
+    {volist name="elms_left" id="elm"}
     {:$elm->render()}
     {/volist}
-    </div>
     {notempty name="$elms_right"}
-    <div class="pull-right">
+    <div class="pull-right m-r-10">
         {volist name="elms_right" id="elm"}
         {:$elm->render()}
         {/volist}
