@@ -550,12 +550,12 @@ class Form extends FWrapper implements Renderable
                 var parent = $(element).closest('div.form-group');
                 if($(element).hasClass('item-field'))
                 {
-                    $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + $(element).data('label') + '这是必填字段');
+                    $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + $(element).data('label') + '* 这是必填字段');
                     $(element).closest('td').addClass('has-error');
                     return;
                 }
                 parent.addClass('has-error');
-                $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + error.text());
+                $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + '* ' + error.text());
             },
             highlight: function(element) {
                 var el = $(element);
