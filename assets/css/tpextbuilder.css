@@ -79,6 +79,11 @@ form textarea.form-control, .table textarea.form-control {
     font-size: 13px;
 }
 
+.table>thead>tr>th
+{
+    font-size: 13px;
+}
+
 .table .table-checkbox label.lyear-checkbox {
     padding: 0;
 }
