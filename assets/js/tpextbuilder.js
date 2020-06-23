@@ -264,7 +264,30 @@
             anim: 5,    //渐显
             shade: 0.3,
             area: size || ['90%', '98%'],
-            content: href
+            content: href,
+            success: function (layero, index) {
+                $(':focus').blur();
+                this.enterEsc = function (event) {
+                    if (event.keyCode === 13) {
+                        return false; //阻止系统默认回车事件
+                    }
+                    if (event.keyCode === 0x1B) {
+                        var index2 = layer.msg('关闭当前弹窗？', {
+                            time: 2000,
+                            btn: ['确定', '取消'],
+                            yes: function (params) {
+                                layer.close(index);
+                                layer.close(index2);
+                            }
+                        });
+                        return false; //阻止系统默认esc事件
+                    }
+                };
+                $(document).on('keydown', this.enterEsc);	//监听键盘事件，关闭层
+            },
+            end: function () {
+                $(document).off('keydown', this.enterEsc);	//解除键盘关闭事件
+            }
         });
 
         return false;
@@ -535,7 +558,28 @@ window.chooseFile = function (id, $input_file_name) {
         anim: 2,    //从最底部往上滑入
         area: size,
         content: '/tpextbuilder/admin/attachment/index?choose=1&id=' + id + '&limit=' + jsOptions.fileNumLimit + '&ext=' + jsOptions.ext.join(','),
+        success: function (layero, index) {
+            $(':focus').blur();
+            this.enterEsc = function (event) {
+                if (event.keyCode === 13) {
+                    return false; //阻止系统默认回车事件
+                }
+                if (event.keyCode === 0x1B) {
+                    var index2 = layer.msg('关闭当前弹窗？', {
+                        time: 2000,
+                        btn: ['确定', '取消'],
+                        yes: function (params) {
+                            layer.close(index);
+                            layer.close(index2);
+                        }
+                    });
+                    return false; //阻止系统默认esc事件
+                }
+            };
+            $(document).on('keydown', this.enterEsc);	//监听键盘事件，关闭层
+        },
         end: function () {
+            $(document).off('keydown', this.enterEsc);	//解除键盘关闭事件
             window.refreshFiles(jsOptions, $file_list, obj);
         }
     });

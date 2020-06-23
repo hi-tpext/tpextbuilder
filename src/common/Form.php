@@ -541,6 +541,34 @@ class Form extends FWrapper implements Renderable
         $rules = json_encode($this->validator);
 
         $script = <<<EOT
+
+        window.focus();
+
+        $(document).bind('keyup', function(e) {
+            if (event.keyCode === 13) {
+                var index = layer.msg('提交数据？', {
+                    time: 2000,
+                    btn: ['确定', '取消'],
+                    yes: function (params) {
+                        layer.close(index);
+                        window.__forms__['{$form}'].formSubmit();
+                    }
+                });
+                return false;
+            }
+            if (event.keyCode === 0x1B) {
+                var index = layer.msg('关闭当前弹窗？', {
+                    time: 2000,
+                    btn: ['确定', '取消'],
+                    yes: function (params) {
+                        var index2 = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index2);
+                    }
+                });
+                return false; //阻止系统默认esc事件
+            }
+        });
+
         $('#{$form} form').validate({
             ignore: ".ignore",    // 插件默认不验证隐藏元素,这里可以自定义一个不验证的class,即验证隐藏元素,不验证class为.ignore的元素
             focusInvalid: false,  // 禁用无效元素的聚焦

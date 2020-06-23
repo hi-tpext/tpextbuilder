@@ -260,6 +260,24 @@ class Search extends SWrapper implements Renderable
         $extKey = '-' . $this->tableId;
 
         $script = <<<EOT
+
+        $(document).bind('keyup', function(e) {
+            if (event.keyCode === 13) {
+                window.__forms__['{$form}'].formSubmit();
+                return false;
+            }
+            if (event.keyCode === 0x1B) {
+                var index = layer.msg('重置筛选条件？', {
+                    time: 2000,
+                    btn: ['确定', '取消'],
+                    yes: function (params) {
+                        location.replace(location.href);
+                    }
+                });
+                return false; //阻止系统默认esc事件
+            }
+        });
+
         $('body').on('click', '#{$this->tableId} ul.pagination li a:not(.goto-page)', function(){
             var page = $(this).attr('href').replace(/.*\?page=(\d+).*/,'$1');
             $('#{$form} form input[name="__page__"]').val(page);
