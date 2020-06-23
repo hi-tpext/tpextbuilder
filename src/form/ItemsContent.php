@@ -263,7 +263,7 @@ class ItemsContent extends FWrapper
                     ->extKey($key)
                     ->arrayName([$this->name . '[' . $this->ids[$key] . '][', ']'])
                     ->showLabel(false)
-                    ->size(0, 0)
+                    ->size(12, 12)
                     ->addClass('item-field ' . ($displayer->isRequired() ? ' item-field-required' : ''))
                     ->addAttr('data-label="' . $colunm->getLabel() . '"')
                     ->beforRender();
@@ -299,7 +299,7 @@ class ItemsContent extends FWrapper
                 ->arrayName([$this->name . '[' . '__new__' . '][', ']'])
                 ->showLabel(false)
                 ->value('')
-                ->size(0, 0)
+                ->size(12, 12)
                 ->addClass('item-field ' . ($isRequired ? ' item-field-required' : ''))
                 ->addAttr('data-label="' . $colunm->getLabel() . '"')
                 ->beforRender();

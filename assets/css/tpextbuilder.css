@@ -302,3 +302,19 @@ td ul.lyear-uploads-pic li.pic-item
 {
     max-width: 100px;
 }
+
+.items-div .bootstrap-touchspin
+{
+    width: 100%;
+}
+
+div.tagsinput
+{
+    padding-top: 4px !important;
+}
+
+.table tbody td div.tagsinput
+{
+    padding-left: 6PX;
+    padding-right: 12px;
+}
