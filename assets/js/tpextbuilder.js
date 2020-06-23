@@ -64,7 +64,7 @@
             }, 200);
         });
 
-        $('body').on('blur', 'td.' + classname + ' textarea', function () {
+        $('body').on('change', 'td.' + classname + ' textarea', function () {
             clearTimeout(timer);
             var that = this;
             timer = setTimeout(function () {
