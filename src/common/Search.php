@@ -267,6 +267,10 @@ class Search extends SWrapper implements Renderable
                 return false;
             }
             if (event.keyCode === 0x1B) {
+                if($('#{$form} form').hasClass('form-empty'))
+                {
+                    return true;
+                }
                 var index = layer.msg('重置筛选条件？', {
                     time: 2000,
                     btn: ['确定', '取消'],
