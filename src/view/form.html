@@ -117,7 +117,7 @@
             },
             exportPost: function (url, file_type, ajax) {
                 this.export = 1;
-                lightyear.loading('show');
+
                 var form = $('#{$id} form');
 
                 var values = [];
@@ -141,6 +141,14 @@
 
                 if(ajax)
                 {
+                    var loading = layer.open({
+                        type: 1,
+                        closeBtn: 0, //不显示关闭按钮
+                        anim: 2,
+                        shadeClose: false, //开启遮罩关闭
+                        content: '<p style="padding:10px 20px;color:green;"><img src="/assets/tpextbuilder/js/layer/theme/default/loading-1.gif">生成数据中...</p>'
+                    });
+
                     var postdata = $('#{$id} form').serialize();
                     $.ajax({
                         url: url,
@@ -148,7 +156,7 @@
                         type: 'POST',
                         dataType: 'json',
                         success: function (data) {
-                            lightyear.loading('hide');
+                            layer.close(loading);
                             if(data.code)
                             {
                                 var filename = data.data.replace(/.+?([^\/]+)$/, '$1');
@@ -166,13 +174,14 @@
                             }
                         },
                         error:function(){
-                            lightyear.loading('hide');
+                            layer.close(loading);
                             lightyear.notify('网络错误', 'danger');
                         }
                     });
                 }
                 else
                 {
+                    lightyear.loading('show');
                     form.attr('action', url);
                     form.trigger('submit');
                     form.attr('action', this.action);
