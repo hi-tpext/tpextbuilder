@@ -3,6 +3,7 @@
 namespace tpext\builder\admin\controller;
 
 use think\Controller;
+use tpext\builder\common\model\Attachment;
 use tpext\builder\common\Module;
 use tpext\builder\logic\Upload as UploadTool;
 
@@ -194,9 +195,8 @@ class Upload extends Controller
             exit;
         }
 
-        $scriptName = $_SERVER['SCRIPT_FILENAME'];
+        $picurl = $this->base64_image_content($picdata, 'images');
 
-        $picurl = $this->base64_image_content($picdata, realpath(dirname($scriptName)) . '/uploads/images/' . date('Ym') . '/');
         if ($picurl) {
             echo json_encode(['state' => 200, 'picurl' => $picurl]);
             exit;
@@ -244,7 +244,7 @@ class Upload extends Controller
 
     }
 
-    private function base64_image_content($base64_image_content, $path)
+    private function base64_image_content($base64_image_content, $dirName)
     {
         //匹配出图片的格式
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
@@ -252,16 +252,53 @@ class Upload extends Controller
             if (!preg_match('/^(png|jpg|jpeg|bmp|gif|webpg)$/i', $type)) {
                 return false;
             }
-            $new_file = $path . "/" . date('Ymd', time()) . "/";
 
-            if (!file_exists($new_file)) {
-                //检查是否有该文件夹，如果没有就创建，并给予最高权限
-                mkdir($new_file, 0755, true);
+            $scriptName = $_SERVER['SCRIPT_FILENAME'];
+
+            $fileByDate = Module::config('file_by_date');
+
+            $date = '';
+
+            if ($fileByDate == 2) {
+                $date = date('Ymd');
+            } else if ($fileByDate == 3) {
+                $date = date('Y/m');
+            } else if ($fileByDate == 4) {
+                $date = date('Y/md');
+            } else if ($fileByDate == 5) {
+                $date = date('Ym/d');
+            } else if ($fileByDate == 6) {
+                $date = date('Y/m/d');
+            } else {
+                $date = date('Ym');
             }
 
-            $new_file = $new_file . md5(microtime(true)) . ".{$type}";
-            if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
-                return '/' . $new_file;
+            $path = realpath(dirname($scriptName)) . "/uploads/{$dirName}/" . $date . '/';
+
+            if (!is_dir($path)) {
+                //检查是否有该文件夹，如果没有就创建，并给予最高权限
+                mkdir($path, 0755, true);
+            }
+
+            $newName = 'file' . md5(microtime(true)) . mt_rand(1000, 9999) . '.' . $type;
+
+            if (file_put_contents($path . $newName, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
+
+                $url = "/uploads/{$dirName}/" . $date . '/' . $newName;
+                $name = 'base64' . date('YmdHis');
+                Attachment::create([
+                    'name' => mb_substr($name, 0, 55),
+                    'admin_id' => session('?admin_id') ? session('admin_id') : 0,
+                    'user_id' => session('?user_id') ? session('user_id') : 0,
+                    'mime' => mime_content_type($path . $newName),
+                    'suffix' => $type,
+                    'size' => filesize($path . $newName) / (1024 ** 2),
+                    'sha1' => hash_file('sha1', $path . $newName),
+                    'storage' => 'local',
+                    'url' => $url,
+                ]);
+
+                return $url;
             } else {
                 return false;
             }

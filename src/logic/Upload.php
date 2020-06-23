@@ -175,7 +175,7 @@ class Upload
     {
         //判断是否使用随机名
         if ($this->isRandName) {
-            $name = $this->prefix . uniqid(mt_rand()) . '.' . $this->suffix;
+            $name = $this->prefix . md5(microtime(true)) . mt_rand(1000, 9999) . '.' . $this->suffix;
         } else {
             $name = str_replace(['\\', '/', '.' . $this->suffix, '..', ' ', '.'], '', $this->oldName) . '.' . $this->suffix;
         }
