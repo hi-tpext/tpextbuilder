@@ -122,6 +122,7 @@ class Select extends Radio
                     opacity: 0.05,
                     spinnerSize: 'nm'
                 });
+
                 $.get('{$url}',{q : $('#{$prevID}').val(), eleid : '{$prevID}'}, function (data) {
                     $('#{$selectId}').select2('destroy').empty();
                     var list = data.data ? data.data : data;
@@ -138,7 +139,7 @@ class Select extends Radio
             else
             {
                 //关闭后，省变化了，市和区不会自动加载，比如选择了云南省：云南省-请选择市-请选择区，要一级一级去选
-                $('#{$selectId}').empty().trigger('change');
+                $('#{$selectId}').empty().append('<option value=""></option>').trigger('change');
             }
 
 EOT;
