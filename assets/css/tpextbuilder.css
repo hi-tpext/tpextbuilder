@@ -4,7 +4,31 @@
 }
 
 form.search-form .form-group {
-    margin-bottom: 7px;
+    margin-bottom: 3px;
+}
+
+form.search-form .control-label
+{
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 12px;
+}
+
+form.search-form .form-control
+{
+    font-size: 13px;
+}
+
+form.search-form .form-group
+{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+form.search-form .control-label + div
+{
+    padding-left: 8px;
+    padding-right: 5px;
 }
 
 .form-horizontal .form-group
@@ -294,7 +318,7 @@ td ul.lyear-uploads-pic li.pic-item
 .search-form .lyear-checkbox, .search-form .lyear-radio
 {
     padding-left: 20px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 17px !important;
 }
 
@@ -317,4 +341,9 @@ div.tagsinput
 {
     padding-left: 6PX;
     padding-right: 12px;
+}
+
+form label.control-label,form label.full-label
+{
+    color: #666;
 }

@@ -153,7 +153,7 @@ class Search extends SWrapper implements Renderable
      * @param integer $element
      * @return $this
      */
-    public function defaultDisplayerSize($label = 2, $element = 8)
+    public function defaultDisplayerSize($label = 4, $element = 8)
     {
         $this->defaultDisplayerSize = [$label, $element];
         return $this;
@@ -444,7 +444,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 3, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 2, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
 
             if ($this->__fields__) {
                 $this->__fields__->addRow($row);

@@ -132,10 +132,13 @@ class Select extends Radio
                 dataType: 'json',
                 delay: {$delay},
                 data: function (params) {
+                  var prev_val = '{$prev_id}' ? $('#{$prev_id}').val() : '';
                   return {
-                    q: params.term || ('{$prev_id}' ? $('#{$prev_id}').val() : ''),
+                    q: params.term || prev_val,
                     page: params.page || 1,
-                    eleid : '{$selectId}'
+                    prev_val : prev_val,
+                    ele_id : '{$selectId}',
+                    prev_ele_id : '{$prev_id}'
                   };
                 },
                 processResults: function (data, params) {
@@ -148,7 +151,7 @@ class Select extends Radio
                                return d;
                             }),
                     pagination: {
-                      more: {$loadmore} ? data.more_url : ''
+                      more: {$loadmore} ? list && list.length : 0
                     }
                   };
                 },

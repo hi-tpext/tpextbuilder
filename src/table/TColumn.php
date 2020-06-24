@@ -20,7 +20,7 @@ class TColumn extends TWrapper implements Renderable
      */
     protected $table;
 
-    public function __construct($name, $label = '', $colSize = 12, $colClass = '', $colAttr = '')
+    public function __construct($name, $label = '', $colSize = 12)
     {
         if (empty($label)) {
             $label = Lang::get(ucfirst($name));
@@ -29,8 +29,6 @@ class TColumn extends TWrapper implements Renderable
         $this->name = $name;
         $this->label = $label;
         $this->cloSize = $colSize;
-        $this->class = $colClass;
-        $this->attr = $colAttr;
 
         return $this;
     }

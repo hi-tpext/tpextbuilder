@@ -11,6 +11,7 @@ class SRow extends SWrapper implements Renderable
 {
     use HasDom;
     use HasRow;
+    protected $where;
 
     /**
      * Undocumented variable
@@ -19,7 +20,7 @@ class SRow extends SWrapper implements Renderable
      */
     protected $form;
 
-    public function __construct($name, $label = '', $colSize = 3, $colClass = '', $colAttr = '')
+    public function __construct($name, $label = '', $colSize = 2, $where = '')
     {
         if (empty($label)) {
             $label = ucfirst($name);
@@ -28,9 +29,7 @@ class SRow extends SWrapper implements Renderable
         $this->name = $name;
         $this->label = $label;
         $this->cloSize = $colSize;
-        $this->class = $colClass;
-        $this->attr = $colAttr;
-
+        $this->where = $where;
         return $this;
     }
 
