@@ -19,6 +19,7 @@ class Export
      */
     public function toCsv($title, $data, $displayers)
     {
+        $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
         ob_end_clean();
 
         $fname = '';
@@ -103,15 +104,17 @@ class Export
      */
     public function toExcel($title, $data, $displayers, $type = 'xls')
     {
+        $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
+
         ob_end_clean();
         $lib = '';
 
         $obj = null;
-        if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet')) {
+        if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet', false)) {
             $obj = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
             $this->worksheet = $obj->getActiveSheet();
             $lib = 'PhpOffice';
-        } else if (class_exists('\\PHPExcel')) {
+        } else if (class_exists('\\PHPExcel', false)) {
             $obj = new \PHPExcel();
             $this->worksheet = $obj->getActiveSheet();
             $lib = 'PHPExcel';
