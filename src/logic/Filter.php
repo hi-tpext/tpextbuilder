@@ -25,7 +25,7 @@ class Filter
 
             $comumn = $row->getName();
 
-            if (isset($data[$comumn]) && $data[$comumn] !== '' && !is_null($data[$comumn])) {
+            if (isset($data[$comumn]) && $data[$comumn] !== '' && $data[$comumn] !== []) {
                 $where[] = [$comumn, $row->getFilter(), $data[$comumn]];
             }
         }

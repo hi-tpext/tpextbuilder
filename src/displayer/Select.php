@@ -151,7 +151,7 @@ class Select extends Radio
                                return d;
                             }),
                     pagination: {
-                      more: {$loadmore} ? list && list.length : 0
+                      more: {$loadmore} ? data.has_more : 0
                     }
                   };
                 },

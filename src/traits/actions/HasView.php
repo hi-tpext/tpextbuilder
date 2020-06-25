@@ -107,6 +107,8 @@ trait HasView
                 $row->show($displayer->getName(), $row->getLabel())->value($displayer->renderValue())->default('-空-');
 
             }
+            $size = $displayer->getSize();
+            $row->getDisplayer()->showLabel($displayer->isShowLabel())->size($size[0], $size[1]);
         }
     }
 }

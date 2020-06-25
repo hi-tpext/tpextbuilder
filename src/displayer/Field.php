@@ -395,6 +395,26 @@ default($val = '') {
      *
      * @return boolean
      */
+    public function isShowLabel()
+    {
+        return $this->showLabel;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
     public function isRequired()
     {
         return $this->required;
