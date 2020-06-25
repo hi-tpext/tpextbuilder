@@ -11,7 +11,8 @@ class SRow extends SWrapper implements Renderable
 {
     use HasDom;
     use HasRow;
-    protected $where;
+
+    protected $filter = '';
 
     /**
      * Undocumented variable
@@ -20,7 +21,7 @@ class SRow extends SWrapper implements Renderable
      */
     protected $form;
 
-    public function __construct($name, $label = '', $colSize = 2, $where = '')
+    public function __construct($name, $label = '', $colSize = 2, $filter = '')
     {
         if (empty($label)) {
             $label = ucfirst($name);
@@ -29,8 +30,30 @@ class SRow extends SWrapper implements Renderable
         $this->name = $name;
         $this->label = $label;
         $this->cloSize = $colSize;
-        $this->where = $where;
+        $this->filter = $filter;
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param mixed $filter
+     * @return $this
+     */
+    public function filter($filter)
+    {
+        $this->filter = $filter;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return mixed
+     */
+    public function getFilter()
+    {
+        return $this->filter ?: 'eq';
     }
 
     /**

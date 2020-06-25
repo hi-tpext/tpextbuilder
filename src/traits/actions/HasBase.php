@@ -2,6 +2,12 @@
 
 namespace tpext\builder\traits\actions;
 
+use tpext\builder\common\builder;
+use tpext\builder\common\Form;
+use tpext\builder\common\Search;
+use tpext\builder\common\Table;
+use tpext\builder\logic\Filter;
+
 /**
  * 基础
  */
@@ -33,19 +39,20 @@ trait HasBase
     /**
      * Undocumented variable
      *
-     * @var \tpext\builder\common\Form
+     * @var Form
      */
     protected $form;
     /**
      * Undocumented variable
      *
-     * @var \tpext\builder\common\Search
+     * @var Search
      */
     protected $search;
+
     /**
      * Undocumented variable
      *
-     * @var \tpext\builder\common\Table
+     * @var Table
      */
     protected $table;
 
@@ -112,7 +119,6 @@ trait HasBase
     protected function builSearch()
     {
         $search = $this->search;
-        //$search->text('some_key_words')->placeholder('输入姓名|电话|邮箱查询');
     }
 
     /**
@@ -150,15 +156,13 @@ trait HasBase
 
     protected function filterWhere()
     {
-        $where = [];
-        $searchData = request()->only([
-            'some_key_words',
-            // ... more_key_words
-        ], 'post');
-        $where = [];
-        if (!empty($searchData['some_key_words'])) {
-            //$where[] = ['phone|username|email', 'like', '%' . $searchData['some_key_words'] . '%'];
-        }
+        $this->search = new Search();
+
+        $this->builSearch();
+
+        $logic = new Filter;
+
+        $where = $logic->getQuery($this->search);
 
         return $where;
     }
@@ -175,15 +179,6 @@ trait HasBase
         $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
 
         $where = $this->filterWhere();
-
-        if ($this->isExporting) {
-            $__ids__ = input('post.__ids__');
-            if (!empty($__ids__)) {
-                $where[] = ['id', 'in', $__ids__];
-            }
-            $page = 1;
-            $this->pagesize = PHP_INT_MAX;
-        }
 
         $table = $this->table;
 
@@ -206,11 +201,11 @@ trait HasBase
      *
      * @param string $title
      * @param string $desc
-     * @return \tpext\builder\common\Builder
+     * @return Builder
      */
     protected function builder($title = '', $desc = '')
     {
-        return \tpext\builder\common\Builder::getInstance($title, $desc);
+        return Builder::getInstance($title, $desc);
     }
 
     /**

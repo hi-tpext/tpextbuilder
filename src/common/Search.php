@@ -72,7 +72,7 @@ class Search extends SWrapper implements Renderable
      */
     public function getRows()
     {
-        return $this->rows();
+        return $this->rows;
     }
 
     /**

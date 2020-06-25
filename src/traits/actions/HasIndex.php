@@ -14,9 +14,10 @@ trait HasIndex
     {
         $builder = $this->builder($this->pageTitle, $this->indexText);
 
-        $this->table = $builder->table();
-        $this->table->pk($this->getPk());
-        $this->search = $this->table->getSearch();
+        $table = $builder->table();
+        $table->pk($this->getPk());
+        $this->table = $table;
+        $this->search = $table->getSearch();
 
         $this->builSearch();
         $this->buildDataList();

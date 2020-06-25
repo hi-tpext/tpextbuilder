@@ -2,6 +2,8 @@
 
 namespace tpext\builder\logic;
 
+use think\Collection;
+
 class Export
 {
     /**
@@ -10,10 +12,11 @@ class Export
      * @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|\PHPExcel_Worksheet
      */
     private $worksheet = null;
+
     /**
      * Undocumented function
      * @param string $title
-     * @param array $data
+     * @param array|Collection|\Generator $data
      * @param array $displayers
      * @return void
      */
@@ -97,7 +100,7 @@ class Export
     /**
      * Undocumented function
      * @param string $title
-     * @param array $data
+     * @param array|Collection|\Generator $data
      * @param array $displayers
      * @param string $type
      * @return void
@@ -110,11 +113,11 @@ class Export
         $lib = '';
 
         $obj = null;
-        if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet', false)) {
+        if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet')) {
             $obj = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
             $this->worksheet = $obj->getActiveSheet();
             $lib = 'PhpOffice';
-        } else if (class_exists('\\PHPExcel', false)) {
+        } else if (class_exists('\\PHPExcel')) {
             $obj = new \PHPExcel();
             $this->worksheet = $obj->getActiveSheet();
             $lib = 'PHPExcel';

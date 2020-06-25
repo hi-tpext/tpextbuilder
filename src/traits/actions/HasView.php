@@ -2,6 +2,12 @@
 
 namespace tpext\builder\traits\actions;
 
+use tpext\builder\common\Tab;
+use tpext\builder\displayer;
+use tpext\builder\form\FieldsContent;
+use tpext\builder\form\FRow;
+use tpext\builder\form\Step;
+
 /**
  * 查看
  */
@@ -41,11 +47,11 @@ trait HasView
 
         foreach ($rows as $row) {
 
-            if ($row instanceof \tpext\builder\common\Tab || $row instanceof \tpext\builder\form\Step) {
+            if ($row instanceof Tab || $row instanceof Step) {
 
                 $rows_ = $row->getRows();
                 foreach ($rows_ as $row_) {
-                    if ($row_['content'] instanceof \tpext\builder\form\FieldsContent) {
+                    if ($row_['content'] instanceof FieldsContent) {
                         $rows_ = $row_['content']->getRows();
                         $this->turn($rows_);
                     }
@@ -54,50 +60,52 @@ trait HasView
                 continue;
             }
 
-            if (!$row instanceof \tpext\builder\form\FRow) {
+            if (!$row instanceof FRow) {
                 continue;
             }
 
             $displayer = $row->getDisplayer();
 
-            if ($displayer instanceof \tpext\builder\displayer\Items) {
+            if ($displayer instanceof displayer\Items) {
 
                 $content = $displayer->getContent();
                 $cols = $content->getCols();
                 $this->turn($cols);
 
-            } else if ($displayer instanceof \tpext\builder\displayer\Fields) {
+            } else if ($displayer instanceof displayer\Fields) {
+
                 $content = $displayer->getContent();
                 $rows_ = $content->getRows();
                 $this->turn($rows_);
 
-            } else if ($displayer instanceof \tpext\builder\displayer\Password) {
+            } else if ($displayer instanceof displayer\Password) {
+
                 $row->show($displayer->getName(), $row->getLabel())->default('*********');
-            } else if (
-                $displayer instanceof \tpext\builder\displayer\Text
-                || $displayer instanceof \tpext\builder\displayer\Tags
-                || $displayer instanceof \tpext\builder\displayer\Number
-                || $displayer instanceof \tpext\builder\displayer\Textarea) {
+
+            } else if ($displayer instanceof displayer\Text || $displayer instanceof displayer\Tags
+                || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea) {
 
                 $row->show($displayer->getName(), $row->getLabel())->value($displayer->renderValue())->default('-空-');
-            } else if ($displayer instanceof \tpext\builder\displayer\Checkbox || $displayer instanceof \tpext\builder\displayer\MultipleSelect) {
+
+            } else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
 
                 $row->matches($displayer->getName(), $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
-            } else if ($displayer instanceof \tpext\builder\displayer\Radio) {
+
+            } else if ($displayer instanceof displayer\Radio) {
 
                 $row->match($displayer->getName(), $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
-            } else if ($displayer instanceof \tpext\builder\displayer\SwitchBtn) {
+
+            } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
                 $options = [$pair[0] => '是', $pair[1] => '否'];
                 $row->match($displayer->getName(), $row->getLabel())->options($options)->value($displayer->renderValue());
-            } else if (
-                !($displayer instanceof \tpext\builder\displayer\Raw
-                    || $displayer instanceof \tpext\builder\displayer\MultipleFile
-                    || $displayer instanceof \tpext\builder\displayer\Divider
-                    || $displayer instanceof \tpext\builder\displayer\Html)) {
+
+            } else if (!($displayer instanceof displayer\Raw || $displayer instanceof displayer\MultipleFile
+                || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 
                 $row->show($displayer->getName(), $row->getLabel())->value($displayer->renderValue())->default('-空-');
+
             }
         }
     }

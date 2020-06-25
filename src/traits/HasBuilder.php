@@ -2,25 +2,27 @@
 
 namespace tpext\builder\traits;
 
+use tpext\builder\traits\actions;
+
 trait HasBuilder
 {
     //基础
-    use \tpext\builder\traits\actions\HasBase;
+    use actions\HasBase;
     //按需加载，避免暴露不必要的action
 
     //列表
-    use \tpext\builder\traits\actions\HasIndex;
+    use actions\HasIndex;
     //添加/修改
-    use \tpext\builder\traits\actions\HasAdd;
-    use \tpext\builder\traits\actions\HasEdit;
+    use actions\HasAdd;
+    use actions\HasEdit;
 
     //查看
-    use \tpext\builder\traits\actions\HasView;
+    use actions\HasView;
 
     //字段编辑
-    use \tpext\builder\traits\actions\HasAutopost;
+    use actions\HasAutopost;
     //禁用/启用
-    use \tpext\builder\traits\actions\HasEnable;
+    use actions\HasEnable;
     //删除
-    use \tpext\builder\traits\actions\HasDelete;
+    use actions\HasDelete;
 }
