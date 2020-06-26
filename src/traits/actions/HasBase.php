@@ -142,6 +142,8 @@ trait HasBase
             $this->error($result);
         }
 
+        $res = 0;
+
         if ($id) {
             $res = $this->dataModel->update($data, ['id' => $id]);
         } else {

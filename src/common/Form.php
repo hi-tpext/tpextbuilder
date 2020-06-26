@@ -546,6 +546,13 @@ class Form extends FWrapper implements Renderable
 
         $(document).bind('keyup', function(e) {
             if (event.keyCode === 13) {
+                if($(':focus') && $(':focus').attr('id'))
+                {
+                    if(/.+?_tag$/.test($(':focus').attr('id')))
+                    {
+                        return true;
+                    }
+                }
                 var index = layer.msg('提交数据？', {
                     time: 2000,
                     btn: ['确定', '取消'],

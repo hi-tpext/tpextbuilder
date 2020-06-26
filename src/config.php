@@ -17,7 +17,7 @@ return [
     'max_size' => 20,
     'is_rand_name' => 1,
     'file_by_date' => 5,
-    'table_empty_text' => '<p class="text-center"><span>暂无相关数据~</span></p>',
+    'table_empty_text' => '<div class="text-center"><img src="/assets/tpextbuilder/images/empty.png" /><p>暂无相关数据~</p></div>',
     //
     '__hr__' => '地图api，按需配置',
     'amap_js_key' => '//webapi.amap.com/maps?v=1.4.15&key=您申请的key值',
