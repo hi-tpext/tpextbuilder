@@ -27,6 +27,8 @@ class Select extends Radio
 
     protected $select2 = true;
 
+    protected $prevSelect = null;
+
     protected $jsOptions = [
         'placeholder' => '',
         'allowClear' => true,
@@ -200,20 +202,39 @@ EOT;
      */
     public function withNext($nextSelect)
     {
+        $nextSelect->withPrev($this);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Select $prevSelect
+     * @return $this
+     */
+    public function withPrev($prevSelect)
+    {
+        $this->prevSelect = $prevSelect;
+
+        return $this;
+    }
+
+    protected function withPrevScript()
+    {
         $selectId = $this->getId();
 
-        $nextId = $nextSelect->getId();
+        $prevId = $this->prevSelect->getId();
 
         $script = <<<EOT
-        $(document).off('change', '#{$selectId}');
-        $(document).on('change', "#{$selectId}", function () {
-            $('#{$nextId}').empty().append('<option value=""></option>').trigger('change');
+        $(document).off('change', '#{$prevId}');
+        $(document).on('change', "#{$prevId}", function () {
+            $('#{$selectId}').empty().append('<option value=""></option>').trigger('change');
         });
 
 EOT;
         $this->script[] = $script;
 
-        $nextSelect->jsOptions(['prev_id' => $selectId]);
+        $this->jsOptions(['prev_id' => $prevId]);
 
         return $this;
     }
@@ -234,6 +255,9 @@ EOT;
     public function beforRender()
     {
         if ($this->select2) {
+            if ($this->prevSelect) {
+                $this->withPrevScript();
+            }
             $this->select2Script();
         }
 
