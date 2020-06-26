@@ -274,12 +274,15 @@ class Items extends Field
             var node = $("#{$id}-temple").find('tr').clone();
             var fields = node.find('.item-field');
             script = $("#{$id}-script").val();
+
             i += 1;
             fields.each(function(){
                 reset(this);
             });
             $(this).parents('tr').before(node);
             $('.items-empty-text').hide();
+            script = script.replace(/-no-init-script/g, '');
+            console.log(script);
             if(script)
             {
                 if ($('#script-div').size()) {
