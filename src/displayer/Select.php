@@ -125,7 +125,7 @@ class Select extends Radio
 
             $prev_id = isset($this->jsOptions['prev_id']) ? $this->jsOptions['prev_id'] : '';
 
-            $key = preg_replace('/\W/','',$selectId);
+            $key = preg_replace('/\W/', '', $selectId);
 
             $script = <<<EOT
 
@@ -317,7 +317,7 @@ EOT;
 
         $vars = array_merge($vars, [
             'checked' => '-' . $this->checked,
-            'dataSelected' => $this->checked,
+            'dataSelected' => empty($this->options) ? $this->checked : '', //已经手动在后端给了选项的，不再ajax加载默认值
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,
