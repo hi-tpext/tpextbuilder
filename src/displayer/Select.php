@@ -136,7 +136,7 @@ class Select extends Radio
                 data: function (params) {
                   var prev_val = '{$prev_id}' ? $('#{$prev_id}').val() : '';
                   return {
-                    q: params.term || prev_val,
+                    q: params.term,
                     page: params.page || 1,
                     prev_val : prev_val,
                     ele_id : '{$selectId}',

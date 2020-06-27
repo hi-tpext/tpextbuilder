@@ -420,13 +420,13 @@ class Form extends FWrapper implements Renderable
     public function bottomButtons($create = true)
     {
         if ($create) {
-            if (!$this->readonly) {
-                $this->btnSubmit();
-                $this->html('', '', 3)->showLabel(false);
-                $this->btnReset();
-            } else {
+            if ($this->readonly) {
                 $this->bottomOffset(5);
-                $this->btnLayerClose();
+                $this->btnLayerClose('返&nbsp;&nbsp;回', 2);
+            } else {
+                $this->btnSubmit();
+                $this->html('', '', 2)->showLabel(false);
+                $this->btnReset();
             }
         }
 
@@ -437,7 +437,7 @@ class Form extends FWrapper implements Renderable
     public function bottomOffset($offset = 4)
     {
         $this->allContentsEnd();
-        $this->divider('', '', 12)->size(0, 12)->showLabel(false);
+        $this->html('', '', 12)->value('<hr/>')->showLabel(false)->size(0, 12);
         $this->html('', '', $offset)->showLabel(false);
     }
 

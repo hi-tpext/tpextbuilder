@@ -327,6 +327,11 @@ td ul.lyear-uploads-pic li.pic-item
     max-width: 100px;
 }
 
+.select2.select2-container
+{
+    text-align: left;
+}
+
 .items-div .bootstrap-touchspin
 {
     width: 100%;
@@ -347,3 +352,4 @@ form label.control-label,form label.full-label
 {
     color: #666;
 }
+
