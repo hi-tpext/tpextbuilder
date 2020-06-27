@@ -37,6 +37,7 @@ class MultipleSelect extends Select
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,
+            'dataSelected' => implode(',', $this->checked),
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,

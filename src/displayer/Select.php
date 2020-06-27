@@ -125,44 +125,77 @@ class Select extends Radio
 
             $prev_id = isset($this->jsOptions['prev_id']) ? $this->jsOptions['prev_id'] : '';
 
+            $key = preg_replace('/\W/','',$selectId);
+
             $script = <<<EOT
 
+        var init{$key} = function()
+        {
             $('#{$selectId}').select2({
-              {$configs},
-              ajax: {
+            {$configs},
+            ajax: {
                 url: '{$url}',
                 dataType: 'json',
                 delay: {$delay},
                 data: function (params) {
-                  var prev_val = '{$prev_id}' ? $('#{$prev_id}').val() : '';
-                  return {
-                    q: params.term,
-                    page: params.page || 1,
-                    prev_val : prev_val,
-                    ele_id : '{$selectId}',
-                    prev_ele_id : '{$prev_id}'
-                  };
+                    var prev_val = '{$prev_id}' ? $('#{$prev_id}').val() : '';
+                    return {
+                        q: params.term,
+                        page: params.page || 1,
+                        prev_val : prev_val,
+                        ele_id : '{$selectId}',
+                        prev_ele_id : '{$prev_id}'
+                    };
                 },
                 processResults: function (data, params) {
-                  params.page = params.page || 1;
-                  var list = data.data ? data.data : data;
-                  return {
-                    results: $.map(list, function (d) {
-                               d.id = d.{$id};
-                               d.text = d.{$text};
-                               return d;
-                            }),
-                    pagination: {
-                      more: {$loadmore} ? data.has_more : 0
-                    }
-                  };
+                    params.page = params.page || 1;
+                    var list = data.data ? data.data : data;
+                    return {
+                        results: $.map(list, function (d) {
+                                d.id = d.{$id};
+                                d.text = d.{$text};
+                                return d;
+                                }),
+                        pagination: {
+                        more: {$loadmore} ? data.has_more : 0
+                        }
+                    };
                 },
                 cache: true
-              },
-              escapeMarkup: function (markup) {
-                  return markup;
-              }
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }
             });
+        }
+
+        var selected = $('#{$selectId}').data('selected');
+        if(selected)
+        {
+            $.ajax({
+                url: '{$url}',
+                data: {selected : selected},
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    var list = (data.data ? data.data : data) || [];
+
+                    for(var i in list)
+                    {
+                        $('#{$selectId}').append('<option selected value="'+list[i].{$id}+'">'+list[i].{$text}+'</option>');
+                    }
+                    init{$key}();
+                },
+                error:function(){
+                    $('#{$selectId}').data('selected','');
+                    init{$key}();
+                }
+            });
+        }
+        else
+        {
+            init{$key}();
+        }
 
 EOT;
             $this->jsOptions['ajax'] = $ajax;
@@ -228,6 +261,8 @@ EOT;
         $script = <<<EOT
         $(document).off('change', '#{$prevId}');
         $(document).on('change', "#{$prevId}", function () {
+            $('#{$selectId}').find('option').remove();
+            $('#{$selectId}').find('optgroup').remove();
             $('#{$selectId}').empty().append('<option value=""></option>').trigger('change');
         });
 
@@ -282,6 +317,7 @@ EOT;
 
         $vars = array_merge($vars, [
             'checked' => '-' . $this->checked,
+            'dataSelected' => $this->checked,
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,
