@@ -786,7 +786,7 @@ EOT;
             'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->getName(),
-            'requiredStyle' => $this->required ? '' : 'style="visibility: hidden;"',
+            'requiredStyle' => $this->required ? '' : 'style="display: none;"',
             'extKey' => $this->extKey,
             'extNameKey' => $this->extNameKey,
             'value' => $value,
