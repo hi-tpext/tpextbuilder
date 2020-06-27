@@ -317,7 +317,7 @@ EOT;
 
         $vars = array_merge($vars, [
             'checked' => '-' . $this->checked,
-            'dataSelected' => empty($this->options) ? $this->checked : '', //已经手动在后端给了选项的，不再ajax加载默认值
+            'dataSelected' => $this->checked,
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,

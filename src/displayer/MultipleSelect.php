@@ -37,7 +37,7 @@ class MultipleSelect extends Select
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,
-            'dataSelected' => empty($this->options) ? implode(',', $this->checked) : '', //已经手动在后端给了选项的，不再ajax加载默认值
+            'dataSelected' => implode(',', $this->checked), //已经手动在后端给了选项的，不再ajax加载默认值
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,
