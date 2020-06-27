@@ -444,7 +444,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 2, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 2, $count > 3 ? $arguments[3] : '');
 
             if ($this->__fields__) {
                 $this->__fields__->addRow($row);

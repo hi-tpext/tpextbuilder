@@ -52,7 +52,7 @@ class Select extends Radio
      * Undocumented function
      *
      * @param string $url
-     * @param string $textField
+     * @param string $textField text|name
      * @param string $idField
      * @param integer $delay
      * @param boolean $loadmore
@@ -153,7 +153,7 @@ class Select extends Radio
                     return {
                         results: $.map(list, function (d) {
                                 d.id = d.{$id};
-                                d.text = d.{$text};
+                                d.text = d.{$text} || d.name;
                                 return d;
                                 }),
                         pagination: {
@@ -182,7 +182,7 @@ class Select extends Radio
 
                     for(var i in list)
                     {
-                        $('#{$selectId}').append('<option selected value="'+list[i].{$id}+'">'+list[i].{$text}+'</option>');
+                        $('#{$selectId}').append('<option selected value="' + list[i].{$id} + '">' + (list[i].{$text} || list[i].name) + '</option>');
                     }
                     init{$key}();
                 },

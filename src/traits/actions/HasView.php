@@ -66,7 +66,9 @@ trait HasView
 
             $displayer = $row->getDisplayer();
 
-            if ($displayer instanceof displayer\Items) {
+            if ($displayer instanceof displayer\Button) {
+                continue;
+            } else if ($displayer instanceof displayer\Items) {
 
                 $content = $displayer->getContent();
                 $cols = $content->getCols();
@@ -101,11 +103,10 @@ trait HasView
                 $options = [$pair[0] => '是', $pair[1] => '否'];
                 $row->match($displayer->getName(), $row->getLabel())->options($options)->value($displayer->renderValue());
 
-            } else if (!($displayer instanceof displayer\Raw || $displayer instanceof displayer\MultipleFile
+            } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 
-                $row->show($displayer->getName(), $row->getLabel())->value($displayer->renderValue())->default('-空-');
-
+                $row->raw($displayer->getName(), $row->getLabel())->value($displayer->renderValue())->default('-空-');
             }
             $size = $displayer->getSize();
             $row->getDisplayer()->showLabel($displayer->isShowLabel())->size($size[0], $size[1]);

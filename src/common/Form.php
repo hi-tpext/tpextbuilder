@@ -658,7 +658,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 12, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : 12));
 
             if ($this->__fields__) {
 
@@ -683,7 +683,7 @@ EOT;
             }
 
             if ($name == 'button') {
-                $displayer->extKey('-' . $this->id);
+                $displayer->extKey('-' . $this->id . mt_rand(10, 99));
             }
 
             return $displayer;

@@ -776,7 +776,7 @@ class Table extends TWrapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $col = new TColumn($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $col = new TColumn($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0);
 
             $col->setTable($this);
 
