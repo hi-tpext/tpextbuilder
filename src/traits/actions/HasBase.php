@@ -139,7 +139,7 @@ trait HasBase
         $res = 0;
 
         if ($id) {
-            $res = $this->dataModel->save($data, [$this->getPk() => $id]);
+            $res = $this->dataModel->allowField(true)->save($data, [$this->getPk() => $id]);
         } else {
             $res = $this->dataModel->allowField(true)->save($data);
         }
