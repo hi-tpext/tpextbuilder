@@ -1,5 +1,5 @@
 {volist name="rows" id="row"}
-<div class="form-group col-md-{$row->getColSize()} {$row->getClass()} {$row->getErrorClass()}" {$row->getAttrWithStyle()|raw}>
+<div class="form-group col-md-{$row->getColSize()} row-{$row->getName()}-div {$row->getErrorClass()}" {$row->getAttrWithStyle()|raw}>
   {:$row->render()}
 </div>
 {/volist}

@@ -66,7 +66,7 @@ trait HasView
 
             $displayer = $row->getDisplayer();
 
-            if ($displayer instanceof displayer\Button) {
+            if ($displayer instanceof displayer\Button || $displayer instanceof displayer\Match || $displayer instanceof displayer\Matches) {
                 continue;
             } else if ($displayer instanceof displayer\Items) {
 

@@ -12,7 +12,7 @@
             {:$row->render()}
         </div>
         {else/}
-        <div class="form-group col-md-{$row->getColSize()} {$row->getClass()}
+        <div class="form-group col-md-{$row->getColSize()} row-{$row->getName()}-div
             {$row->getErrorClass()}" {$row->getAttrWithStyle()|raw}>
             {:$row->render()}
         </div>
