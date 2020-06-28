@@ -108,6 +108,18 @@ class Items extends Field
     /**
      * Undocumented function
      *
+     * @return $this
+     */
+    public function canNotAddOrDelete()
+    {
+        $this->__items_content__->cnaDelete(false);
+        $this->__items_content__->canAdd(false);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array|Collection $data
      * @param boolean $overWrite
      * @return $this

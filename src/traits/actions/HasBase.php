@@ -33,7 +33,7 @@ trait HasBase
     protected $pagesize = 14;
     protected $sortOrder = 'id desc';
     protected $enableField = 'enable';
-    protected $pk = '';
+    protected $pk = 'id';
     protected $isExporting = false;
 
     /**
@@ -127,28 +127,23 @@ trait HasBase
      * @param integer $id
      * @return mixed
      */
-    private function save($id = 0)
+    protected function save($id = 0)
     {
-        $data = request()->only([
-            'some_fields',
-            // ... more_fields
-        ], 'post');
+        $data = request()->post();
 
-        $result = $this->validate($data, [
-            'some_fields|AreYouOK' => 'require',
-        ]);
+        return $this->doSave($data, $id);
+    }
 
-        if (true !== $result) {
-            $this->error($result);
-        }
-
+    protected function doSave($data, $id = 0)
+    {
         $res = 0;
 
         if ($id) {
-            $res = $this->dataModel->update($data, ['id' => $id]);
+            $res = $this->dataModel->save($data, [$this->getPk() => $id]);
         } else {
-            $res = $this->dataModel->create($data);
+            $res = $this->dataModel->allowField(true)->save($data);
         }
+
         if (!$res) {
             $this->error('保存失败');
         }
