@@ -493,6 +493,10 @@ class Builder implements Renderable
      */
     public function render()
     {
+        if ($this->layer) {
+            return $this->layer->getViewShow();
+        }
+
         $this->beforRender();
 
         $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);

@@ -14,10 +14,12 @@
             }
 
             if (parent.$('.search-refresh').size()) {
-                parent.$('.search-refresh').trigger('click');
+                setTimeout(function () {
+                    parent.$('.search-refresh').trigger('click');
+                }, 1000);
             } else {
                 setTimeout(function () {
-                    parent.location.reload();
+                    parent.replace.reload(parent.location.href);
                 }, 2000);
             }
 
@@ -25,7 +27,9 @@
             parent.layer.close(index);
         } else {
             document.write(msg);
-            location.reload();
+            setTimeout(function () {
+                location.replace(location.href);
+            }, 2000);
         }
     </script>
 </head>

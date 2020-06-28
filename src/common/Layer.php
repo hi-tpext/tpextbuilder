@@ -6,7 +6,17 @@ use tpext\builder\common\Module;
 
 class Layer
 {
-    private $view = '';
+    /**
+     * Undocumented variable
+     *
+     * @var ViewShow
+     */
+    private $viewShow;
+
+    public function getViewShow()
+    {
+        return $this->viewShow;
+    }
 
     public function close($success = true, $msg = '操作成功')
     {
@@ -18,16 +28,18 @@ class Layer
             ]);
         }
 
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'close.html']);
+        $view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'close.html']);
 
         $vars = [
             'success' => $success ? 1 : 0,
             'msg' => $msg,
         ];
 
-        $view = new ViewShow($this->view);
+        $this->viewShow = new ViewShow($view);
 
-        return $view->assign($vars);
+        $this->viewShow->assign($vars);
+
+        return $this->viewShow;
     }
 
     public function closeGo($success = true, $msg = '操作成功', $url)
@@ -40,7 +52,7 @@ class Layer
             ]);
         }
 
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closego.html']);
+        $view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closego.html']);
 
         $vars = [
             'success' => $success ? 1 : 0,
@@ -48,9 +60,11 @@ class Layer
             'url' => $url,
         ];
 
-        $view = new ViewShow($this->view);
+        $this->viewShow = new ViewShow($view);
 
-        return $view->assign($vars);
+        $this->viewShow->assign($vars);
+
+        return $this->viewShow;
     }
 
     public function closeRefresh($success = true, $msg = '操作成功')
@@ -63,15 +77,17 @@ class Layer
             ]);
         }
 
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closerefresh.html']);
+        $view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closerefresh.html']);
 
         $vars = [
             'success' => $success ? 1 : 0,
             'msg' => $msg,
         ];
 
-        $view = new ViewShow($this->view);
+        $this->viewShow = new ViewShow($view);
 
-        return $view->assign($vars);
+        $this->viewShow->assign($vars);
+
+        return $this->viewShow;
     }
 }
