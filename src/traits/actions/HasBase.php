@@ -139,9 +139,9 @@ trait HasBase
         $res = 0;
 
         if ($id) {
-            $res = $this->dataModel->allowField(true)->save($data, [$this->getPk() => $id]);
+            $res = $this->dataModel->allowField(true)->isUpdate(true, [$this->getPk() => $id])->save($data);
         } else {
-            $res = $this->dataModel->allowField(true)->save($data);
+            $res = $this->dataModel->allowField(true)->isUpdate(false)->save($data);
         }
 
         if (!$res) {

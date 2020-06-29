@@ -354,6 +354,10 @@ class Search extends SWrapper implements Renderable
         {
             $('#btn-search{$extKey}').removeClass('hidden');
         }
+        else
+        {
+            $('#{$form}').addClass('hidden');
+        }
 
         $('body').on('click', '#btn-search{$extKey}', function(){
             if($('#{$form} form').hasClass('hidden'))
