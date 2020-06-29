@@ -25,15 +25,22 @@ trait HasExport
             $where = $this->filterWhere();
         }
 
-        $list = $this->dataModel->where($where)->order($sortOrder)->cursor();
+        if($this->dataModel)
+        {
+            $list = $this->dataModel->where($where)->order($sortOrder)->cursor();
 
-        $data = [];
+            $data = [];
 
-        foreach ($list as $li) {
-            $data[] = $li;
+            foreach ($list as $li) {
+                $data[] = $li;
+            }
+
+            $this->buildTable($data);
         }
-
-        $this->buildTable($data);
+        else
+        {
+            $data = $this->buildDataList();
+        }
 
         $cols = $this->table->getCols();
 
