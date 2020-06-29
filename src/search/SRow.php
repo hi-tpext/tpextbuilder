@@ -2,6 +2,7 @@
 
 namespace tpext\builder\search;
 
+use think\facade\Lang;
 use tpext\builder\common\Search;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
@@ -23,14 +24,15 @@ class SRow extends SWrapper implements Renderable
 
     public function __construct($name, $label = '', $colSize = 2, $filter = '')
     {
+        $this->name = trim($name);
         if (empty($label)) {
-            $label = ucfirst($name);
+            $label = Lang::get(ucfirst($this->name));
         }
 
-        $this->name = $name;
         $this->label = $label;
         $this->cloSize = $colSize;
         $this->filter = $filter;
+
         return $this;
     }
 
