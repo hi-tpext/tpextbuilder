@@ -2,11 +2,11 @@
 
 namespace tpext\builder\table;
 
+use think\facade\Lang;
 use tpext\builder\common\Table;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
-use think\facade\Lang;
 
 class TColumn extends TWrapper implements Renderable
 {
@@ -53,6 +53,18 @@ class TColumn extends TWrapper implements Renderable
     public function getTable()
     {
         return $this->table;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function fill($data = [])
+    {
+        $this->displayer->fill($data);
+        return $this;
     }
 
     public function __call($name, $arguments)

@@ -72,14 +72,12 @@ trait HasView
             } else if ($displayer instanceof displayer\Items) {
 
                 $content = $displayer->getContent();
-                $cols = $content->getCols();
-                $this->turn($cols);
+                $this->turn($content->getCols());
 
             } else if ($displayer instanceof displayer\Fields) {
 
                 $content = $displayer->getContent();
-                $rows_ = $content->getRows();
-                $this->turn($rows_);
+                $this->turn($content->getRows());
 
             } else if ($displayer instanceof displayer\Password) {
 

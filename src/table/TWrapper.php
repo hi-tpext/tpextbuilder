@@ -36,6 +36,8 @@ use tpext\builder\common\Wapper as Base;
  * @method \tpext\builder\displayer\MultipleFile   multipleFile($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Match          match($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Matches        matches($name, $label = '', $colSize = 12)
+ * @method \tpext\builder\displayer\Fields         fields($name, $label = '', $colSize = 12)
+ *
  */
 
 class TWrapper extends Base

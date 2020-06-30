@@ -1,28 +1,28 @@
 <?php
 
-namespace tpext\builder\form;
+namespace tpext\builder\table;
 
 use think\Model;
 use think\response\View as ViewShow;
-use tpext\builder\common\Form;
 use tpext\builder\common\Module;
+use tpext\builder\common\Table;
 use tpext\builder\displayer\Field;
 use tpext\builder\inface\Renderable;
 
-class FieldsContent extends FWrapper implements Renderable
+class FieldsContent extends TWrapper implements Renderable
 {
     protected $view = 'fieldscontent';
 
-    protected $rows = [];
+    protected $cols = [];
 
     protected $data = [];
 
     /**
      * Undocumented variable
      *
-     * @var Form
+     * @var Table
      */
-    protected $form;
+    protected $table;
 
     /**
      * Undocumented function
@@ -31,20 +31,14 @@ class FieldsContent extends FWrapper implements Renderable
      */
     public function beforRender()
     {
-        foreach ($this->rows as $row) {
-            $row->fill($this->data);
-            if (!$row instanceof FRow) {
-                $row->beforRender();
+        foreach ($this->cols as $col) {
+            $col->fill($this->data);
+            if (!$col instanceof TColumn) {
+                $col->beforRender();
                 continue;
             }
 
-            $displayer = $row->getDisplayer();
-
-            if ($displayer->isRequired()) {
-                $this->form->addJqValidatorRule($displayer->getName(), 'required', true);
-            }
-
-            $row->beforRender();
+            $col->beforRender();
         }
         return $this;
     }
@@ -52,12 +46,12 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param FRow|Field|Fillable $row
+     * @param TColumn|Field $col
      * @return $this
      */
-    public function addRow($row)
+    public function addCol($col)
     {
-        $this->rows[] = $row;
+        $this->cols[] = $col;
         return $this;
     }
 
@@ -66,31 +60,31 @@ class FieldsContent extends FWrapper implements Renderable
      *
      * @return array
      */
-    public function getRows()
+    public function getCols()
     {
-        return $this->rows;
+        return $this->cols;
     }
 
     /**
      * Undocumented function
      *
-     * @param Form $val
+     * @param Table $val
      * @return $this
      */
-    public function setForm($val)
+    public function setTable($val)
     {
-        $this->form = $val;
+        $this->table = $val;
         return $this;
     }
 
     /**
      * Undocumented function
      *
-     * @return Form
+     * @return Table
      */
-    public function getForm()
+    public function getTable()
     {
-        return $this->form;
+        return $this->table;
     }
 
     /**
@@ -108,20 +102,6 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param boolean $val
-     * @return $this
-     */
-    public function readonly($val = true)
-    {
-        foreach ($this->rows as $row) {
-            $row->getDisplayer()->readonly($val);
-        }
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @return array|Model
      */
     public function getData()
@@ -131,12 +111,12 @@ class FieldsContent extends FWrapper implements Renderable
 
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', $this->view . '.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table', $this->view . '.html']);
 
         $viewshow = new ViewShow($template);
 
         $vars = [
-            'rows' => $this->rows,
+            'cols' => $this->cols,
         ];
 
         return $viewshow->assign($vars)->getContent();
@@ -148,11 +128,11 @@ class FieldsContent extends FWrapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : 12));
+            $col = new TColumn($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0);
 
-            $this->rows[] = $row;
+            $this->col[$arguments[0]] = $col;
 
-            return $row->$name($arguments[0], $row->getLabel());
+            return $col->$name($arguments[0], $col->getLabel());
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);

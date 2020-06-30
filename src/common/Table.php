@@ -6,6 +6,7 @@ use think\Collection;
 use think\response\View as ViewShow;
 use tpext\builder\inface\Renderable;
 use tpext\builder\table\Actionbar;
+use tpext\builder\table\FieldsContent;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
 use tpext\builder\table\TColumn;
@@ -59,7 +60,14 @@ class Table extends TWrapper implements Renderable
 
     protected $pageSize = 0;
 
-    protected $emptyText = "<p class='text-center'><span>暂无相关数据~</span></p>";
+    protected $emptyText = '';
+
+    /**
+     * Undocumented variable
+     *
+     * @var FieldsContent
+     */
+    protected $__fields__ = null;
 
     /**
      * Undocumented variable
@@ -677,6 +685,29 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return FieldsContent
+     */
+    public function createFields()
+    {
+        $this->__fields__ = new FieldsContent();
+        $this->__fields__->setTable($this);
+        return $this->__fields__;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function fieldsEnd()
+    {
+        $this->__fields__ = null;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return string|ViewShow
      */
     public function render()
@@ -780,11 +811,19 @@ class Table extends TWrapper implements Renderable
 
             $col->setTable($this);
 
-            $this->cols[$arguments[0]] = $col;
+            $displayer = null;
 
-            $this->headers[$arguments[0]] = $col->getLabel();
+            if ($this->__fields__) {
+                $this->__fields__->addCol($col);
+                $displayer = $col->$name($arguments[0], $col->getLabel());
+                $displayer->size(0, 12)->showLabel(false);
+            } else {
+                $this->cols[$arguments[0]] = $col;
+                $this->headers[$arguments[0]] = $col->getLabel();
+                $displayer = $col->$name($arguments[0], $col->getLabel());
+            }
 
-            return $col->$name($arguments[0], $col->getLabel());
+            return $displayer;
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);

@@ -4,6 +4,7 @@ namespace tpext\builder\traits\actions;
 
 use tpext\builder\displayer;
 use tpext\builder\logic\Export;
+use tpext\builder\table\TColumn;
 
 /**
  * 导出
@@ -25,8 +26,7 @@ trait HasExport
             $where = $this->filterWhere();
         }
 
-        if($this->dataModel)
-        {
+        if ($this->dataModel) {
             $list = $this->dataModel->where($where)->order($sortOrder)->cursor();
 
             $data = [];
@@ -36,19 +36,64 @@ trait HasExport
             }
 
             $this->buildTable($data);
-        }
-        else
-        {
+        } else {
             $data = $this->buildDataList();
         }
 
         $cols = $this->table->getCols();
 
-        $displayers = [];
+        $displayers = $this->getDisplayers($cols); /*
+
+        foreach ($cols as $col) {
+
+        $displayer = $col->getDisplayer();
+
+        if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
+
+        $displayer = (new displayer\Matches($displayer->getName(), $col->getLabel()))->options($displayer->getOptions());
+        } else if ($displayer instanceof displayer\Radio) {
+
+        $displayer = (new displayer\Match($displayer->getName(), $col->getLabel()))->options($displayer->getOptions());
+        } else if ($displayer instanceof displayer\SwitchBtn) {
+
+        $pair = $displayer->getPair();
+        $options = [$pair[0] => '是', $pair[1] => '否'];
+        $displayer = (new displayer\Match($displayer->getName(), $col->getLabel()))->options($options);
+        } else if ($displayer instanceof displayer\Fields) {
+        $content = $displayer->getContent();
+        }
+
+        $displayers[] = $displayer;
+        }*/
+
+        $__file_type__ = input('post.__file_type__', '');
+
+        $logic = new Export;
+
+        if ($__file_type__ == 'xls' || $__file_type__ == 'xlsx') {
+            $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__);
+        } else {
+            $logic->toCsv($this->pageTitle, $data, $displayers);
+        }
+    }
+
+    private function getDisplayers($cols, $displayers = [])
+    {
+        $displayer = null;
 
         foreach ($cols as $col) {
 
             $displayer = $col->getDisplayer();
+
+            if ($displayer instanceof displayer\Fields) {
+                $content = $displayer->getContent();
+                $displayers = $this->getDisplayers($content->getCols(), $displayers);
+                continue;
+            }
+
+            if (!$col instanceof TColumn) {
+                continue;
+            }
 
             if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
 
@@ -62,29 +107,9 @@ trait HasExport
                 $options = [$pair[0] => '是', $pair[1] => '否'];
                 $displayer = (new displayer\Match($displayer->getName(), $col->getLabel()))->options($options);
             }
-
             $displayers[] = $displayer;
         }
 
-        $__file_type__ = input('post.__file_type__', '');
-
-        $logic = new Export;
-
-        if ($__file_type__ == 'xls' || $__file_type__ == 'xlsx') {
-            $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__);
-        } else {
-            $logic->toCsv($this->pageTitle, $data, $displayers);
-        }
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $data
-     * @return array
-     */
-    protected function handler($data)
-    {
-        return $data;
+        return $displayers;
     }
 }

@@ -5,7 +5,10 @@ namespace tpext\builder\displayer;
 use think\Model;
 use tpext\builder\common\Form;
 use tpext\builder\common\Search;
-use tpext\builder\form\FieldsContent;
+use tpext\builder\common\Table;
+use tpext\builder\form\FieldsContent as FormFileds;
+use tpext\builder\table\FieldsContent as TableFileds;
+use tpext\builder\table\TColumn;
 
 class Fields extends Field
 {
@@ -16,14 +19,14 @@ class Fields extends Field
     /**
      * Undocumented variable
      *
-     * @var Form|Search
+     * @var Form|Search|Table
      */
-    protected $form;
+    protected $widget;
 
     /**
      * Undocumented variable
      *
-     * @var FieldsContent
+     * @var FormFileds|TableFileds
      */
     protected $__fields_content__;
 
@@ -31,8 +34,13 @@ class Fields extends Field
     {
         parent::created($fieldType);
 
-        $this->form = $this->getWrapper()->getForm();
-        $this->__fields_content__ = $this->form->createFields();
+        if ($this->getWrapper() instanceof TColumn) {
+            $this->widget = $this->getWrapper()->getTable();
+        } else {
+            $this->widget = $this->getWrapper()->getForm();
+        }
+
+        $this->__fields_content__ = $this->widget->createFields();
 
         return $this;
     }
@@ -45,14 +53,14 @@ class Fields extends Field
      */
     public function with(...$fields)
     {
-        $this->form->fieldsEnd();
+        $this->widget->fieldsEnd();
         return $this;
     }
 
     /**
      * Undocumented function
      *
-     * @return FieldsContent
+     * @return FormFileds|TableFileds
      */
     public function getContent()
     {
