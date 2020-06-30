@@ -9,6 +9,7 @@ namespace tpext\builder\traits\actions;
 trait HasIndex
 {
     use HasExport;
+    use HasSelectPage;
 
     public function index()
     {

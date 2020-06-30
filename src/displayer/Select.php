@@ -114,9 +114,9 @@ class Select extends Radio
             $ajax = $this->jsOptions['ajax'];
             unset($this->jsOptions['ajax']);
             $url = $ajax['url'];
-            $id = isset($ajax['id']) ? $ajax['id'] : 'id';
-            $text = isset($ajax['text']) ? $ajax['text'] : 'text';
-            $delay = isset($ajax['delay']) ? $ajax['delay'] : 250;
+            $id = !empty($ajax['id']) ? $ajax['id'] : 'id';
+            $text = !empty($ajax['text']) ? $ajax['text'] : 'text';
+            $delay = !empty($ajax['delay']) ? $ajax['delay'] : 250;
             $loadmore = $ajax['loadmore'];
 
             $configs = json_encode($this->jsOptions);
@@ -144,7 +144,9 @@ class Select extends Radio
                         page: params.page || 1,
                         prev_val : prev_val,
                         ele_id : '{$selectId}',
-                        prev_ele_id : '{$prev_id}'
+                        prev_ele_id : '{$prev_id}',
+                        idField : '{$id}',
+                        textField : '{$text}'
                     };
                 },
                 processResults: function (data, params) {
@@ -152,8 +154,9 @@ class Select extends Radio
                     var list = data.data ? data.data : data;
                     return {
                         results: $.map(list, function (d) {
+
                                 d.id = d.{$id};
-                                d.text = d.{$text} || d.name;
+                                d.text = d.__text__ || d.{$text} || d.name;
                                 return d;
                                 }),
                         pagination: {
@@ -179,10 +182,11 @@ class Select extends Radio
                 dataType: 'json',
                 success: function (data) {
                     var list = (data.data ? data.data : data) || [];
-
+                    var d = null;
                     for(var i in list)
                     {
-                        $('#{$selectId}').append('<option selected value="' + list[i].{$id} + '">' + (list[i].{$text} || list[i].name) + '</option>');
+                        d = list[i];
+                        $('#{$selectId}').append('<option selected value="' + d.{$id} + '">' + (d.__text__ || d.{$text} || d.name) + '</option>');
                     }
                     init{$key}();
                 },
