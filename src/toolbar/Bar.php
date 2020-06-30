@@ -52,7 +52,7 @@ class Bar implements Renderable
 
         $barType = lcfirst($barType);
 
-        $defaultClass = Wapper::hasDefaultFieldClass($barType);
+        $defaultClass = BWapper::hasDefaultFieldClass($barType);
 
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;

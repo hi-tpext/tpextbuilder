@@ -10,14 +10,12 @@ class Match extends Raw
 
     public function renderValue()
     {
-        $value = parent::renderValue();
-
-        if (isset($this->options[$value])) {
-            $value = $this->options[$value];
+        if (isset($this->options[$this->value])) {
+            $this->value = $this->options[$this->value];
         } else if (isset($this->options['__default__'])) {
-            $value = $this->options['__default__'];
+            $this->value = $this->options['__default__'];
         }
 
-        return $value;
+        return parent::renderValue();
     }
 }

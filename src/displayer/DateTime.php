@@ -106,15 +106,6 @@ EOT;
         return parent::beforRender();
     }
 
-    public function render()
-    {
-        if ($this->timespan && is_numeric($this->value)) {
-            $this->value = date($this->timespan, $this->value);
-        }
-
-        return parent::render();
-    }
-
     /**
      * Undocumented function
      *
@@ -122,12 +113,10 @@ EOT;
      */
     public function renderValue()
     {
-        $value = parent::renderValue();
-
-        if ($this->timespan && is_numeric($value)) {
-            $value = date($this->timespan, $value);
+        if ($this->timespan && is_numeric($this->value)) {
+            $this->value = date($this->timespan, $this->value);
         }
 
-        return $value;
+        return parent::renderValue();
     }
 }

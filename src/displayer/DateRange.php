@@ -130,20 +130,18 @@ EOT;
      */
     public function renderValue()
     {
-        $value = parent::renderValue();
-
-        if ($this->timespan && $value) {
-            $arr = explode($this->separator, $value);
+        if ($this->timespan && is_numeric($this->value)) {
+            $arr = explode($this->separator, $this->value);
             if (isset($arr[0]) && is_numeric($arr[0])) {
                 $arr[0] = date($this->timespan, $arr[0]);
             }
             if (isset($arr[1]) && is_numeric($arr[1])) {
                 $arr[1] = date($this->timespan, $arr[1]);
             }
-            $value = implode($this->separator, $arr);
+            $this->value = implode($this->separator, $arr);
         }
 
-        return $value;
+        return parent::renderValue();
     }
 
     public function beforRender()

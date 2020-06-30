@@ -10,9 +10,7 @@ class Matches extends Raw
 
     public function renderValue()
     {
-        $value = parent::renderValue();
-
-        $values = explode(',', $value);
+        $values = explode(',', $this->value);
         $texts = [];
 
         foreach ($values as $value) {
@@ -21,6 +19,8 @@ class Matches extends Raw
             }
         }
 
-        return implode(', ', $texts);
+        $this->value = implode(',', $texts);
+
+        return parent::renderValue();
     }
 }

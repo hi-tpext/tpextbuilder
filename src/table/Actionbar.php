@@ -8,9 +8,9 @@ class Actionbar extends Toolbar
 {
     protected $pk;
 
-    protected $rowid;
+    protected $rowId;
 
-    protected $rowdata;
+    protected $rowData;
 
     protected $mapClass = [];
 
@@ -47,12 +47,12 @@ class Actionbar extends Toolbar
                 $elm->extKey($this->extKey);
             }
 
-            if ($this->rowid) {
-                $elm->dataid($this->rowid);
+            if ($this->rowId) {
+                $elm->dataid($this->rowId);
             }
 
-            if ($this->rowdata) {
-                $elm->parse($this->rowdata);
+            if ($this->rowData) {
+                $elm->parseUrl($this->rowData);
             }
 
             if ($this->mapClass) {
@@ -81,13 +81,13 @@ class Actionbar extends Toolbar
      * @param array $data
      * @return $this
      */
-    public function rowdata($data)
+    public function rowData($data)
     {
         if (isset($data[$this->pk])) {
-            $this->rowid = $data[$this->pk];
+            $this->rowId = $data[$this->pk];
         }
 
-        $this->rowdata = $data;
+        $this->rowData = $data;
 
         return $this;
     }

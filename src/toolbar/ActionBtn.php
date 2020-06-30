@@ -2,6 +2,7 @@
 
 namespace tpext\builder\toolbar;
 
+use think\Model;
 use tpext\builder\common\Builder;
 
 class ActionBtn extends Bar
@@ -16,39 +17,30 @@ class ActionBtn extends Bar
 
     protected $data = [];
 
-    protected $dataid = 0;
+    protected $dataId = 0;
 
     protected $confirm = true;
 
     /**
      * Undocumented function
      *
-     * @param array $data
+     * @param array|Model $data
      * @return $this
      */
-    public function parse($data)
+    public function parseUrl($data)
     {
-        $this->__href__ = preg_replace('/__data\.pk__/', $this->dataid, $this->href);
-
-        if (empty($data)) {
-            return $this;
-        }
-
         $this->data = $data;
 
-        $ma = preg_match_all('/__data\.(\w+)__/', $this->__href__, $matches);
+        $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
 
-        if ($ma) {
-            foreach ($matches as $match) {
-                if (count($match) > 0) {
-                    $key = $match[0];
-                }
-
-                if (isset($data[$key])) {
-                    $this->__href__ = preg_replace('/__data\.' . $key . '__/', $data[$key], $this->__href__);
-                }
-            }
+        $keys =['__data.pk__'];
+        $replace = [$this->dataId];
+        foreach ($data as $key => $val) {
+            $keys[] = '__data.' . $key . '__';
+            $replace[] = $val;
         }
+
+        $this->__href__ = str_replace($keys, $replace, $this->href);
 
         return $this;
     }
@@ -84,9 +76,9 @@ class ActionBtn extends Bar
      * @param string $val
      * @return $this
      */
-    public function dataid($val)
+    public function dataId($val)
     {
-        $this->dataid = $val;
+        $this->dataId = $val;
         return $this;
     }
 
@@ -129,7 +121,7 @@ EOT;
         if ($this->postRowid) {
 
             if (Builder::checkUrl($this->postRowid)) {
-                $this->postRowidScript();;
+                $this->postRowidScript();
             } else {
                 $this->addClass('hidden disabled');
             }
@@ -151,7 +143,7 @@ EOT;
 
         $vars = array_merge($vars, [
             'class' => $vars['class'] . $this->extClass,
-            'dataid' => $this->dataid,
+            'dataId' => $this->dataId,
         ]);
 
         $viewshow = $this->getViewInstance();

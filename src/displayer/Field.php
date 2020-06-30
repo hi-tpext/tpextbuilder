@@ -762,13 +762,28 @@ EOT;
         $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
 
         if (!empty($this->to)) {
-            $value = str_replace(['__val__', '{val}'], $value, $this->to);
+            $value = $this->parshToValue($value);
         }
 
         return $value;
     }
 
-    protected function parshmapClass()
+    protected function parshToValue($value)
+    {
+        $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
+
+        $keys = ['{val}'];
+        $replace = [$value];
+
+        foreach ($data as $key => $val) {
+            $keys[] = '{' . $key . '}';
+            $replace[] = $val;
+        }
+
+        return str_replace($keys, $replace, $this->to);
+    }
+
+    protected function parshMapClass()
     {
         $mapClass = '';
 
@@ -829,7 +844,7 @@ EOT;
             static::$labeltempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
-        $mapClass = $this->parshmapClass();
+        $mapClass = $this->parshMapClass();
 
         $value = $this->renderValue();
 

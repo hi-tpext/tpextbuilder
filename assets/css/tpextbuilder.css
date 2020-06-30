@@ -358,45 +358,42 @@ form label.control-label,form label.full-label
     color: #666;
 }
 
-.table td div.active{
-    background-color: #f5f5f5;
+span.the-field.default {
+    color: #8b95a5;
 }
-.table td div.success{
-    background-color: #dff0d8;
+span.the-field.primary {
+    color: #33cabb;
 }
-.table td div.info{
-    background-color: #d9edf7;
+span.the-field.success {
+    color: #72b754;
 }
-.table td div.success{
-    background-color: #dff0d8;
+span.the-field.info {
+    color: #48b0f7;
 }
-.table td div.warning{
-    background-color: #fcf8e3;
+span.the-field.warning {
+    color: #faa64b;
 }
-.table td div.danger{
-    background-color: #f2dede;
+span.the-field.danger {
+    color: #f96868;
 }
-.table td div.secondary{
-    background-color: #e4e7ea;
+span.the-field.dark {
+    color: #465161;
 }
-.table td div.purple{
-    background-color: #926dde;
+span.the-field.secondary {
+    color: #e4e7ea;
 }
-.table td div.cyan{
-    background-color: #57c7d4;
+span.the-field.purple {
+    color: #926dde;
 }
-.table td div.brown{
-    background-color: #8d6658;
+span.the-field.pink {
+    color: #f96197;
 }
-.table td div.primary{
-    background-color: #33cabb;
+span.the-field.cyan {
+    color: #57c7d4;
 }
-.table td div.dark{
-    background-color: #465161;
+span.the-field.yellow {
+    color: #fcc525;
 }
-.table td div.pink{
-    background-color: #f96197;
-}
-.table td div.yellow{
-    background-color: #fcc525;
+.table-hover > tbody > tr:hover {
+    background-color: #e4f2f9;
 }

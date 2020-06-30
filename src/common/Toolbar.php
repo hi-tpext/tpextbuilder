@@ -5,10 +5,10 @@ namespace tpext\builder\common;
 use think\response\View as ViewShow;
 use tpext\builder\inface\Renderable;
 use tpext\builder\toolbar\Bar;
-use tpext\builder\toolbar\Wapper;
+use tpext\builder\toolbar\BWapper;
 use tpext\builder\traits\HasDom;
 
-class Toolbar extends Wapper implements Renderable
+class Toolbar extends BWapper implements Renderable
 {
     use HasDom;
 
@@ -20,9 +20,9 @@ class Toolbar extends Wapper implements Renderable
 
     protected $extKey = '';
 
-    protected $elms_right = [];
+    protected $elmsRight = [];
 
-    protected $elms_left = [];
+    protected $elmsLeft = [];
 
     /**
      * Undocumented function
@@ -73,7 +73,7 @@ class Toolbar extends Wapper implements Renderable
      */
     public function beforRender()
     {
-        $this->elms_left = $this->elms_right = [];
+        $this->elmsLeft = $this->elmsRight = [];
 
         foreach ($this->elms as $elm) {
 
@@ -82,9 +82,9 @@ class Toolbar extends Wapper implements Renderable
             }
 
             if ($elm->isPullRight()) {
-                $this->elms_right[] = $elm;
+                $this->elmsRight[] = $elm;
             } else {
-                $this->elms_left[] = $elm;
+                $this->elmsLeft[] = $elm;
             }
 
             $elm->beforRender();
@@ -101,8 +101,8 @@ class Toolbar extends Wapper implements Renderable
 
         $vars = [
             'elms' => $this->elms,
-            'elms_left' => $this->elms_left,
-            'elms_right' => $this->elms_right,
+            'elmsLeft' => $this->elmsLeft,
+            'elmsRight' => $this->elmsRight,
             'class' => $this->class,
             'attr' => $this->getAttrWithStyle(),
         ];
