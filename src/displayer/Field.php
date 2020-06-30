@@ -788,7 +788,7 @@ EOT;
                 if ($logic == 'not_in_in_array') {
                     $match = !in_array($val, $values);
                 } else if ($logic == 'eq') {
-                    $match = $val = $values[0];
+                    $match = $val == $values[0];
                 } else if ($logic == 'gt') {
                     $match = is_numeric($values[0]) && $val > $values[0];
                 } else if ($logic == 'lt') {

@@ -73,10 +73,10 @@ trait HasSelectPage
         $idField = input('idField', '_');
         $textField = input('textField', '_');
 
-        if ($idField = '_') {
+        if (empty($idField) || $idField == '_') {
             $idField = $this->selectIdField ?: $this->getPk();
         }
-        if ($textField = '_') {
+        if (empty($textField) || $textField == '_') {
             $textField = 'text';
         }
 
@@ -84,7 +84,7 @@ trait HasSelectPage
             $textField = $this->selectTextField;
         }
 
-        if (strpos($textField, '{') === false || strpos($textField, '}') === false) {
+        if ($textField && (strpos($textField, '{') === false || strpos($textField, '}') === false)) {
             $textField = '{' . $textField . '}';
         }
 
@@ -123,7 +123,7 @@ trait HasSelectPage
         }
 
         $data = [];
-        if ($textField != 'text') {
+        if ($textField && $textField != 'text') {
             $keys = [];
             $replace = null;
             $n = 0;
@@ -144,7 +144,9 @@ trait HasSelectPage
         } else {
             foreach ($list as $li) {
                 $li = $li->toArray();
-                $li['text'] = implode(',', array_values($li));
+                $li['text'] = implode(',', array_slice(array_values($li), 0, 4));
+                $li['__id__'] = $li[$idField];
+                $li['__text__'] = $li['text'];
                 $data[] = $li;
             }
         }
@@ -152,6 +154,7 @@ trait HasSelectPage
             [
                 'data' => $data,
                 'has_more' => $hasMore,
+                'textField' => $textField,
             ]
         );
     }
