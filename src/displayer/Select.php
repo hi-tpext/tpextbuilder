@@ -58,7 +58,7 @@ class Select extends Radio
      * @param boolean $loadmore
      * @return $this
      */
-    public function dataUrl($url, $textField = 'text', $idField = 'id', $delay = 250, $loadmore = true)
+    public function dataUrl($url, $textField = '', $idField = '', $delay = 250, $loadmore = true)
     {
         $this->jsOptions['ajax'] = [
             'url' => $url,
@@ -114,8 +114,8 @@ class Select extends Radio
             $ajax = $this->jsOptions['ajax'];
             unset($this->jsOptions['ajax']);
             $url = $ajax['url'];
-            $id = !empty($ajax['id']) ? $ajax['id'] : 'id';
-            $text = !empty($ajax['text']) ? $ajax['text'] : 'text';
+            $id = $ajax['id'] ?: '_';
+            $text = $ajax['id'] ?: '_';
             $delay = !empty($ajax['delay']) ? $ajax['delay'] : 250;
             $loadmore = $ajax['loadmore'];
 
@@ -145,8 +145,8 @@ class Select extends Radio
                         prev_val : prev_val,
                         ele_id : '{$selectId}',
                         prev_ele_id : '{$prev_id}',
-                        idField : '{$id}',
-                        textField : '{$text}'
+                        idField : '{$id}' == '_' ? null : '{$id}',
+                        textField : '{$text}' == '_' ? null : '{$text}'
                     };
                 },
                 processResults: function (data, params) {
@@ -154,9 +154,8 @@ class Select extends Radio
                     var list = data.data ? data.data : data;
                     return {
                         results: $.map(list, function (d) {
-
-                                d.id = d.{$id};
-                                d.text = d.__text__ || d.{$text} || d.name;
+                                d.id = '{$id}' == '_' ? d.__id__ : d['{$id}'];
+                                d.text = '{$text}' == '_' ? d.__text__ : d['{$text}'];
                                 return d;
                                 }),
                         pagination: {
@@ -186,7 +185,7 @@ class Select extends Radio
                     for(var i in list)
                     {
                         d = list[i];
-                        $('#{$selectId}').append('<option selected value="' + d.{$id} + '">' + (d.__text__ || d.{$text} || d.name) + '</option>');
+                        $('#{$selectId}').append('<option selected value="' + ('{$id}' == '_' ? d.__id__ : d['{$id}']) + '">' + ('{$text}' == '_' ? d.__text__ : d['{$text}']) + '</option>');
                     }
                     init{$key}();
                 },

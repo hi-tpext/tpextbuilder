@@ -70,8 +70,15 @@ trait HasSelectPage
             $this->selectTextField = explode('|', $this->selectSearch)[0];
         }
 
-        $idField = input('idField', $this->selectIdField ?: $this->getPk());
-        $textField = input('textField', 'text');
+        $idField = input('idField', '_');
+        $textField = input('textField', '_');
+
+        if ($idField = '_') {
+            $idField = $this->selectIdField ?: $this->getPk();
+        }
+        if ($textField = '_') {
+            $textField = 'text';
+        }
 
         if ($textField == 'text') {
             $textField = $this->selectTextField;
@@ -91,7 +98,7 @@ trait HasSelectPage
             } else {
                 $arr = array_filter(explode(',', $selected));
                 if (count($arr)) {
-                    $where[] = [$idField, 'int', $selected];
+                    $where[] = [$idField, 'in', $selected];
                 } else {
                     $where[] = [$idField, 'eq', $selected];
                 }
@@ -129,6 +136,7 @@ trait HasSelectPage
                     }
                     $replace[] = $val;
                 }
+                $li['__id__'] = $li[$idField];
                 $li['__text__'] = str_replace($keys, $replace, $textField);
                 $n += 1;
                 $data[] = $li;
