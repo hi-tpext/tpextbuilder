@@ -115,7 +115,7 @@ class Select extends Radio
             unset($this->jsOptions['ajax']);
             $url = $ajax['url'];
             $id = $ajax['id'] ?: '_';
-            $text = $ajax['id'] ?: '_';
+            $text = $ajax['text'] ?: '_';
             $delay = !empty($ajax['delay']) ? $ajax['delay'] : 250;
             $loadmore = $ajax['loadmore'];
 
@@ -154,8 +154,8 @@ class Select extends Radio
                     var list = data.data ? data.data : data;
                     return {
                         results: $.map(list, function (d) {
-                                d.id = '{$id}' == '_' ? d.__id__ : d['{$id}'];
-                                d.text = '{$text}' == '_' ? d.__text__ : d['{$text}'];
+                                d.id = d.__id__ || d['{$id}'] || d.id;
+                                d.text = d.__text__ || d['{$text}'] || d.text;
                                 return d;
                                 }),
                         pagination: {
@@ -185,7 +185,7 @@ class Select extends Radio
                     for(var i in list)
                     {
                         d = list[i];
-                        $('#{$selectId}').append('<option selected value="' + ('{$id}' == '_' ? d.__id__ : d['{$id}']) + '">' + ('{$text}' == '_' ? d.__text__ : d['{$text}']) + '</option>');
+                        $('#{$selectId}').append('<option selected value="' + (d.__id__ || d['{$id}'] || d.id) + '">' + (d.__text__ || d['{$text}'] || d.text) + '</option>');
                     }
                     init{$key}();
                 },
