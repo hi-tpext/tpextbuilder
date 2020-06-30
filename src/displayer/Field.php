@@ -9,6 +9,7 @@ use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\common\Wapper;
 use tpext\builder\form\Fillable;
+use tpext\builder\table\TColumn;
 use tpext\builder\traits\HasDom;
 use tpext\common\ExtLoader;
 
@@ -75,8 +76,6 @@ class Field implements Fillable
 
     protected $mapClassWhen = [];
 
-    protected $mapClassValue = '';
-
     protected $required = false;
 
     protected $minify = true;
@@ -84,6 +83,8 @@ class Field implements Fillable
     protected $arrayName = false;
 
     protected $to = '';
+
+    protected $data = [];
 
     public function __construct($name, $label = '')
     {
@@ -579,12 +580,7 @@ default($val = '') {
             $this->value = $value;
         }
 
-        if (!empty($this->mapClassWhen)) {
-            $field = $this->mapClassWhen[2];
-            if ($field != $this->name && isset($data[$field])) {
-                $this->mapClassValue = $data[$field];
-            }
-        }
+        $this->data = $data;
 
         return $this;
     }
@@ -623,12 +619,13 @@ EOT;
     /**
      * Undocumented function
      *
-     * @param array|string $values
+     * @param array|string|int $values
      * @param string $class
-     * @param string $field
+     * @param string $field default current field
+     * @param string $logic in_array|not_in_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
      * @return $this
      */
-    public function mapClassWhen($values, $class, $field = '')
+    public function mapClassWhen($values, $class, $field = '', $logic = 'in_array')
     {
         if (empty($field)) {
             $field = $this->name;
@@ -637,7 +634,27 @@ EOT;
         if (!is_array($values)) {
             $values = [$values];
         }
-        $this->mapClassWhen = [$values, $class, $field];
+
+        $this->mapClassWhen[] = [$values, $class, $field, $logic];
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $groupArr
+     * @return $this
+     */
+    public function mapClassWhenGroup($groupArr)
+    {
+        foreach ($groupArr as $g) {
+            $values = $g[0];
+            $class = $g[1];
+            $field = isset($g[2]) ? $g[2] : '';
+            $logic = isset($g[3]) ? $g[3] : '';
+            $this->mapClassWhen($values, $class, $field, $logic);
+        }
+
         return $this;
     }
 
@@ -751,6 +768,52 @@ EOT;
         return $value;
     }
 
+    protected function parshmapClass()
+    {
+        $mapClass = '';
+
+        if (!empty($this->mapClassWhen)) {
+
+            foreach ($this->mapClassWhen as $mp) {
+                $values = $mp[0];
+                $class = $mp[1];
+                $field = $mp[2];
+                $logic = $mp[3]; //in_array|not_in_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
+                $val = '';
+                if (!isset($this->data[$field])) {
+                    continue;
+                }
+                $val = $this->data[$field];
+                $match = false;
+                if ($logic == 'not_in_in_array') {
+                    $match = !in_array($val, $values);
+                } else if ($logic == 'eq') {
+                    $match = $val = $values[0];
+                } else if ($logic == 'gt') {
+                    $match = is_numeric($values[0]) && $val > $values[0];
+                } else if ($logic == 'lt') {
+                    $match = is_numeric($values[0]) && $val < $values[0];
+                } else if ($logic == 'egt') {
+                    $match = is_numeric($values[0]) && $val >= $values[0];
+                } else if ($logic == 'elt') {
+                    $match = is_numeric($values[0]) && $val <= $values[0];
+                } else if ($logic == 'strpos') {
+                    $match = strpos($values[0], $val);
+                } else if ($logic == 'not_strpos') {
+                    $match = !strpos($values[0], $val);
+                } else //default in_array
+                {
+                    $match = in_array($val, $values);
+                }
+                if ($match) {
+                    $mapClass = $class;
+                }
+            }
+        }
+
+        return $mapClass ? ' ' . $mapClass : '';
+    }
+
     /**
      * Undocumented function
      *
@@ -766,17 +829,7 @@ EOT;
             static::$labeltempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
-        $mapClass = '';
-
-        if (!empty($this->mapClassWhen)) {
-            if ($this->mapClassWhen[2] == $this->name) {
-                $this->mapClassValue = $this->value;
-            }
-
-            if (in_array($this->mapClassValue, $this->mapClassWhen[0])) {
-                $mapClass = ' ' . $this->mapClassWhen[1];
-            }
-        }
+        $mapClass = $this->parshmapClass();
 
         $value = $this->renderValue();
 
