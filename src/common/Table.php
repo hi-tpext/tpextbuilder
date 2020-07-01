@@ -643,7 +643,7 @@ class Table extends TWrapper implements Renderable
 
             if ($this->useActionbar && isset($this->ids[$key])) {
 
-                $actionbar->extKey('-' . $this->id . '-' . $key)->rowdata($data)->beforRender();
+                $actionbar->extKey('-' . $this->id . '-' . $key)->rowData($data)->beforRender();
 
                 $this->actionbars[$key] = $actionbar->render();
             }
@@ -815,13 +815,13 @@ class Table extends TWrapper implements Renderable
 
             if ($this->__fields__) {
                 $this->__fields__->addCol($col);
-                $displayer = $col->$name($arguments[0], $col->getLabel());
-                $displayer->size(0, 12)->showLabel(false);
             } else {
                 $this->cols[$arguments[0]] = $col;
                 $this->headers[$arguments[0]] = $col->getLabel();
                 $displayer = $col->$name($arguments[0], $col->getLabel());
             }
+
+            $displayer = $col->$name($arguments[0], $col->getLabel());
 
             return $displayer;
         }

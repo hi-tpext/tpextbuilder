@@ -39,6 +39,9 @@ class FieldsContent extends TWrapper implements Renderable
             }
 
             $col->beforRender();
+            $col->getDisplayer()
+                ->showLabel(false)
+                ->size(0, 0);
         }
         return $this;
     }
@@ -96,6 +99,59 @@ class FieldsContent extends TWrapper implements Renderable
     public function fill($data = [])
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function value($val)
+    {
+        if (is_array($val)) {
+            $this->data = $val;
+        } else {
+            $this->data = [];
+        }
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function extKey($val)
+    {
+        foreach ($this->cols as $col) {
+            if (!$col instanceof TColumn) {
+                continue;
+            }
+
+            $col->getDisplayer()->extKey($val);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function clearScript()
+    {
+        foreach ($this->cols as $col) {
+            if (!$col instanceof TColumn) {
+                continue;
+            }
+
+            $col->getDisplayer()->clearScript();
+        }
         return $this;
     }
 

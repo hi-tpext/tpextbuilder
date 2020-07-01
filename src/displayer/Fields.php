@@ -75,7 +75,19 @@ class Fields extends Field
      */
     public function value($val)
     {
-        return $this->fill($val);
+        return $this->fill($val, true);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function extKey($val)
+    {
+        $this->__fields_content__->extKey($val);
+        return parent::extKey($val);
     }
 
     /**
@@ -101,6 +113,17 @@ class Fields extends Field
         $this->__fields_content__->fill($this->data);
 
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function clearScript()
+    {
+        $this->__fields_content__->clearScript();
+        return parent::clearScript();
     }
 
     /**

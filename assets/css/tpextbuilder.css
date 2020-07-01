@@ -292,7 +292,7 @@ td ul.lyear-uploads-pic li.pic-item
 
 .table .checkbox-div .lyear-checkbox, .table .radio-div .lyear-radio
 {
-    padding-left: 10px !important;
+    padding-left: 18px !important;
     margin: 2px 0 !important;
 }
 
@@ -396,4 +396,11 @@ span.the-field.yellow {
 }
 .table-hover > tbody > tr:hover {
     background-color: #e4f2f9;
+}
+.table td .fields-div
+{
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
