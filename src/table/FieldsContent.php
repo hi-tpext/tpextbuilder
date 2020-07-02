@@ -32,8 +32,9 @@ class FieldsContent extends TWrapper implements Renderable
     public function beforRender()
     {
         foreach ($this->cols as $col) {
-            $col->fill($this->data);
+
             if (!$col instanceof TColumn) {
+                $col->fill($this->data);
                 $col->beforRender();
                 continue;
             }
@@ -41,7 +42,10 @@ class FieldsContent extends TWrapper implements Renderable
             $col->beforRender();
             $col->getDisplayer()
                 ->showLabel(false)
-                ->size(0, 0);
+                ->size(0, 0)
+                ->value('');
+
+            $col->fill($this->data);
         }
         return $this;
     }
@@ -181,6 +185,10 @@ class FieldsContent extends TWrapper implements Renderable
     public function __call($name, $arguments)
     {
         $count = count($arguments);
+
+        if ($name == 'fields') {
+            throw new \UnexpectedValueException('[fields]不能再包含[fields]');
+        }
 
         if ($count > 0 && static::isDisplayer($name)) {
 
