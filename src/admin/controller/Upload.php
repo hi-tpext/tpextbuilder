@@ -24,12 +24,15 @@ class Upload extends Controller
     public function upfiles($type = '', $token = '')
     {
         if (empty($token)) {
-            echo json_encode(['info' => 'no token', 'picurl' => '']);
-            return;
+            return json(
+                ['info' => 'no token', 'picurl' => '']
+            );
         }
 
         if (session('uploadtoken') != $token) {
-            echo json_encode(['info' => 'token error', 'picurl' => '']);
+            return json(
+                ['info' => 'token error', 'picurl' => '']
+            );
             return;
         }
 
@@ -57,44 +60,60 @@ class Upload extends Controller
 
         if ($newPath === false) {
             //var_dump($up->errorNumber);
-            echo json_encode(['status' => 500, 'info' => '上传失败-' . $up->errorInfo, 'class' => 'error']);
+            return json(
+                ['status' => 500, 'info' => '上传失败-' . $up->errorInfo, 'class' => 'error']
+            );
             // 失败跟成功同样的方式返回
         } else {
             switch ($type) {
                 case 'wangeditor':
-                    echo json_encode(['url' => $newPath]);
+                    return json(
+                        ['url' => $newPath]
+                    );
                     break;
                 case 'editormd':
-                    echo json_encode([
-                        "success" => 1,
-                        "message" => '上传成功',
-                        "url" => $newPath,
-                    ]);
+                    return json(
+                        [
+                            "success" => 1,
+                            "message" => '上传成功',
+                            "url" => $newPath,
+                        ]
+                    );
                     break;
                 case 'dropzone':
-                    echo json_encode(['status' => 200, 'info' => '上传成功', 'picurl' => $newPath]);
+                    return json(
+                        ['status' => 200, 'info' => '上传成功', 'picurl' => $newPath]
+                    );
                     break;
                 case 'webuploader':
-                    echo json_encode(['status' => 200, 'info' => '上传成功', 'class' => 'success', 'id' => rand(1, 9999), 'picurl' => $newPath]);
+                    return json(
+                        ['status' => 200, 'info' => '上传成功', 'class' => 'success', 'id' => rand(1, 9999), 'picurl' => $newPath]
+                    );
                     break;
                 case 'tinymce':
-                    echo json_encode([
-                        "location" => $newPath,
-                    ]);
+                    return json(
+                        [
+                            "location" => $newPath,
+                        ]
+                    );
                     break;
                 case 'ckeditor':
-                    echo json_encode([
-                        "uploaded" => 1,
-                        "fileName" => pathinfo($newPath)['filename'],
-                        "url" => $newPath,
-                    ]);
+                    return json(
+                        [
+                            "uploaded" => 1,
+                            "fileName" => pathinfo($newPath)['filename'],
+                            "url" => $newPath,
+                        ]
+                    );
                     break;
                 default:
-                    echo json_encode([
-                        "status" => 1,
-                        "info" => '上传成功',
-                        "url" => $newPath,
-                    ]);
+                    return json(
+                        [
+                            "status" => 1,
+                            "info" => '上传成功',
+                            "url" => $newPath,
+                        ]
+                    );
             }
         }
     }
@@ -130,32 +149,27 @@ class Upload extends Controller
             case 'uploadimage':
             /* 上传涂鸦 */
             case 'uploadscrawl':
-                echo $this->saveFile('images');
-                exit;
+                return json($this->saveFile('images'));
                 break;
 
             /* 上传视频 */
             case 'uploadvideo':
-                echo $this->saveFile('videos');
-                exit;
+                return json($this->saveFile('videos'));
                 break;
 
             /* 上传附件 */
             case 'uploadfile':
-                echo $this->saveFile('files');
-                exit;
+                return json($this->saveFile('files'));
                 break;
 
             /* 列出图片 */
             case 'listimage':
-                echo $this->showFile('listimage', $config);
-                exit;
+                return json($this->saveFile('listimage'));
                 break;
 
             /* 列出附件 */
             case 'listfile':
-                echo $this->showFile('listfile', $config);
-                exit;
+                return json($this->showFile('listfile', $config));
                 break;
 
             /* 抓取远程附件 */
@@ -173,10 +187,10 @@ class Upload extends Controller
             if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
                 echo htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
             } else {
-                echo json_encode(['state' => 'callback参数不合法']);
+                return json(['state' => 'callback参数不合法']);
             }
         } else {
-            echo json_encode($result);
+            return json($result);
         }
     }
 
@@ -191,18 +205,15 @@ class Upload extends Controller
         $picdata = $_POST['picdata'];
 
         if (empty($picdata)) {
-            echo json_encode(['state' => 400, 'message' => '上传数据为空']);
-            exit;
+            return json(['state' => 400, 'message' => '上传数据为空']);
         }
 
         $picurl = $this->base64_image_content($picdata, 'images');
 
         if ($picurl) {
-            echo json_encode(['state' => 200, 'picurl' => $picurl]);
-            exit;
+            return json(['state' => 200, 'picurl' => $picurl]);
         } else {
-            echo json_encode(['state' => 500, 'message' => '上传失败']);
-            exit;
+            return json(['state' => 500, 'message' => '上传失败']);
         }
     }
 

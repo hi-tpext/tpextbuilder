@@ -412,7 +412,6 @@ window.renderFiles = function () {
                     $file_list.find('li.pic-item').remove();
                 }
                 $file_list.append($li);
-                console.log(file);
                 uploader.makeThumb(file, function (error, src) {
                     if (!/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(file.ext) && error) {
                         src = '/index.php/tpextbuilder/admin/upload/ext/type/' + file.ext;
