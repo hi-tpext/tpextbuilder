@@ -12,11 +12,8 @@
             } else {
                 parent.lightyear.notify(msg, 'danger');
             }
-
-            if (parent.$('.search-refresh').size()) {
-                setTimeout(function () {
-                    parent.$('.search-refresh').trigger('click');
-                }, 1000);
+            if (parent.$('.btn-refresh,.search-refresh').size()) {
+                parent.$('.btn-refresh,.search-refresh').eq(0).trigger('click');
             } else {
                 setTimeout(function () {
                     parent.replace.reload(parent.location.href);
