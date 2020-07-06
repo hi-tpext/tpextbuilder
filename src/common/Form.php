@@ -548,24 +548,6 @@ class Form extends FWrapper implements Renderable
         window.focus();
 
         $(document).bind('keyup', function(e) {
-            if (event.keyCode === 13) {
-                if($(':focus') && $(':focus').attr('id'))
-                {
-                    if(/.+?_tag$/.test($(':focus').attr('id')))
-                    {
-                        return true;
-                    }
-                }
-                var index = layer.msg('提交数据？', {
-                    time: 2000,
-                    btn: ['确定', '取消'],
-                    yes: function (params) {
-                        layer.close(index);
-                        window.__forms__['{$form}'].formSubmit();
-                    }
-                });
-                return false;
-            }
             if (event.keyCode === 0x1B) {
                 var index = layer.msg('关闭当前弹窗？', {
                     time: 2000,
