@@ -112,12 +112,18 @@ trait HasSelectPage
             $page = $page < 1 ? 1 : $page;
 
             $where = [];
+            $WhereOr = [];
 
-            if ($q && $this->selectSearch) {
-                $where[] = [$this->selectSearch, 'like', '%' . $q . '%'];
+            if ($q) {
+                if ($this->selectSearch) {
+                    $where[] = [$this->selectSearch, 'like', '%' . $q . '%'];
+                }
+                if (is_numeric($q)) {
+                    $WhereOr[] = [$idField, 'eq', $q];
+                }
             }
 
-            $list = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
+            $list = $this->dataModel->where($where)->whereOr($WhereOr)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
 
             $hasMore = count($list) == $pagesize ? 1 : 0;
         }
