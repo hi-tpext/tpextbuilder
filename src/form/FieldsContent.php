@@ -122,6 +122,25 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function extKey($val)
+    {
+        foreach ($this->rows as $row) {
+            if (!$row instanceof FRow) {
+                continue;
+            }
+
+            $row->getDisplayer()->extKey($val);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array|Model
      */
     public function getData()
