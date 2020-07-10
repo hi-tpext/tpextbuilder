@@ -150,9 +150,9 @@ class Export
                 $text = $displayer->fill($d)->renderValue();
                 $text = $this->replace($text);
                 if ($lib == 'PhpOffice') {
-                    $this->worksheet->setCellValue($list[$c] . ($num + 2), $text, \PHPExcel_Cell_DataType::TYPE_STRING); //将其设置为文本格式
+                    $this->worksheet->setCellValue($list[$c] . ($num + 2), $text);
                 } else {
-                    $this->worksheet->setCellValue($list[$c] . ($num + 2), $text); //将其设置为文本格式
+                    $this->worksheet->setCellValue($list[$c] . ($num + 2), $text, \PHPExcel_Cell_DataType::TYPE_STRING); //将其设置为文本格式
                 }
 
                 $c++;
