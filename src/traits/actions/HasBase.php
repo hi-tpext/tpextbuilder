@@ -95,7 +95,7 @@ trait HasBase
      * @param array $data
      * @return void
      */
-    protected function builForm($isEdit, &$data = [])
+    protected function buildForm($isEdit, &$data = [])
     {
         $form = $this->form;
     }
@@ -116,7 +116,7 @@ trait HasBase
      *
      * @return void
      */
-    protected function builSearch()
+    protected function buildSearch()
     {
         $search = $this->search;
     }
