@@ -20,7 +20,7 @@ trait HasIndex
         $this->table = $table;
         $this->search = $table->getSearch();
 
-        $this->builSearch();
+        $this->buildSearch();
         $this->buildDataList();
 
         if (request()->isAjax()) {

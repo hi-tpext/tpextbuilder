@@ -27,7 +27,7 @@ trait HasView
             $form = $builder->form();
             $this->form = $form;
 
-            $this->builForm(2, $data);
+            $this->buildForm(2, $data);
 
             $rows = $this->form->getRows();
 

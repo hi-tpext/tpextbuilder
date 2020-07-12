@@ -18,7 +18,7 @@ trait HasAdd
         $form = $builder->form();
         $data = [];
         $this->form = $form;
-        $this->builForm(0, $data);
+        $this->buildForm(0, $data);
         $form->fill($data);
         return $builder->render();
     }
