@@ -172,9 +172,135 @@
         });
     };
 
+    tpextbuilder.postActionsChecked = function (id, confirms) {
+        var obj = $('#' + id);
+        if (!obj.size()) {
+            return;
+        }
+
+        $('body').on('click', '#' + id + '-div .dropdown-menu li a', function () {
+
+            var url = $(this).data('key');
+
+            var confirm = confirms[url];
+
+            var val = '';
+
+            var values = [];
+
+            $("input.table-row:checked").each(function (i, e) {
+                values.push($(e).val());
+            });
+
+            if (values.length == 0) {
+
+                lightyear.notify('未选中任何数据', 'warning');
+
+                return false;
+            }
+
+            val = values.join(',');
+
+            if (confirm) {
+                if (confirm == '1') {
+                    var text = $(this).text().trim();
+                    confirm = '确定要执行批量<strong>' + text + '</strong>操作吗？';
+                }
+                $.alert({
+                    title: '操作提示',
+                    content: confirm,
+                    buttons: {
+                        confirm: {
+                            text: '确认',
+                            btnClass: 'btn-primary',
+                            action: function () {
+                                tpextbuilder.autoSendData({
+                                    ids: val
+                                }, url, 1);
+                            }
+                        },
+                        cancel: {
+                            text: '取消',
+                            action: function () {
+
+                            }
+                        }
+                    }
+                });
+            } else {
+                tpextbuilder.autoSendData({
+                    ids: val
+                }, url, 1);
+            }
+        });
+
+        if ($("input.table-row:checked").size() == 0) {
+            $('#' + id).addClass('disabled');
+        } else {
+            $('#' + id).removeClass('disabled');
+        }
+
+        $('body').on('change', 'input.table-row', function () {
+            if ($("input.table-row:checked").size() == 0) {
+                $('#' + id).addClass('disabled');
+            } else {
+                $('#' + id).removeClass('disabled');
+            }
+        });
+
+        $('body').on('change', 'input.table-row-checkall', function () {
+            if ($("input.table-row:checked").is(':checked')) {
+                $('#' + id).removeClass('disabled');
+            } else {
+                $('#' + id).addClass('disabled');
+            }
+        });
+    };
+
     tpextbuilder.postRowid = function (classname, url, confirm) {
         $('body').on('click', 'td.row-__action__ .' + classname, function () {
             var val = $(this).data('id');
+            if (confirm) {
+                if (confirm == '1') {
+                    var text = $(this).text().trim() || $(this).attr('title') || '此';
+                    confirm = '确定要执行<strong>' + text + '</strong>操作吗？';
+                }
+                $.alert({
+                    title: '操作提示',
+                    content: confirm,
+                    buttons: {
+                        confirm: {
+                            text: '确认',
+                            btnClass: 'btn-primary',
+                            action: function () {
+                                tpextbuilder.autoSendData({
+                                    ids: val
+                                }, url, 1);
+                            }
+                        },
+                        cancel: {
+                            text: '取消',
+                            action: function () {
+
+                            }
+                        }
+                    }
+                });
+            } else {
+                tpextbuilder.autoSendData({
+                    ids: val
+                }, url, 1);
+            }
+        });
+    };
+
+    tpextbuilder.postActionsRowid = function (classname, confirms) {
+        $('body').on('click', 'td.row-__action__ .' + classname + ' .dropdown-menu li a', function () {
+            var url = $(this).data('key');
+
+            var confirm = confirms[url];
+
+            var val = $('td.row-__action__ .' + classname).data('id');
             if (confirm) {
                 if (confirm == '1') {
                     var text = $(this).text().trim() || $(this).attr('title') || '此';

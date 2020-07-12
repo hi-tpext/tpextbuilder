@@ -21,6 +21,8 @@ class ActionBtn extends Bar
 
     protected $confirm = true;
 
+    protected $initPostRowidScript = false;
+
     /**
      * Undocumented function
      *
@@ -33,7 +35,7 @@ class ActionBtn extends Bar
 
         $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
 
-        $keys =['__data.pk__'];
+        $keys = ['__data.pk__'];
         $replace = [$this->dataId];
         foreach ($data as $key => $val) {
             $keys[] = '__data.' . $key . '__';
@@ -45,6 +47,12 @@ class ActionBtn extends Bar
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $data
+     * @return $this
+     */
     public function parseMapClass($data)
     {
         $this->extClass = '';
@@ -53,6 +61,8 @@ class ActionBtn extends Bar
                 $this->extClass .= ' ' . $class;
             }
         }
+
+        return $this;
     }
 
     /**
@@ -99,11 +109,14 @@ class ActionBtn extends Bar
 
     protected function postRowidScript()
     {
+        if ($this->initPostRowidScript) {
+            return '';
+        }
         $script = '';
         $class = 'action-' . $this->name;
 
         if (empty($this->confirm)) {
-            $this->confirm = '';
+            $this->confirm = '1';
         }
 
         $script = <<<EOT
@@ -112,6 +125,8 @@ class ActionBtn extends Bar
 
 EOT;
         $this->script[] = $script;
+
+        $this->initPostRowidScript = true;
 
         return $script;
     }

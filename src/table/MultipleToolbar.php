@@ -68,10 +68,6 @@ class MultipleToolbar extends Toolbar
             $this->buttons();
         }
 
-        if ($this->hasSearch && !$this->btnSearch) {
-            $this->btnToggleSearch();
-        }
-
         if ($this->hasExport && !$this->btnExport) {
             $items = ['csv' => 'csv文件'];
 
@@ -83,6 +79,10 @@ class MultipleToolbar extends Toolbar
             }
 
             $this->btnExports($items);
+        }
+
+        if ($this->hasSearch && !$this->btnSearch) {
+            $this->btnToggleSearch();
         }
 
         return parent::beforRender();
@@ -367,6 +367,22 @@ class MultipleToolbar extends Toolbar
 
         $this->linkBtn($action, $label)->postChecked($url, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
 
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $items
+     * @param string $label
+     * @param string $class
+     * @param string $icon
+     * @param string $attr
+     * @return $this
+     */
+    public function btnActions($items, $label = '操作', $class = 'btn-secondary', $icon = '', $attr = 'title="批量操作"')
+    {
+        $this->multipleActions('multiple_actions', $label)->items($items)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
     }
 }

@@ -7,7 +7,9 @@ namespace tpext\builder\toolbar;
  *
  * @method \tpext\builder\toolbar\LinkBtn          linkBtn($name, $label)
  * @method \tpext\builder\toolbar\ActionBtn        actionBtn($name, $label)
- * @method \tpext\builder\toolbar\DropdownBtns     dropdownBtns($html, $label)
+ * @method \tpext\builder\toolbar\DropdownBtns     dropdownBtns($items, $label)
+ * @method \tpext\builder\toolbar\MultipleActions  multipleActions($items, $label)
+ * @method \tpext\builder\toolbar\Actions          actions($items, $label)
  * @method \tpext\builder\toolbar\Html             html($html)
  */
 
@@ -19,13 +21,17 @@ class BWapper
         'linkBtn' => \tpext\builder\toolbar\LinkBtn::class,
         'actionBtn' => \tpext\builder\toolbar\ActionBtn::class,
         'dropdownBtns' => \tpext\builder\toolbar\DropdownBtns::class,
+        'multipleActions' => \tpext\builder\toolbar\MultipleActions::class,
+        'actions' => \tpext\builder\toolbar\Actions::class,
         'html' => \tpext\builder\toolbar\Html::class,
     ];
 
     protected static $defaultFieldClass = [
         \tpext\builder\toolbar\LinkBtn::class => 'btn-xs',
         \tpext\builder\toolbar\ActionBtn::class => 'btn-xs',
-        \tpext\builder\toolbar\DropdownBtns::class => 'btn-xs'
+        \tpext\builder\toolbar\DropdownBtns::class => 'btn-xs',
+        \tpext\builder\toolbar\MultipleActions::class => 'btn-xs',
+        \tpext\builder\toolbar\Actions::class => 'btn-xs',
     ];
 
     /**
@@ -42,7 +48,6 @@ class BWapper
 
         return in_array($name, static::$displayers);
     }
-
 
     /**
      * Undocumented function

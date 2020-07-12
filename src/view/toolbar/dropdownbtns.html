@@ -7,7 +7,7 @@
         <ul class="dropdown-menu">
                 {volist name="items" id="item"}
                 <li>
-                        <a data-key="{$key}" href="javascript:;">{$item|raw}</a>
+                        <a data-key="{$item.key}" class="{$item.class}" href="{$item.href}" {$item.attr|raw}>{if condition="$item.icon"}<i class="mdi {$item.icon}"></i>{/if}{$label|raw}{$item.label|raw}</a>
                 </li>
                 {/volist}
         </ul>

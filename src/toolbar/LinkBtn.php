@@ -43,7 +43,7 @@ class LinkBtn extends Bar
         $inputId = $this->getId();
 
         if (empty($this->confirm)) {
-            $this->confirm = '';
+            $this->confirm = '1';
         }
 
         $script = <<<EOT
@@ -61,7 +61,7 @@ EOT;
         if ($this->postChecked) {
 
             if (Builder::checkUrl($this->postChecked)) {
-                $this->postCheckedScript();;
+                $this->postCheckedScript();
             } else {
                 $this->addClass('hidden disabled');
             }

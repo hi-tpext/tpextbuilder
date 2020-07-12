@@ -48,7 +48,7 @@ class Actionbar extends Toolbar
             }
 
             if ($this->rowId) {
-                $elm->dataid($this->rowId);
+                $elm->dataId($this->rowId);
             }
 
             if ($this->rowData) {
@@ -281,6 +281,22 @@ class Actionbar extends Toolbar
 
         $this->actionBtn($name, $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
 
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $items
+     * @param string $label
+     * @param string $class
+     * @param string $icon
+     * @param string $attr
+     * @return $this
+     */
+    public function btnActions($items, $label = '操作', $class = 'btn-secondary', $icon = '', $attr = '')
+    {
+        $this->actions('actions', $label)->items($items)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
     }
 }
