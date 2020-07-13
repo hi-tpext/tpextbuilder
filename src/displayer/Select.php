@@ -131,7 +131,7 @@ class Select extends Radio
 
         var init{$key} = function()
         {
-            $('#{$selectId}').select2({
+            $('#{$selectId}').addClass('select2-use-ajax').select2({
             {$configs},
             ajax: {
                 url: '{$url}',
@@ -208,7 +208,7 @@ EOT;
             $configs = substr($configs, 1, strlen($configs) - 2);
 
             $script = <<<EOT
-            $('#{$selectId}').select2({
+            $('#{$selectId}').addClass('select2-no-ajax').select2({
                 {$configs}
             });
 

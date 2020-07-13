@@ -120,8 +120,15 @@ class ZTree implements Renderable
     {
         $this->trigger = $element;
         $this->beforeClick = <<<EOT
-
-                    $('{$element}').val(treeNode.id);
+        console.log(treeNode);
+                    if($('{$element}').hasClass('select2-use-ajax'))
+                    {
+                        $('{$element}').empty().append('<option value="' + treeNode.id + '">' + treeNode.name + '</option>');
+                    }
+                    else
+                    {
+                        $('{$element}').val(treeNode.id);
+                    }
                     $('{$element}').trigger('change');
                     $('.row-submit').trigger('click');
 
