@@ -180,7 +180,7 @@
 
         $('body').on('click', '#' + id + '-div .dropdown-menu li a', function () {
 
-            var url = $(this).data('key');
+            var url = $(this).data('url');
 
             var confirm = confirms[url];
 
@@ -296,7 +296,7 @@
 
     tpextbuilder.postActionsRowid = function (classname, confirms) {
         $('body').on('click', 'td.row-__action__ .' + classname + ' .dropdown-menu li a', function () {
-            var url = $(this).data('key');
+            var url = $(this).data('url');
 
             var confirm = confirms[url];
 
@@ -305,6 +305,12 @@
                 if (confirm == '1') {
                     var text = $(this).text().trim() || $(this).attr('title') || '此';
                     confirm = '确定要执行<strong>' + text + '</strong>操作吗？';
+                }
+                else if (confirm == '2') {
+                    var size = $('.' + classname).find('.btn-actions').data('layer-size');
+                    size = size ? size.split(',') : null;
+                    w.layerOpen(this, size);
+                    return false;
                 }
                 $.alert({
                     title: '操作提示',

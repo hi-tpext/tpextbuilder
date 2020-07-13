@@ -50,7 +50,7 @@ class ActionBtn extends Bar
     /**
      * Undocumented function
      *
-     * @param [type] $data
+     * @param array $data
      * @return $this
      */
     public function parseMapClass($data)

@@ -137,27 +137,30 @@ class DropdownBtns extends Bar
     {
         $vars = $this->commonVars();
 
-        $items = [];
+        $actions = [];
 
-        foreach ($this->items as $key => $it) {
-            $data = is_string($it) ? ['label' => $it] : $it;
+        $items = $this->getItems();
 
+        foreach ($items as $key => $it) {
+            if (is_string($it)) {
+                $it = ['label' => $it, 'url' => url($key)];
+            }
             $data = array_merge(
                 [
                     'key' => $key,
                     'label' => '',
                     'icon' => '',
-                    'href' => 'javascript:;',
+                    'url' => '',
                     'attr' => '',
                     'class' => '',
                 ]
-                , $data);
+                , $it);
 
-            $items[$key] = $data;
+            $actions[$key] = $data;
         }
 
         $vars = array_merge($vars, [
-            'items' => $items,
+            'items' => $actions,
             'groupAttr' => $this->getGroupAttrWithStyle(),
             'groupClass' => $this->groupClass,
         ]);

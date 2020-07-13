@@ -22,29 +22,24 @@ class MultipleActions extends DropdownBtns
 
     protected function postCheckedScript()
     {
-        $actions = [];
         $confirms = [];
-        foreach ($this->items as $url => $data) {
-            if (stripos($url, '/') === false) {
-                $url = url($url);
+        $actions = [];
+
+        foreach ($this->items as $key => $item) {
+            if (is_string($item)) {
+                $item = ['label' => $item];
             }
-            if (!Builder::checkUrl($url)) {
+            if (!isset($item['url'])) {
+                $item['url'] = $key;
+            }
+            if (stripos($item['url'], '/') === false) {
+                $item['url'] = url($item['url']);
+            }
+            if (!Builder::checkUrl($item['url'])) {
                 continue;
             }
-            if (is_string($data)) {
-                $actions[$url] = $data;
-                $confirms[$url] = '1';
-            } else {
-                $actions[$url]['label'] = $data[0];
-                $actions[$url]['class'] = isset($data[1]) ? $data[1] : '';
-                $actions[$url]['icon'] = isset($data[2]) ? $data[2] : '';
-                $actions[$url]['attr'] = isset($data[3]) ? $data[3] : '';
-                $confirms[$url] = isset($data[4]) ? $data[4] : '1';
-            }
-        }
-
-        if (empty($actions)) {
-            return '';
+            $confirms[$item['url']] = isset($item['confirm']) ? $item['confirm'] : '1';
+            $actions[$key] = $item;
         }
 
         $this->items = $actions;

@@ -9,6 +9,8 @@ class Actions extends DropdownBtns
 {
     protected $mapClass = [];
 
+    protected $mapData = [];
+
     protected $data = [];
 
     protected $dataId = 0;
@@ -37,6 +39,53 @@ class Actions extends DropdownBtns
     public function parseUrl($data)
     {
         $this->data = $data;
+
+        $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
+
+        $keys = ['__data.pk__'];
+        $replace = [$this->dataId];
+        foreach ($data as $key => $val) {
+            $keys[] = '__data.' . $key . '__';
+            $replace[] = $val;
+        }
+
+        $this->__href__ = str_replace($keys, $replace, $this->href);
+
+        foreach ($this->items as $key => &$item) {
+            if (is_string($item)) {
+                $item = ['label' => $item];
+            }
+            if (!isset($item['url'])) {
+                $item['url'] = $key;
+            }
+            if (stripos($item['url'], '/') === false) {
+                $item['url'] = url($item['url']);
+            }
+            $item['url'] = str_replace($keys, $replace, $item['url']);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $data
+     * @return $this
+     */
+    public function parseMapClass($data)
+    {
+        foreach ($this->items as &$item) {
+            if (!isset($item['mapClass'])) {
+                continue;
+            }
+            foreach ($item['mapClass'] as $class => $check) {
+                if (isset($data[$check]) && $data[$check]) {
+                    $item['class'] = isset($item['class']) ? $item['class'] . ' ' . $class : $class;
+                }
+            }
+        }
+
         return $this;
     }
 
@@ -48,6 +97,14 @@ class Actions extends DropdownBtns
      */
     public function mapClass($mapData)
     {
+        if (!empty($mapData)) {
+            foreach ($this->items as $key => &$item) {
+                if (isset($mapData[$key])) {
+                    $item['mapClass'] = $mapData[$key];
+                }
+            }
+        }
+
         return $this;
     }
 
@@ -57,34 +114,15 @@ class Actions extends DropdownBtns
             return '';
         }
 
-        $actions = [];
         $confirms = [];
+        $actions = [];
 
-        foreach ($this->items as $url => $data) {
-            if (stripos($url, '/') === false) {
-                $url = url($url);
-            }
-            if (!Builder::checkUrl($url)) {
+        foreach ($this->items as $key => $item) {
+            if (!Builder::checkUrl($item['url'])) {
                 continue;
             }
-            if (is_string($data)) {
-                $actions[$url] = $data;
-                $confirms[$url] = '1';
-            } else {
-                if (isset($actions[$url]) && isset($actions[$url]['init']) && $actions[$url]['init']) {
-                    continue;
-                }
-                $actions[$url]['init'] = 1;
-                $actions[$url]['label'] = $data[0];
-                $actions[$url]['class'] = isset($data[1]) ? $data[1] : '';
-                $actions[$url]['icon'] = isset($data[2]) ? $data[2] : '';
-                $actions[$url]['attr'] = isset($data[3]) ? $data[3] : '';
-                $confirms[$url] = isset($data[4]) ? $data[4] : '1';
-            }
-        }
-
-        if (empty($actions)) {
-            return '';
+            $confirms[$item['url']] = isset($item['confirm']) ? $item['confirm'] : '1';
+            $actions[$key] = $item;
         }
 
         $this->items = $actions;
@@ -111,6 +149,8 @@ EOT;
     public function beforRender()
     {
         $this->postRowidScript();
+
+        $this->parseMapClass($this->data);
 
         return parent::beforRender();
     }
