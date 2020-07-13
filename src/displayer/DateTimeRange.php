@@ -18,7 +18,7 @@ class DateTimeRange extends Text
 
     protected $format = 'YYYY-MM-DD HH:mm:ss';
 
-    protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-multiple"></i></span>';
+    protected $befor = '';
 
     protected $timePicker = true;
 

@@ -6,7 +6,7 @@ class TimeRange extends DateTimeRange
 {
     protected $format = 'HH:mm:ss';
 
-    protected $befor = '<span class="input-group-addon"><i class="mdi mdi-clock"></i></span>';
+    protected $befor = '';
 
     protected $timePicker = true;
 

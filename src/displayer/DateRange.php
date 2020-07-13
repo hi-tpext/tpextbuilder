@@ -19,7 +19,7 @@ class DateRange extends Text
 
     protected $format = 'yyyy-mm-dd';
 
-    protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-multiple"></i></span>';
+    protected $befor = '';
 
     protected $separator = ',';
 
