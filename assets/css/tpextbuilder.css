@@ -49,6 +49,10 @@ form.search-form .control-label + div
     min-height: 30px;
 }
 
+.lyear-switch{
+    margin-top: 6px;
+}
+
 .vertical-middle, .table>tbody>tr>td.vertical-middle {
     vertical-align: middle;
 }

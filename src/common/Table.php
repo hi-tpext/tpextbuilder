@@ -756,6 +756,13 @@ class Table extends TWrapper implements Renderable
             $this->pagesizeDropdown($items);
         }
 
+        if ($this->addTop) {
+            $this->addTop->beforRender();
+        }
+        if ($this->addBottom) {
+            $this->addBottom->beforRender();
+        }
+
         $vars = [
             'class' => $this->class,
             'attr' => $this->getAttrWithStyle(),
