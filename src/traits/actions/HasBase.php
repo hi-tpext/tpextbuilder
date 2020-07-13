@@ -155,7 +155,7 @@ trait HasBase
     {
         $this->search = new Search();
 
-        $this->builSearch();
+        $this->buildSearch();
 
         $logic = new Filter;
 
