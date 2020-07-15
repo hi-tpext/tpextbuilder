@@ -461,7 +461,7 @@ window.renderFiles = function () {
             if ($btn && $btn.attr('href')) {
                 var href = $btn.attr('href');
                 $img = $li.find('img.preview-img');
-                if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(href)) {
+                if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)(\?.*)?$/i.test(href)) {
                     $btn.removeClass('btn-link-pic');
                     $btn.attr('target', '_blank');
                     $img.attr('src', '/index.php/tpextbuilder/admin/upload/ext/type/' + href.replace(/.+?\.(\w+)$/, '$1'));
