@@ -836,6 +836,18 @@ $(function () {
         }
     });
 
+    $('body').on('click', '.field-show .shwo-more', function () {
+        var tmp = $(this).prev('span').text();
+        $(this).prev('span').text($(this).next('span').text());
+        $(this).next('span').text(tmp);
+        if ($(this).hasClass('showing')) {
+            $(this).removeClass('showing');
+        }
+        else {
+            $(this).addClass('showing');
+        }
+    });
+
     $(".form-control.readonly").attr('readonly', 'readonly');
     $(".form-control.disabled").attr('disabled', 'disabled');
     $(".form-control.not-readonly").removeAttr('readonly');
