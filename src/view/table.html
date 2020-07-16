@@ -1,6 +1,3 @@
-{notempty name="addTop"}
-{:$addTop->render()}
-{/notempty}
 {notempty name="searchForm"}
 {:$searchForm->render()}
 {/notempty}
@@ -11,6 +8,9 @@
 {/notempty}
 
 <div id="{$id}" class="row table-wrapper">
+    {notempty name="addTop"}
+    {:$addTop->render()}
+    {/notempty}
     <table class="table {$class}" {$attr|raw}>
         {notempty name="$headers"}
         <thead>
@@ -81,6 +81,9 @@
         {:$paginator->render()}{notempty name="pagesizeDropdown"}{:$pagesizeDropdown->render()}{/notempty}
     </nav>
     {/notempty}
+    {notempty name="addBottom"}
+    {:$addBottom->render()}
+    {/notempty}
     <script>
         var partial = '{$partial}' == 1;
 
@@ -120,6 +123,3 @@
         }
     </script>
 </div>
-{notempty name="addBottom"}
-{:$addBottom->render()}
-{/notempty}

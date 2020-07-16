@@ -48,7 +48,7 @@ class Fields extends Field
     /**
      * Undocumented function
      *
-     * @param Field ...$fields
+     * @param mixed ...$fields
      * @return $this
      */
     public function with(...$fields)
