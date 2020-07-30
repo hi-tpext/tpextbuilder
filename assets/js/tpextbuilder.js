@@ -116,7 +116,7 @@
 
             val = values.join(',');
 
-            if (confirm) {
+            if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
                     var text = $('#' + id).text().trim() || $(this).attr('title');
                     confirm = '确定要执行批量<strong>' + text + '</strong>操作吗？';
@@ -201,7 +201,7 @@
 
             val = values.join(',');
 
-            if (confirm) {
+            if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
                     var text = $(this).text().trim();
                     confirm = '确定要执行批量<strong>' + text + '</strong>操作吗？';
@@ -260,7 +260,7 @@
     tpextbuilder.postRowid = function (classname, url, confirm) {
         $('body').on('click', 'td.row-__action__ .' + classname, function () {
             var val = $(this).data('id');
-            if (confirm) {
+            if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
                     var text = $(this).text().trim() || $(this).attr('title') || '此';
                     confirm = '确定要执行<strong>' + text + '</strong>操作吗？';
@@ -301,7 +301,7 @@
             var confirm = confirms[url];
 
             var val = $('td.row-__action__ .' + classname).data('id');
-            if (confirm) {
+            if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
                     var text = $(this).text().trim() || $(this).attr('title') || '此';
                     confirm = '确定要执行<strong>' + text + '</strong>操作吗？';

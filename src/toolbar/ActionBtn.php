@@ -102,7 +102,7 @@ class ActionBtn extends Bar
     public function postRowid($url, $confirm = true)
     {
         $this->postRowid = $url;
-        $this->confirm = $confirm;
+        $this->confirm = $confirm ? $confirm : 0;
 
         return $this;
     }
@@ -114,10 +114,6 @@ class ActionBtn extends Bar
         }
         $script = '';
         $class = 'action-' . $this->name;
-
-        if (empty($this->confirm)) {
-            $this->confirm = '1';
-        }
 
         $script = <<<EOT
 
