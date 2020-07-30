@@ -478,9 +478,7 @@ class Builder implements Renderable
     {
         if (!empty(static::$auth)) {
 
-            $path = explode('/', trim($url, '/'));
-
-            return count($path) >= 3 && static::$auth::checkUrl("/{$path[0]}/{$path[1]}/{$path[2]}");
+            return static::$auth::checkUrl($url);
         }
 
         return true;
