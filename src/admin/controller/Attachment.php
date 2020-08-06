@@ -62,7 +62,7 @@ class Attachment extends Controller
      *
      * @return void
      */
-    protected function builSearch()
+    protected function buildSearch()
     {
         $search = $this->search;
 
