@@ -872,7 +872,23 @@ EOT;
             'disabled' => $this->disabled,
         ];
 
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
+
         return $vars;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
     }
 
     public function __call($name, $arguments)

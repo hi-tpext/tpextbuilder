@@ -79,16 +79,10 @@ EOT;
         return parent::beforRender();
     }
 
-    public function render()
+    public function customVars()
     {
-        $vars = $this->commonVars();
-
-        $vars = array_merge($vars, [
+        return [
             'placeholder' => $this->placeholder,
-        ]);
-
-        $viewshow = $this->getViewInstance();
-
-        return $viewshow->assign($vars)->getContent();
+        ];
     }
 }

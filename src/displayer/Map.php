@@ -147,17 +147,13 @@ class Map extends Text
         return parent::beforRender();
     }
 
-    public function commonVars()
+    public function customVars()
     {
-        $vars = parent::commonVars();
-
-        $vars = array_merge($vars, [
+        return [
             'maptype' => $this->type,
             'textTempl' => Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'text.html']),
             'mapStyle' => 'style="width: ' . $this->width . ';height: ' . $this->height . ';max-width: 100%;"',
-        ]);
-
-        return $vars;
+        ];
     }
 
     public function tcentScript($jsKey)

@@ -326,16 +326,10 @@ EOT;
         return $this;
     }
 
-    public function render()
+    public function customVars()
     {
-        $vars = $this->commonVars();
-
-        $vars = array_merge($vars, [
+        return [
             'items_content' => $this->__items_content__,
-        ]);
-
-        $viewshow = $this->getViewInstance();
-
-        return $viewshow->assign($vars)->getContent();
+        ];
     }
 }

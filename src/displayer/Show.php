@@ -14,6 +14,8 @@ class Show extends Field
 
     protected $full = '';
 
+    protected $inline = false;
+
     /**
      * Undocumented function
      *
@@ -26,6 +28,18 @@ class Show extends Field
         $this->sublen = $len;
         $this->more = $more;
 
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function inline($val)
+    {
+        $this->inline = $val;
         return $this;
     }
 
@@ -51,18 +65,13 @@ class Show extends Field
         return $value;
     }
 
-    public function render()
+    public function customVars()
     {
-        $vars = $this->commonVars();
-
-        $vars = array_merge($vars, [
+        return [
             'subed' => $this->subed,
             'more' => $this->more,
             'full' => $this->full,
-        ]);
-
-        $viewshow = $this->getViewInstance();
-
-        return $viewshow->assign($vars)->getContent();
+            'inline' => $this->inline,
+        ];
     }
 }

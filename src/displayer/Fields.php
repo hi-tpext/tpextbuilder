@@ -155,16 +155,10 @@ class Fields extends Field
         return $this;
     }
 
-    public function render()
+    public function customVars()
     {
-        $vars = $this->commonVars();
-
-        $vars = array_merge($vars, [
+        return [
             'fields_content' => $this->__fields_content__,
-        ]);
-
-        $viewshow = $this->getViewInstance();
-
-        return $viewshow->assign($vars)->getContent();
+        ];
     }
 }
