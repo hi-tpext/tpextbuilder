@@ -35,6 +35,8 @@ trait HasExport
                 $data[] = $li;
             }
 
+            // TODO 真正发挥cursor的性能优势
+
             $this->buildTable($data);
         } else {
             $data = $this->buildDataList();
@@ -42,29 +44,7 @@ trait HasExport
 
         $cols = $this->table->getCols();
 
-        $displayers = $this->getDisplayers($cols); /*
-
-        foreach ($cols as $col) {
-
-        $displayer = $col->getDisplayer();
-
-        if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
-
-        $displayer = (new displayer\Matches($displayer->getName(), $col->getLabel()))->options($displayer->getOptions());
-        } else if ($displayer instanceof displayer\Radio) {
-
-        $displayer = (new displayer\Match($displayer->getName(), $col->getLabel()))->options($displayer->getOptions());
-        } else if ($displayer instanceof displayer\SwitchBtn) {
-
-        $pair = $displayer->getPair();
-        $options = [$pair[0] => '是', $pair[1] => '否'];
-        $displayer = (new displayer\Match($displayer->getName(), $col->getLabel()))->options($options);
-        } else if ($displayer instanceof displayer\Fields) {
-        $content = $displayer->getContent();
-        }
-
-        $displayers[] = $displayer;
-        }*/
+        $displayers = $this->getDisplayers($cols);
 
         $__file_type__ = input('post.__file_type__', '');
 
