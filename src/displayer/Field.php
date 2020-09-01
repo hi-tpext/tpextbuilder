@@ -890,16 +890,4 @@ EOT;
     {
         return [];
     }
-
-    public function __call($name, $arguments)
-    {
-        //兼容
-        if ($name == 'getWapper') {
-            \think\facade\Log::warning('getWapper:已弃用，使用getWrapper替换');
-            return $this->getWrapper();
-        } else if ($name == 'setWapper') {
-            \think\facade\Log::warning('setWapper:已弃用，使用setWrapper替换');
-            return $this->setWrapper($arguments[0]);
-        }
-    }
 }
