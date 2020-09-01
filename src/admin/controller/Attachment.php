@@ -172,10 +172,6 @@ class Attachment extends Controller
 
         $builder->addScript('parent.lightyear.notify("上传成功","success");parent.$(".search-refresh").trigger("click");parent.layer.close(parent.layer.getFrameIndex(window.name));'); //刷新列表页
 
-        $fileurl = input('fileurl');
-
-        $builder->content()->display($fileurl);
-
         return $builder->render();
     }
 }
