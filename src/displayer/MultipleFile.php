@@ -4,11 +4,11 @@ namespace tpext\builder\displayer;
 
 /**
  * MultipleFile class
- * @method MultipleFile   image()
- * @method MultipleFile   office()
- * @method MultipleFile   video()
- * @method MultipleFile   audio()
- * @method MultipleFile   pkg()
+ * @method $this  image()
+ * @method $this  office()
+ * @method $this  video()
+ * @method $this  audio()
+ * @method $this  pkg()
  */
 class MultipleFile extends Field
 {
