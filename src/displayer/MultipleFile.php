@@ -48,7 +48,7 @@ class MultipleFile extends Field
             //
             "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md",
             //
-            "xml", "json"
+            "xml", "json",
         ],
         'multiple' => true,
         'mimeTypes' => '*/*',
@@ -75,8 +75,7 @@ class MultipleFile extends Field
      * @return $this
      */
     function
-    default($val = [])
-    {
+default($val = []) {
         $this->default = $val;
         return $this;
     }
@@ -249,6 +248,18 @@ class MultipleFile extends Field
         $viewshow = $this->getViewInstance();
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string|array $types ['jpg', 'jpeg', 'gif'] or 'jpg,jpeg,gif'
+     * @return void
+     */
+    public function extTypes($types)
+    {
+        $this->jsOptions['ext'] = is_string($types) ? explode(',', $types) : $types;
+        return $this;
     }
 
     public function __call($name, $arguments)
