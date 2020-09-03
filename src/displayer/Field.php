@@ -622,7 +622,7 @@ EOT;
      * @param array|string|int $values
      * @param string $class
      * @param string $field default current field
-     * @param string $logic in_array|not_in_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
+     * @param string $logic in_array|not_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
      * @return $this
      */
     public function mapClassWhen($values, $class, $field = '', $logic = 'in_array')
@@ -793,14 +793,14 @@ EOT;
                 $values = $mp[0];
                 $class = $mp[1];
                 $field = $mp[2];
-                $logic = $mp[3]; //in_array|not_in_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
+                $logic = $mp[3]; //in_array|not_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
                 $val = '';
                 if (!isset($this->data[$field])) {
                     continue;
                 }
                 $val = $this->data[$field];
                 $match = false;
-                if ($logic == 'not_in_in_array') {
+                if ($logic == 'not_in_array') {
                     $match = !in_array($val, $values);
                 } else if ($logic == 'eq') {
                     $match = $val == $values[0];
