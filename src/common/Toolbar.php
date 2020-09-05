@@ -71,6 +71,21 @@ class Toolbar extends BWapper implements Renderable
      *
      * @return $this
      */
+    public function clear()
+    {
+        $this->__elm__ = null;
+        $this->elms = [];
+        $this->elmsRight = [];
+        $this->elmsLeft = [];
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         $this->elmsLeft = $this->elmsRight = [];
