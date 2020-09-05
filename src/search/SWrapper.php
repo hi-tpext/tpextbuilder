@@ -2,7 +2,7 @@
 
 namespace tpext\builder\search;
 
-use tpext\builder\common\Wapper as Base;
+use tpext\builder\common\Wrapper as Base;
 
 /**
  * Methods.

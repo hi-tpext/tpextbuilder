@@ -2,7 +2,7 @@
 
 namespace tpext\builder\common;
 
-class Wapper
+class Wrapper
 {
     protected $dfaultDisplayerSize = null;
 

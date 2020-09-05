@@ -2,7 +2,7 @@
 
 namespace tpext\builder\table;
 
-use tpext\builder\common\Wapper as Base;
+use tpext\builder\common\Wrapper as Base;
 
 /**
  * Methods.

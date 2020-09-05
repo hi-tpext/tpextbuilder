@@ -7,9 +7,8 @@ use think\Model;
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
-use tpext\builder\common\Wapper;
+use tpext\builder\common\Wrapper;
 use tpext\builder\form\Fillable;
-use tpext\builder\table\TColumn;
 use tpext\builder\traits\HasDom;
 use tpext\common\ExtLoader;
 
@@ -108,7 +107,7 @@ class Field implements Fillable
 
         $fieldType = lcfirst($fieldType);
 
-        $defaultClass = Wapper::hasDefaultFieldClass($fieldType);
+        $defaultClass = Wrapper::hasDefaultFieldClass($fieldType);
 
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;
