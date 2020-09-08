@@ -25,6 +25,11 @@ class Builder implements Renderable
      */
     protected $rows = [];
 
+    /**
+     * Undocumented variable
+     *
+     * @var Row
+     */
     protected $__row__ = null;
 
     protected $js = [];

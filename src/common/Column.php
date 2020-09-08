@@ -83,6 +83,7 @@ class Column
     public function content()
     {
         $content = new Content();
+        ExtLoader::trigger('tpext_create_content', $content);
         $this->elms[] = $content;
         return $content;
     }
@@ -95,6 +96,7 @@ class Column
     public function tab()
     {
         $tab = new Tab();
+        ExtLoader::trigger('tpext_create_tab', $tab);
         $this->elms[] = $tab;
         return $tab;
     }
@@ -107,6 +109,7 @@ class Column
     public function row()
     {
         $row = new Row();
+        ExtLoader::trigger('tpext_create_row', $row);
         $this->elms[] = $row;
         return $row;
     }
