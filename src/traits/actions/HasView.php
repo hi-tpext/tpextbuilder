@@ -19,7 +19,7 @@ trait HasView
         if (request()->isPost()) {
             $this->error('不允许的操作');
         } else {
-            $builder = $this->builder($this->pageTitle, $this->viewText);
+            $builder = $this->builder($this->pageTitle, $this->viewText, 'view');
             $data = $this->dataModel->get($id);
             if (!$data) {
                 return $builder->layer()->close(0, '数据不存在');

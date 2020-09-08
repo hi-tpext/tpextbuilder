@@ -13,7 +13,7 @@ trait HasIndex
 
     public function index()
     {
-        $builder = $this->builder($this->pageTitle, $this->indexText);
+        $builder = $this->builder($this->pageTitle, $this->indexText, 'index');
 
         $table = $builder->table();
         $table->pk($this->getPk());

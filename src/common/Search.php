@@ -115,6 +115,18 @@ class Search extends SWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function method($val)
+    {
+        $this->method = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param boolean $val
      * @return void
      */

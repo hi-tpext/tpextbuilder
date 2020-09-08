@@ -198,9 +198,10 @@ trait HasBase
      *
      * @param string $title
      * @param string $desc
+     * @param string $type index/add/edit/view
      * @return Builder
      */
-    protected function builder($title = '', $desc = '')
+    protected function builder($title = '', $desc = '', $type = '')
     {
         return Builder::getInstance($title, $desc);
     }

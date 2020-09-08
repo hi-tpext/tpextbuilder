@@ -14,7 +14,7 @@ trait HasAdd
             return $this->save();
         }
 
-        $builder = $this->builder($this->pageTitle, $this->addText);
+        $builder = $this->builder($this->pageTitle, $this->addText, 'add');
         $form = $builder->form();
         $data = [];
         $this->form = $form;

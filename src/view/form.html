@@ -46,7 +46,7 @@
                     $.ajax({
                         url: '{$action}' || location.href,
                         data: postdata,
-                        type: 'POST',
+                        type: "{$method|default='POST'}",
                         dataType: 'html',
                         success: function (data) {
                             setTimeout(function () {
