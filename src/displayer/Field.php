@@ -4,7 +4,6 @@ namespace tpext\builder\displayer;
 
 use think\facade\Lang;
 use think\Model;
-use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\common\Wrapper;
@@ -680,7 +679,7 @@ EOT;
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', $this->view . '.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         return $viewshow;
     }

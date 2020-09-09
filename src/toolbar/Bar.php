@@ -2,7 +2,6 @@
 
 namespace tpext\builder\toolbar;
 
-use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;
@@ -219,7 +218,7 @@ class Bar implements Renderable
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar', $this->view . '.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         return $viewshow;
     }

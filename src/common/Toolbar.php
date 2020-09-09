@@ -2,7 +2,6 @@
 
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use tpext\builder\inface\Renderable;
 use tpext\builder\toolbar\Bar;
 use tpext\builder\toolbar\BWapper;
@@ -112,7 +111,7 @@ class Toolbar extends BWapper implements Renderable
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'elms' => $this->elms,

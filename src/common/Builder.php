@@ -543,15 +543,15 @@ class Builder implements Renderable
             'script' => implode('', array_unique($this->script)),
         ];
 
-        $view = new ViewShow($this->view);
+        $viewshow = view($this->view);
 
         $instance = Module::getInstance();
 
         $instance->setConfig(['page_title' => $this->desc, 'page_position' => $this->title]);
 
-        View::share(['admin_page_title' => $this->desc, 'admin_page_position' => $this->title]);
+        View::assign(['admin_page_title' => $this->desc, 'admin_page_position' => $this->title]);
 
-        return $view->assign($vars);
+        return $viewshow->assign($vars);
     }
 
     public function __toString()

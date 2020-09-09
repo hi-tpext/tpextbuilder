@@ -2,7 +2,7 @@
 
 namespace tpext\builder\traits\actions;
 
-use tpext\builder\common\builder;
+use tpext\builder\common\Builder;
 use tpext\builder\common\Form;
 use tpext\builder\common\Search;
 use tpext\builder\common\Table;
