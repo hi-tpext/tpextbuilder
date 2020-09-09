@@ -2,7 +2,6 @@
 
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
@@ -428,13 +427,13 @@ EOT;
     /**
      * Undocumented function
      *
-     * @return string|ViewShow
+     * @return string|\think\response\View
      */
     public function render()
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'rows' => $this->rows,

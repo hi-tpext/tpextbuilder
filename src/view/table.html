@@ -76,9 +76,9 @@
         {$emptyText|raw}
     </div>
     {/empty}
-    {notempty name="paginator"}
-    <nav class="pagination-navi {:$paginator->getClass()}" {:$paginator->getAttrWithStyle()}>
-        {:$paginator->render()}{notempty name="pagesizeDropdown"}{:$pagesizeDropdown->render()}{/notempty}
+    {notempty name="bottomPaginator"}
+    <nav class="pagination-navi {:$bottomPaginator->getClass()}" {:$bottomPaginator->getAttrWithStyle()}>
+        {:$bottomPaginator->render()}{notempty name="pagesizeDropdown"}{:$pagesizeDropdown->render()}{/notempty}
     </nav>
     {/notempty}
     {notempty name="addBottom"}
@@ -90,7 +90,7 @@
         document.getElementById('form-__sort__-{$id}').value = '{$sort}';
 
         if (partial) {
-            $('#form-__page__-{$id}').val('{$paginator->currentPage()}');
+            $('#form-__page__-{$id}').val('{$bottomPaginator->currentPage()}');
 
             $('#{$id} input.checkall').each(function (i, e) {
                 var checkall = $(e);

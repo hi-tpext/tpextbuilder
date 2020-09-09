@@ -47,7 +47,7 @@ class CKEditor extends Field
 
             session('uploadtoken', $token);
 
-            $this->jsOptions['filebrowserImageUploadUrl'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'ckeditor', 'token' => $token]);
+            $this->jsOptions['filebrowserImageUploadUrl'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'ckeditor', 'token' => $token])->__toString();
         }
 
         $configs = json_encode($this->jsOptions);

@@ -130,7 +130,7 @@ class Actionbar extends Toolbar
     public function btnEdit($url = '', $label = '', $class = 'btn-primary', $icon = 'mdi-lead-pencil', $attr = 'title="编辑"')
     {
         if (empty($url)) {
-            $url = url('edit', ['id' => '__data.pk__']);
+            $url = url('edit', ['id' => '__data.pk__'])->__toString();
         }
         $this->actionBtn('edit', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
@@ -149,7 +149,7 @@ class Actionbar extends Toolbar
     public function btnView($url = '', $label = '', $class = 'btn-info', $icon = 'mdi-eye-outline', $attr = 'title="查看"')
     {
         if (empty($url)) {
-            $url = url('view', ['id' => '__data.pk__']);
+            $url = url('view', ['id' => '__data.pk__'])->__toString();
         }
         $this->actionBtn('view', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
@@ -169,7 +169,7 @@ class Actionbar extends Toolbar
     public function btnDelete($postUrl = '', $label = '', $class = 'btn-danger', $icon = 'mdi-delete', $attr = 'title="删除"', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('delete');
+            $postUrl = url('delete')->__toString();
         }
         $this->actionBtn('delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
@@ -189,7 +189,7 @@ class Actionbar extends Toolbar
     public function btnDisable($postUrl = '', $label = '', $class = 'btn-warning', $icon = 'mdi-block-helper', $attr = 'title="禁用"', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('enable', ['state' => 0]);
+            $postUrl = url('enable', ['state' => 0])->__toString();
         }
         $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
@@ -209,7 +209,7 @@ class Actionbar extends Toolbar
     public function btnEnable($postUrl = '', $label = '', $class = 'btn-success', $icon = 'mdi-check', $attr = 'title="启用"', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('enable', ['state' => 1]);
+            $postUrl = url('enable', ['state' => 1])->__toString();
         }
         $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;

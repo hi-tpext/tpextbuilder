@@ -101,7 +101,7 @@ class ActionBtn extends Bar
      */
     public function postRowid($url, $confirm = true)
     {
-        $this->postRowid = $url;
+        $this->postRowid = (string)$url;
         $this->confirm = $confirm ? $confirm : 0;
 
         return $this;

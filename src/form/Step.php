@@ -3,7 +3,6 @@
 namespace tpext\builder\form;
 
 use think\Model;
-use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
@@ -295,7 +294,7 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = new ViewShow($this->view);
+        $viewshow = view($this->view);
 
         if ($partial) {
             return $viewshow->assign($vars);

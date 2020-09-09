@@ -3,7 +3,6 @@
 namespace tpext\builder\form;
 
 use think\Collection;
-use think\response\View as ViewShow;
 use tpext\builder\common\Form;
 use tpext\builder\common\Module;
 use tpext\builder\displayer\Field;
@@ -320,11 +319,16 @@ class ItemsContent extends FWrapper
         $this->isInitData = true;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     public function render()
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', $this->view . '.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'name' => $this->name,

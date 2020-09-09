@@ -31,7 +31,7 @@ class LinkBtn extends Bar
      */
     public function postChecked($url, $confirm = true)
     {
-        $this->postChecked = $url;
+        $this->postChecked = (string)$url;
         $this->confirm = $confirm;
 
         return $this;

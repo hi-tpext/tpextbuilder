@@ -54,7 +54,7 @@ class Tinymce extends Field
 
             session('uploadtoken', $token);
 
-            $this->jsOptions['images_upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'tinymce', 'token' => $token]);
+            $this->jsOptions['images_upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'tinymce', 'token' => $token])->__toString();
         }
 
         $this->jsOptions['selector'] = "#{$inputId}";

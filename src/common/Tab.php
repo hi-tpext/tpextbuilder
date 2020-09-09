@@ -3,7 +3,6 @@
 namespace tpext\builder\common;
 
 use think\Model;
-use think\response\View as ViewShow;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
@@ -247,7 +246,7 @@ class Tab implements Renderable
     /**
      * Undocumented function
      *
-     * @return string|ViewShow
+     * @return string|\think\response\View
      */
     public function render()
     {
@@ -265,7 +264,7 @@ class Tab implements Renderable
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = new ViewShow($this->view);
+        $viewshow = view($this->view);
 
         if ($this->partial) {
             return $viewshow->assign($vars);

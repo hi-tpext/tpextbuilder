@@ -222,7 +222,7 @@ default($val = []) {
 
             session('uploadtoken', $token);
 
-            $this->jsOptions['upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token]);
+            $this->jsOptions['upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token])->__toString();
         }
 
         $vars = $this->commonVars();

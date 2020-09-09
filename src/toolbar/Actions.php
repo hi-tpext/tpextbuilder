@@ -59,7 +59,7 @@ class Actions extends DropdownBtns
                 $item['url'] = $key;
             }
             if (stripos($item['url'], '/') === false) {
-                $item['url'] = url($item['url']);
+                $item['url'] = url($item['url'])->__toString();
             }
             $item['url'] = str_replace($keys, $replace, $item['url']);
         }

@@ -1,7 +1,6 @@
 <?php
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use tpext\builder\common\Module;
 
 class Layer
@@ -9,7 +8,7 @@ class Layer
     /**
      * Undocumented variable
      *
-     * @var ViewShow
+     * @var \think\response\View
      */
     private $viewShow;
 
@@ -35,7 +34,7 @@ class Layer
             'msg' => $msg,
         ];
 
-        $this->viewShow = new ViewShow($view);
+        $this->viewShow = view($view);
 
         $this->viewShow->assign($vars);
 
@@ -48,7 +47,7 @@ class Layer
             return json([
                 'code' => $success ? 1 : 0,
                 'msg' => $msg,
-                'layer_close_go' => $url,
+                'layer_close_go' => (string) $url,
             ]);
         }
 
@@ -57,10 +56,10 @@ class Layer
         $vars = [
             'success' => $success ? 1 : 0,
             'msg' => $msg,
-            'url' => $url,
+            'url' => (string) $url,
         ];
 
-        $this->viewShow = new ViewShow($view);
+        $this->viewShow = view($view);
 
         $this->viewShow->assign($vars);
 
@@ -84,7 +83,7 @@ class Layer
             'msg' => $msg,
         ];
 
-        $this->viewShow = new ViewShow($view);
+        $this->viewShow = view($view);
 
         $this->viewShow->assign($vars);
 

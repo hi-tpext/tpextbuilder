@@ -3,7 +3,6 @@
 namespace tpext\builder\common;
 
 use think\Collection;
-use think\response\View as ViewShow;
 use tpext\builder\inface\Renderable;
 use tpext\builder\table\Actionbar;
 use tpext\builder\table\FieldsContent;
@@ -428,7 +427,7 @@ class Table extends TWrapper implements Renderable
             $pageSize = 10;
         }
 
-        $paginator = Paginator::make($this->data, $pageSize, input('__page__', 1), $dataTotal);
+        $paginator = new Paginator($this->data, $pageSize, input('__page__', 1), $dataTotal);
 
         if ($dataTotal < 10) {
             $this->usePagesizeDropdown = false;
@@ -708,7 +707,7 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return string|ViewShow
+     * @return string|\think\response\View
      */
     public function render()
     {
@@ -718,12 +717,12 @@ class Table extends TWrapper implements Renderable
 
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $count = count($this->data);
         if (!$this->paginator) {
             $this->pageSize = $count ? $count : 10;
-            $this->paginator = Paginator::make($this->data, $this->pageSize, 1, $count);
+            $this->paginator = new Paginator($this->data, $this->pageSize, 1, $count);
             $this->usePagesizeDropdown = false;
         }
 
@@ -783,7 +782,7 @@ class Table extends TWrapper implements Renderable
             'verticalAlign' => $this->verticalAlign,
             'textAlign' => $this->textAlign,
             'id' => $this->id,
-            'paginator' => $this->paginator,
+            'bottomPaginator' => $this->paginator,
             'partial' => $this->partial ? 1 : 0,
             'searchForm' => !$this->partial ? $this->searchForm : null,
             'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,

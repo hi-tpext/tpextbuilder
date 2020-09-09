@@ -33,7 +33,7 @@ class MultipleActions extends DropdownBtns
                 $item['url'] = $key;
             }
             if (stripos($item['url'], '/') === false) {
-                $item['url'] = url($item['url']);
+                $item['url'] = url($item['url'])->__toString();
             }
             if (!Builder::checkUrl($item['url'])) {
                 continue;

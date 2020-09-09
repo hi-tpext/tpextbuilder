@@ -6,5 +6,5 @@ use think\Model;
 
 class Attachment extends Model
 {
-    protected $autoWriteTimestamp = 'dateTime';
+    protected $autoWriteTimestamp = 'datetime';
 }

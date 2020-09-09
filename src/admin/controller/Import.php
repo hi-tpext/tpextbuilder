@@ -57,13 +57,14 @@ class Import extends Controller
 
         session('uploadtoken', $token);
 
-        $uploadUrl = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'dropzone', 'token' => $token]);
+        $uploadUrl = url('/tpextbuilder/admin/upload/upfiles')->__toString();
 
         $this->assign('admin_copyright', '');
         $this->assign('uploadUrl', $uploadUrl);
         $this->assign('acceptedExts', $acceptedExts);
         $this->assign('fileSize', $fileSize);
         $this->assign('successUrl', $successUrl);
+        $this->assign('uploadtoken', $token);
 
         return $this->fetch();
     }

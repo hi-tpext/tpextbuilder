@@ -115,7 +115,7 @@ class MultipleToolbar extends Toolbar
     public function btnAdd($url = '', $label = '添加', $class = 'btn-primary', $icon = 'mdi-plus', $attr = '')
     {
         if (empty($url)) {
-            $url = url('add');
+            $url = url('add')->__toString();
         }
         $this->linkBtn('add', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
@@ -135,7 +135,7 @@ class MultipleToolbar extends Toolbar
     public function btnDelete($postUrl = '', $label = '删除', $class = 'btn-danger', $icon = 'mdi-delete', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('delete');
+            $postUrl = url('delete')->__toString();
         }
         $this->linkBtn('delete', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
@@ -155,7 +155,7 @@ class MultipleToolbar extends Toolbar
     public function btnDisable($postUrl = '', $label = '禁用', $class = 'btn-warning', $icon = 'mdi-block-helper', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('enable', ['state' => 0]);
+            $postUrl = url('enable', ['state' => 0])->__toString();
         }
         $this->linkBtn('disable', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
@@ -175,7 +175,7 @@ class MultipleToolbar extends Toolbar
     public function btnEnable($postUrl = '', $label = '启用', $class = 'btn-success', $icon = 'mdi-check', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = url('enable', ['state' => 1]);
+            $postUrl = url('enable', ['state' => 1])->__toString();
         }
         $this->linkBtn('enable', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
@@ -244,7 +244,7 @@ class MultipleToolbar extends Toolbar
     public function btnImport($afterSuccessUrl = '', $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['800px', '550px'], $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
     {
         if (empty($afterSuccessUrl)) {
-            $afterSuccessUrl = url('/tpextbuilder/admin/import/afterSuccess');
+            $afterSuccessUrl = url('/tpextbuilder/admin/import/afterSuccess')->__toString();
         }
 
         if (is_array($acceptedExts)) {
@@ -261,7 +261,7 @@ class MultipleToolbar extends Toolbar
 
         $pagetoken = md5($importpagetoken . $acceptedExts . $fileSize);
 
-        $url = url('/tpextbuilder/admin/import/page') . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
+        $url = url('/tpextbuilder/admin/import/page')->__toString() . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
 
         $this->linkBtn('import', $label)->useLayer(true, $layerSize)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
 

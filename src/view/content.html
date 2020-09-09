@@ -1,5 +1,5 @@
-{extend name="$admin_layout"/}
 
+{extend name="$admin_layout"/}
 {block name="style"}
 {volist name="css" id="item"}
 <link href="{$item}" rel="stylesheet">
@@ -38,7 +38,7 @@
     $(function(){
 
       {$script|raw}
-      
+
     });
 </script>
 <div class="hidden" id="script-div"></div>

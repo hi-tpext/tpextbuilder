@@ -2,7 +2,6 @@
 
 namespace tpext\builder\tree;
 
-use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;
@@ -209,11 +208,16 @@ EOT;
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     public function render()
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tree', 'ztree.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'class' => $this->class,

@@ -2,7 +2,6 @@
 
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use tpext\builder\inface\Renderable;
 
 class Content implements Renderable
@@ -10,7 +9,7 @@ class Content implements Renderable
     /**
      * Undocumented variable
      *
-     * @var ViewShow
+     * @var \think\response\View
      */
     protected $content;
 
@@ -19,7 +18,7 @@ class Content implements Renderable
     /**
      * Undocumented function
      *
-     * @return string|ViewShow
+     * @return string|\think\response\View
      */
     public function render()
     {
@@ -58,7 +57,7 @@ class Content implements Renderable
      */
     public function fetch($template = '', $vars = [], $config = [])
     {
-        $this->content = new ViewShow($template);
+        $this->content = view($template);
 
         $this->content->assign($vars)->config($config);
         return $this;
@@ -74,7 +73,7 @@ class Content implements Renderable
      */
     public function display($content = '', $vars = [], $config = [])
     {
-        $this->content = new ViewShow($content);
+        $this->content = view($content);
 
         $this->content->assign($vars)->config($config)->isContent(true);
         return $this;

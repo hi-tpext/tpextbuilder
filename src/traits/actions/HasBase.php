@@ -139,9 +139,13 @@ trait HasBase
         $res = 0;
 
         if ($id) {
-            $res = $this->dataModel->allowField(true)->isUpdate(true, [$this->getPk() => $id])->save($data);
+            $exists = $this->dataModel->where([$this->getPk() => $id])->find();
+            if ($exists) {
+                $res = $exists->force()->save($data);
+            }
+
         } else {
-            $res = $this->dataModel->allowField(true)->isUpdate(false)->save($data);
+            $res = $this->dataModel->exists(false)->save($data);
         }
 
         if (!$res) {

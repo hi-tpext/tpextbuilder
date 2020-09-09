@@ -65,7 +65,7 @@ class MDReader extends Field
             $this->script[] = 'layer.alert("未安装mdeditor资源包！<pre>composer require ichynul/builder-mdeditor</pre>");';
             return;
         }
-        
+
         $inputId = $this->getId();
 
         /**
@@ -81,7 +81,7 @@ class MDReader extends Field
 
             session('uploadtoken', $token);
 
-            $this->jsOptions['imageUploadURL'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token]);
+            $this->jsOptions['imageUploadURL'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token])->__toString();
         }
 
         $configs = json_encode($this->jsOptions);

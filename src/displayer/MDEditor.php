@@ -86,7 +86,7 @@ class MDEditor extends Field
 
             session('uploadtoken', $token);
 
-            $this->jsOptions['imageUploadURL'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token]);
+            $this->jsOptions['imageUploadURL'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token])->__toString();
         }
 
         $configs = json_encode($this->jsOptions);
