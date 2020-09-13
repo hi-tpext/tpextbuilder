@@ -7,6 +7,7 @@ use think\response\View as ViewShow;
 use tpext\builder\inface\Auth;
 use tpext\builder\inface\Renderable;
 use tpext\builder\tree\ZTree;
+use tpext\common\ExtLoader;
 
 class Builder implements Renderable
 {
@@ -78,6 +79,8 @@ class Builder implements Renderable
     {
         if (static::$instance == null) {
             static::$instance = new static($title, $desc);
+
+            ExtLoader::trigger('tpext_create_builder', static::$instance);
         } else {
             if ($title) {
                 static::$instance->title($title);
@@ -124,7 +127,7 @@ class Builder implements Renderable
         if (!$this->csrf_token) {
             $token = csrf_token();
             $this->csrf_token = $token;
-            View::share(['__token__' => $token]);
+            View::assign(['__token__' => $token]);
         }
 
         return $this->csrf_token;
