@@ -4,10 +4,10 @@ namespace tpext\builder\common;
 
 use tpext\builder\inface\Renderable;
 use tpext\builder\toolbar\Bar;
-use tpext\builder\toolbar\BWapper;
+use tpext\builder\toolbar\BWrapper;
 use tpext\builder\traits\HasDom;
 
-class Toolbar extends BWapper implements Renderable
+class Toolbar extends BWrapper implements Renderable
 {
     use HasDom;
 

@@ -13,7 +13,7 @@ namespace tpext\builder\toolbar;
  * @method \tpext\builder\toolbar\Html             html($html)
  */
 
-class BWapper
+class BWrapper
 {
     protected static $displayers = [];
 
