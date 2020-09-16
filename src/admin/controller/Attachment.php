@@ -4,10 +4,10 @@ namespace tpext\builder\admin\controller;
 
 use think\Controller;
 use tpext\builder\common\model\Attachment as AttachmentModel;
+use tpext\builder\common\Module;
 use tpext\builder\traits\actions\HasAutopost;
 use tpext\builder\traits\actions\HasBase;
 use tpext\builder\traits\actions\HasIndex;
-use tpext\builder\common\Module;
 
 /**
  * Undocumented class
@@ -19,6 +19,11 @@ class Attachment extends Controller
     use HasIndex;
     use HasAutopost;
 
+    /**
+     * Undocumented variable
+     *
+     * @var AttachmentModel
+     */
     protected $dataModel;
 
     protected function initialize()
@@ -74,10 +79,10 @@ class Attachment extends Controller
 
         $ext = input('get.ext');
         if ($ext) {
-            $arr =  explode(',', $ext);
+            $arr = explode(',', $ext);
         } else {
             $config = Module::getInstance()->getConfig();
-            $arr =  explode(',', $config['allow_suffix']);
+            $arr = explode(',', $config['allow_suffix']);
         }
 
         foreach ($arr as $a) {
@@ -143,7 +148,7 @@ class Attachment extends Controller
             $this->error('参数有误');
         }
 
-        $file = $this->dataModel->get($ids);
+        $file = $this->dataModel->where('id', $ids)->find();
 
         if ($file) {
             $script = '';
