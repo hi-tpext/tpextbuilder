@@ -400,3 +400,9 @@ span.the-field.yellow {
     padding: 0;
     margin: 0;
 }
+
+.pagination-navi
+{
+    height: 40px;
+    line-height: 40px;
+}
