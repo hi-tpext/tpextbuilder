@@ -274,7 +274,7 @@ class Search extends SWrapper implements Renderable
 
         $script = <<<EOT
 
-        $(document).bind('keyup', function(e) {
+        $(document).bind('keyup', function(event) {
             if (event.keyCode === 13) {
                 window.__forms__['{$form}'].formSubmit();
                 return false;
@@ -288,6 +288,7 @@ class Search extends SWrapper implements Renderable
                     time: 2000,
                     btn: ['确定', '取消'],
                     yes: function (params) {
+                        layer.close(index);
                         location.replace(location.href);
                     }
                 });
