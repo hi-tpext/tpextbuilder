@@ -547,12 +547,13 @@ class Form extends FWrapper implements Renderable
 
         window.focus();
 
-        $(document).bind('keyup', function(e) {
+        $(document).bind('keyup', function(event) {
             if (event.keyCode === 0x1B) {
                 var index = layer.msg('关闭当前弹窗？', {
                     time: 2000,
                     btn: ['确定', '取消'],
                     yes: function (params) {
+                        layer.close(index);
                         var index2 = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index2);
                     }
