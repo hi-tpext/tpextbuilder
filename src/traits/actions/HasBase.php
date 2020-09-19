@@ -220,6 +220,7 @@ trait HasBase
         if (empty($this->pk)) {
             if ($this->dataModel) {
                 $this->pk = $this->dataModel->getPk();
+                $this->pk = !empty($this->pk) && is_string($this->pk) ? $this->pk : 'id';
             } else {
                 $this->pk = 'id';
             }
