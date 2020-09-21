@@ -163,7 +163,9 @@ trait HasBase
 
         $logic = new Filter;
 
-        $where = $logic->getQuery($this->search);
+        $searchData = request()->post();
+
+        $where = $logic->getQuery($this->search, $searchData);
 
         return $where;
     }
