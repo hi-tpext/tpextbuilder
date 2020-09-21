@@ -83,7 +83,7 @@ class Export
         unset($row, $text);
         fclose($fp);
         if ($fname) {
-            echo (json_encode(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]));
+            return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
         }
     }
 
@@ -122,8 +122,7 @@ class Export
             $this->worksheet = $obj->getActiveSheet();
             $lib = 'PHPExcel';
         } else {
-            echo (json_encode(['code' => 0, 'msg' => '未安装PHPExcel或PhpOffice', 'data' => '']));
-            return;
+            return json(['code' => 0, 'msg' => '未安装PHPExcel或PhpOffice', 'data' => '']);
         }
 
         $this->worksheet->setTitle($title);
@@ -184,7 +183,7 @@ class Export
                 $fname = $dir . $title . "-" . date('Ymd-His') . ".xls";
                 $objWriter->save($fname);
 
-                echo (json_encode(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]));
+                return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
 
             } else {
                 header('Content-Type: application/vnd.ms-excel');
@@ -214,7 +213,7 @@ class Export
                 $fname = $dir . $title . "-" . date('Ymd-His') . ".xlsx";
                 $objWriter->save($fname);
 
-                echo (json_encode(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]));
+                return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
 
             } else {
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

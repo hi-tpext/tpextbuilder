@@ -51,9 +51,9 @@ trait HasExport
         $logic = new Export;
 
         if ($__file_type__ == 'xls' || $__file_type__ == 'xlsx') {
-            $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__);
+            return $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__);
         } else {
-            $logic->toCsv($this->pageTitle, $data, $displayers);
+            return $logic->toCsv($this->pageTitle, $data, $displayers);
         }
     }
 
