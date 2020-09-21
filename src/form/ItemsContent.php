@@ -324,7 +324,7 @@ class ItemsContent extends FWrapper
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', $this->view . '.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'name' => $this->name,

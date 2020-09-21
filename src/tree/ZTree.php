@@ -213,7 +213,7 @@ EOT;
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tree', 'ztree.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'class' => $this->class,

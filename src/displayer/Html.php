@@ -36,7 +36,7 @@ class Html extends Field
      */
     public function fetch($template = '', $vars = [], $config = [])
     {
-        $this->content = new ViewShow($template);
+        $this->content = view($template);
 
         $this->content->assign($vars)->config($config);
         return $this;
@@ -52,7 +52,7 @@ class Html extends Field
      */
     public function display($content = '', $vars = [], $config = [])
     {
-        $this->content = new ViewShow($content);
+        $this->content = view($content);
 
         $this->content->assign($vars)->config($config)->isContent(true);
         return $this;

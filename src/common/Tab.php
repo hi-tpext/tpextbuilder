@@ -265,7 +265,7 @@ class Tab implements Renderable
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = new ViewShow($this->view);
+        $viewshow = view($this->view);
 
         if ($this->partial) {
             return $viewshow->assign($vars);

@@ -718,7 +718,7 @@ class Table extends TWrapper implements Renderable
 
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $count = count($this->data);
         if (!$this->paginator) {

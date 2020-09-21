@@ -173,7 +173,7 @@ class FieldsContent extends TWrapper implements Renderable
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table', $this->view . '.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'cols' => $this->cols,

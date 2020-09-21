@@ -35,7 +35,7 @@ class Layer
             'msg' => $msg,
         ];
 
-        $this->viewShow = new ViewShow($view);
+        $this->viewShow = view($view);
 
         $this->viewShow->assign($vars);
 
@@ -60,7 +60,7 @@ class Layer
             'url' => $url,
         ];
 
-        $this->viewShow = new ViewShow($view);
+        $this->viewShow = view($view);
 
         $this->viewShow->assign($vars);
 
@@ -84,7 +84,7 @@ class Layer
             'msg' => $msg,
         ];
 
-        $this->viewShow = new ViewShow($view);
+        $this->viewShow = view($view);
 
         $this->viewShow->assign($vars);
 

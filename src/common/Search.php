@@ -435,7 +435,7 @@ EOT;
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'rows' => $this->rows,

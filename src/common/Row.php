@@ -107,7 +107,7 @@ class Row
         foreach ($this->cols as $col) {
             $col->beforRender();
         }
-        
+
         return $this;
     }
 
@@ -115,7 +115,7 @@ class Row
     {
         $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'row.html']);
 
-        $viewshow = new ViewShow($template);
+        $viewshow = view($template);
 
         $vars = [
             'cols' => $this->cols,

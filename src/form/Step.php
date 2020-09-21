@@ -295,7 +295,7 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = new ViewShow($this->view);
+        $viewshow = view($this->view);
 
         if ($partial) {
             return $viewshow->assign($vars);
