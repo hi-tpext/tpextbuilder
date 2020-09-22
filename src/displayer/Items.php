@@ -33,6 +33,10 @@ class Items extends Field
         $this->__items_content__ = $this->form->createItems();
         $this->__items_content__->name($this->name);
 
+        if (empty($this->name)) {
+            $this->name = 'items' . mt_rand(100, 999);
+        }
+
         return $this;
     }
 

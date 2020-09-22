@@ -87,7 +87,7 @@ class Field implements Fillable
     public function __construct($name, $label = '')
     {
         $this->name = trim($name);
-        if (empty($label)) {
+        if (empty($label) && !empty($this->name)) {
             $label = Lang::get(ucfirst($this->name));
         }
 
