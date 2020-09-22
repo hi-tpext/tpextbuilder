@@ -47,6 +47,8 @@ class Form extends FWrapper implements Renderable
 
     protected $readonly = false;
 
+    protected $partial = false;
+
     /**
      * Undocumented variable
      *
@@ -213,6 +215,18 @@ class Form extends FWrapper implements Renderable
     public function butonsSizeClass($val)
     {
         $this->butonsSizeClass = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function partial($val = true)
+    {
+        $this->partial = $val;
         return $this;
     }
 
@@ -628,6 +642,10 @@ EOT;
             'ajax' => $this->ajax ? 1 : 0,
             'searchFor' => '',
         ];
+
+        if ($this->partial) {
+            return $viewshow->assign($vars);
+        }
 
         return $viewshow->assign($vars)->getContent();
     }

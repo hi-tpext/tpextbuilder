@@ -586,7 +586,37 @@ class Table extends TWrapper implements Renderable
 
         $this->searchForm->beforRender();
 
+        $this->tableScript();
+
         return $this;
+    }
+
+    protected function tableScript()
+    {
+        $table = $this->getTableId();
+
+        $script = <<<EOT
+
+        $('body').on('dblclick', '#{$table} tr', function(){
+            if($(this).find('td a.dbl-click').length)
+            {
+                $(this).find('td a.dbl-click').trigger('click');
+            }
+            else if($(this).find('td a.action-edit').length)
+            {
+                $(this).find('td a.action-edit').trigger('click');
+            }
+            else if($(this).find('td a.action-view').length)
+            {
+                $(this).find('td a.action-view').trigger('click');
+            }
+            return false;
+        });
+
+EOT;
+        Builder::getInstance()->addScript($script);
+
+        return $script;
     }
 
     protected function initData()
