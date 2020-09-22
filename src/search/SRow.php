@@ -25,7 +25,7 @@ class SRow extends SWrapper implements Renderable
     public function __construct($name, $label = '', $colSize = 2, $filter = '')
     {
         $this->name = trim($name);
-        if (empty($label)) {
+        if (empty($label) && !empty($this->name)) {
             $label = Lang::get(ucfirst($this->name));
         }
 

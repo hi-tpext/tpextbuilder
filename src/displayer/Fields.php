@@ -42,6 +42,10 @@ class Fields extends Field
 
         $this->__fields_content__ = $this->widget->createFields();
 
+        if (empty($this->name)) {
+            $this->name = 'fields' . mt_rand(100, 999);
+        }
+
         return $this;
     }
 
