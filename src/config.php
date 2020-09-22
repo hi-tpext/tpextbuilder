@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'search_open' => 1,
     'layer_size' => '1100px,98%',
     'allow_suffix' =>
     //
@@ -28,6 +29,7 @@ return [
     //
     //配置描述
     '__config__' => [
+        'search_open' => ['type' => 'radio', 'label' => '列表页搜索默认展开', 'options' => [0 => '否', 1 => '是']],
         'layer_size' => ['type' => 'text', 'label' => 'layer弹窗大小', 'size' => [2, 2]],
         'allow_suffix' => ['type' => 'textarea', 'label' => '允许上传的文件后缀', 'size' => [2, 10], 'help' => '以英文,号分割'],
         'max_size' => ['type' => 'number', 'label' => '上传文件大小限制(MB)'],
