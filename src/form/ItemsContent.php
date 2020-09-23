@@ -352,11 +352,12 @@ class ItemsContent extends FWrapper
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 1, $count > 3 ? $arguments[3] : '', $count > 4 ? $arguments[4] : '');
+            $col = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 1);
 
-            $this->rows[] = $row;
+            $this->headers[$arguments[0]] = $col->getLabel();
+            $this->cols[$arguments[0]] = $col;
 
-            return $row->$name($arguments[0], $row->getLabel());
+            return $col->$name($arguments[0], $col->getLabel());
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);

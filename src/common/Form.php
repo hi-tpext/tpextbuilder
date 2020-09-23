@@ -669,6 +669,7 @@ EOT;
                 $this->__fields__->addRow($row);
             } else if ($this->__items__) {
 
+                $row->class('text-center');
                 $this->__items__->addCol($arguments[0], $row);
             } else if ($this->__tabs_content__) {
 
