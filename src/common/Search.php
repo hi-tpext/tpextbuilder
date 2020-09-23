@@ -249,7 +249,7 @@ class Search extends SWrapper implements Renderable
         $this->hidden('__table__')->value($this->tableId);
         $this->hidden('__sort__');
         $this->addClass('search-form');
-        $this->button('refresh', 'refresh', 1)->addClass('search-refresh hidden');
+        $this->button('refresh', 'refresh', '1 hidden')->addClass('search-refresh');
         $this->searchScript();
 
         foreach ($this->rows as $row) {
