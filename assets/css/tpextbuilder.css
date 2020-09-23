@@ -75,8 +75,8 @@ form.search-form .control-label + div
 }
 
 .table .field-raw, .table .field-show {
-    min-height: 30px;
-    line-height: 30px;
+    min-height: 20px;
+    line-height: 20px;
 }
 
 .field-required {
@@ -189,6 +189,11 @@ a.sortable.mdi-sort {
 .table tbody td div {
     padding-left: 0;
     padding-right: 0;
+}
+
+.table .js-upload-files .pic-item
+{
+    margin: 1px;
 }
 
 .table .row-__action__ .btn.btn-xs {
