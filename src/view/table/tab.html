@@ -1,0 +1,11 @@
+{notempty name="$options"}
+<div id="{$id}" class="{$class}" {$attr|raw}>
+    <ul class="nav nav-tabs">
+        {volist name="options" id="option"}
+        <li class="nav-item tab-{$key}">
+            <a data-val="{$key}" href="#tabkey_{$key}">{$option|raw}</a>
+        </li>
+        {/volist}
+    </ul>
+</div>
+{/notempty}

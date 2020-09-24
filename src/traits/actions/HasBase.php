@@ -36,13 +36,6 @@ trait HasBase
     protected $pk = 'id';
     protected $isExporting = false;
 
-    //列表页tab切换,如 ['' => '全部', 0 => '未审核', 1 => '已通过', 2 => '未通过'];
-    protected $indexTabs = [];
-    //列表页tab切换，字段 如 status
-    protected $indexTabsKey = '';
-    //列表页tab切换默认值
-    protected $indexTabsDefault = '';
-
     /**
      * Undocumented variable
      *
@@ -213,10 +206,6 @@ trait HasBase
     protected function builder($title = '', $desc = '', $type = '')
     {
         $builder = Builder::getInstance($title, $desc);
-
-        if ($type == 'index' && !empty($this->indexTabsKey) && !empty($this->indexTabs)) {
-            $this->createIndexTabs($builder);
-        }
 
         $this->creating($builder, $type);
 
