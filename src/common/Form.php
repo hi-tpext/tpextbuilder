@@ -639,7 +639,6 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
             'id' => $this->getFormId(),
             'ajax' => $this->ajax ? 1 : 0,
-            'searchFor' => '',
         ];
 
         if ($this->partial) {
