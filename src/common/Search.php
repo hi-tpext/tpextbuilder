@@ -10,6 +10,7 @@ use tpext\builder\form\Fillable;
 use tpext\builder\inface\Renderable;
 use tpext\builder\search\SRow;
 use tpext\builder\search\SWrapper;
+use tpext\builder\search\TabLink;
 use tpext\builder\traits\HasDom;
 
 /**
@@ -40,6 +41,13 @@ class Search extends SWrapper implements Renderable
     protected $open = true;
 
     protected $tableId = '';
+
+    /**
+     * Undocumented variable
+     *
+     * @var TabLink
+     */
+    protected $tablink = null;
 
     /**
      * Undocumented variable
@@ -146,6 +154,22 @@ class Search extends SWrapper implements Renderable
     public function getFormId()
     {
         return $this->id;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $key trigger feild
+     * @return TabLink
+     */
+    public function tabLink($key)
+    {
+        if (empty($this->tablink)) {
+            $this->tablink = new TabLink();
+            $this->tablink->key($key);
+        }
+
+        return $this->tablink;
     }
 
     /**
@@ -264,6 +288,10 @@ class Search extends SWrapper implements Renderable
             $displayer->fullSize(4);
 
             $row->beforRender();
+        }
+
+        if ($this->tablink) {
+            $this->tablink->beforRender();
         }
 
         return $this;
@@ -435,7 +463,7 @@ EOT;
      */
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table', 'form.html']);
 
         $viewshow = view($template);
 
@@ -448,6 +476,7 @@ EOT;
             'id' => $this->getFormId(),
             'ajax' => $this->ajax,
             'searchFor' => $this->tableId,
+            'tablink' => $this->tablink,
         ];
 
         return $viewshow->assign($vars)->getContent();

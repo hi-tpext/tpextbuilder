@@ -9,7 +9,6 @@ use tpext\builder\table\Actionbar;
 use tpext\builder\table\FieldsContent;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\table\Paginator;
-use tpext\builder\table\TabLink;
 use tpext\builder\table\TColumn;
 use tpext\builder\table\TWrapper;
 use tpext\builder\toolbar\DropdownBtns;
@@ -85,13 +84,6 @@ class Table extends TWrapper implements Renderable
      * @var Actionbar
      */
     protected $actionbar = null;
-
-    /**
-     * Undocumented variable
-     *
-     * @var TabLink
-     */
-    protected $tablink = null;
 
     protected $useActionbar = true;
 
@@ -504,15 +496,6 @@ class Table extends TWrapper implements Renderable
         return $this->actionbar;
     }
 
-    public function getTabLink()
-    {
-        if (empty($this->tablink)) {
-            $this->tablink = new TabLink();
-        }
-
-        return $this->tablink;
-    }
-
     /**
      * Undocumented function
      *
@@ -605,9 +588,6 @@ class Table extends TWrapper implements Renderable
 
         $this->tableScript();
 
-        if ($this->tablink) {
-            $this->tablink->beforRender();
-        }
         if ($this->addTop) {
             $this->addTop->beforRender();
         }
@@ -834,7 +814,6 @@ EOT;
             'textAlign' => $this->textAlign,
             'id' => $this->id,
             'paginator' => $this->paginator,
-            'tablink' => !$this->partial ? $this->tablink : null,
             'partial' => $this->partial ? 1 : 0,
             'searchForm' => !$this->partial ? $this->searchForm : null,
             'toolbar' => $this->useToolbar && !$this->partial ? $this->toolbar : null,

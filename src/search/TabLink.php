@@ -1,6 +1,6 @@
 <?php
 
-namespace tpext\builder\table;
+namespace tpext\builder\search;
 
 use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
@@ -18,7 +18,7 @@ class TabLink implements Renderable
 
     protected $active = '';
     protected $id = '';
-    protected $indexTabsKey = '';
+    protected $key = '';
 
     public function getId()
     {
@@ -35,9 +35,9 @@ class TabLink implements Renderable
      * @param string $val
      * @return $this
      */
-    public function indexTabsKey($val)
+    public function key($val)
     {
-        $this->indexTabsKey = $val;
+        $this->key = $val;
 
         return $this;
     }
@@ -63,19 +63,30 @@ class TabLink implements Renderable
     public function beforRender()
     {
         $id = $this->getId();
-        $element = '.row-' . $this->indexTabsKey;
+        $element = 'row-' . $this->key;
         $script = <<<EOT
+
+    if(!$('.{$element}').length)
+    {
+        var __field__ = document.createElement("input");
+        __field__.type = "hidden";
+        __field__.name = '{$this->key}';
+        __field__.className = '{$element}';
+
+        $('form.search-form').append(__field__);
+    }
+
     $('body').on('click', '#{$id} .nav-item a', function(){
         var val = $(this).data('val');
-        if($('{$element}').hasClass('select2-use-ajax'))
+        if($('.{$element}').hasClass('select2-use-ajax'))
         {
-            $('{$element}').empty().append('<option value="' + val + '">' + $(this).text() + '</option>');
+            $('.{$element}').empty().append('<option value="' + val + '">' + $(this).text() + '</option>');
         }
         else
         {
-            $('{$element}').val(val);
+            $('.{$element}').val(val);
         }
-        $('{$element}').trigger('change');
+        $('.{$element}').trigger('change');
         $('.row-submit').trigger('click');
         $('#{$id} .nav-item').removeClass('in active');
         $(this).parent('.nav-item').addClass('in active');
