@@ -100,10 +100,22 @@ form textarea.form-control, .table textarea.form-control {
     height: auto;
 }
 
+.table-wrapper
+{
+    overflow-y: hidden;
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+}
+
+.table>tbody>tr>td,.table>thead>tr>th
+{
+    white-space:nowrap;
+}
+
 .table>tbody>tr>td {
     padding: 5px;
     line-height: 1.42857143;
-    word-wrap: break-word;
     font-size: 13px;
 }
 
