@@ -7,70 +7,72 @@
 </div>
 {/notempty}
 
-<div id="{$id}" class="row table-wrapper">
+<div id="{$id}" class="row">
     {notempty name="addTop"}
     {:$addTop->render()}
     {/notempty}
-    <table class="table {$class}" {$attr|raw}>
-        {notempty name="$headers"}
-        <thead>
-            <tr>
-                {if condition="$useCheckbox"}
-                <th class="table-checkbox">
-                    <label class="lyear-checkbox checkbox-primary">
-                        <input type="checkbox" id="checkall-{$name}" data-check="check-{$name}" class="checkall
-                            table-row-checkall"><span></span>
-                    </label>
-                </th>
-                {/if}
-                {volist name="headers" id="header"}
-                <th class="{$headTextAlign}">
-                    {$header|raw}
-                    {in name="$key" value="$sortable"}
-                    {if condition="$key eq $sortKey"}
-                    {if condition="$sortOrder eq 'asc'"}
-                    <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-ascending pull-right"></a>
-                    {else/}
-                    <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-descending pull-right"></a>
+    <div class="table-wrapper">
+        <table class="table {$class}" {$attr|raw}>
+            {notempty name="$headers"}
+            <thead>
+                <tr>
+                    {if condition="$useCheckbox"}
+                    <th class="table-checkbox">
+                        <label class="lyear-checkbox checkbox-primary">
+                            <input type="checkbox" id="checkall-{$name}" data-check="check-{$name}" class="checkall
+                                table-row-checkall"><span></span>
+                        </label>
+                    </th>
                     {/if}
-                    {else/}
-                    <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort pull-right"></a>
+                    {volist name="headers" id="header"}
+                    <th class="{$headTextAlign}">
+                        {$header|raw}
+                        {in name="$key" value="$sortable"}
+                        {if condition="$key eq $sortKey"}
+                        {if condition="$sortOrder eq 'asc'"}
+                        <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-ascending"></a>
+                        {else/}
+                        <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort-descending"></a>
+                        {/if}
+                        {else/}
+                        <a data-key="{$key}" href="javascript:;" class="sortable mdi mdi-sort"></a>
+                        {/if}
+                        {/in}
+                    </th>
+                    {/volist}
+                    {notempty name="$actionbars"}
+                    <th class="{$headTextAlign}">{$actionRowText|raw}</th>
+                    {/notempty}
+                </tr>
+            </thead>
+            {/notempty}
+            <tbody>
+                {volist name="list" id="row"}
+                <tr class="table-row-id" data-id="{$ids[$key]}">
+                    {if condition="$useCheckbox"}
+                    <td class="table-checkbox {$tdClass}">
+                        <label class="lyear-checkbox checkbox-primary">
+                            <input type="checkbox" id="{$name}-{$key}" value="{$ids[$key]}" {in name="$ids[$key]"
+                                value="$checked" }checked{/in} class="check-{$name} table-row"><span></span>
+                        </label>
+                    </td>
                     {/if}
-                    {/in}
-                </th>
+                    {foreach name="row" id="col" key="co"}
+                    <td class="col-md-{$col.wrapper->getColSize()} {$tdClass} {$col.wrapper->getClass()}" {$col.wrapper->
+                        getAttrWithStyle()|raw}>
+                        {$col.value|raw}
+                    </td>
+                    {/foreach}
+                    {notempty name="$actionbars"}
+                    <td class="text-center row-__action__ {$verticalAlign}">
+                        {$actionbars[$key]|raw}
+                    </td>
+                    {/notempty}
+                </tr>
                 {/volist}
-                {notempty name="$actionbars"}
-                <th class="{$headTextAlign}">{$actionRowText|raw}</th>
-                {/notempty}
-            </tr>
-        </thead>
-        {/notempty}
-        <tbody>
-            {volist name="list" id="row"}
-            <tr class="table-row-id" data-id="{$ids[$key]}">
-                {if condition="$useCheckbox"}
-                <td class="table-checkbox {$tdClass}">
-                    <label class="lyear-checkbox checkbox-primary">
-                        <input type="checkbox" id="{$name}-{$key}" value="{$ids[$key]}" {in name="$ids[$key]"
-                            value="$checked" }checked{/in} class="check-{$name} table-row"><span></span>
-                    </label>
-                </td>
-                {/if}
-                {foreach name="row" id="col" key="co"}
-                <td class="col-md-{$col.wrapper->getColSize()} {$tdClass} {$col.wrapper->getClass()}" {$col.wrapper->
-                    getAttrWithStyle()|raw}>
-                    {$col.value|raw}
-                </td>
-                {/foreach}
-                {notempty name="$actionbars"}
-                <td class="text-center row-__action__ {$verticalAlign}">
-                    {$actionbars[$key]|raw}
-                </td>
-                {/notempty}
-            </tr>
-            {/volist}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
     {empty name="$list"}
     <div class="table-empty-text">
         {$emptyText|raw}
