@@ -72,7 +72,7 @@ class Field implements Fillable
 
     protected static $labeltempl;
 
-    protected $mapClassWhen = [];
+    protected $mapClass = [];
 
     protected $required = false;
 
@@ -623,7 +623,7 @@ EOT;
      * @param string $logic in_array|not_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
      * @return $this
      */
-    public function mapClassWhen($values, $class, $field = '', $logic = 'in_array')
+    public function mapClass($values, $class, $field = '', $logic = 'in_array')
     {
         if (empty($field)) {
             $field = $this->name;
@@ -633,8 +633,22 @@ EOT;
             $values = [$values];
         }
 
-        $this->mapClassWhen[] = [$values, $class, $field, $logic];
+        $this->mapClass[] = [$values, $class, $field, $logic];
         return $this;
+    }
+
+    /**
+     * 弃用，使用mapClass
+     *
+     * @param array|string|int $values
+     * @param string $class
+     * @param string $field
+     * @param string $logic
+     * @return $this
+     */
+    public function mapClassWhen($values, $class, $field = '', $logic = 'in_array')
+    {
+        return $this->mapClass($values, $class, $field, $logic);
     }
 
     /**
@@ -643,17 +657,28 @@ EOT;
      * @param array $groupArr
      * @return $this
      */
-    public function mapClassWhenGroup($groupArr)
+    public function mapClassGroup($groupArr)
     {
         foreach ($groupArr as $g) {
             $values = $g[0];
             $class = $g[1];
             $field = isset($g[2]) ? $g[2] : '';
             $logic = isset($g[3]) ? $g[3] : '';
-            $this->mapClassWhen($values, $class, $field, $logic);
+            $this->mapClass($values, $class, $field, $logic);
         }
 
         return $this;
+    }
+
+    /**
+     * 弃用，使用mapClassGroup
+     *
+     * @param array $groupArr
+     * @return $this
+     */
+    public function mapClassWhenGroup($groupArr)
+    {
+        return $this->mapClassGroup($groupArr);
     }
 
     /**
@@ -785,9 +810,9 @@ EOT;
     {
         $mapClass = '';
 
-        if (!empty($this->mapClassWhen)) {
+        if (!empty($this->mapClass)) {
 
-            foreach ($this->mapClassWhen as $mp) {
+            foreach ($this->mapClass as $mp) {
                 $values = $mp[0];
                 $class = $mp[1];
                 $field = $mp[2];
