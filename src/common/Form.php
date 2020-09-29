@@ -41,6 +41,8 @@ class Form extends FWrapper implements Renderable
 
     protected $defaultDisplayerSize = null;
 
+    protected $defaultDisplayerCloSize = 12;
+
     protected $validator = [];
 
     protected $butonsSizeClass = 'btn-sm';
@@ -126,8 +128,7 @@ class Form extends FWrapper implements Renderable
      */
     public function readonly($val = true)
     {
-        if($val)
-        {
+        if ($val) {
             foreach ($this->rows as $row) {
 
                 if ($row instanceof Tab || $row instanceof Step) {
@@ -403,6 +404,18 @@ class Form extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param integer $size
+     * @return $this
+     */
+    public function defaultDisplayerCloSize($size = 12)
+    {
+        $this->defaultDisplayerCloSize = $size;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array|Model $data
      * @return $this
      */
@@ -661,7 +674,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : 12));
+            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : $this->defaultDisplayerCloSize));
 
             if ($this->__fields__) {
 

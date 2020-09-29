@@ -19,10 +19,10 @@ trait HasRow
      */
     protected $displayer;
 
-    /**
+     /**
      * Undocumented function
-     * @example 1 [int] 4 =>class="col-4"
-     * @example 2 [string] '4 xls-4' =>  class="col-4 xls-4"
+     * @example 1 [int] 4 => class="col-md-4"
+     * @example 2 [string] '4 xls-4' => class="col-md-4 xls-4"
      *
      * @param int|string $val
      * @return $this
