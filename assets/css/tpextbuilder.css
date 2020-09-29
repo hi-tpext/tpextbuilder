@@ -37,6 +37,11 @@ form.search-form .control-label + div
     margin-right: 0;
 }
 
+.fields-div .form-group {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .checkbox-div, .radio-div, .button-div {
     min-height: 33px;
 }
