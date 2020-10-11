@@ -454,7 +454,7 @@ class Form extends FWrapper implements Renderable
                 $this->btnLayerClose('返&nbsp;&nbsp;回', 2);
             } else {
                 $this->btnSubmit();
-                $this->html('', '', 2)->showLabel(false);
+                $this->html('', '', '2 col-xs-2')->showLabel(false);
                 $this->btnReset();
             }
         }
@@ -478,7 +478,7 @@ class Form extends FWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = 1, $class = 'btn-success')
+    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '1 col-xs-2', $class = 'btn-success')
     {
         $this->bottomOffset();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
@@ -494,7 +494,7 @@ class Form extends FWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnReset($label = '重&nbsp;&nbsp;置', $size = 1, $class = 'btn-warning')
+    public function btnReset($label = '重&nbsp;&nbsp;置', $size = '1 col-xs-2', $class = 'btn-warning')
     {
         $this->button('reset', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         return $this;
@@ -509,7 +509,7 @@ class Form extends FWrapper implements Renderable
      * @param string $attr
      * @return $this
      */
-    public function btnBack($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
+    public function btnBack($label = '返&nbsp;&nbsp;回', $size = '1 col-xs-2', $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
         $this->button('button', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->attr($attr);
         return $this;
@@ -523,7 +523,7 @@ class Form extends FWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = 1, $class = 'btn-default')
+    public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = '1 col-xs-2', $class = 'btn-default')
     {
         $this->button('button', $label, $size)->class($class . ' btn-close-layer' . ' ' . $this->butonsSizeClass);
         return $this;
