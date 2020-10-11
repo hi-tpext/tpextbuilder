@@ -887,6 +887,8 @@ EOT;
 
         $extendAttr = ($this->isRequired() ? ' required="true"' : '') . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '');
 
+	    $this->size = [$this->size[0] . ' col-xs-12', $this->size[1] . ' col-xs-12'];
+
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,
