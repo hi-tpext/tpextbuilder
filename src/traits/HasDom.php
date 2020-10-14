@@ -118,8 +118,6 @@ trait HasDom
     {
         $arr = explode(' ', $this->class);
 
-        $name = $this->name ? 'row-' . $this->name : '';
-
-        return $name . ' ' . implode(' ', array_unique($arr));
+        return implode(' ', array_unique($arr));
     }
 }

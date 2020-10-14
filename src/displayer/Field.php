@@ -897,7 +897,7 @@ EOT;
             'extKey' => $this->extKey,
             'extNameKey' => $this->extNameKey,
             'value' => $value,
-            'class' => ' ' . $this->getClass() . $mapClass,
+            'class' => ' row-' . $this->name . $this->getClass() . $mapClass,
             'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
             'size' => $this->size,
