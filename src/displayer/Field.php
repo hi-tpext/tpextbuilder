@@ -725,7 +725,7 @@ EOT;
 
     protected function autoPostScript()
     {
-        $class = 'row-' . $this->name;
+        $class = 'row-' . $this->name . '-td';
 
         $refresh = $this->autoPostRefresh ? 1 : 0;
 
