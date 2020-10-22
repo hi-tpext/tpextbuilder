@@ -58,7 +58,7 @@
                     </td>
                     {/if}
                     {foreach name="row" id="col" key="co"}
-                    <td class="col-md-{$col.wrapper->getColSize()} {$tdClass} {$col.wrapper->getClass()}" {$col.wrapper->
+                    <td class="col-md-{$col.wrapper->getColSize()} {$tdClass} {$col.wrapper->getClass()} row-{$col.wrapper->getName()}-td" {$col.wrapper->
                         getAttrWithStyle()|raw}>
                         {$col.value|raw}
                     </td>
