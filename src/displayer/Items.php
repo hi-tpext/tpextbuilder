@@ -31,11 +31,12 @@ class Items extends Field
 
         $this->form = $this->getWrapper()->getForm();
         $this->__items_content__ = $this->form->createItems();
-        $this->__items_content__->name($this->name);
 
         if (empty($this->name)) {
             $this->name = 'items' . mt_rand(100, 999);
         }
+
+        $this->__items_content__->name($this->name);
 
         return $this;
     }
