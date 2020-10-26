@@ -10,6 +10,8 @@ class LinkBtn extends Bar
 
     protected $postChecked = '';
 
+    protected $openChecked = '';
+
     protected $confirm = true;
 
     /**
@@ -37,6 +39,19 @@ class LinkBtn extends Bar
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @return $this
+     */
+    public function openChecked($url)
+    {
+        $this->openChecked = $url;
+
+        return $this;
+    }
+
     protected function postCheckedScript()
     {
         $script = '';
@@ -52,12 +67,34 @@ EOT;
         return $script;
     }
 
+    protected function openCheckedScript()
+    {
+        $script = '';
+        $inputId = $this->getId();
+
+        $script = <<<EOT
+
+        tpextbuilder.openChecked('{$inputId}', '{$this->openChecked}');
+
+EOT;
+        $this->script[] = $script;
+
+        return $script;
+    }
+
     public function beforRender()
     {
         if ($this->postChecked) {
 
             if (Builder::checkUrl($this->postChecked)) {
                 $this->postCheckedScript();
+            } else {
+                $this->addClass('hidden disabled');
+            }
+        } else if ($this->openChecked) {
+
+            if (Builder::checkUrl($this->openChecked)) {
+                $this->openCheckedScript();
             } else {
                 $this->addClass('hidden disabled');
             }
