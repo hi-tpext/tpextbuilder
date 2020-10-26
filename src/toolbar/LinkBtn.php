@@ -32,7 +32,7 @@ class LinkBtn extends Bar
     public function postChecked($url, $confirm = true)
     {
         $this->postChecked = (string)$url;
-        $this->confirm = $confirm;
+        $this->confirm = $confirm ? $confirm : 0;
 
         return $this;
     }
@@ -41,10 +41,6 @@ class LinkBtn extends Bar
     {
         $script = '';
         $inputId = $this->getId();
-
-        if (empty($this->confirm)) {
-            $this->confirm = '1';
-        }
 
         $script = <<<EOT
 
