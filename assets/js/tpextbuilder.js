@@ -172,6 +172,57 @@
         });
     };
 
+    tpextbuilder.openChecked = function (id, url) {
+        var obj = $('#' + id);
+        if (!obj.size()) {
+            return;
+        }
+        $('body').on('click', '#' + id, function () {
+            var val = '';
+
+            var values = [];
+
+            $("input.table-row:checked").each(function (i, e) {
+                values.push($(e).val());
+            });
+
+            if (values.length == 0) {
+
+                lightyear.notify('未选中任何数据', 'warning');
+
+                return false;
+            }
+
+            val = values.join(',');
+            var size = $(this).data('layer-size');
+            size = size ? size.split(',') : null;
+            w.layerOpen(this, size, url + (/.+\?.*/.test(url) ? '&ids=' : '?ids=') + val);
+            return false;
+        });
+
+        if ($("input.table-row:checked").size() == 0) {
+            $('#' + id).addClass('disabled');
+        } else {
+            $('#' + id).removeClass('disabled');
+        }
+
+        $('body').on('change', 'input.table-row', function () {
+            if ($("input.table-row:checked").size() == 0) {
+                $('#' + id).addClass('disabled');
+            } else {
+                $('#' + id).removeClass('disabled');
+            }
+        });
+
+        $('body').on('change', 'input.table-row-checkall', function () {
+            if ($("input.table-row:checked").is(':checked')) {
+                $('#' + id).removeClass('disabled');
+            } else {
+                $('#' + id).addClass('disabled');
+            }
+        });
+    };
+
     tpextbuilder.postActionsChecked = function (id, confirms) {
         var obj = $('#' + id);
         if (!obj.size()) {
@@ -381,8 +432,8 @@
 
     w.tpextbuilder = tpextbuilder;
 
-    w.layerOpen = function (obj, size) {
-        var href = $(obj).data('url');
+    w.layerOpen = function (obj, size, url) {
+        var href = url || $(obj).data('url');
 
         var text = $(obj).text() || $(obj).attr('title');
         if ($(obj).data('layer-size')) {

@@ -305,7 +305,7 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnExports($items, $postUrl = '', $label = '导出', $class = 'btn-default', $icon = 'mdi-export', $attr = 'title="导出"')
+    public function btnExports($items, $postUrl = '', $label = '导出', $class = 'btn-secondary', $icon = 'mdi-export', $attr = 'title="导出"')
     {
         if (empty($postUrl)) {
             $postUrl = url('export');
@@ -332,7 +332,7 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnLink($url, $label = '', $class = 'btn-default', $icon = 'mdi-checkbox-marked-outline', $attr = '')
+    public function btnLink($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '')
     {
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
@@ -357,7 +357,7 @@ class MultipleToolbar extends Toolbar
      * @return $this
      *
      */
-    public function btnPostChecked($url, $label = '', $class = 'btn-default', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
+    public function btnPostChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
@@ -366,6 +366,31 @@ class MultipleToolbar extends Toolbar
         }
 
         $this->linkBtn($action, $label)->postChecked($url, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @param string $label
+     * @param string $class
+     * @param string $icon
+     * @param string $attr
+     * @param boolean|string $confirm
+     * @return $this
+     *
+     */
+    public function btnOpenChecked($url, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '')
+    {
+        $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
+
+        if (!$count) {
+            $action = mt_rand(10, 99);
+        }
+
+        $this->linkBtn($action, $label)->openChecked($url)->addClass($class)->icon($icon)->addAttr($attr);
 
         return $this;
     }
