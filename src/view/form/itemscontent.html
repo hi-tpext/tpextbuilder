@@ -1,74 +1,76 @@
-<table id="items-{$name}" class="table form-items {$class}" {$attr|raw}>
-  {notempty name="$headers"}
-  <thead>
-    <tr>
-      {volist name="headers" id="header"}
-      <th class="text-center vertical-middle item-label">
-        {$header|raw}
-      </th>
-      {/volist}
-      {if condition="$cnaDelete"}
-      <th style="min-width: 50px;" class="text-center vertical-middle">{$actionRowText|raw}</th>
-      {/if}
-    </tr>
-  </thead>
-  {/notempty}
-  <tbody>
-    {volist name="list" id="row"}
-    <tr class="table-row-id" data-id="{$ids[$key]}">
-      {foreach name="row" id="col" key="co"}
-      <td class="{$col.wrapper->getClass()} vertical-middle" {$col.wrapper->getAttrWithStyle()|raw}>
-        {$col.value|raw}
-      </td>
-      {/foreach}
-      {if condition="$cnaDelete"}
-      <td class="row-__action__ vertical-middle text-center">
-        <input type="hidden" name="{$name}[{$ids[$key]}][__del__]" value="0" />
-        {if condition="$col.__can_delete__"}
-        <span class="btn btn-xs btn-danger action-delete" id="bar-delete-{$key}" data-id="{$ids[$key]}" title="删除">
-          <i class="mdi mdi-delete"></i>
-        </span>
-        {else/}
-        <span class="btn btn-xs btn-danger disabled" title="不允许删除"><i class="mdi mdi-delete"></i></span>
+<div class="table-wrapper">
+  <table id="items-{$name}" class="table form-items {$class}" {$attr|raw}>
+    {notempty name="$headers"}
+    <thead>
+      <tr>
+        {volist name="headers" id="header"}
+        <th class="text-center vertical-middle item-label">
+          {$header|raw}
+        </th>
+        {/volist}
+        {if condition="$cnaDelete"}
+        <th style="min-width: 50px;" class="text-center vertical-middle">{$actionRowText|raw}</th>
         {/if}
-      </td>
+      </tr>
+    </thead>
+    {/notempty}
+    <tbody>
+      {volist name="list" id="row"}
+      <tr class="table-row-id" data-id="{$ids[$key]}">
+        {foreach name="row" id="col" key="co"}
+        <td class="{$col.wrapper->getClass()} vertical-middle" {$col.wrapper->getAttrWithStyle()|raw}>
+          {$col.value|raw}
+        </td>
+        {/foreach}
+        {if condition="$cnaDelete"}
+        <td class="row-__action__ vertical-middle text-center">
+          <input type="hidden" name="{$name}[{$ids[$key]}][__del__]" value="0" />
+          {if condition="$col.__can_delete__"}
+          <span class="btn btn-xs btn-danger action-delete" id="bar-delete-{$key}" data-id="{$ids[$key]}" title="删除">
+            <i class="mdi mdi-delete"></i>
+          </span>
+          {else/}
+          <span class="btn btn-xs btn-danger disabled" title="不允许删除"><i class="mdi mdi-delete"></i></span>
+          {/if}
+        </td>
+        {/if}
+      </tr>
+      {/volist}
+      {if condition="$canAdd"}
+      <tr>
+        {volist name="cols" id="col"}
+        <td><input type="text" class="form-control" style="visibility: hidden;" /></td>
+        {/volist}
+        <td class="row-__action__ vertical-middle text-center">
+          <span id="items-{$name}-add" class="btn btn-xs btn-success" title="新加一条"><i
+              class="mdi mdi-plus-circle-outline"></i></span>
+        </td>
+      </tr>
       {/if}
-    </tr>
-    {/volist}
-    {if condition="$canAdd"}
-    <tr>
-      {volist name="cols" id="col"}
-      <td><input type="text" class="form-control" style="visibility: hidden;" /></td>
-      {/volist}
-      <td class="row-__action__ vertical-middle text-center">
-        <span id="items-{$name}-add" class="btn btn-xs btn-success" title="新加一条"><i
-            class="mdi mdi-plus-circle-outline"></i></span>
-      </td>
-    </tr>
-    {/if}
-  </tbody>
-</table>
-{if condition="$canAdd"}
-<table style="display: none;" id="items-{$name}-temple" class="table table-items {$class}" {$attr|raw}>
-  <tbody>
-    <tr class="table-row-id">
-      {volist name="template" id="col"}
-      <td class="{$col.wrapper->getClass()} text-center vertical-middle" {$col.wrapper->getAttrWithStyle()|raw}>
-        {$col.value|raw}
-      </td>
-      {/volist}
-      <td class="row-__action__ vertical-middle text-center">
-        <input type="hidden" value="-1" />
-        <span class="btn btn-xs btn-danger action-delete" id="bar-delete-0" data-id="new-0" title="删除">
-          <i class="mdi mdi-delete"></i></span>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<textarea style="display: none;" id="items-{$name}-script">{$script|raw}</textarea>
-{/if}
-{empty name="$list"}
-<div class="items-empty-text">
-  {$emptyText|raw}
+    </tbody>
+  </table>
+  {if condition="$canAdd"}
+  <table style="display: none;" id="items-{$name}-temple" class="table table-items {$class}" {$attr|raw}>
+    <tbody>
+      <tr class="table-row-id">
+        {volist name="template" id="col"}
+        <td class="{$col.wrapper->getClass()} text-center vertical-middle" {$col.wrapper->getAttrWithStyle()|raw}>
+          {$col.value|raw}
+        </td>
+        {/volist}
+        <td class="row-__action__ vertical-middle text-center">
+          <input type="hidden" value="-1" />
+          <span class="btn btn-xs btn-danger action-delete" id="bar-delete-0" data-id="new-0" title="删除">
+            <i class="mdi mdi-delete"></i></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <textarea style="display: none;" id="items-{$name}-script">{$script|raw}</textarea>
+  {/if}
+  {empty name="$list"}
+  <div class="items-empty-text">
+    {$emptyText|raw}
+  </div>
+  {/empty}
 </div>
-{/empty}
