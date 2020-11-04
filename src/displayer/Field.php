@@ -303,7 +303,7 @@ default($val = '') {
         return $this;
     }
 
-   /**
+    /**
      * Undocumented function
      * @example 1 [int] 4 => class="col-md-4"
      * @example 2 [string] '4 xls-4' => class="col-md-4 xls-4"
@@ -822,7 +822,7 @@ EOT;
 
     protected function parshMapClass()
     {
-        $mapClass = '';
+        $mapClass = [];
 
         if (!empty($this->mapClass)) {
 
@@ -858,12 +858,19 @@ EOT;
                     $match = in_array($val, $values);
                 }
                 if ($match) {
-                    $mapClass = $class;
+                    $mapClass[] = $class;
                 }
             }
         }
 
-        return $mapClass ? ' ' . $mapClass : '';
+        if (count($mapClass)) {
+
+            $arr = explode(' ', $mapClass);
+
+            return ' ' . implode(' ', array_unique($arr));
+        }
+
+        return '';
     }
 
     /**
@@ -887,7 +894,7 @@ EOT;
 
         $extendAttr = ($this->isRequired() ? ' required="true"' : '') . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '');
 
-	    $this->size = [$this->size[0] . ' col-xs-12', $this->size[1] . ' col-xs-12'];
+        $this->size = [$this->size[0] . ' col-xs-12', $this->size[1] . ' col-xs-12'];
 
         $vars = [
             'id' => $this->getId(),
