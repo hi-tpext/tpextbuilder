@@ -865,9 +865,7 @@ EOT;
 
         if (count($mapClass)) {
 
-            $arr = explode(' ', $mapClass);
-
-            return ' ' . implode(' ', array_unique($arr));
+            return ' ' . implode(' ', array_unique($mapClass));
         }
 
         return '';
