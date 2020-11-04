@@ -7,7 +7,7 @@ class WangEditor extends Field
     protected $view = 'wangeditor';
 
     protected $minify = false;
-    
+
     protected $js = [
         '/assets/tpextbuilder/js/wangEditor/wangEditor.min.js',
     ];
@@ -38,7 +38,7 @@ class WangEditor extends Field
 
         if (!isset($this->jsOptions['uploadImgServer']) || empty($this->jsOptions['uploadImgServer'])) {
             $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
-            
+
             session('uploadtoken', $token);
 
             $this->jsOptions['uploadImgServer'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token]);
@@ -81,10 +81,6 @@ EOT;
     {
         if (!$this->readonly) {
             $this->editorScript();
-        }
-        else
-        {
-            
         }
 
         return parent::beforRender();
