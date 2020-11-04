@@ -52,9 +52,23 @@ trait HasExport
 
         if ($__file_type__ == 'xls' || $__file_type__ == 'xlsx') {
             return $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__);
-        } else {
+        } else if ($__file_type__ == 'csv') {
             return $logic->toCsv($this->pageTitle, $data, $displayers);
+        } else {
+            return $this->exportTo($data, $displayers, $__file_type__);
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $fileType 其他类型的导出
+     * @return mixed
+     */
+    protected function exportTo($data, $displayers, $__file_type__)
+    {
+        $logic = new Export;
+        return $logic->toCsv($this->pageTitle, $data, $displayers);
     }
 
     private function getDisplayers($cols, $displayers = [])
