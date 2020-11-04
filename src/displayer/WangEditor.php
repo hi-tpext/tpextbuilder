@@ -82,10 +82,6 @@ EOT;
         if (!$this->readonly) {
             $this->editorScript();
         }
-        else
-        {
-
-        }
 
         return parent::beforRender();
     }
