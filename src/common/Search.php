@@ -220,9 +220,12 @@ class Search extends SWrapper implements Renderable
         if ($create) {
             $this->fieldsEnd();
             $this->html('', '', 1)->showLabel(false);
-            $this->fields('buttons', '', '2 col-xs-12')->showLabel(false)->with(
-                $this->button('submit', '筛&nbsp;&nbsp;选', '6 col-xs-6')->class('btn-info ' . $this->butonsSizeClass),
-                $this->button('button', '重&nbsp;&nbsp;置', '6 col-xs-6')->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"')
+            $this->fields('buttons', '', '2 col-xs-12')->showLabel(false)->with(
+
+                $this->button('submit', '筛&nbsp;&nbsp;选', '6 col-xs-6')->class('btn-info ' . $this->butonsSizeClass),
+
+                $this->button('button', '重&nbsp;&nbsp;置', '6 col-xs-6')->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"')
+
             );
         }
 
@@ -524,6 +527,11 @@ EOT;
             }
 
             $displayer->extKey('-' . $this->tableId);
+
+            if ($displayer instanceof \tpext\builder\displayer\Text) {
+                $displayer->befor('');
+                $displayer->after('');
+            }
 
             return $displayer;
         }
