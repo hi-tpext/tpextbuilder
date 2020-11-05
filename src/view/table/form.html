@@ -63,7 +63,7 @@
                 var form = $('#{$id} form');
 
                 var values = [];
-                $("input.table-row:checked").each(function (i, e) {
+                $("#{$searchFor} input.table-row:checked").each(function (i, e) {
                     values.push($(e).val());
                 });
 
