@@ -478,7 +478,7 @@
 
 })(window);
 
-window.renderFiles = function () {
+window.renderFiles = function (elid) {
 
     /*
      * 示例上传成功采用返回ID的形式，即上传成功以附件表形式存储，返回给前端ID值。
@@ -487,9 +487,9 @@ window.renderFiles = function () {
      * 存放预览图的div元素，命名：file_list_*；后面的上传按钮的命名：filePicker_*（这里的*跟隐藏的input的name对应）。方便单页面中存在有多个上传时区分以及使用。
      * input上保存上传后的图片ID以及设置上传时的一些参数，
      */
-
+    elid = elid ? elid : '';
     // 通用绑定，
-    $('.js-upload-files').each(function () {
+    $(elid + '.js-upload-files').each(function () {
         var $input_file = $(this).find('input.file-url-input'),
             $input_file_name = $(this).data('name');
 

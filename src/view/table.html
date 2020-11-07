@@ -116,7 +116,7 @@
 
             $('#{$id} input.table-row-checkall').trigger('change');
             if (window.renderFiles) {
-                window.renderFiles();
+                window.renderFiles('#{$id} ');
             }
             $("table .form-control.readonly").attr('readonly', 'readonly');
             $("table .form-control.disabled").attr('disabled', 'disabled');
