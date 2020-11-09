@@ -6,6 +6,7 @@ use tpext\builder\common\Form;
 use tpext\builder\common\Table;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
+use tpext\builder\tree\JSTree;
 use tpext\builder\tree\ZTree;
 use tpext\common\ExtLoader;
 
@@ -69,8 +70,31 @@ class Column
      */
     public function tree()
     {
+        return $this->zTree();
+    }
+
+    /**
+     * 获取一个ZTree
+     *
+     * @return ZTree
+     */
+    public function zTree()
+    {
         $tree = new ZTree();
         ExtLoader::trigger('tpext_create_ztree', $tree);
+        $this->elms[] = $tree;
+        return $tree;
+    }
+
+    /**
+     * 获取一个jsTree
+     *
+     * @return JSTree
+     */
+    public function jsTree()
+    {
+        $tree = new JSTree();
+        ExtLoader::trigger('tpext_create_jstree', $tree);
         $this->elms[] = $tree;
         return $tree;
     }

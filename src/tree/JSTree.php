@@ -7,23 +7,23 @@ use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 
-class ZTree implements Renderable
+class JSTree implements Renderable
 {
     use HasDom;
 
     protected $data;
 
-    protected $beforeClick = 'alert("未绑定`beforeClick`事件。点击了"+treeNode.id);';
+    protected $beforeClick = 'alert("未绑定`beforeClick`事件。点击了"+data.instance.get_node(data.selected[0]).text);';
 
     protected $trigger = '';
 
-    protected $id = 'the-ztree';
+    protected $id = 'the-jstree';
 
     protected $partial = false;
 
     public function __construct()
     {
-        $this->addStyle('float:left;');
+        $this->addStyle('float:left;padding-left:5px;');
     }
 
     /**
@@ -74,25 +74,57 @@ class ZTree implements Renderable
      */
     public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id')
     {
-        $tree = [
-            [
-                'id' => 0,
-                'pId' => '',
-                'name' => '全部',
-            ],
-        ];
-
+        $tree = [];
         foreach ($treeData as $dep) {
+
+            if ($dep[$pidField] != 0) {
+                continue;
+            }
+
             $tree[] = [
                 'id' => $dep[$idField],
-                'pId' => $dep[$pidField],
-                'name' => $dep[$textField],
+                'text' => $dep[$textField],
+                'state' => [
+                    'opened' => true,
+                ],
+                'children' => isset($dep['children']) ? $dep['children'] : $this->getChildren($treeData, $dep[$idField], $textField, $idField, $pidField),
             ];
         }
 
-        $this->data = $tree;
+        $this->data = [
+            [
+                'id' => 0,
+                'text' => '全部',
+                'state' => [
+                    'opened' => true,
+                ],
+                'children' => $tree,
+            ],
+        ];
 
         return $this;
+    }
+
+    protected function getChildren($treeData, $pid, $textField = 'name', $idField = 'id', $pidField = 'parent_id')
+    {
+        $children = [];
+
+        foreach ($treeData as $key => $dep) {
+
+            if ($dep[$pidField] == $pid) {
+
+                $children[] = [
+                    'id' => $dep[$idField],
+                    'text' => $dep[$textField],
+                    'state' => [
+                        'opened' => true,
+                    ],
+                    'children' => isset($dep['children']) ? $dep['children'] : $this->getChildren($treeData, $dep[$idField], $pidField),
+                ];
+            }
+        }
+
+        return $children;
     }
 
     /**
@@ -120,9 +152,11 @@ class ZTree implements Renderable
         $this->trigger = $element;
         $this->beforeClick = <<<EOT
 
+                    var treeNode = data.instance.get_selected(true)[0];
+
                     if($('{$element}').hasClass('select2-use-ajax'))
                     {
-                        $('{$element}').empty().append('<option value="' + treeNode.id + '">' + treeNode.name + '</option>');
+                        $('{$element}').empty().append('<option value="' + treeNode.id + '">' + treeNode.text + '</option>');
                     }
                     else
                     {
@@ -141,33 +175,28 @@ EOT;
         $script = <<<EOT
 
         var setting = {
-            view: {
-              addHoverDom: false,
-              removeHoverDom: false,
-              selectedMulti: false
+            'core' : {
+                'themes' : {
+                    'responsive': false
+                },
+                'data' : {$data}
             },
-            check: {
-              enable: false
-            },
-            data: {
-              simpleData: {
-                enable: true
-              }
-            },
-            edit: {
-              enable: false
-            },
-            callback: {
-                beforeClick: function(treeId, treeNode, clickFlag){
-                    {$this->beforeClick}
+            "types" : {
+                'default' : {
+                    'icon' : 'mdi mdi-folder-outline'
+                },
+                'file' : {
+                    'icon' : 'mdi mdi-file-outline'
                 }
-            }
+            },
+            'plugins' : ['types']
         };
-        var zNodes = {$data};
 
         $(document).ready(function () {
-            var treeObj = $.fn.zTree.init($("#{$this->id}"), setting, zNodes);
-            treeObj.expandAll(true);
+            $('#{$this->id}').jstree(setting);
+            $('#{$this->id}').on('activate_node.jstree', function(e, data) {
+                {$this->beforeClick}
+            });
         });
 
         var leftw = $('.tree-div').parent('div').outerWidth();
@@ -195,17 +224,11 @@ EOT;
 
         $builder = Builder::getInstance();
 
-        $builder->customCss('/assets/tpextbuilder/js/zTree_v3/css/materialDesignStyle/materialdesign.css');
-        $builder->customJs('/assets/tpextbuilder/js/zTree_v3/js/jquery.ztree.all.min.js');
+        $builder->customCss('/assets/tpextbuilder/js/jstree/style.min.css');
+        $builder->customJs('/assets/tpextbuilder/js/jstree/jstree.min.js');
 
         $builder->addScript($script);
 
-        $builder->addStyleSheet('
-        .ztree li a.curSelectedNode
-        {
-            color : green;
-        }
-');
         return $this;
     }
 
@@ -216,7 +239,7 @@ EOT;
      */
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tree', 'ztree.html']);
+        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tree', 'jstree.html']);
 
         $viewshow = view($template);
 
