@@ -7,6 +7,7 @@ use think\response\View as ViewShow;
 use tpext\builder\inface\Auth;
 use tpext\builder\inface\Renderable;
 use tpext\builder\tree\ZTree;
+use tpext\builder\tree\JSTree;
 use tpext\common\ExtLoader;
 
 class Builder implements Renderable
@@ -362,14 +363,33 @@ class Builder implements Renderable
     }
 
     /**
-     * 获取一个树
+     * 默认获取一个ZTree树
      *
-     * @param integer col大小
      * @return ZTree
      */
     public function tree($size = 12)
     {
         return $this->column($size)->tree();
+    }
+
+    /**
+     * 获取一个ZTree树
+     *
+     * @return ZTree
+     */
+    public function zTree($size = 12)
+    {
+        return $this->column($size)->zTree();
+    }
+
+    /**
+     * 获取一个JSTree树
+     *
+     * @return JSTree
+     */
+    public function jsTree($size = 12)
+    {
+        return $this->column($size)->jsTree();
     }
 
     /**
