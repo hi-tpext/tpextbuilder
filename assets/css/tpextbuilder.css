@@ -423,7 +423,19 @@ span.the-field.yellow {
     height: 40px;
     line-height: 40px;
 }
-.layui-layer-iframe
-{
-    max-width: 100%;
+.layui-layer-iframe
+{
+    max-width: 100%;
+}
+
+.left-tree
+{
+    width:12%;
+    float:left;
+}
+
+.right-table
+{
+    width:88%;
+    float:right;
 }
