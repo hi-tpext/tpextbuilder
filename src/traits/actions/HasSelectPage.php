@@ -13,7 +13,7 @@ trait HasSelectPage
      *
      * @var array
      */
-    protected $scope = [];//如 [['enable', 'eq', 1]]
+    protected $selectScope = [];//如 [['enable', 'eq', 1]]
 
     /**
      * 模糊查询字段，如 'name|title'
@@ -118,7 +118,7 @@ trait HasSelectPage
             $page = $page < 1 ? 1 : $page;
             $WhereOr = [];
 
-            $where = $this->scope;
+            $where = $this->selectScope;
 
             if ($q) {
                 if ($this->selectSearch) {

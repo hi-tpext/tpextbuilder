@@ -154,6 +154,16 @@ class JSTree implements Renderable
 
                     var treeNode = data.instance.get_selected(true)[0];
 
+                    if(!$('{$element}').length)
+                    {
+                        var __field__ = document.createElement("input");
+                        __field__.type = "hidden";
+                        __field__.name = '{$element}'.replace(/^\.row\-/, '');
+                        __field__.className = '{$element}'.replace(/^\./, '');
+
+                        $('form.search-form').append(__field__);
+                    }
+
                     if($('{$element}').hasClass('select2-use-ajax'))
                     {
                         $('{$element}').empty().append('<option value="' + treeNode.id + '">' + treeNode.text + '</option>');
