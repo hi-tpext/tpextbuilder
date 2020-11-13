@@ -139,7 +139,7 @@ class ZTree implements Renderable
                         $('{$element}').val(treeNode.id);
                     }
                     $('{$element}').trigger('change');
-                    $('.row-submit').trigger('click');
+                    $('.row-refresh').trigger('click');
 
 EOT;
         return $this;
