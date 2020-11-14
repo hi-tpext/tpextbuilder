@@ -80,8 +80,8 @@ form.search-form .control-label + div
 }
 
 .table .field-raw, .table .field-show {
-    min-height: 20px;
-    line-height: 20px;
+    min-height:31px;
+    line-height: 31px;
 }
 
 .field-required {
