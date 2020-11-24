@@ -66,7 +66,5 @@ class Button extends Field
         $viewshow = $this->getViewInstance();
 
         return $viewshow->assign($vars)->getContent();
-
-        return parent::render();
     }
 }
