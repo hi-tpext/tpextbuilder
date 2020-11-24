@@ -2,7 +2,6 @@
 
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use tpext\builder\traits\HasDom;
 use tpext\builder\tree\ZTree;
 use tpext\builder\tree\JSTree;

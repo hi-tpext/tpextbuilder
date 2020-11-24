@@ -3,7 +3,6 @@
 namespace tpext\builder\table;
 
 use think\Model;
-use think\response\View as ViewShow;
 use tpext\builder\common\Module;
 use tpext\builder\common\Table;
 use tpext\builder\displayer\Field;

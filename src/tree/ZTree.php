@@ -2,7 +2,6 @@
 
 namespace tpext\builder\tree;
 
-use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;

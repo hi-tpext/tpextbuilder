@@ -3,7 +3,6 @@
 namespace tpext\builder\form;
 
 use think\Model;
-use think\response\View as ViewShow;
 use tpext\builder\common\Form;
 use tpext\builder\common\Module;
 use tpext\builder\displayer\Field;
