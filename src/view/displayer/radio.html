@@ -2,7 +2,7 @@
 <div class="col-md-{$size[1]} radio-div" id="{$id}">
     {volist name="options" id="option"}
     <label class="{$inline} {$class}">
-        <input type="radio" value="{$key}" class="check-{$name}" {if condition="'-'.$key eq $checked" }checked{/if}
+        <input type="radio" value="{$key}" class="check-{$id}" {if condition="'-'.$key eq $checked" }checked{/if}
             id="{$id}-{$key}" name="{$name}" {$attr|raw}><span>{$option|raw}</span>
     </label>
     {/volist}
