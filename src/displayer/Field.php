@@ -87,6 +87,11 @@ class Field implements Fillable
     public function __construct($name, $label = '')
     {
         $this->name = trim($name);
+
+        if (!empty($this->name) && false !== stripos($this->name, '->')) {
+            $this->name = str_replace('->', '.', $this->name);
+        }
+
         if (empty($label) && !empty($this->name)) {
             $label = Lang::get(ucfirst($this->name));
         }
@@ -582,14 +587,29 @@ default($val = '') {
      */
     public function fill($data = [])
     {
-        if (!empty($this->name) && isset($data[$this->name])) {
-            $value = $data[$this->name];
+        if (!empty($this->name)) {
+
+            $value = '';
+            if (isset($data[$this->name])) {
+                $value = $data[$this->name];
+            } else if (false !== stripos($this->name, '.')) {
+                $arr = explode('.', $this->name);
+                $this->arrayName([$arr[0] . '[', ']']);
+                $this->name = $arr[1];
+                $this->extKey = '-' . $arr[0];
+
+                if (isset($data[$arr[0]]) && isset($data[$arr[0]][$this->name])) {
+                    $value = $data[$arr[0]][$this->name];
+                }
+            }
 
             if (is_array($value)) {
                 $value = implode(',', $value);
             }
 
-            $this->value = $value;
+            if ($value) {
+                $this->value = $value;
+            }
         }
 
         $this->data = $data;
@@ -813,6 +833,13 @@ EOT;
         $replace = [$value];
 
         foreach ($data as $key => $val) {
+            if (is_array($val)) {
+                foreach ($val as $k => $v) {
+                    $keys[] = '{' . $key . '.' . $k . '}';
+                    $replace[] = $v;
+                }
+                continue;
+            }
             $keys[] = '{' . $key . '}';
             $replace[] = $val;
         }
@@ -902,7 +929,7 @@ EOT;
             'extKey' => $this->extKey,
             'extNameKey' => $this->extNameKey,
             'value' => $value,
-            'class' => ' row-' . $this->name . $this->getClass() . $mapClass,
+            'class' => ' row-' . preg_replace('/\W/', '', $this->name) . $this->extKey . $this->getClass() . $mapClass,
             'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
             'size' => $this->size,

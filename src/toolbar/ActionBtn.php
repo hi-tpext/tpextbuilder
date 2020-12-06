@@ -38,6 +38,13 @@ class ActionBtn extends Bar
         $keys = ['__data.pk__'];
         $replace = [$this->dataId];
         foreach ($data as $key => $val) {
+            if (is_array($val)) {
+                foreach ($val as $k => $v) {
+                    $keys[] = '__data.' . $key . '.' . $k . '__';
+                    $replace[] = $v;
+                }
+                continue;
+            }
             $keys[] = '__data.' . $key . '__';
             $replace[] = $val;
         }

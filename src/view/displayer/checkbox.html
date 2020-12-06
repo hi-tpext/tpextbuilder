@@ -2,13 +2,13 @@
 <div class="col-md-{$size[1]} checkbox-div" id="{$id}">
     {if condition="$checkallBtn"}
     <label class="{$inline} {$class}">
-        <input type="checkbox" class="checkall" id="checkall-{$name}" {if condition="$checkall" }checked{/if}
-            data-check="check-{$name}"><span>{$checkallBtn|raw}</span>
+        <input type="checkbox" class="checkall" id="checkall-{$id}" {if condition="$checkall" }checked{/if}
+            data-check="check-{$id}"><span>{$checkallBtn|raw}</span>
     </label>
     {/if}
     {volist name="options" id="option"}
     <label class="{$inline} {$class}">
-        <input type="checkbox" value="{$key}" class="check-{$name}" {in name="'-'.$key" value="$checked" }checked{/in}
+        <input type="checkbox" value="{$key}" class="check-{$id}" {in name="'-'.$key" value="$checked" }checked{/in}
             id="{$id}-{$key}" name="{$name}[]" {$attr|raw}><span>{$option|raw}</span>
     </label>
     {/volist}
