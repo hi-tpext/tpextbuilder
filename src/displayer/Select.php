@@ -74,7 +74,7 @@ class Select extends Radio
     /**
      * Undocumented function
      *
-     * @param [type] $val
+     * @param string $val
      * @return $this
      */
     public function placeholder($val)

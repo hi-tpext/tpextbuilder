@@ -66,8 +66,8 @@ class Upload
     /**
      * 判断这个$key 是不是我的成员属性，如果是，则设置
      *
-     * @param [type] $key
-     * @param [type] $value
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
     protected function setOption($key, $value)
@@ -83,7 +83,7 @@ class Upload
      * 文件上传函数
      * $key 就是你 input 框中的 name 属性值
      *
-     * @param [type] $key
+     * @param string $key
      * @return boolean
      */
     public function uploadFile($key)
@@ -204,7 +204,7 @@ class Upload
     /**
      * 提取文件相关信息并且保存到成员属性中
      *
-     * @param [type] $key
+     * @param string $key
      * @return void
      */
     protected function getFileInfo($key)
