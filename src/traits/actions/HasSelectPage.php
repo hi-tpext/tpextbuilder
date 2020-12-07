@@ -129,7 +129,7 @@ trait HasSelectPage
                 }
             }
 
-            $list = $this->dataModel->where($where)->whereOr($WhereOr)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
+            $list = $this->dataModel->with($this->indexWith)->where($where)->whereOr($WhereOr)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
 
             $hasMore = count($list) == $pagesize ? 1 : 0;
         }
