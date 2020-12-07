@@ -37,18 +37,18 @@ trait HasBase
     protected $isExporting = false;
 
     /**
-     * 列表页关联加载 如 'category,logs'
+     * 列表页关联加载 如 ['category', 'logs']
      *
      * @var string
      */
-    protected $indexWith = '';
+    protected $indexWith = [];
 
     /**
      * 编辑/详情页关联加载
      *
      * @var string
      */
-    protected $editWith = '';
+    protected $editWith = [];
 
     /**
      * Undocumented variable
