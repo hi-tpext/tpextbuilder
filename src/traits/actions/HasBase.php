@@ -37,6 +37,20 @@ trait HasBase
     protected $isExporting = false;
 
     /**
+     * 列表页关联加载 如 'category,logs'
+     *
+     * @var string
+     */
+    protected $indexWith = '';
+
+    /**
+     * 编辑/详情页关联加载
+     *
+     * @var string
+     */
+    protected $editWith = '';
+
+    /**
      * Undocumented variable
      *
      * @var Form
@@ -189,7 +203,7 @@ trait HasBase
 
         $this->pagesize = $pagesize ?: $this->pagesize;
 
-        $data = $this->dataModel->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
+        $data = $this->dataModel->with($this->indexWith)->where($where)->order($sortOrder)->limit(($page - 1) * $this->pagesize, $this->pagesize)->select();
 
         $this->buildTable($data);
         $table->fill($data);

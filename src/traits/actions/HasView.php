@@ -20,7 +20,7 @@ trait HasView
             $this->error('不允许的操作');
         } else {
             $builder = $this->builder($this->pageTitle, $this->viewText, 'view');
-            $data = $this->dataModel->find($id);
+            $data = $this->dataModel->with($this->editWith)->find($id);
             if (!$data) {
                 return $builder->layer()->close(0, '数据不存在');
             }
