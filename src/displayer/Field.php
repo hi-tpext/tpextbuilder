@@ -24,6 +24,8 @@ class Field implements Fillable
 
     protected $name = '';
 
+    protected $originName = '';
+
     protected $label = '';
 
     protected $js = [];
@@ -96,6 +98,15 @@ class Field implements Fillable
             $label = Lang::get(ucfirst($this->name));
         }
 
+        $this->originName = $this->name;
+
+        if (false !== stripos($this->name, '.')) {
+            $arr = explode('.', $this->name);
+            $this->arrayName([$arr[0] . '[', ']']);
+            $this->name = $arr[1];
+            $this->extKey = '-' . $arr[0];
+        }
+
         $this->label = $label;
     }
 
@@ -144,6 +155,16 @@ class Field implements Fillable
         }
 
         return $this->name . $this->extNameKey;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getOriginName()
+    {
+        return $this->originName;
     }
 
     /**
@@ -592,14 +613,10 @@ default($val = '') {
             $value = '';
             if (isset($data[$this->name])) {
                 $value = $data[$this->name];
-            } else if (false !== stripos($this->name, '.')) {
-                $arr = explode('.', $this->name);
-                $this->arrayName([$arr[0] . '[', ']']);
-                $this->name = $arr[1];
-                $this->extKey = '-' . $arr[0];
-
-                if (isset($data[$arr[0]]) && isset($data[$arr[0]][$this->name])) {
-                    $value = $data[$arr[0]][$this->name];
+            } else if (false !== stripos($this->originName, '.')) {
+                $arr = explode('.', $this->originName);
+                if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
+                    $value = $data[$arr[0]][$arr[1]];
                 }
             }
 

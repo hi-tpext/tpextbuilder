@@ -499,7 +499,7 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @param [type] $url
+     * @param string $url
      * @return boolean
      */
     public static function checkUrl($url)
