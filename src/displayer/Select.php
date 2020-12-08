@@ -262,7 +262,6 @@ EOT;
         $prevId = $this->prevSelect->getId();
 
         $script = <<<EOT
-        $(document).off('change', '#{$prevId}');
         $(document).on('change', "#{$prevId}", function () {
             $('#{$selectId}').find('option').remove();
             $('#{$selectId}').find('optgroup').remove();
