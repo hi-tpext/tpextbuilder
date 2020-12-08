@@ -639,7 +639,10 @@ EOT;
 
         $cols = array_keys($this->cols);
 
+        $rows = 0;
+
         foreach ($this->data as $key => $data) {
+            $rows += 1;
 
             if (isset($data[$pk])) {
 
@@ -682,6 +685,14 @@ EOT;
                 $actionbar->extKey('-' . $this->id . '-' . $key)->rowData($data)->beforRender();
 
                 $this->actionbars[$key] = $actionbar->render();
+            }
+        }
+
+        if ($rows == 0) { // 数据为空，但某些js脚本是需要的，空跑一遍，把js脚本加载
+            foreach ($cols as $col) {
+                $colunm = $this->cols[$col];
+                $displayer = $colunm->getDisplayer();
+                $displayer->beforRender();
             }
         }
 

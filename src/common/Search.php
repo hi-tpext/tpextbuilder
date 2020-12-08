@@ -398,14 +398,7 @@ class Search extends SWrapper implements Renderable
         });
 
         $('body').on('click', '#btn-refresh{$extKey},#form-refresh{$extKey}', function(){
-            if($('#{$this->tableId} .table-empty-text').size())//新增第一条数据后，直接刷新整个页面，有些js有数据的时候有效
-            {
-                location.replace(location.href);
-            }
-            else
-            {
-                window.__forms__['{$form}'].formSubmit();
-            }
+            window.__forms__['{$form}'].formSubmit();
         });
 
         if(!$('#{$form} form').hasClass('form-empty'))
