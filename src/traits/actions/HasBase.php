@@ -44,13 +44,6 @@ trait HasBase
     protected $indexWith = '';
 
     /**
-     * 编辑/详情页关联加载
-     *
-     * @var string
-     */
-    protected $editWith = '';
-
-    /**
      * Undocumented variable
      *
      * @var Form
