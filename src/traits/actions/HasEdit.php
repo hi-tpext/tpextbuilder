@@ -15,7 +15,7 @@ trait HasEdit
         }
 
         $builder = $this->builder($this->pageTitle, $this->editText, 'edit');
-        $data = $this->dataModel->with($this->editWith)->find($id);
+        $data = $this->dataModel->find($id);
         if (!$data) {
             return $builder->layer()->close(0, '数据不存在');
         }
