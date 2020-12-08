@@ -20,6 +20,27 @@ trait HasBase
      * @var \think\Model
      */
     protected $dataModel;
+
+    /**
+     * Undocumented variable
+     *
+     * @var Form
+     */
+    protected $form;
+    /**
+     * Undocumented variable
+     *
+     * @var Search
+     */
+    protected $search;
+
+    /**
+     * Undocumented variable
+     *
+     * @var Table
+     */
+    protected $table;
+
     /**
      * 页面标题
      *
@@ -44,26 +65,6 @@ trait HasBase
     protected $indexWith = '';
 
     /**
-     * Undocumented variable
-     *
-     * @var Form
-     */
-    protected $form;
-    /**
-     * Undocumented variable
-     *
-     * @var Search
-     */
-    protected $search;
-
-    /**
-     * Undocumented variable
-     *
-     * @var Table
-     */
-    protected $table;
-
-    /**
      * 不允许删除的
      *
      * @var array
@@ -75,25 +76,6 @@ trait HasBase
      * @var array
      */
     protected $postAllowFields = [];
-
-    /** 初始化页面，覆盖默认
-     *public function initialize()
-     *{
-     *   $this->dataModel = new MyModel;
-     *   $this->pageTitle = 'A Page';
-     *   $this->addText = '添加';
-     *   $this->editText = '编辑';
-     *   $this->indexText = '列表';
-     *   $this->pagesize = 14;
-     *   $this->sortOrder = 'id desc';
-     *
-     *   $this->delNotAllowed = [1, 3, 4];
-     *
-     *   $this->postAllowFields = ['name', 'phone'];
-     *}
-     */
-
-    /*******辅助方法******/
 
     /**
      * Undocumented function
