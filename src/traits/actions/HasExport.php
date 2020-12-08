@@ -12,6 +12,20 @@ use tpext\builder\table\TColumn;
 
 trait HasExport
 {
+    /**
+     * 导出时在这里面的是允许的，其余都不允许
+     *
+     * @var array
+     */
+    protected $exportOnly = [];
+
+    /**
+     * 导出时在这里面的是不允许的，其余都允许
+     *
+     * @var array
+     */
+    protected $exportExcept = [];
+
     public function export()
     {
         $this->isExporting = true;
@@ -75,9 +89,21 @@ trait HasExport
     {
         $displayer = null;
 
+        $fieldName = '';
+
         foreach ($cols as $col) {
 
             $displayer = $col->getDisplayer();
+
+            $fieldName = $displayer->getOriginName();
+
+            if (!empty($this->exportOnly) && !in_array($fieldName, $this->exportOnly)) {
+                continue;
+            }
+
+            if (!empty($this->exportExcept) && in_array($fieldName, $this->exportExcept)) {
+                continue;
+            }
 
             if ($displayer instanceof displayer\Fields) {
                 $content = $displayer->getContent();
