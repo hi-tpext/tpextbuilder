@@ -90,17 +90,13 @@ class Field implements Fillable
     {
         $this->name = trim($name);
 
-        if (!empty($this->name) && false !== stripos($this->name, '->')) {
-            $this->name = str_replace('->', '.', $this->name);
-        }
-
         if (empty($label) && !empty($this->name)) {
             $label = Lang::get(ucfirst($this->name));
         }
 
         $this->originName = $this->name;
 
-        if (false !== stripos($this->name, '.')) {
+        if (strstr($this->name, '.')) {
             $arr = explode('.', $this->name);
             $this->arrayName([$arr[0] . '[', ']']);
             $this->name = $arr[1];
@@ -140,7 +136,7 @@ class Field implements Fillable
      */
     public function getId()
     {
-        return 'form-' . preg_replace('/\W/', '', $this->name) . $this->extKey;
+        return 'form-' . preg_replace('/\W/', '', $this->originName) . $this->extKey;
     }
 
     /**
@@ -613,7 +609,7 @@ default($val = '') {
             $value = '';
             if (isset($data[$this->name])) {
                 $value = $data[$this->name];
-            } else if (false !== stripos($this->originName, '.')) {
+            } else if (strstr($this->originName, '.')) {
                 $arr = explode('.', $this->originName);
                 if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
                     $value = $data[$arr[0]][$arr[1]];
@@ -677,7 +673,7 @@ EOT;
     public function mapClass($values, $class, $field = '', $logic = 'in_array')
     {
         if (empty($field)) {
-            $field = $this->name;
+            $field = $this->originName;
         }
 
         if (!is_array($values)) {
@@ -762,7 +758,7 @@ EOT;
 
     protected function autoPostScript()
     {
-        $class = 'row-' . $this->name . '-td';
+        $class = 'row-' . $this->originName . '-td';
 
         $refresh = $this->autoPostRefresh ? 1 : 0;
 
@@ -876,10 +872,26 @@ EOT;
                 $field = $mp[2];
                 $logic = $mp[3]; //in_array|not_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
                 $val = '';
-                if (!isset($this->data[$field])) {
-                    continue;
+                if (strstr($field, '.')) {
+
+                    $arr = explode('.', $field);
+
+                    if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
+
+                        $val = $data[$arr[0]][$arr[1]];
+                    } else {
+                        continue;
+                    }
+
+                } else {
+
+                    if (!isset($this->data[$field])) {
+                        continue;
+                    }
+
+                    $val = $this->data[$field];
                 }
-                $val = $this->data[$field];
+
                 $match = false;
                 if ($logic == 'not_in_array') {
                     $match = !in_array($val, $values);
@@ -946,7 +958,7 @@ EOT;
             'extKey' => $this->extKey,
             'extNameKey' => $this->extNameKey,
             'value' => $value,
-            'class' => ' row-' . preg_replace('/\W/', '', $this->name) . $this->extKey . $this->getClass() . $mapClass,
+            'class' => ' row-' . preg_replace('/\W/', '', $this->originName) . $this->getClass() . $mapClass,
             'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
             'size' => $this->size,

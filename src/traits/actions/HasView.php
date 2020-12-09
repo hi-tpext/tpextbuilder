@@ -45,6 +45,8 @@ trait HasView
     {
         $displayer = null;
 
+        $fieldName = '';
+
         foreach ($rows as $row) {
 
             if ($row instanceof Tab || $row instanceof Step) {
@@ -66,6 +68,8 @@ trait HasView
 
             $displayer = $row->getDisplayer();
 
+            $fieldName = $displayer->getOriginName();
+
             if ($displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
                 || $displayer instanceof displayer\Match || $displayer instanceof displayer\Matches) {
                 continue;
@@ -81,31 +85,31 @@ trait HasView
 
             } else if ($displayer instanceof displayer\Password) {
 
-                $row->show($displayer->getName(), $row->getLabel())->default('*********');
+                $row->show($fieldName, $row->getLabel())->default('*********');
 
             } else if ($displayer instanceof displayer\Text || $displayer instanceof displayer\Tags
                 || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea) {
 
-                $row->show($displayer->getName(), $row->getLabel())->value($displayer->renderValue())->default('-空-');
+                $row->show($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
 
             } else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
 
-                $row->matches($displayer->getName(), $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
+                $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
 
             } else if ($displayer instanceof displayer\Radio) {
 
-                $row->match($displayer->getName(), $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
+                $row->match($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
 
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
                 $options = [$pair[0] => '是', $pair[1] => '否'];
-                $row->match($displayer->getName(), $row->getLabel())->options($options)->value($displayer->renderValue());
+                $row->match($fieldName, $row->getLabel())->options($options)->value($displayer->renderValue());
 
             } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 
-                $row->raw($displayer->getName(), $row->getLabel())->value($displayer->renderValue())->default('-空-');
+                $row->raw($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
             }
             $size = $displayer->getSize();
             $row->getDisplayer()->showLabel($displayer->isShowLabel())->size($size[0], $size[1]);

@@ -117,15 +117,15 @@ trait HasExport
 
             if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
 
-                $displayer = (new displayer\Matches($displayer->getName(), $col->getLabel()))->options($displayer->getOptions());
+                $displayer = (new displayer\Matches($fieldName, $col->getLabel()))->options($displayer->getOptions());
             } else if ($displayer instanceof displayer\Radio) {
 
-                $displayer = (new displayer\Match($displayer->getName(), $col->getLabel()))->options($displayer->getOptions());
+                $displayer = (new displayer\Match($fieldName, $col->getLabel()))->options($displayer->getOptions());
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
                 $options = [$pair[0] => '是', $pair[1] => '否'];
-                $displayer = (new displayer\Match($displayer->getName(), $col->getLabel()))->options($options);
+                $displayer = (new displayer\Match($fieldName, $col->getLabel()))->options($options);
             }
             $displayers[] = $displayer;
         }
