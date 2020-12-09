@@ -606,13 +606,20 @@ default($val = '') {
     {
         if (!empty($this->name)) {
 
+            $hasVal = false;
             $value = '';
             if (isset($data[$this->name])) {
+
                 $value = $data[$this->name];
+                $hasVal = true;
+
             } else if (strstr($this->originName, '.')) {
+
                 $arr = explode('.', $this->originName);
+
                 if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
                     $value = $data[$arr[0]][$arr[1]];
+                    $hasVal = true;
                 }
             }
 
@@ -620,7 +627,7 @@ default($val = '') {
                 $value = implode(',', $value);
             }
 
-            if ($value) {
+            if ($hasVal) {
                 $this->value = $value;
             }
         }
