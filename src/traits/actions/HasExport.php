@@ -41,7 +41,7 @@ trait HasExport
         }
 
         if ($this->dataModel) {
-            $list = $this->dataModel->where($where)->order($sortOrder)->cursor();
+            $list = $this->dataModel->with($this->indexWith)->where($where)->order($sortOrder)->cursor();
 
             $data = [];
 
