@@ -68,7 +68,7 @@ trait HasView
 
             $displayer = $row->getDisplayer();
 
-            $fieldName = $displayer->getOriginName();
+            $fieldName = $displayer->getName();
 
             if ($displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
                 || $displayer instanceof displayer\Match || $displayer instanceof displayer\Matches) {

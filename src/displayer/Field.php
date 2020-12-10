@@ -24,7 +24,7 @@ class Field implements Fillable
 
     protected $name = '';
 
-    protected $originName = '';
+    protected $innerName = '';
 
     protected $label = '';
 
@@ -94,12 +94,10 @@ class Field implements Fillable
             $label = Lang::get(ucfirst($this->name));
         }
 
-        $this->originName = $this->name;
-
         if (strstr($this->name, '.')) {
             $arr = explode('.', $this->name);
             $this->arrayName([$arr[0] . '[', ']']);
-            $this->name = $arr[1];
+            $this->innerName = $arr[1];
             $this->extKey = '-' . $arr[0];
         }
 
@@ -136,7 +134,7 @@ class Field implements Fillable
      */
     public function getId()
     {
-        return 'form-' . preg_replace('/\W/', '', $this->originName) . $this->extKey;
+        return 'form-' . preg_replace('/\W/', '', $this->name) . $this->extKey;
     }
 
     /**
@@ -147,20 +145,15 @@ class Field implements Fillable
     public function getName()
     {
         if ($this->arrayName) {
+
+            if ($this->innerName) {
+                return $this->arrayName[0] . $this->innerName . $this->arrayName[1];
+            }
+
             return $this->arrayName[0] . $this->name . $this->arrayName[1];
         }
 
         return $this->name . $this->extNameKey;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return string
-     */
-    public function getOriginName()
-    {
-        return $this->originName;
     }
 
     /**
@@ -608,19 +601,18 @@ default($val = '') {
 
             $hasVal = false;
             $value = '';
-            if (isset($data[$this->name])) {
+            if (strstr($this->name, '.')) {
 
-                $value = $data[$this->name];
-                $hasVal = true;
-
-            } else if (strstr($this->originName, '.')) {
-
-                $arr = explode('.', $this->originName);
+                $arr = explode('.', $this->name);
 
                 if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
                     $value = $data[$arr[0]][$arr[1]];
                     $hasVal = true;
                 }
+            } else if (isset($data[$this->name])) {
+
+                $value = $data[$this->name];
+                $hasVal = true;
             }
 
             if (is_array($value)) {
@@ -680,7 +672,7 @@ EOT;
     public function mapClass($values, $class, $field = '', $logic = 'in_array')
     {
         if (empty($field)) {
-            $field = $this->originName;
+            $field = $this->name;
         }
 
         if (!is_array($values)) {
@@ -765,7 +757,7 @@ EOT;
 
     protected function autoPostScript()
     {
-        $class = 'row-' . $this->originName . '-td';
+        $class = 'row-' . $this->name . '-td';
 
         $refresh = $this->autoPostRefresh ? 1 : 0;
 
@@ -965,7 +957,7 @@ EOT;
             'extKey' => $this->extKey,
             'extNameKey' => $this->extNameKey,
             'value' => $value,
-            'class' => ' row-' . preg_replace('/\W/', '', $this->originName) . $this->getClass() . $mapClass,
+            'class' => ' row-' . preg_replace('/\W/', '', $this->name) . $this->getClass() . $mapClass,
             'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
             'size' => $this->size,
