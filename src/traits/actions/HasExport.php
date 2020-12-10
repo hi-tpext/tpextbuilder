@@ -95,7 +95,7 @@ trait HasExport
 
             $displayer = $col->getDisplayer();
 
-            $fieldName = $displayer->getOriginName();
+            $fieldName = $displayer->getName();
 
             if (!empty($this->exportOnly) && !in_array($fieldName, $this->exportOnly)) {
                 continue;
