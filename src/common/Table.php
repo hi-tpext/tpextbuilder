@@ -428,7 +428,7 @@ class Table extends TWrapper implements Renderable
             $pageSize = 10;
         }
 
-        $paginator = Paginator::make($this->data, $pageSize, input('__page__', 1), $dataTotal);
+        $paginator = Paginator::make($this->data, $pageSize, input('get.__page__', 1), $dataTotal);
 
         if ($dataTotal < 10) {
             $this->usePagesizeDropdown = false;

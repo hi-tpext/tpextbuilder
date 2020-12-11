@@ -10,7 +10,10 @@ trait HasEdit
 {
     public function edit($id)
     {
-        if (request()->isPost()) {
+        if (request()->isAjax()) {
+
+            $this->checkToken();
+
             return $this->save($id);
         }
 
@@ -23,6 +26,7 @@ trait HasEdit
         $this->form = $form;
         $this->buildForm(1, $data);
         $form->fill($data);
+        $form->method('put');
 
         return $builder->render();
     }

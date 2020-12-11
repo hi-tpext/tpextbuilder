@@ -10,7 +10,10 @@ trait HasAdd
 {
     public function add()
     {
-        if (request()->isPost()) {
+        if (request()->isAjax()) {
+
+            $this->checkToken();
+
             return $this->save();
         }
 
@@ -20,6 +23,8 @@ trait HasAdd
         $this->form = $form;
         $this->buildForm(0, $data);
         $form->fill($data);
+        $form->method('post');
+
         return $builder->render();
     }
 }

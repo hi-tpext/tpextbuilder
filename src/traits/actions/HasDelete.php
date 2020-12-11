@@ -10,6 +10,8 @@ trait HasDelete
 {
     public function delete()
     {
+        $this->checkToken();
+
         $ids = input('post.ids', '');
         $ids = array_filter(explode(',', $ids), 'strlen');
         if (empty($ids)) {

@@ -392,8 +392,9 @@
         });
     };
 
-    tpextbuilder.autoSendData = function (data, url, refresh) {
+    tpextbuilder.autoSendData = function (data, url, refresh,del) {
         data.__token__ = w.__token__;
+        data._method = /.+?\/(?:destroy|delete|remove|del)(?:\.\w+)?$/.test(url) ? "delete" : "patch";
         lightyear.loading('show');
         $.ajax({
             url: url,
