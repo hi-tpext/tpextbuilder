@@ -28,6 +28,8 @@ trait HasExport
 
     public function export()
     {
+        request()->withPost(request()->get());//兼容以post方式获取参数
+
         $this->isExporting = true;
         $this->table = $this->builder()->table();
         $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');

@@ -558,6 +558,11 @@ class Form extends FWrapper implements Renderable
             $row->beforRender();
         }
 
+        if (!in_array(strtolower($this->method), ['get', 'post'])) {
+            $this->hidden('_method')->value($this->method);
+            $this->method = 'post';
+        }
+
         $this->validatorScript();
 
         return $this;

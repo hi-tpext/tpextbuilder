@@ -14,6 +14,10 @@ trait HasIndex
 
     public function index()
     {
+        if (request()->isAjax()) {
+            request()->withPost(request()->get()); //兼容以post方式获取参数
+        }
+
         $builder = $this->builder($this->pageTitle, $this->indexText, 'index');
 
         $table = null;

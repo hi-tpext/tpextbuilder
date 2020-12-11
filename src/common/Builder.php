@@ -5,8 +5,8 @@ namespace tpext\builder\common;
 use think\facade\View;
 use tpext\builder\inface\Auth;
 use tpext\builder\inface\Renderable;
-use tpext\builder\tree\ZTree;
 use tpext\builder\tree\JSTree;
+use tpext\builder\tree\ZTree;
 use tpext\common\ExtLoader;
 
 class Builder implements Renderable
@@ -125,7 +125,14 @@ class Builder implements Renderable
     public function getCsrfToken()
     {
         if (!$this->csrf_token) {
-            $token = csrf_token();
+
+            $token = session('_csrf_token_');
+
+            if (empty($token)) {
+                $token = md5('_csrf_token_' . time() . uniqid());
+                session('_csrf_token_', $token);
+            }
+
             $this->csrf_token = $token;
             View::assign(['__token__' => $token]);
         }
@@ -554,6 +561,8 @@ class Builder implements Renderable
         }
 
         unset($j);
+
+        $this->getCsrfToken();
 
         $vars = [
             'title' => $this->title ? $this->title : '',

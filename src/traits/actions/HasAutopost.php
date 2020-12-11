@@ -15,6 +15,8 @@ trait HasAutopost
 
     protected function _autopost()
     {
+        $this->checkToken();
+
         $id = input('post.id/d', '');
         $name = input('post.name', '');
         $value = input('post.value', '');

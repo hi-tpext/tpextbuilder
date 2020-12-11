@@ -25,7 +25,7 @@ class Search extends SWrapper implements Renderable
 
     protected $id = 'search';
 
-    protected $method = 'post';
+    protected $method = 'get';
 
     protected $rows = [];
 
@@ -305,6 +305,11 @@ class Search extends SWrapper implements Renderable
 
         if ($this->tablink) {
             $this->tablink->beforRender();
+        }
+
+        if (!in_array(strtolower($this->method), ['get', 'post'])) {
+            $this->hidden('_method')->value($this->method);
+            $this->method = 'post';
         }
 
         return $this;

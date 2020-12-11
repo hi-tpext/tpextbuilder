@@ -166,15 +166,15 @@ trait HasBase
      */
     protected function buildDataList()
     {
-        $page = input('post.__page__/d', 1);
+        $page = input('get.__page__/d', 1);
         $page = $page < 1 ? 1 : $page;
-        $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
+        $sortOrder = input('get.__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
 
         $where = $this->filterWhere();
 
         $table = $this->table;
 
-        $pagesize = input('post.__pagesize__/d', 0);
+        $pagesize = input('get.__pagesize__/d', 0);
 
         $this->pagesize = $pagesize ?: $this->pagesize;
 
@@ -234,5 +234,14 @@ trait HasBase
         }
 
         return $this->pk;
+    }
+
+    protected function checkToken()
+    {
+        $token = session('_csrf_token_');
+
+        if (empty($token) || $token != input('__token__')) {
+            $this->error('token错误' . $token . '/' . input('__token__'));
+        }
     }
 }
