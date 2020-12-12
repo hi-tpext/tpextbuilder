@@ -7,11 +7,11 @@ use tpext\builder\common\Toolbar;
 
 class MultipleToolbar extends Toolbar
 {
-    protected $hasSearch = false;
+    protected $useSearch = false;
 
     protected $btnSearch = null;
 
-    protected $hasExport = true;
+    protected $useExport = true;
 
     protected $btnExport = null;
 
@@ -37,9 +37,9 @@ class MultipleToolbar extends Toolbar
      * @param boolean $val
      * @return $this
      */
-    public function hasSearch($val = true)
+    public function useSearch($val = true)
     {
-        $this->hasSearch = $val;
+        $this->useSearch = $val;
 
         return $this;
     }
@@ -50,9 +50,9 @@ class MultipleToolbar extends Toolbar
      * @param boolean $val
      * @return $this
      */
-    public function hasExport($val = true)
+    public function useExport($val = true)
     {
-        $this->hasExport = $val;
+        $this->useExport = $val;
 
         return $this;
     }
@@ -68,7 +68,7 @@ class MultipleToolbar extends Toolbar
             $this->buttons();
         }
 
-        if ($this->hasExport && !$this->btnExport) {
+        if ($this->useExport && !$this->btnExport) {
             $items = ['csv' => 'csv文件'];
 
             if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet') || class_exists('\\PHPExcel')) {
@@ -81,7 +81,7 @@ class MultipleToolbar extends Toolbar
             $this->btnExports($items);
         }
 
-        if ($this->hasSearch && !$this->btnSearch) {
+        if ($this->useSearch && !$this->btnSearch) {
             $this->btnToggleSearch();
         }
 

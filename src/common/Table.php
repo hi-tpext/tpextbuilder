@@ -309,9 +309,22 @@ class Table extends TWrapper implements Renderable
      * @param boolean $val
      * @return $this
      */
+    public function useExport($val = true)
+    {
+        $this->getToolbar()->useExport($val);
+
+        return $this;
+    }
+
+    /**
+     * 弃用，使用｀useExport｀代替
+     * @deprecated 1.8.93
+     * @param boolean $val
+     * @return $this
+     */
     public function hasExport($val = true)
     {
-        $this->getToolbar()->hasExport($val);
+        $this->getToolbar()->useExport($val);
 
         return $this;
     }
@@ -571,7 +584,7 @@ class Table extends TWrapper implements Renderable
         Builder::getInstance()->addCss($this->css);
 
         if ($this->useToolbar) {
-            $this->getToolbar()->hasSearch(!empty($this->searchForm))->beforRender();
+            $this->getToolbar()->useSearch(!empty($this->searchForm))->beforRender();
         }
 
         if ($this->useActionbar) {
