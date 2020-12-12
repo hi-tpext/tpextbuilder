@@ -13,7 +13,7 @@ class ZTree implements Renderable
 
     protected $data;
 
-    protected $beforeClick = 'alert("未绑定`beforeClick`事件。点击了"+treeNode.id);';
+    protected $onClick = 'alert("未绑定`onClick`事件。点击了"+treeNode.id);';
 
     protected $trigger = '';
 
@@ -76,7 +76,7 @@ class ZTree implements Renderable
     {
         $tree = [
             [
-                'id' => 0,
+                'id' => ' ',
                 'pId' => '',
                 'name' => '全部',
             ],
@@ -102,9 +102,9 @@ class ZTree implements Renderable
      * @param string $script
      * @return $this
      */
-    public function beforeClick($script)
+    public function onClick($script)
     {
-        $this->beforeClick = $script;
+        $this->onClick = $script;
 
         return $this;
     }
@@ -118,7 +118,7 @@ class ZTree implements Renderable
     public function trigger($element)
     {
         $this->trigger = $element;
-        $this->beforeClick = <<<EOT
+        $this->onClick = <<<EOT
 
                     if(!$('{$element}').length)
                     {
@@ -150,6 +150,8 @@ EOT;
         $data = json_encode($this->data);
         $script = <<<EOT
 
+        var treeObj = null;
+
         var setting = {
             view: {
               addHoverDom: false,
@@ -169,14 +171,20 @@ EOT;
             },
             callback: {
                 beforeClick: function(treeId, treeNode, clickFlag){
-                    {$this->beforeClick}
+                    if (treeNode.isParent) {
+                        treeObj.expandNode(treeNode);
+                        return true;
+                    }
+                },
+                onClick: function(event, treeId, treeNode) {
+                    {$this->onClick}
                 }
             }
         };
         var zNodes = {$data};
 
         $(document).ready(function () {
-            var treeObj = $.fn.zTree.init($("#{$this->id}"), setting, zNodes);
+            treeObj = $.fn.zTree.init($("#{$this->id}"), setting, zNodes);
             treeObj.expandAll(true);
         });
 
@@ -205,7 +213,7 @@ EOT;
 
         $builder = Builder::getInstance();
 
-        $builder->customCss('/assets/tpextbuilder/js/zTree_v3/css/materialDesignStyle/materialdesign.css');
+        $builder->customCss('/assets/tpextbuilder/js/zTree_v3/css/lyearStyle/lyearStyle.css');
         $builder->customJs('/assets/tpextbuilder/js/zTree_v3/js/jquery.ztree.all.min.js');
 
         $builder->addScript($script);
