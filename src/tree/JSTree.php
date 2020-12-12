@@ -13,7 +13,7 @@ class JSTree implements Renderable
 
     protected $data;
 
-    protected $beforeClick = 'alert("未绑定`beforeClick`事件。点击了"+data.instance.get_node(data.selected[0]).text);';
+    protected $onClick = 'alert("未绑定`onClick`事件。点击了"+data.instance.get_node(data.selected[0]).text);';
 
     protected $trigger = '';
 
@@ -74,7 +74,16 @@ class JSTree implements Renderable
      */
     public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id')
     {
-        $tree = [];
+        $tree = [
+            [
+                'id' => ' ',
+                'text' => '全部',
+                'state' => [
+                    'opened' => false,
+                ],
+                'children' => [],
+            ]
+        ];
         foreach ($treeData as $dep) {
 
             if ($dep[$pidField] != 0) {
@@ -91,16 +100,7 @@ class JSTree implements Renderable
             ];
         }
 
-        $this->data = [
-            [
-                'id' => 0,
-                'text' => '全部',
-                'state' => [
-                    'opened' => true,
-                ],
-                'children' => $tree,
-            ],
-        ];
+        $this->data = $tree;
 
         return $this;
     }
@@ -134,9 +134,9 @@ class JSTree implements Renderable
      * @param string $script
      * @return $this
      */
-    public function beforeClick($script)
+    public function onClick($script)
     {
-        $this->beforeClick = $script;
+        $this->onClick = $script;
 
         return $this;
     }
@@ -150,7 +150,7 @@ class JSTree implements Renderable
     public function trigger($element)
     {
         $this->trigger = $element;
-        $this->beforeClick = <<<EOT
+        $this->onClick = <<<EOT
 
                     var treeNode = data.instance.get_selected(true)[0];
 
@@ -205,7 +205,7 @@ EOT;
         $(document).ready(function () {
             $('#{$this->id}').jstree(setting);
             $('#{$this->id}').on('activate_node.jstree', function(e, data) {
-                {$this->beforeClick}
+                {$this->onClick}
             });
         });
 
