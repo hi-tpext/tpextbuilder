@@ -684,7 +684,8 @@ EOT;
     }
 
     /**
-     * 弃用，使用mapClass
+     * 弃用，使用mapClass代替
+     * @deprecated 1.8.93
      *
      * @param array|string|int $values
      * @param string $class
@@ -717,8 +718,8 @@ EOT;
     }
 
     /**
-     * 弃用，使用mapClassGroup
-     *
+     * 弃用，使用mapClassGroup代替
+     * @deprecated 1.8.93
      * @param array $groupArr
      * @return $this
      */
