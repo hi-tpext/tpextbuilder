@@ -255,9 +255,9 @@ class Builder implements Renderable
      *
      * @return array
      */
-    public function getStyle()
+    public function getStylesheet()
     {
-        return $this->style;
+        return $this->stylesheet;
     }
 
     /**

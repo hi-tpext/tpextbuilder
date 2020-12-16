@@ -39,7 +39,7 @@ class Select extends Radio
     /**
      * Undocumented function
      *
-     * @param boolean $show
+     * @param boolean $use
      * @return $this
      */
     public function select2($use)
