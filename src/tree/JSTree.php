@@ -76,7 +76,7 @@ class JSTree implements Renderable
     {
         $tree = [
             [
-                'id' => ' ',
+                'id' => '__all__',
                 'text' => '全部',
                 'state' => [
                     'opened' => false,
@@ -164,13 +164,19 @@ class JSTree implements Renderable
                         $('form.search-form').append(__field__);
                     }
 
+                    var selected = treeNode.id;
+                    if(selected == '__all__')
+                    {
+                        selected = '';
+                    }
+
                     if($('{$element}').hasClass('select2-use-ajax'))
                     {
-                        $('{$element}').empty().append('<option value="' + treeNode.id + '">' + treeNode.text + '</option>');
+                        $('{$element}').empty().append('<option value="' + selected + '">' + treeNode.text + '</option>');
                     }
                     else
                     {
-                        $('{$element}').val(treeNode.id);
+                        $('{$element}').val(selected);
                     }
                     $('{$element}').trigger('change');
                     $('.row-refresh').trigger('click');

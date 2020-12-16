@@ -76,7 +76,7 @@ class ZTree implements Renderable
     {
         $tree = [
             [
-                'id' => ' ',
+                'id' => '__all__',
                 'pId' => '',
                 'name' => '全部',
             ],
@@ -130,13 +130,19 @@ class ZTree implements Renderable
                         $('form.search-form').append(__field__);
                     }
 
+                    var selected = treeNode.id;
+                    if(selected == '__all__')
+                    {
+                        selected = '';
+                    }
+
                     if($('{$element}').hasClass('select2-use-ajax'))
                     {
-                        $('{$element}').empty().append('<option value="' + treeNode.id + '">' + treeNode.name + '</option>');
+                        $('{$element}').empty().append('<option value="' + selected + '">' + treeNode.name + '</option>');
                     }
                     else
                     {
-                        $('{$element}').val(treeNode.id);
+                        $('{$element}').val(selected);
                     }
                     $('{$element}').trigger('change');
                     $('.row-refresh').trigger('click');

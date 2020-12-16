@@ -4,6 +4,8 @@ namespace tpext\builder\common;
 
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
+use tpext\builder\displayer\Button;
+use tpext\builder\displayer\Text;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\form\Fillable;
 use tpext\builder\inface\Renderable;
@@ -33,7 +35,7 @@ class Search extends SWrapper implements Renderable
 
     protected $ajax = true;
 
-    protected $defaultDisplayerSize = null;
+    protected $defaultDisplayerSize = [4, 8];
 
     protected $defaultDisplayerCloSize = 2;
 
@@ -219,7 +221,7 @@ class Search extends SWrapper implements Renderable
     {
         if ($create) {
             $this->fieldsEnd();
-            $this->fields('buttons', '', '2 col-xs-12')->showLabel(false)->with(
+            $this->fields('buttons', '', '3 col-xs-12')->size(0, 12)->showLabel(false)->with(
                 $this->html('', '', '2 col-xs-2')->showLabel(false),
                 $this->button('submit', '筛&nbsp;&nbsp;选', '5 col-xs-5')->class('btn-info ' . $this->butonsSizeClass),
                 $this->button('button', '重&nbsp;&nbsp;置', '5 col-xs-5')->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"')
@@ -297,8 +299,6 @@ class Search extends SWrapper implements Renderable
             }
 
             $displayer = $row->getDisplayer();
-
-            $displayer->fullSize(4);
 
             $row->beforRender();
         }
@@ -523,9 +523,11 @@ EOT;
 
             $displayer->extKey('-' . $this->tableId);
 
-            if ($displayer instanceof \tpext\builder\displayer\Text) {
+            if ($displayer instanceof Text) {
                 $displayer->befor('');
                 $displayer->after('');
+            } else if ($displayer instanceof Button) {
+                $displayer->size(0, 12);
             }
 
             return $displayer;

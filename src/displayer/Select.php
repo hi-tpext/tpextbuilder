@@ -177,7 +177,7 @@ class Select extends Radio
             $.ajax({
                 url: '{$url}',
                 data: {selected : selected},
-                type: 'POST',
+                type: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     var list = (data.data ? data.data : data) || [];
