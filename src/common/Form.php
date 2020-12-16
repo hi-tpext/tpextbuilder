@@ -426,9 +426,19 @@ class Form extends FWrapper implements Renderable
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @param string $rule
+     * @param boolean $val
+     * @return $this
+     */
     public function addJqValidatorRule($name, $rule, $val = true)
     {
         $this->validator[$name][$rule] = $val;
+
+        return $this;
     }
 
     /**

@@ -438,3 +438,14 @@ span.the-field.yellow {
     width:88%;
     float:right;
 }
+
+.items-content,.fields-content
+{
+    width: 100%;
+    float: left;
+}
+
+.button-div
+{
+    text-align: center;
+}
