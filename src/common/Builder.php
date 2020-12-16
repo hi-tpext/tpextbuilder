@@ -42,7 +42,7 @@ class Builder implements Renderable
 
     protected $customCss = [];
 
-    protected $stylesheet = [];
+    protected $styleSheet = [];
 
     protected $script = [];
 
@@ -227,7 +227,7 @@ class Builder implements Renderable
         if (!is_array($val)) {
             $val = [$val];
         }
-        $this->stylesheet = array_merge($this->stylesheet, $val);
+        $this->styleSheet = array_merge($this->styleSheet, $val);
         return $this;
     }
 
@@ -256,9 +256,9 @@ class Builder implements Renderable
      *
      * @return array
      */
-    public function getStylesheet()
+    public function getStyleSheet()
     {
-        return $this->stylesheet;
+        return $this->styleSheet;
     }
 
     /**
@@ -571,7 +571,7 @@ class Builder implements Renderable
             'rows' => $this->rows,
             'js' => array_unique($this->js),
             'css' => array_unique($this->css),
-            'stylesheet' => implode('', array_unique($this->stylesheet)),
+            'stylesheet' => implode('', array_unique($this->styleSheet)),
             'script' => implode('', array_unique($this->script)),
         ];
 
