@@ -241,7 +241,7 @@ trait HasBase
         $token = session('_csrf_token_');
 
         if (empty($token) || $token != input('__token__')) {
-            $this->error('token错误' . $token . '/' . input('__token__'));
+            $this->error('token错误');
         }
     }
 }
