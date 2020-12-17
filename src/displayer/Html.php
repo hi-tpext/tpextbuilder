@@ -29,14 +29,13 @@ class Html extends Field
      *
      * @param string $template
      * @param array $vars
-     * @param array $config
      * @return $this
      */
-    public function fetch($template = '', $vars = [], $config = [])
+    public function fetch($template = '', $vars = [])
     {
         $this->content = view($template);
 
-        $this->content->assign($vars)->config($config);
+        $this->content->assign($vars);
         return $this;
     }
 
@@ -45,14 +44,13 @@ class Html extends Field
      *
      * @param string $content
      * @param array $vars
-     * @param array $config
      * @return $this
      */
-    public function display($content = '', $vars = [], $config = [])
+    public function display($content = '', $vars = [])
     {
         $this->content = view($content);
 
-        $this->content->assign($vars)->config($config)->isContent(true);
+        $this->content->assign($vars)->isContent(true);
         return $this;
     }
 
