@@ -84,19 +84,19 @@ class JSTree implements Renderable
                 'children' => [],
             ]
         ];
-        foreach ($treeData as $dep) {
+        foreach ($treeData as $d) {
 
-            if ($dep[$pidField] != 0) {
+            if ($d[$pidField] != 0) {
                 continue;
             }
 
             $tree[] = [
-                'id' => $dep[$idField],
-                'text' => $dep[$textField],
+                'id' => $d[$idField],
+                'text' => $d[$textField],
                 'state' => [
                     'opened' => true,
                 ],
-                'children' => isset($dep['children']) ? $dep['children'] : $this->getChildren($treeData, $dep[$idField], $textField, $idField, $pidField),
+                'children' => isset($d['children']) ? $d['children'] : $this->getChildren($treeData, $d[$idField], $textField, $idField, $pidField),
             ];
         }
 
@@ -109,17 +109,17 @@ class JSTree implements Renderable
     {
         $children = [];
 
-        foreach ($treeData as $key => $dep) {
+        foreach ($treeData as $d) {
 
-            if ($dep[$pidField] == $pid) {
+            if ($d[$pidField] == $pid) {
 
                 $children[] = [
-                    'id' => $dep[$idField],
-                    'text' => $dep[$textField],
+                    'id' => $d[$idField],
+                    'text' => $d[$textField],
                     'state' => [
                         'opened' => true,
                     ],
-                    'children' => isset($dep['children']) ? $dep['children'] : $this->getChildren($treeData, $dep[$idField], $pidField),
+                    'children' => isset($d['children']) ? $d['children'] : $this->getChildren($treeData, $d[$idField], $pidField),
                 ];
             }
         }

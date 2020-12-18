@@ -82,11 +82,11 @@ class ZTree implements Renderable
             ],
         ];
 
-        foreach ($treeData as $dep) {
+        foreach ($treeData as $d) {
             $tree[] = [
-                'id' => $dep[$idField],
-                'pId' => $dep[$pidField],
-                'name' => $dep[$textField],
+                'id' => $d[$idField],
+                'pId' => $d[$pidField],
+                'name' => $d[$textField],
             ];
         }
 
