@@ -91,7 +91,7 @@ class Export
     {
         $text = preg_replace('/<[bh]r\s*\/?>/im', ' | ', $text);
         $text = preg_replace('/<i\s+[^<>]*?class=[\'\"]\w+\s+(\w+\-[\w\-]+)[\'\"][^<>]*?>(.*?)<\/i>/im', '$1', $text);
-        $text = preg_replace('/<([a-zA-z]+?)\s+[^<>]*?>(.+?)<\/\1>/im', '$2', $text);
+        $text = preg_replace('/<([a-zA-z]+?)\s+[^<>]*?>(.*?)<\/\1>/im', '$2', $text);
         $text = str_replace(['&nbsp;', '&gt;', '&lt;'], [' ', '>', '<'], $text);
 
         return $text;
