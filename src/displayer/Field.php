@@ -732,7 +732,7 @@ EOT;
     /**
      * Undocumented function
      *
-     * @return void
+     * @return string
      */
     protected function getCsrfToken()
     {
