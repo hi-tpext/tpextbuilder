@@ -719,6 +719,7 @@ EOT;
 
     /**
      * 弃用，使用mapClassGroup代替
+     *
      * @deprecated 1.8.93
      * @param array $groupArr
      * @return $this
@@ -726,6 +727,16 @@ EOT;
     public function mapClassWhenGroup($groupArr)
     {
         return $this->mapClassGroup($groupArr);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    protected function getCsrfToken()
+    {
+        return Builder::getInstance()->getCsrfToken();
     }
 
     /**

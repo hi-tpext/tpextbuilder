@@ -74,10 +74,8 @@ EOT;
     public function render()
     {
         if (empty($this->uploadUrl)) {
-            
-            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
-            session('uploadtoken', $token);
+            $token = $this->getCsrfToken();
 
             $this->uploadUrl = url('/tpextbuilder/admin/upload/ueditor', ['token' => $token]);
         }

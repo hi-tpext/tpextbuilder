@@ -218,9 +218,8 @@ default($val = []) {
         }
 
         if ($this->canUpload && (!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url']))) {
-            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
-            session('uploadtoken', $token);
+            $token = $this->getCsrfToken();
 
             $this->jsOptions['upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token]);
         }
