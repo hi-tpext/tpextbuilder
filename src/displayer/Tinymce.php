@@ -50,9 +50,8 @@ class Tinymce extends Field
         $inputId = $this->getId();
 
         if (!isset($this->jsOptions['images_upload_url']) || empty($this->jsOptions['images_upload_url'])) {
-            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
-            session('uploadtoken', $token);
+            $token = $this->getCsrfToken();
 
             $this->jsOptions['images_upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'tinymce', 'token' => $token])->__toString();
         }

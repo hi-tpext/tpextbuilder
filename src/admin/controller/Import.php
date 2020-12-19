@@ -53,9 +53,7 @@ class Import extends Controller
 
         $successUrl = urldecode($successUrl);
 
-        $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
-
-        session('uploadtoken', $token);
+        $token = Builder::getInstance()->getCsrfToken();
 
         $uploadUrl = url('/tpextbuilder/admin/upload/upfiles')->__toString();
 

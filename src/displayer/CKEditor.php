@@ -43,9 +43,8 @@ class CKEditor extends Field
         // 失败返回格式{"uploaded":0,"error":{"message":"失败原因"}}
 
         if (!isset($this->jsOptions['filebrowserImageUploadUrl']) || empty($this->jsOptions['filebrowserImageUploadUrl'])) {
-            $token = session('uploadtoken') ? session('uploadtoken') : md5('uploadtoken' . time() . uniqid());
 
-            session('uploadtoken', $token);
+            $token = $this->getCsrfToken();
 
             $this->jsOptions['filebrowserImageUploadUrl'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'ckeditor', 'token' => $token])->__toString();
         }

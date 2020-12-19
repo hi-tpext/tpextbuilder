@@ -29,7 +29,7 @@ class Upload extends Controller
             );
         }
 
-        if (session('uploadtoken') != $token) {
+        if (session('_csrf_token_') != $token) {
             return json(
                 ['info' => 'token error', 'picurl' => '']
             );
