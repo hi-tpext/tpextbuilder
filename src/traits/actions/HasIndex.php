@@ -15,7 +15,7 @@ trait HasIndex
     public function index()
     {
         if (request()->isAjax()) {
-            request()->withPost(request()->get()); //兼容以post方式获取参数
+            request()->withPost(request()->get()); //兼容以post方式获取参数，tp5.1貌似有问题。filterWhere尽量使用get/param获取参数
         }
 
         $builder = $this->builder($this->pageTitle, $this->indexText, 'index');
