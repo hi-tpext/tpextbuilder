@@ -917,9 +917,9 @@ EOT;
                 } else if ($logic == 'elt') {
                     $match = is_numeric($values[0]) && $val <= $values[0];
                 } else if ($logic == 'strpos') {
-                    $match = strpos($values[0], $val);
+                    $match = false !== strpos($values[0], $val);
                 } else if ($logic == 'not_strpos') {
-                    $match = !strpos($values[0], $val);
+                    $match = false == strpos($values[0], $val);
                 } else //default in_array
                 {
                     $match = in_array($val, $values);
