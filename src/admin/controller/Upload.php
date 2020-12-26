@@ -130,7 +130,7 @@ class Upload extends Controller
             exit('no token');
         }
 
-        if (session('uploadtoken') != $token) {
+        if (session('_csrf_token_') != $token) {
             exit('token error');
         }
 
