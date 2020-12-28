@@ -96,7 +96,11 @@ trait HasView
 
                 $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
 
-            } else if ($displayer instanceof displayer\Radio) {
+            } else if ($displayer instanceof displayer\Select && $displayer->isAjax()) {
+
+                //
+
+            } else if ($displayer instanceof displayer\Radio) {// radio / select(非ajax)
 
                 $row->match($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
 
