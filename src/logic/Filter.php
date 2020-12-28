@@ -16,7 +16,6 @@ class Filter
     public function getQuery($search, $searchData)
     {
         $where = [];
-        $data = request()->post();
 
         $rows = $search->getRows();
 
@@ -26,7 +25,7 @@ class Filter
 
             $comumn = $row->getName();
 
-            if (isset($data[$comumn]) && $data[$comumn] !== '' && $data[$comumn] !== []) {
+            if (isset($searchData[$comumn]) && $searchData[$comumn] !== '' && $searchData[$comumn] !== []) {
 
                 $filter = $row->getFilter() ?: 'like';
 
@@ -34,9 +33,9 @@ class Filter
                     $filter = 'in';
                 }
                 if ($filter == 'like') {
-                    $where[] = [$comumn, $filter, "%{$data[$comumn]}%"];
+                    $where[] = [$comumn, $filter, "%{$searchData[$comumn]}%"];
                 } else {
-                    $where[] = [$comumn, $filter, $data[$comumn]];
+                    $where[] = [$comumn, $filter, $searchData[$comumn]];
                 }
             }
         }

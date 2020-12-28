@@ -666,7 +666,7 @@ EOT;
      * @param array|string|int $values
      * @param string $class
      * @param string $field default current field
-     * @param string $logic in_array|not_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
+     * @param string $logic in_array|not_in_array|eq|gt|lt|egt|elt|strstr|not_strstr
      * @return $this
      */
     public function mapClass($values, $class, $field = '', $logic = 'in_array')
@@ -906,20 +906,20 @@ EOT;
                 $match = false;
                 if ($logic == 'not_in_array') {
                     $match = !in_array($val, $values);
-                } else if ($logic == 'eq') {
+                } else if ($logic == 'eq' || $logic == '==') {
                     $match = $val == $values[0];
-                } else if ($logic == 'gt') {
+                } else if ($logic == 'gt' || $logic == '>') {
                     $match = is_numeric($values[0]) && $val > $values[0];
-                } else if ($logic == 'lt') {
+                } else if ($logic == 'lt' || $logic == '<') {
                     $match = is_numeric($values[0]) && $val < $values[0];
-                } else if ($logic == 'egt') {
+                } else if ($logic == 'egt' || $logic == '>=') {
                     $match = is_numeric($values[0]) && $val >= $values[0];
-                } else if ($logic == 'elt') {
+                } else if ($logic == 'elt' || $logic == '<=') {
                     $match = is_numeric($values[0]) && $val <= $values[0];
-                } else if ($logic == 'strpos') {
-                    $match = false !== strpos($values[0], $val);
-                } else if ($logic == 'not_strpos') {
-                    $match = false == strpos($values[0], $val);
+                } else if ($logic == 'strpos' || $logic == 'strstr') {
+                    $match = strstr($values[0], $val);
+                } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strstr') {
+                    $match = !strstr($values[0], $val);
                 } else //default in_array
                 {
                     $match = in_array($val, $values);

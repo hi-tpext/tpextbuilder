@@ -152,7 +152,7 @@ trait HasBase
 
         $logic = new Filter;
 
-        $searchData = request()->post();
+        $searchData = request()->get();
 
         $where = $logic->getQuery($this->search, $searchData);
 
