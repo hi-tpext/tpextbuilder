@@ -62,11 +62,76 @@ class ActionBtn extends Bar
      */
     public function parseMapClass($data)
     {
+        $matchClass = [];
+
+        $values = $class = $field = $logic = $val = $match = null;
+
         $this->extClass = '';
-        foreach ($this->mapClass as $class => $check) {
-            if (isset($data[$check]) && $data[$check]) {
-                $this->extClass .= ' ' . $class;
+        foreach ($this->mapClass as $class => $mp) {
+            if (is_array($mp)) { // 'enable' => ['hidden' => [1, 'status']],
+                $values = $mp[0];
+
+                if (!is_array($values)) {
+                    $values = [$values];
+                }
+
+                $field = $mp[1];
+                $logic = $mp[2] ?? ''; //in_array|not_in_array|eq|gt|lt|egt|elt|strstr|not_strstr
+
+                if (strstr($field, '.')) {
+
+                    $arr = explode('.', $field);
+
+                    if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
+
+                        $val = $data[$arr[0]][$arr[1]];
+                    } else {
+                        continue;
+                    }
+
+                } else {
+
+                    if (!isset($data[$field])) {
+                        continue;
+                    }
+
+                    $val = $data[$field];
+                }
+
+                $match = false;
+                if ($logic == 'not_in_array') {
+                    $match = !in_array($val, $values);
+                } else if ($logic == 'eq' || $logic == '==') {
+                    $match = $val == $values[0];
+                } else if ($logic == 'gt' || $logic == '>') {
+                    $match = is_numeric($values[0]) && $val > $values[0];
+                } else if ($logic == 'lt' || $logic == '<') {
+                    $match = is_numeric($values[0]) && $val < $values[0];
+                } else if ($logic == 'egt' || $logic == '>=') {
+                    $match = is_numeric($values[0]) && $val >= $values[0];
+                } else if ($logic == 'elt' || $logic == '<=') {
+                    $match = is_numeric($values[0]) && $val <= $values[0];
+                } else if ($logic == 'strpos' || $logic == 'strstr') {
+                    $match = strstr($val, $values[0]);
+                } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strstr') {
+                    $match = !strstr($val, $values[0]);
+                } else //default in_array
+                {
+                    $match = in_array($val, $values);
+                }
+                if ($match) {
+                    $matchClass[] = $class;
+                }
+
+            } else { // 'enable' => ['hidden' => '__hi_en__'],
+                if (isset($data[$mp]) && $data[$mp]) {
+                    $matchClass[] = $class;
+                }
             }
+        }
+
+        if (count($matchClass)) {
+            $this->extClass .= ' ' . implode(' ', array_unique($matchClass));
         }
 
         return $this;

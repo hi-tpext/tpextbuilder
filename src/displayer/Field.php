@@ -843,13 +843,13 @@ EOT;
         $value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
 
         if (!empty($this->to)) {
-            $value = $this->parshToValue($value);
+            $value = $this->parseToValue($value);
         }
 
         return $value;
     }
 
-    protected function parshToValue($value)
+    protected function parseToValue($value)
     {
         $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
 
@@ -871,25 +871,25 @@ EOT;
         return str_replace($keys, $replace, $this->to);
     }
 
-    protected function parshMapClass()
+    protected function parseMapClass()
     {
-        $mapClass = [];
-
+        $matchClass = [];
+        $values = $class = $field = $logic = $val = $match = null;
         if (!empty($this->mapClass)) {
 
             foreach ($this->mapClass as $mp) {
                 $values = $mp[0];
                 $class = $mp[1];
                 $field = $mp[2];
-                $logic = $mp[3]; //in_array|not_in_array|eq|gt|lt|egt|elt|strpos|not_strpos
+                $logic = $mp[3]; //in_array|not_in_array|eq|gt|lt|egt|elt|strstr|not_strstr
                 $val = '';
                 if (strstr($field, '.')) {
 
                     $arr = explode('.', $field);
 
-                    if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
+                    if (isset($this->data[$arr[0]]) && isset($this->data[$arr[0]][$arr[1]])) {
 
-                        $val = $data[$arr[0]][$arr[1]];
+                        $val = $this->data[$arr[0]][$arr[1]];
                     } else {
                         continue;
                     }
@@ -904,7 +904,7 @@ EOT;
                 }
 
                 $match = false;
-                if ($logic == 'not_in_array') {
+                if ($logic == 'not_in_array' || $logic == '!in_array') {
                     $match = !in_array($val, $values);
                 } else if ($logic == 'eq' || $logic == '==') {
                     $match = $val == $values[0];
@@ -917,22 +917,22 @@ EOT;
                 } else if ($logic == 'elt' || $logic == '<=') {
                     $match = is_numeric($values[0]) && $val <= $values[0];
                 } else if ($logic == 'strpos' || $logic == 'strstr') {
-                    $match = strstr($values[0], $val);
+                    $match = strstr($val, $values[0]);
                 } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strstr') {
-                    $match = !strstr($values[0], $val);
+                    $match = !strstr($val, $values[0]);
                 } else //default in_array
                 {
                     $match = in_array($val, $values);
                 }
                 if ($match) {
-                    $mapClass[] = $class;
+                    $matchClass[] = $class;
                 }
             }
         }
 
-        if (count($mapClass)) {
+        if (count($matchClass)) {
 
-            return ' ' . implode(' ', array_unique($mapClass));
+            return ' ' . implode(' ', array_unique($matchClass));
         }
 
         return '';
@@ -953,7 +953,7 @@ EOT;
             static::$labeltempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
         }
 
-        $mapClass = $this->parshMapClass();
+        $mapClass = $this->parseMapClass();
 
         $value = $this->renderValue();
 
