@@ -3,6 +3,7 @@
 namespace tpext\builder\traits;
 
 use think\Collection;
+use tpext\builder\common\Builder;
 
 trait HasOptions
 {
@@ -61,6 +62,10 @@ trait HasOptions
      */
     public function optionsData($optionsData, $textField = '', $idField = 'id')
     {
+        if (count($optionsData) > 100) {
+            Builder::getInstance()->notify('optionsData数据量过多，建议使用其他方式以优化性能！');
+        }
+
         $options = [];
         foreach ($optionsData as $data) {
             if (empty($idField)) {
