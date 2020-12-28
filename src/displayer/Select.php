@@ -74,6 +74,16 @@ class Select extends Radio
     /**
      * Undocumented function
      *
+     * @return boolean
+     */
+    public function isAjax()
+    {
+        return isset($this->jsOptions['ajax']);
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param string $val
      * @return $this
      */
@@ -171,33 +181,60 @@ class Select extends Radio
             });
         }
 
-        var selected = $('#{$selectId}').data('selected');
-        if(selected)
+        var selected{$key} = $('#{$selectId}').data('selected');
+        var readonly{$key} = $('#{$selectId}').attr('readonly') != undefined;
+
+        if(selected{$key})
         {
             $.ajax({
                 url: '{$url}',
-                data: {selected : selected},
+                data: {selected : selected{$key}},
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     var list = (data.data ? data.data : data) || [];
                     var d = null;
-                    for(var i in list)
+                    if(readonly{$key})
                     {
-                        d = list[i];
-                        $('#{$selectId}').append('<option selected value="' + (d.__id__ || d['{$id}'] || d.id) + '">' + (d.__text__ || d['{$text}'] || d.text) + '</option>');
+                        $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text"></span>');
+                        var texts = [];
+                        for(var i in list)
+                        {
+                            d = list[i];
+                            texts.push(d.__text__ || d['{$text}'] || d.text);
+                        }
+
+                        $('#{$selectId}-text').text(texts.join('、'));
                     }
-                    init{$key}();
+                    else
+                    {
+                        for(var i in list)
+                        {
+                            d = list[i];
+                            $('#{$selectId}').append('<option selected value="' + (d.__id__ || d['{$id}'] || d.id) + '">' + (d.__text__ || d['{$text}'] || d.text) + '</option>');
+                        }
+                        init{$key}();
+                    }
                 },
                 error:function(){
                     $('#{$selectId}').data('selected','');
-                    init{$key}();
+                    if(!readonly{$key})
+                    {
+                        init{$key}();
+                    }
                 }
             });
         }
         else
         {
-            init{$key}();
+            if(readonly{$key})
+            {
+                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text"></span>');
+            }
+            else
+            {
+                init{$key}();
+            }
         }
 
 EOT;

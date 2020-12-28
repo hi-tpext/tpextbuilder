@@ -16,7 +16,7 @@
                 parent.$('.btn-refresh,.search-refresh').eq(0).trigger('click');
             } else {
                 setTimeout(function () {
-                    parent.replace.reload(parent.location.href);
+                    parent.location.replace(parent.location.href);
                 }, 2000);
             }
 
