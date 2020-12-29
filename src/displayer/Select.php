@@ -197,7 +197,7 @@ class Select extends Radio
                     if(readonly{$key})
                     {
                         $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text"></span>');
-                        $('#{$selectId}-text').addClass('field-show');
+                        $('#{$selectId}-text').parent('div').addClass('field-show');
                         var texts = [];
                         for(var i in list)
                         {
@@ -231,7 +231,7 @@ class Select extends Radio
             if(readonly{$key})
             {
                 $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">-空-</span>');
-                $('#{$selectId}-text').addClass('field-show');
+                $('#{$selectId}-text').parent('div').addClass('field-show');
             }
             else
             {
