@@ -10,21 +10,21 @@ trait HasAdd
 {
     public function add()
     {
-        if (request()->isAjax()) {
+        if (request()->isGet()) {
 
-            $this->checkToken();
+            $builder = $this->builder($this->pageTitle, $this->addText, 'add');
+            $form = $builder->form();
+            $data = [];
+            $this->form = $form;
+            $this->buildForm(0, $data);
+            $form->fill($data);
+            $form->method('post');
 
-            return $this->save();
+            return $builder->render();
         }
 
-        $builder = $this->builder($this->pageTitle, $this->addText, 'add');
-        $form = $builder->form();
-        $data = [];
-        $this->form = $form;
-        $this->buildForm(0, $data);
-        $form->fill($data);
-        $form->method('post');
+        $this->checkToken();
 
-        return $builder->render();
+        return $this->save();
     }
 }

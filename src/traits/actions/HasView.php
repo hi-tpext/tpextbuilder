@@ -16,29 +16,29 @@ trait HasView
 {
     public function view($id)
     {
-        if (request()->isPost()) {
-            $this->error('不允许的操作');
-        } else {
+        if (request()->isGet()) {
+
             $builder = $this->builder($this->pageTitle, $this->viewText, 'view');
+
             $data = $this->dataModel->find($id);
             if (!$data) {
                 return $builder->layer()->close(0, '数据不存在');
             }
+
             $form = $builder->form();
             $this->form = $form;
 
             $this->buildForm(2, $data);
-
             $rows = $this->form->getRows();
-
             $form->fill($data);
 
             $this->turn($rows);
-
             $form->readonly();
 
             return $builder->render();
         }
+
+        $this->error('不允许的操作');
     }
 
     private function turn($rows)
@@ -100,7 +100,7 @@ trait HasView
 
                 //
 
-            } else if ($displayer instanceof displayer\Radio) {// radio / select(非ajax)
+            } else if ($displayer instanceof displayer\Radio) { // radio / select(非ajax)
 
                 $row->match($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
 
