@@ -197,6 +197,7 @@ class Select extends Radio
                     if(readonly{$key})
                     {
                         $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text"></span>');
+                        $('#{$selectId}-text').addClass('field-show');
                         var texts = [];
                         for(var i in list)
                         {
@@ -217,7 +218,7 @@ class Select extends Radio
                     }
                 },
                 error:function(){
-                    $('#{$selectId}').data('selected','');
+                    $('#{$selectId}').data('selected', '');
                     if(!readonly{$key})
                     {
                         init{$key}();
@@ -229,7 +230,8 @@ class Select extends Radio
         {
             if(readonly{$key})
             {
-                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text"></span>');
+                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">-空-</span>');
+                $('#{$selectId}-text').addClass('field-show');
             }
             else
             {
