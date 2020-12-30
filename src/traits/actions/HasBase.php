@@ -162,6 +162,32 @@ trait HasBase
      */
     protected function buildDataList()
     {
+        if (method_exists($this->dataModel, 'asTreeList')) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
+            $table = $this->table;
+
+            $table->sortable([]);
+
+            $data = $this->dataModel->getLineData();
+
+            if ($this->isExporting) {
+                $__ids__ = input('__ids__');
+                if (!empty($__ids__)) {
+                    $ids = explode(',', $__ids__);
+                    $newd = [];
+                    foreach ($data as $d) {
+                        if (in_array($d['id'], $ids)) {
+                            $newd[] = $d;
+                        }
+                    }
+                    $data = $newd;
+                }
+            }
+
+            $this->buildTable($data);
+            $table->fill($data);
+            return $data;
+        }
+
         $page = input('get.__page__/d', 1);
         $page = $page < 1 ? 1 : $page;
         $sortOrder = input('get.__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
