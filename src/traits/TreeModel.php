@@ -90,7 +90,7 @@ trait TreeModel
     }
 
     /**
-     * 获取多维结构数据 text当&nbsp;(适合放列表页面)
+     * 获取1维结构数据 text当&nbsp;(适合放列表页面)
      *
      * @return array
      */
@@ -111,12 +111,12 @@ trait TreeModel
     }
 
     /**
-     * 获取多维结构数据 text当&nbsp;(适合放列表页面)
+     * 获取1维结构数据 (适合放列select)
      *
      * @param integer $except　排除的(select中的当前id)
      * @return array
      */
-    public function getOptions($except = 0)
+    public function getOptionsData($except = 0)
     {
         $this->treeInit();
         $this->lineType = 2;
