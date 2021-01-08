@@ -10,7 +10,7 @@ trait HasIndex
 {
     use HasExport;
     use HasSelectPage;
-    use HasTree;
+    use HasLeftTree;
 
     public function index()
     {

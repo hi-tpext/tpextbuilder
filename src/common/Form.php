@@ -41,7 +41,7 @@ class Form extends FWrapper implements Renderable
 
     protected $defaultDisplayerSize = null;
 
-    protected $defaultDisplayerCloSize = 12;
+    protected $defaultDisplayerColSize = 12;
 
     protected $validator = [];
 
@@ -407,9 +407,9 @@ class Form extends FWrapper implements Renderable
      * @param integer $size
      * @return $this
      */
-    public function defaultDisplayerCloSize($size = 12)
+    public function defaultDisplayerColSize($size = 12)
     {
-        $this->defaultDisplayerCloSize = $size;
+        $this->defaultDisplayerColSize = $size;
         return $this;
     }
 
@@ -689,7 +689,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : $this->defaultDisplayerCloSize));
+            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : $this->defaultDisplayerColSize));
 
             if ($this->__fields__) {
 

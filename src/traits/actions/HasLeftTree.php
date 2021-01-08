@@ -6,7 +6,7 @@ namespace tpext\builder\traits\actions;
  * 左侧树形结构
  */
 
-trait HasTree
+trait HasLeftTree
 {
     /**
      * 默认查询条件

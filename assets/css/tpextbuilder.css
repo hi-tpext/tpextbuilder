@@ -431,6 +431,12 @@ span.the-field.yellow {
 {
     width:12%;
     float:left;
+    padding: 0;
+}
+
+.ztree,.jstree
+{
+    padding: 0;
 }
 
 .right-table
