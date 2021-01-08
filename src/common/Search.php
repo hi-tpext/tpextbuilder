@@ -37,7 +37,7 @@ class Search extends SWrapper implements Renderable
 
     protected $defaultDisplayerSize = [4, 8];
 
-    protected $defaultDisplayerCloSize = 2;
+    protected $defaultDisplayerColSize = 2;
 
     protected $butonsSizeClass = 'btn-xs';
 
@@ -206,9 +206,9 @@ class Search extends SWrapper implements Renderable
      * @param integer $size
      * @return $this
      */
-    public function defaultDisplayerCloSize($size = 2)
+    public function defaultDisplayerColSize($size = 2)
     {
-        $this->defaultDisplayerCloSize = $size;
+        $this->defaultDisplayerColSize = $size;
         return $this;
     }
 
@@ -505,7 +505,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : $this->defaultDisplayerCloSize, $count > 3 ? $arguments[3] : '');
+            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : $this->defaultDisplayerColSize, $count > 3 ? $arguments[3] : '');
 
             if ($this->__fields__) {
                 $this->__fields__->addRow($row);

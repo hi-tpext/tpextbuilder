@@ -64,6 +64,8 @@ trait TreeModel
 
     protected $except = 0;
 
+    protected $allTreeData;
+
     /**
      * 是否显示为树行
      *
@@ -87,6 +89,37 @@ trait TreeModel
         // $this->treeIdField = 'id';
         // $this->treeParentIdField = 'pid';
         // $this->treeSortField ='sort';
+    }
+
+    /**
+     * 重新初始化参数
+     *
+     * @param array $initData
+     * @return $this
+     */
+    public function reInit($initData)
+    {
+        foreach ($initData as $key => $value) {
+            $this->setOption($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 判断这个$key 是不是我的成员属性，如果是，则设置
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    protected function setOption($key, $value)
+    {
+        //得到所有的成员属性
+        $keys = array_keys(get_class_vars(__CLASS__));
+        if (in_array($key, $keys)) {
+            $this->$key = $value;
+        }
     }
 
     /**
@@ -148,6 +181,7 @@ trait TreeModel
     {
         $this->treeInit();
         $this->except = 0;
+        $this->lineType = 0;
 
         if (!empty($this->treeData)) {
             return $this->treeData;
@@ -161,11 +195,15 @@ trait TreeModel
 
     protected function builderData()
     {
-        $allTreeData = static::where($this->treeScope)->select();
+        if ($this->lineType == 1) {
+            $this->allTreeData = static::select(); //列表页，显示全部不受`treeScope`限制
+        } else {
+            $this->allTreeData = static::where($this->treeScope)->select();
+        }
 
         $roots = [];
 
-        foreach ($allTreeData as $d) {
+        foreach ($this->allTreeData as $d) {
 
             if ($d[$this->treeParentIdField] != 0) {
                 continue;
@@ -196,7 +234,7 @@ trait TreeModel
             $d['__deep__'] = 0;
             $d['__id__'] = $d[$this->treeIdField];
             $d['__text__'] = $d[$this->treeTextField];
-            $d['__children__'] = $this->getChildrenData($allTreeData, $d[$this->treeIdField]);
+            $d['__children__'] = $this->getChildrenData($d[$this->treeIdField]);
 
         }
     }
@@ -204,18 +242,17 @@ trait TreeModel
     /**
      * Undocumented function
      *
-     * @param array $allTreeData
      * @param integer $pid
      * @param integer $deep
      * @return array
      */
-    protected function getChildrenData($allTreeData, $pid, $deep = 1)
+    protected function getChildrenData($pid, $deep = 1)
     {
 
         $data = [];
         $deep += 1;
 
-        foreach ($allTreeData as $d) {
+        foreach ($this->allTreeData as $d) {
 
             if ($d[$this->treeIdField] == $this->except) {
                 continue;
@@ -250,11 +287,12 @@ trait TreeModel
                 }
 
                 $this->lineData[] = $d;
+                $this->getChildrenData($d[$this->treeIdField], $deep);
                 continue;
             }
 
             $d['__text__'] = $d[$this->treeTextField];
-            $d['__children__'] = $this->getChildrenData($allTreeData, $d[$this->treeIdField]);
+            $d['__children__'] = $this->getChildrenData($d[$this->treeIdField], $deep);
 
             $children[] = $d;
         }
