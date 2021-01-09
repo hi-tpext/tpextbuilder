@@ -5,7 +5,7 @@ return [
     'layer_size' => '1100px,98%',
     'allow_suffix' =>
     //
-    "jpg,jpeg,gif,wbmp,webpg,png,bmp,ico" .
+    "jpg,jpeg,gif,wbmp,webpg,png,bmp,ico," .
     //
     "flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogv,mov,wmv,mp4,webm," .
     //
