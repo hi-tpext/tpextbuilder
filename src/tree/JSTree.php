@@ -222,7 +222,7 @@ EOT;
             var parent = $('.tree-div').parent('div');
             if($(this).children('i').hasClass('mdi-format-horizontal-align-left'))
             {
-                parent.next('div').css('width' ,(rightw + leftw - 15) + 'px');
+                parent.next('div').css('width' ,(rightw + leftw - 25) + 'px');
                 parent.css({'width':'15px' ,'padding':0 ,'margin':0});
                 $(this).next('.ztree').addClass('hidden');
                 $(this).children('i').removeClass('mdi-format-horizontal-align-left').addClass('mdi mdi-format-horizontal-align-right');

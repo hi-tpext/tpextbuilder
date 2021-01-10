@@ -118,6 +118,19 @@ class Builder implements Renderable
     }
 
     /**
+     * 设置视图模板路径，避免不同的应用中使用Builder时模板缓存冲突
+     *
+     * @param string $template
+     * @return $this
+     */
+    public function serView($template)
+    {
+        $this->view = $template;
+
+        return $this;
+    }
+
+    /**
      * Undocumented function
      *
      * @return string
@@ -531,7 +544,10 @@ class Builder implements Renderable
 
         $this->beforRender();
 
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+        if(empty($this->view))
+        {
+            $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+        }
 
         if (!empty($this->notify)) {
 
