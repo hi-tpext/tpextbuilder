@@ -16,6 +16,20 @@ trait HasLeftTree
     protected $treeScope = [];//如 [['enable', 'eq', 1]]
 
     /**
+     * 根一级的id
+     *
+     * @var integer
+     */
+    protected $treeRootid = 0;
+
+    /**
+     * 根一级的id
+     *
+     * @var integer
+     */
+    protected $treeRootText = '全部';
+
+    /**
      * js树类型，ztree/jstree
      *
      * @var string
