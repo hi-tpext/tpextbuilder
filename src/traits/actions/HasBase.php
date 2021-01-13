@@ -60,7 +60,7 @@ trait HasBase
     /**
      * 列表页关联加载 如 ['category', 'logs']
      *
-     * @var string
+     * @var array
      */
     protected $indexWith = [];
 
