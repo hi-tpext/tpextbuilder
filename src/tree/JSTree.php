@@ -72,17 +72,17 @@ class JSTree implements Renderable
      * @param string $pidField
      * @return $this
      */
-    public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id')
+    public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id', $rootText = '全部')
     {
         $tree = [
             [
                 'id' => '__all__',
-                'text' => '全部',
+                'text' => $rootText,
                 'state' => [
                     'opened' => false,
                 ],
                 'children' => [],
-            ]
+            ],
         ];
         foreach ($treeData as $d) {
 

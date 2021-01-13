@@ -32,7 +32,7 @@ trait HasIndex
                 $tree = $builder->jsTree('1 left-tree');
             }
 
-            $tree->fill($this->treeModel->where($this->treeScope)->select(), $this->treeTextField, $this->treeIdField, $this->treeParentIdField);
+            $tree->fill($this->treeModel->where($this->treeScope)->select(), $this->treeTextField, $this->treeIdField, $this->treeParentIdField, $this->treeRootText);
 
             $tree->trigger('.row-' . $this->treeKey);
 

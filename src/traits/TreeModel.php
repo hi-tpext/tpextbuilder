@@ -12,6 +12,13 @@ trait TreeModel
     protected $treeScope = []; //如 [['enable', 'eq', 1]]
 
     /**
+     * 根一级的id
+     *
+     * @var integer
+     */
+    protected $treeRootId = 0;
+
+    /**
      * 树 Text 字段 如 'name'
      *
      * @var string
@@ -62,7 +69,7 @@ trait TreeModel
 
     protected $lineType = 0;
 
-    protected $except = 0;
+    protected $except = [];
 
     protected $allTreeData;
 
@@ -127,11 +134,13 @@ trait TreeModel
      *
      * @return array
      */
-    public function getLineData()
+    public function getLineData($rootId = 0, $except = 0)
     {
         $this->treeInit();
         $this->lineType = 1;
         $this->except = 0;
+        $this->treeRootId = $rootId;
+        $this->except = is_array($except) ? $except : [$except];
 
         if (!empty($this->lineData)) {
             return $this->lineData;
@@ -146,14 +155,15 @@ trait TreeModel
     /**
      * 获取1维结构数据 (适合放列select)
      *
-     * @param integer $except　排除的(select中的当前id)
+     * @param integer|array $except　排除的(select中的当前id)
      * @return array
      */
-    public function getOptionsData($except = 0)
+    public function getOptionsData($rootId = 0, $except = 0)
     {
         $this->treeInit();
         $this->lineType = 2;
-        $this->except = $except;
+        $this->treeRootId = $rootId;
+        $this->except = is_array($except) ? $except : [$except];
 
         if (!empty($this->optionsData)) {
             return $this->optionsData;
@@ -177,11 +187,13 @@ trait TreeModel
      *
      * @return array
      */
-    public function getTreeData()
+    public function getTreeData($rootId = 0, $except = 0)
     {
         $this->treeInit();
         $this->except = 0;
         $this->lineType = 0;
+        $this->treeRootId = $rootId;
+        $this->except = is_array($except) ? $except : [$except];
 
         if (!empty($this->treeData)) {
             return $this->treeData;
@@ -205,7 +217,7 @@ trait TreeModel
 
         foreach ($this->allTreeData as $d) {
 
-            if ($d[$this->treeParentIdField] != 0) {
+            if ($d[$this->treeParentIdField] != $this->treeRootId) {
                 continue;
             }
 
