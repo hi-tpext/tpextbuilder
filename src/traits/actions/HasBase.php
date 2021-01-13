@@ -58,11 +58,11 @@ trait HasBase
     protected $isExporting = false;
 
     /**
-     * 列表页关联加载 如 'category,logs'
+     * 列表页关联加载 如 ['category', 'logs']
      *
-     * @var string
+     * @var array
      */
-    protected $indexWith = '';
+    protected $indexWith = [];
 
     /**
      * 不允许删除的
