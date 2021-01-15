@@ -57,6 +57,13 @@ trait HasSelectPage
      */
     protected $selectPagesize = 20;
 
+    /**
+     * 下拉列表关联加载 如 ['category']
+     *
+     * @var string
+     */
+    protected $selectWith = [];
+
     public function selectPage()
     {
         if (!$this->dataModel) {
@@ -129,7 +136,7 @@ trait HasSelectPage
                 }
             }
 
-            $list = $this->dataModel->with($this->indexWith)->where($where)->whereOr($WhereOr)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
+            $list = $this->dataModel->with($this->selectWith)->where($where)->whereOr($WhereOr)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
 
             $hasMore = count($list) == $pagesize ? 1 : 0;
         }
