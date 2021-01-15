@@ -43,17 +43,40 @@ trait HasExport
         }
 
         if ($this->dataModel) {
-            $list = $this->dataModel->with($this->indexWith)->where($where)->order($sortOrder)->cursor();
+            if (method_exists($this->dataModel, 'asTreeList')) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
+                $table = $this->table;
 
-            $data = [];
+                $table->sortable([]);
 
-            foreach ($list as $li) {
-                $data[] = $li;
+                $data = $this->dataModel->getLineData();
+
+                if ($this->isExporting) {
+                    $__ids__ = input('__ids__');
+                    if (!empty($__ids__)) {
+                        $ids = explode(',', $__ids__);
+                        $newd = [];
+                        foreach ($data as $d) {
+                            if (in_array($d['id'], $ids)) {
+                                $newd[] = $d;
+                            }
+                        }
+                        $data = $newd;
+                    }
+                }
+
+                $this->buildTable($data);
+            } else {
+                $list = $this->dataModel->with($this->indexWith)->where($where)->order($sortOrder)->cursor();
+                $data = [];
+
+                foreach ($list as $li) {
+                    $data[] = $li;
+                }
+
+                // TODO 真正发挥cursor的性能优势
+
+                $this->buildTable($data);
             }
-
-            // TODO 真正发挥cursor的性能优势
-
-            $this->buildTable($data);
         } else {
             $data = $this->buildDataList();
         }
