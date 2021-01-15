@@ -29,6 +29,8 @@ class Select extends Radio
 
     protected $prevSelect = null;
 
+    protected $withParams = [];
+
     protected $jsOptions = [
         'placeholder' => '',
         'allowClear' => true,
@@ -137,7 +139,11 @@ class Select extends Radio
 
             $key = preg_replace('/\W/', '', $selectId);
 
+            $withParams = empty($this->withParams) ? '[]' : json_encode($this->withParams);
+
             $script = <<<EOT
+
+        var withParams{$key} = JSON.parse('{$withParams}');
 
         var init{$key} = function()
         {
@@ -149,7 +155,7 @@ class Select extends Radio
                 delay: {$delay},
                 data: function (params) {
                     var prev_val = '{$prev_id}' ? $('#{$prev_id}').val() : '';
-                    return {
+                    var data = {
                         q: params.term,
                         page: params.page || 1,
                         prev_val : prev_val,
@@ -158,6 +164,15 @@ class Select extends Radio
                         idField : '{$id}' == '_' ? null : '{$id}',
                         textField : '{$text}' == '_' ? null : '{$text}'
                     };
+                    console.log(withParams{$key})
+                    if(withParams{$key}.length)
+                    {
+                        for(var i in withParams{$key})
+                        {
+                            data[withParams{$key}[i]] =　$(":input[name='" + withParams{$key}[i] + "']").val();
+                        }
+                    }
+                    return data;
                 },
                 processResults: function (data, params) {
                     params.page = params.page || 1;
@@ -290,6 +305,20 @@ EOT;
     public function withPrev($prevSelect)
     {
         $this->prevSelect = $prevSelect;
+
+        return $this;
+    }
+
+    /**
+     * ajax 时，附带其他字段的值。
+     * 与级联有所不同，级联时上级改变会清空下级，并重新重新加载。
+     * 附带字段的值改变不会触发此控件的重新加载，只是在此控件重新加载的时候附加参数。
+     * @param array|string $val
+     * @return $this
+     */
+    public function withParams($val)
+    {
+        $this->withParams = is_array($val) ? $val : explode(',', $val);
 
         return $this;
     }

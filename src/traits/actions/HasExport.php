@@ -28,7 +28,7 @@ trait HasExport
 
     public function export()
     {
-        request()->withPost(request()->get());//兼容以post方式获取参数
+        request()->withPost(request()->get()); //兼容以post方式获取参数
 
         $this->isExporting = true;
         $this->table = $this->builder()->table();
@@ -44,10 +44,8 @@ trait HasExport
 
         if ($this->dataModel) {
             if (method_exists($this->dataModel, 'asTreeList')) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
-                $table = $this->table;
 
-                $table->sortable([]);
-
+                $this->table->sortable([]);
                 $data = $this->dataModel->getLineData();
 
                 if ($this->isExporting) {
@@ -56,7 +54,7 @@ trait HasExport
                         $ids = explode(',', $__ids__);
                         $newd = [];
                         foreach ($data as $d) {
-                            if (in_array($d['id'], $ids)) {
+                            if (in_array($d[$this->getPk()], $ids)) {
                                 $newd[] = $d;
                             }
                         }
