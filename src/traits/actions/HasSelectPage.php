@@ -13,7 +13,7 @@ trait HasSelectPage
      *
      * @var array
      */
-    protected $selectScope = [];//如 [['enable', 'eq', 1]]
+    protected $selectScope = []; //如 [['enable', 'eq', 1]]
 
     /**
      * 模糊查询字段，如 'name|title'
@@ -57,10 +57,12 @@ trait HasSelectPage
      */
     protected $selectPagesize = 20;
 
-     /**
-     * 下拉列表关联加载 如 ['category']
-     *
-     * @var string
+    /**
+     * 下拉列表关联加载 如 ['level']
+     * 设置后　selectTextField　可以为'{id}#{nickname}{level.name}'
+     * 若设置了`selectFields`，必须包含关联字段`level_id`，
+     * 如：$this->selectFields＝ 'id,nickname,level_id';
+     * @var array
      */
     protected $selectWith = [];
 
@@ -116,7 +118,7 @@ trait HasSelectPage
                     $where[] = [$idField, 'eq', $selected];
                 }
             }
-            $list = $this->dataModel->where($where)->order($sortOrder)->field($this->selectFields)->select();
+            $list = $this->dataModel->with($this->selectWith)->where($where)->order($sortOrder)->field($this->selectFields)->select();
             $hasMore = 0;
         } else {
             $q = input('q', '');
