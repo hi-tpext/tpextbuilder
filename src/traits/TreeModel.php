@@ -138,7 +138,6 @@ trait TreeModel
     {
         $this->treeInit();
         $this->lineType = 1;
-        $this->except = 0;
         $this->treeRootId = $rootId;
         $this->except = is_array($except) ? $except : [$except];
 
@@ -190,7 +189,6 @@ trait TreeModel
     public function getTreeData($rootId = 0, $except = 0)
     {
         $this->treeInit();
-        $this->except = 0;
         $this->lineType = 0;
         $this->treeRootId = $rootId;
         $this->except = is_array($except) ? $except : [$except];
@@ -221,7 +219,7 @@ trait TreeModel
                 continue;
             }
 
-            if ($d[$this->treeIdField] == $this->except) {
+            if (!empty($this->except) && in_array($d[$this->treeIdField], $this->except)) {
                 continue;
             }
 
@@ -266,7 +264,7 @@ trait TreeModel
 
         foreach ($this->allTreeData as $d) {
 
-            if ($d[$this->treeIdField] == $this->except) {
+            if (!empty($this->except) && in_array($d[$this->treeIdField], $this->except)) {
                 continue;
             }
 
