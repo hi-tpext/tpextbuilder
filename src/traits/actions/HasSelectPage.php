@@ -143,6 +143,15 @@ trait HasSelectPage
                 $li = $li->toArray();
                 $replace = [];
                 foreach ($li as $key => $val) {
+                    if (is_array($val)) {
+                        foreach ($val as $k => $v) {
+                            if ($n < 1) {
+                                $keys[] = '{' . $key . '.' . $k . '}';
+                            }
+                            $replace[] = $v;
+                        }
+                        continue;
+                    }
                     if ($n < 1) {
                         $keys[] = '{' . $key . '}';
                     }
