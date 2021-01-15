@@ -868,7 +868,11 @@ EOT;
             $replace[] = $val;
         }
 
-        return str_replace($keys, $replace, $this->to);
+        $val = str_replace($keys, $replace, $this->to);
+
+        $val = preg_replace('/\{\w+\.\w+\}/', '-', $val); //处理模型关联不上的情况
+
+        return $val;
     }
 
     protected function parseMapClass()

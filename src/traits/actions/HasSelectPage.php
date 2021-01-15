@@ -59,8 +59,8 @@ trait HasSelectPage
 
     /**
      * 下拉列表关联加载 如 ['level']
-     * 设置后　selectTextField　可以为'{id}#{nickname}{level.name}'
-     * 若设置了`selectFields`，必须包含关联字段`level_id`，
+     * 设置后`selectTextField`可以为'{id}#{nickname}{level.name}'
+     * 若设置了`selectFields`,必须包含关联字段`level_id`，
      * 如：$this->selectFields＝ 'id,nickname,level_id';
      * @var array
      */
@@ -125,7 +125,7 @@ trait HasSelectPage
             $page = input('page/d', 1);
 
             $page = $page < 1 ? 1 : $page;
-            $WhereOr = [];
+            $whereOr = [];
 
             $where = $this->selectScope;
 
@@ -134,11 +134,11 @@ trait HasSelectPage
                     $where[] = [$this->selectSearch, 'like', '%' . $q . '%'];
                 }
                 if (is_numeric($q)) {
-                    $WhereOr[] = [$idField, 'eq', $q];
+                    $whereOr[] = [$idField, 'eq', $q];
                 }
             }
 
-            $list = $this->dataModel->with($this->selectWith)->where($where)->whereOr($WhereOr)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
+            $list = $this->dataModel->with($this->selectWith)->where($where)->whereOr($whereOr)->order($sortOrder)->limit(($page - 1) * $pagesize, $pagesize)->field($this->selectFields)->select();
 
             $hasMore = count($list) == $pagesize ? 1 : 0;
         }
@@ -168,6 +168,10 @@ trait HasSelectPage
                 }
                 $li['__id__'] = $li[$idField];
                 $li['__text__'] = str_replace($keys, $replace, $textField);
+
+                //处理关联不上的情况,如`member`表的`level_id`关联`level`表，但如果某条记录的`level_id`为０,则关联失败，下拉框会出现{level.name}
+                $li['__text__'] = preg_replace('/\{\w+\.\w+\}/', '-', $li['__text__']);
+
                 $n += 1;
                 $data[] = $li;
             }
