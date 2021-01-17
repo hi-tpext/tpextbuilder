@@ -118,27 +118,30 @@ trait TreeModel
      *
      * @param string $key
      * @param mixed $value
-     * @return void
+     * @return $this
      */
-    protected function setOption($key, $value)
+    public function setOption($key, $value)
     {
         //得到所有的成员属性
         $keys = array_keys(get_class_vars(__CLASS__));
+
         if (in_array($key, $keys)) {
             $this->$key = $value;
         }
+
+        return $this;
     }
 
     /**
      * 获取1维结构数据 text当&nbsp;(适合放列表页面)
      *
+     * @param array $except
      * @return array
      */
-    public function getLineData($rootId = 0, $except = 0)
+    public function getLineData($except = [])
     {
         $this->treeInit();
         $this->lineType = 1;
-        $this->treeRootId = $rootId;
         $this->except = is_array($except) ? $except : [$except];
 
         if (!empty($this->lineData)) {
@@ -154,14 +157,13 @@ trait TreeModel
     /**
      * 获取1维结构数据 (适合放列select)
      *
-     * @param integer|array $except　排除的(select中的当前id)
+     * @param array $except
      * @return array
      */
-    public function getOptionsData($rootId = 0, $except = 0)
+    public function getOptionsData($except = [])
     {
         $this->treeInit();
         $this->lineType = 2;
-        $this->treeRootId = $rootId;
         $this->except = is_array($except) ? $except : [$except];
 
         if (!empty($this->optionsData)) {
@@ -184,13 +186,13 @@ trait TreeModel
     /**
      * 获取多维结构数据
      *
+     * @param array $except
      * @return array
      */
-    public function getTreeData($rootId = 0, $except = 0)
+    public function getTreeData($except = [])
     {
         $this->treeInit();
         $this->lineType = 0;
-        $this->treeRootId = $rootId;
         $this->except = is_array($except) ? $except : [$except];
 
         if (!empty($this->treeData)) {
@@ -205,11 +207,7 @@ trait TreeModel
 
     protected function builderData()
     {
-        if ($this->lineType == 1) {
-            $this->allTreeData = static::select(); //列表页，显示全部不受`treeScope`限制
-        } else {
-            $this->allTreeData = static::where($this->treeScope)->select();
-        }
+        $this->allTreeData = static::where($this->treeScope)->select();
 
         $roots = [];
 
