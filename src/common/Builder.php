@@ -124,7 +124,7 @@ class Builder implements Renderable
      * @param string $template
      * @return $this
      */
-    public function serView($template)
+    public function setView($template)
     {
         $this->view = $template;
 
