@@ -825,7 +825,13 @@ $(function () {
         var count = checkboxes.size();
 
         checkall.on('change', function () {
-            checkboxes.prop('checked', checkall.is(':checked'));
+            var ischecked = checkall.is(':checked');
+            checkboxes.each(function (ii, ee) {
+                if ($(ee).attr('disabled') !== undefined || $(ee).attr('readonly') !== undefined) {
+                    return;
+                }
+                $(ee).prop('checked', ischecked);
+            });
         });
 
         checkboxes.on('change', function () {

@@ -4,7 +4,7 @@ namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasOptions;
 
-class Select extends Radio
+class Select extends Field
 {
     use HasOptions;
 

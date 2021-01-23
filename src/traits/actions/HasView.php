@@ -100,7 +100,7 @@ trait HasView
 
                 //
 
-            } else if ($displayer instanceof displayer\Radio) { // radio / select(非ajax)
+            } else if ($displayer instanceof displayer\Radio || $displayer instanceof displayer\Select) { // radio / select(非ajax)
 
                 $row->match($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
 

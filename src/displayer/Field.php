@@ -252,8 +252,7 @@ class Field implements Fillable
      * @param string|int|mixed $val
      * @return $this
      */
-    function
-default($val = '') {
+    function default($val = '') {
         $this->default = $val;
         return $this;
     }

@@ -141,7 +141,7 @@ trait HasExport
             if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
 
                 $displayer = (new displayer\Matches($fieldName, $col->getLabel()))->options($displayer->getOptions());
-            } else if ($displayer instanceof displayer\Radio) {
+            } else if ($displayer instanceof displayer\Radio || $displayer instanceof displayer\Select) {
 
                 $displayer = (new displayer\Match($fieldName, $col->getLabel()))->options($displayer->getOptions());
             } else if ($displayer instanceof displayer\SwitchBtn) {
