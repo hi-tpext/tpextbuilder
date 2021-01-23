@@ -224,7 +224,7 @@ class Items extends Field
            }
         });
         $("#{$id}-temple .item-field").each(function(i, obj){
-            if($(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
+            if($(obj).hasClass('checkbox-label') || $(obj).hasClass('radio-label'))
             {
                 var boxes = $(obj).find('input');
                 boxes.each(function(){
@@ -250,7 +250,7 @@ class Items extends Field
 
         function reset(obj)
         {
-            if($(obj).hasClass('lyear-checkbox') || $(obj).hasClass('lyear-radio'))
+            if($(obj).hasClass('checkbox-label') || $(obj).hasClass('radio-label'))
             {
                 var boxes = $(obj).find('input');
                 boxes.each(function(){
