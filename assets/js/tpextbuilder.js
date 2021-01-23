@@ -124,6 +124,7 @@
                 $.alert({
                     title: '操作提示',
                     content: confirm,
+                    type: 'orange',
                     buttons: {
                         confirm: {
                             text: '确认',
@@ -260,6 +261,7 @@
                 $.alert({
                     title: '操作提示',
                     content: confirm,
+                    type: 'orange',
                     buttons: {
                         confirm: {
                             text: '确认',
@@ -319,6 +321,7 @@
                 $.alert({
                     title: '操作提示',
                     content: confirm,
+                    type: 'orange',
                     buttons: {
                         confirm: {
                             text: '确认',
@@ -366,6 +369,7 @@
                 $.alert({
                     title: '操作提示',
                     content: confirm,
+                    type: 'orange',
                     buttons: {
                         confirm: {
                             text: '确认',
