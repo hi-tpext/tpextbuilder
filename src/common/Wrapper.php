@@ -20,6 +20,7 @@ class Wrapper
         'button' => \tpext\builder\displayer\Button::class,
         'select' => \tpext\builder\displayer\Select::class,
         'multipleSelect' => \tpext\builder\displayer\MultipleSelect::class,
+        'dualListbox' => \tpext\builder\displayer\DualListbox::class,
         'hidden' => \tpext\builder\displayer\Hidden::class,
         'switchBtn' => \tpext\builder\displayer\SwitchBtn::class,
         'tags' => \tpext\builder\displayer\Tags::class,

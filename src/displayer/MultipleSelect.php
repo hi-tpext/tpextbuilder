@@ -15,7 +15,7 @@ class MultipleSelect extends Select
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param array|string $val
      * @return $this
      */
     function default($val = []) {
@@ -34,6 +34,12 @@ class MultipleSelect extends Select
         }
 
         $this->isGroup();
+
+        foreach ($this->checked as &$ck) {
+            $ck = '-' . $ck;
+        }
+
+        unset($ck);
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,

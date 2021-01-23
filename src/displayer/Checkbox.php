@@ -89,7 +89,7 @@ class Checkbox extends Field
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param array|string $val
      * @return $this
      */
     function default($val = []) {

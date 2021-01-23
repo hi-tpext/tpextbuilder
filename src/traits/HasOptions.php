@@ -62,7 +62,7 @@ trait HasOptions
      */
     public function optionsData($optionsData, $textField = '', $idField = 'id')
     {
-        if (count($optionsData) > 100) {
+        if (count($optionsData) > 2000) {
             Builder::getInstance()->notify('optionsData数据量过多，建议使用其他方式以优化性能！');
         }
 
