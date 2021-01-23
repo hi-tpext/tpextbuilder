@@ -74,13 +74,15 @@ class ZTree implements Renderable
      */
     public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id', $rootText = '全部')
     {
-        $tree = [
-            [
+        $tree = [];
+
+        if ($rootText) {
+            $tree[] = [
                 'id' => '__all__',
                 'pId' => '',
                 'name' => $rootText,
-            ],
-        ];
+            ];
+        }
 
         foreach ($treeData as $d) {
             $tree[] = [
