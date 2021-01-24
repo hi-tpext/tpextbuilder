@@ -46,59 +46,56 @@
                         url: '{$action}' || location.href,
                         data: postdata,
                         type: "{$method|default='POST'}",
-                        dataType: 'html',
+                        dataType: 'json',
                         success: function (data) {
                             setTimeout(function () {
                                 lightyear.loading('hide');
                             }, 500);
-                            if (/^\{.+\}$/.test(data)) {
-                                data = JSON.parse(data);
-                                if (data.status || data.code) {
-                                    if (data.layer_close) {
-                                        that.closeLayer(data.msg || data.message || '操作成功！', 'success');
-                                    } else if (data.layer_close_refresh) {
-                                        that.closeLayerRefresh(data.msg || data.message || '操作成功！', 'success');
-                                    } else if (data.layer_close_go) {
-                                        that.closeLayerGo(data.msg || data.message || '操作成功！', data
-                                            .layer_close_go, 'success');
-                                    }
-                                    else if (data.url) {
-                                        lightyear.notify(data.msg || data.message || '操作成功！', 'success');
-                                        setTimeout(function () {
-                                            location.replace(data.url);
-                                        }, data.wait * 1000 || 2000);
-                                    }
-                                    else {
-                                        lightyear.notify(data.msg || data.message || '操作成功！',
-                                            'success');
-                                    }
-                                } else {
-                                    if (data.layer_close) {
-                                        that.closeLayer(data.msg || data.message || '操作失败！', 'danger');
-                                    } else if (data.layer_close_refresh) {
-                                        that.closeLayerRefresh(data.msg || data.message || '操作失败！', 'danger');
-                                    } else if (data.layer_close_go) {
-                                        that.closeLayerGo(data.msg || data.message || '操作失败！', data
-                                            .layer_close_go, 'danger');
-                                    }
-                                    else if (data.url) {
-                                        lightyear.notify(data.msg || data.message || '操作失败', 'danger');
-                                        setTimeout(function () {
-                                            location.replace(data.url);
-                                        }, data.wait * 1000 || 2000);
-                                    }
-                                    else {
-                                        lightyear.notify(data.msg || data.message || '操作失败', 'danger');
-                                    }
+                            if (data.status || data.code) {
+                                if (data.layer_close) {
+                                    that.closeLayer(data.msg || data.message || '操作成功！', 'success');
+                                } else if (data.layer_close_refresh) {
+                                    that.closeLayerRefresh(data.msg || data.message || '操作成功！', 'success');
+                                } else if (data.layer_close_go) {
+                                    that.closeLayerGo(data.msg || data.message || '操作成功！', data
+                                        .layer_close_go, 'success');
                                 }
-                                if (data.script || (data.data && data.data.script)) {
-                                    var script = data.script || data.data.script;
-                                    if ($('#script-div').size()) {
-                                        $('#script-div').html(script);
-                                    } else {
-                                        $('body').append(
-                                            '<div class="hidden" id="script-div">' + script + '</div>');
-                                    }
+                                else if (data.url) {
+                                    lightyear.notify(data.msg || data.message || '操作成功！', 'success');
+                                    setTimeout(function () {
+                                        location.replace(data.url);
+                                    }, data.wait * 1000 || 2000);
+                                }
+                                else {
+                                    lightyear.notify(data.msg || data.message || '操作成功！',
+                                        'success');
+                                }
+                            } else {
+                                if (data.layer_close) {
+                                    that.closeLayer(data.msg || data.message || '操作失败！', 'danger');
+                                } else if (data.layer_close_refresh) {
+                                    that.closeLayerRefresh(data.msg || data.message || '操作失败！', 'danger');
+                                } else if (data.layer_close_go) {
+                                    that.closeLayerGo(data.msg || data.message || '操作失败！', data
+                                        .layer_close_go, 'danger');
+                                }
+                                else if (data.url) {
+                                    lightyear.notify(data.msg || data.message || '操作失败', 'danger');
+                                    setTimeout(function () {
+                                        location.replace(data.url);
+                                    }, data.wait * 1000 || 2000);
+                                }
+                                else {
+                                    lightyear.notify(data.msg || data.message || '操作失败', 'danger');
+                                }
+                            }
+                            if (data.script || (data.data && data.data.script)) {
+                                var script = data.script || data.data.script;
+                                if ($('#script-div').size()) {
+                                    $('#script-div').html(script);
+                                } else {
+                                    $('body').append(
+                                        '<div class="hidden" id="script-div">' + script + '</div>');
                                 }
                             }
                         },
