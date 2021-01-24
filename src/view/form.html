@@ -33,12 +33,11 @@
 
         window.__forms__['{$id}'] = {
             ajax: '{$ajax}' == '1',
-            export: 0,
             action: '{$action}',
             formSubmit: function () {
                 lightyear.loading('hide');
                 var that = this;
-                if (!that.export && that.ajax) {
+                if (that.ajax) {
                     lightyear.loading('show');
 
                     var postdata = $('#{$id} form').serialize();
