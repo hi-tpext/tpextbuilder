@@ -101,11 +101,13 @@ class JSTree implements Renderable
             ];
         }
 
-        foreach ($treeData as $d) {
+        foreach ($treeData as $k => $d) {
 
             if ($d[$pidField] != 0) {
                 continue;
             }
+
+            unset($treeData[$k]);
 
             $tree[] = [
                 'id' => $d[$idField],
@@ -126,9 +128,11 @@ class JSTree implements Renderable
     {
         $children = [];
 
-        foreach ($treeData as $d) {
+        foreach ($treeData as $k => $d) {
 
             if ($d[$pidField] == $pid) {
+
+                unset($treeData[$k]);
 
                 $children[] = [
                     'id' => $d[$idField],
