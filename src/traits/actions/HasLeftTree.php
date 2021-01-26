@@ -65,6 +65,13 @@ trait HasLeftTree
     protected $treeKey = '';
 
     /**
+     * 展开所有节点
+     *
+     * @var boolean
+     */
+    protected $treeExpandAll = true;
+
+    /**
      * 树数据模型
      *
      * @var \think\Model
