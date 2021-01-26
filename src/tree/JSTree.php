@@ -21,6 +21,8 @@ class JSTree implements Renderable
 
     protected $partial = false;
 
+    protected $expandAll = false;
+
     public function __construct()
     {
         $this->addStyle('float:left;padding-left:5px;');
@@ -35,6 +37,18 @@ class JSTree implements Renderable
     public function partial($val = true)
     {
         $this->partial = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function expandAll($val = true)
+    {
+        $this->expandAll = $val;
         return $this;
     }
 
@@ -191,6 +205,9 @@ EOT;
     public function beforRender()
     {
         $data = json_encode($this->data);
+
+        $expandAll = $this->expandAll ? 'open_all' : 'close_all';
+
         $script = <<<EOT
 
         var setting = {
@@ -213,8 +230,11 @@ EOT;
 
         $(document).ready(function () {
             $('#{$this->id}').jstree(setting);
-            $('#{$this->id}').on('activate_node.jstree', function(e, data) {
+            $('#{$this->id}').on('activate_node.jstree', function(event, data) {
                 {$this->onClick}
+            });
+            $('#{$this->id}').on("loaded.jstree", function (event, data) {
+                $('#{$this->id}').jstree('{$expandAll}');
             });
         });
 
@@ -227,14 +247,14 @@ EOT;
             {
                 parent.next('div').css('width' ,(rightw + leftw - 25) + 'px');
                 parent.css({'width':'15px' ,'padding':0 ,'margin':0});
-                $(this).next('.ztree').addClass('hidden');
+                $(this).next('.jstree').addClass('hidden');
                 $(this).children('i').removeClass('mdi-format-horizontal-align-left').addClass('mdi mdi-format-horizontal-align-right');
             }
             else
             {
                 parent.next('div').removeAttr('style');
                 parent.removeAttr('style');
-                $(this).next('.ztree').removeClass('hidden');
+                $(this).next('.jstree').removeClass('hidden');
                 $(this).children('i').removeClass('mdi-format-horizontal-align-right').addClass('mdi mdi-format-horizontal-align-left');
             }
         });

@@ -21,6 +21,8 @@ class ZTree implements Renderable
 
     protected $partial = false;
 
+    protected $expandAll = false;
+
     public function __construct()
     {
         $this->addStyle('float:left;');
@@ -35,6 +37,18 @@ class ZTree implements Renderable
     public function partial($val = true)
     {
         $this->partial = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function expandAll($val = true)
+    {
+        $this->expandAll = $val;
         return $this;
     }
 
@@ -156,6 +170,9 @@ EOT;
     public function beforRender()
     {
         $data = json_encode($this->data);
+
+        $expandAll = $this->expandAll ? 'true' : 'false';
+
         $script = <<<EOT
 
         var treeObj = null;
@@ -193,7 +210,7 @@ EOT;
 
         $(document).ready(function () {
             treeObj = $.fn.zTree.init($("#{$this->id}"), setting, zNodes);
-            treeObj.expandAll(true);
+            treeObj.expandAll({$expandAll});
         });
 
         var leftw = $('.tree-div').parent('div').outerWidth();

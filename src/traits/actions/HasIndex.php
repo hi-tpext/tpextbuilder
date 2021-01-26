@@ -36,6 +36,8 @@ trait HasIndex
 
             $tree->trigger('.row-' . $this->treeKey);
 
+            $tree->expandAll($this->treeExpandAll);
+
             $table = $builder->table('1 right-table');
         } else {
             $table = $builder->table();

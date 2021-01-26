@@ -437,6 +437,8 @@ span.the-field.yellow {
 .ztree,.jstree
 {
     padding: 0;
+    max-width: 100%;
+    margin: 0;
 }
 
 .right-table
