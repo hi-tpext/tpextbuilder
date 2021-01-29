@@ -211,7 +211,7 @@ trait TreeModel
 
         $roots = [];
 
-        foreach ($this->allTreeData as $d) {
+        foreach ($this->allTreeData as $k => $d) {
 
             if ($d[$this->treeParentIdField] != $this->treeRootId) {
                 continue;
@@ -222,6 +222,8 @@ trait TreeModel
             }
 
             $roots[] = $d;
+
+            unset($this->allTreeData[$k]);
         }
 
         unset($d);
@@ -260,7 +262,7 @@ trait TreeModel
         $data = [];
         $deep += 1;
 
-        foreach ($this->allTreeData as $d) {
+        foreach ($this->allTreeData as $k => $d) {
 
             if (!empty($this->except) && in_array($d[$this->treeIdField], $this->except)) {
                 continue;
@@ -269,6 +271,8 @@ trait TreeModel
             if ($d[$this->treeParentIdField] == $pid) {
 
                 $data[] = $d;
+
+                unset($this->allTreeData[$k]);
             }
         }
 
