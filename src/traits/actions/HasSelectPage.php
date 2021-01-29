@@ -146,24 +146,21 @@ trait HasSelectPage
         $data = [];
         if ($textField && $textField != 'text') {
             $keys = [];
-            $replace = null;
+            $replace = [];
             $n = 0;
             foreach ($list as $li) {
                 $li = $li->toArray();
+                $keys = [];
                 $replace = [];
                 foreach ($li as $key => $val) {
                     if (is_array($val)) {
                         foreach ($val as $k => $v) {
-                            if ($n < 1) {
-                                $keys[] = '{' . $key . '.' . $k . '}';
-                            }
+                            $keys[] = '{' . $key . '.' . $k . '}';
                             $replace[] = $v;
                         }
                         continue;
                     }
-                    if ($n < 1) {
-                        $keys[] = '{' . $key . '}';
-                    }
+                    $keys[] = '{' . $key . '}';
                     $replace[] = $val;
                 }
                 $li['__id__'] = $li[$idField];
