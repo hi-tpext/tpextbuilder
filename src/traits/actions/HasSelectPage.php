@@ -147,7 +147,6 @@ trait HasSelectPage
         if ($textField && $textField != 'text') {
             $keys = [];
             $replace = [];
-            $n = 0;
             foreach ($list as $li) {
                 $li = $li->toArray();
                 $keys = [];
@@ -169,7 +168,6 @@ trait HasSelectPage
                 //处理关联不上的情况,如`member`表的`level_id`关联`level`表，但如果某条记录的`level_id`为０,则关联失败，下拉框会出现{level.name}
                 $li['__text__'] = preg_replace('/\{\w+\.\w+\}/', '-', $li['__text__']);
 
-                $n += 1;
                 $data[] = $li;
             }
         } else {
