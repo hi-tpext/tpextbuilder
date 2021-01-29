@@ -465,8 +465,10 @@ label.radio-block span,label.checkbox-block span{
     min-width: 80px;
     text-align: center;
     float: left;
-    margin: 2px;
+    margin: 0;
+    padding: 0 16px;
     border-radius: 4px;
+    font-size: 12px;
 }
 
 label.radio-block input,label.checkbox-block input{
