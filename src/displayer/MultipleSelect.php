@@ -35,6 +35,8 @@ class MultipleSelect extends Select
 
         $this->isGroup();
 
+        $dataSelected = $this->checked;
+
         foreach ($this->checked as &$ck) {
             $ck = '-' . $ck;
         }
@@ -43,7 +45,7 @@ class MultipleSelect extends Select
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,
-            'dataSelected' => implode(',', $this->checked), //已经手动在后端给了选项的，不再ajax加载默认值
+            'dataSelected' => implode(',', $dataSelected), //已经手动在后端给了选项的，不再ajax加载默认值
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,
