@@ -42,7 +42,7 @@ class Bar implements Renderable
     /**
      * Undocumented function
      *
-     * @param string $fieldType
+     * @param string $barType
      * @return $this
      */
     public function created($barType = '')
