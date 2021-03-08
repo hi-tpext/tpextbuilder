@@ -448,6 +448,7 @@
             type: 2,
             title: text,
             shadeClose: false,
+            scrollbar: false,
             maxmin: true,
             anim: 5,    //渐显
             shade: 0.3,
@@ -741,6 +742,7 @@ window.chooseFile = function (id, $input_file_name) {
         type: 2,
         title: '文件选择',
         shadeClose: false,
+        scrollbar: false,
         shade: 0.3,
         anim: 2,    //从最底部往上滑入
         area: size,
