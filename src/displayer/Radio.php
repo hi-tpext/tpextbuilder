@@ -54,7 +54,7 @@ class Radio extends Field
      */
     public function disabledOptions($val)
     {
-        $this->inline = $val;
+        $this->readonlyOptions = $val;
         return $this;
     }
 
