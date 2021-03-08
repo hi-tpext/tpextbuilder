@@ -41,6 +41,15 @@ class Attachment extends Controller
 
         $where = [];
 
+        if (request()->module() == 'admin') {
+            
+            $admin = session('admin_user');
+
+            if ($admin['role_id'] != 1) {
+                $where[] = ['admin_id', '=', $admin['id']];
+            }
+        }
+
         if (!empty($searchData['name'])) {
             $where[] = ['name', 'like', '%' . $searchData['name'] . '%'];
         }
