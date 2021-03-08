@@ -46,7 +46,7 @@ class Attachment extends Controller
             $admin = session('admin_user');
 
             if ($admin['role_id'] != 1) {
-                $where[] = ['admin_id', 'eq', $admin['id']];
+                $where[] = ['admin_id', '=', $admin['id']];
             }
         }
 
