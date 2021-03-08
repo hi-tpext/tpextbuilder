@@ -138,6 +138,8 @@ EOT;
 
         $this->isGroup();
 
+        $dataSelected = $this->checked;
+
         foreach ($this->checked as &$ck) {
             $ck = '-' . $ck;
         }
@@ -146,7 +148,7 @@ EOT;
 
         $vars = array_merge($vars, [
             'checked' => $this->checked,
-            'dataSelected' => implode(',', $this->checked),
+            'dataSelected' => implode(',', $dataSelected),
             'group' => $this->group,
             'options' => $this->options,
         ]);
