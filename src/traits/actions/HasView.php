@@ -71,7 +71,7 @@ trait HasView
             $fieldName = $displayer->getName();
 
             if ($displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
-                || $displayer instanceof displayer\Match || $displayer instanceof displayer\Matches) {
+                || $displayer instanceof displayer\Matche || $displayer instanceof displayer\Matches) {
                 continue;
             } else if ($displayer instanceof displayer\Items) {
 

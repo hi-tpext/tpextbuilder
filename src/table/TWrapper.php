@@ -36,7 +36,7 @@ use tpext\builder\common\Wrapper as Base;
  * @method \tpext\builder\displayer\MultipleImage  images($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\MultipleFile   multipleFile($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\MultipleFile   files($name, $label = '', $colSize = 12)
- * @method \tpext\builder\displayer\Match          match($name, $label = '', $colSize = 12)
+ * @method \tpext\builder\displayer\Matche         match($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Matches        matches($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Fields         fields($name, $label = '', $colSize = 12)
  *

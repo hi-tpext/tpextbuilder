@@ -143,12 +143,12 @@ trait HasExport
                 $displayer = (new displayer\Matches($fieldName, $col->getLabel()))->options($displayer->getOptions());
             } else if ($displayer instanceof displayer\Radio || $displayer instanceof displayer\Select) {
 
-                $displayer = (new displayer\Match($fieldName, $col->getLabel()))->options($displayer->getOptions());
+                $displayer = (new displayer\Matche($fieldName, $col->getLabel()))->options($displayer->getOptions());
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
                 $options = [$pair[0] => '是', $pair[1] => '否'];
-                $displayer = (new displayer\Match($fieldName, $col->getLabel()))->options($options);
+                $displayer = (new displayer\Matche($fieldName, $col->getLabel()))->options($options);
             }
             $displayers[] = $displayer;
         }
