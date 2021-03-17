@@ -50,7 +50,7 @@ class Wrapper
         'image' => \tpext\builder\displayer\Image::class,
         'images' => \tpext\builder\displayer\MultipleImage::class,
         'rangeSlider' => \tpext\builder\displayer\RangeSlider::class,
-        'match' => \tpext\builder\displayer\Match::class,
+        'match' => \tpext\builder\displayer\Matche::class,
         'matches' => \tpext\builder\displayer\Matches::class,
         'show' => \tpext\builder\displayer\Show::class,
         'password' => \tpext\builder\displayer\Password::class,
