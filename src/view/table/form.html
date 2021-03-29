@@ -1,6 +1,9 @@
 {notempty name="tablink"}
 {:$tablink->render()}
 {/notempty}
+{notempty name="addTop"}
+{:$addTop->render()}
+{/notempty}
 <div id="{$id}" class="row form-wrapper">
     <form action="{$action}" method="{$method|default='POST'}" enctype="application/x-www-form-urlencoded" class="{$class}"
         {$attr|raw}>
@@ -139,3 +142,6 @@
         };
     </script>
 </div>
+{notempty name="addBottom"}
+{:$addBottom->render()}
+{/notempty}

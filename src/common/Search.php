@@ -49,6 +49,20 @@ class Search extends SWrapper implements Renderable
     /**
      * Undocumented variable
      *
+     * @var Row
+     */
+    protected $addTop;
+
+    /**
+     * Undocumented variable
+     *
+     * @var Row
+     */
+    protected $addBottom;
+
+    /**
+     * Undocumented variable
+     *
      * @var TabLink
      */
     protected $tablink = null;
@@ -174,6 +188,36 @@ class Search extends SWrapper implements Renderable
         }
 
         return $this->tablink;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Row
+     */
+    public function addTop()
+    {
+        if (empty($this->addTop)) {
+            $this->addTop = new Row();
+            $this->addTop->class('search-top');
+        }
+
+        return $this->addTop;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Row
+     */
+    public function addBottom()
+    {
+        if (empty($this->addBottom)) {
+            $this->addBottom = new Row();
+            $this->addBottom->class('search-bottom');
+        }
+
+        return $this->addBottom;
     }
 
     /**
@@ -311,6 +355,14 @@ class Search extends SWrapper implements Renderable
         if (!in_array(strtolower($this->method), ['get', 'post'])) {
             $this->hidden('_method')->value($this->method);
             $this->method = 'post';
+        }
+
+        if ($this->addTop) {
+            $this->addTop->beforRender();
+        }
+        
+        if ($this->addBottom) {
+            $this->addBottom->beforRender();
         }
 
         return $this;
@@ -489,6 +541,8 @@ EOT;
             'ajax' => $this->ajax,
             'searchFor' => $this->tableId,
             'tablink' => $this->tablink,
+            'addTop' => $this->addTop,
+            'addBottom' => $this->addBottom,
         ];
 
         return $viewshow->assign($vars)->getContent();
