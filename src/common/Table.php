@@ -603,6 +603,7 @@ class Table extends TWrapper implements Renderable
         if ($this->addTop) {
             $this->addTop->beforRender();
         }
+        
         if ($this->addBottom) {
             $this->addBottom->beforRender();
         }
