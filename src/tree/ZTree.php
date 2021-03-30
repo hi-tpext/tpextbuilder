@@ -136,7 +136,7 @@ class ZTree implements Renderable
         $this->trigger = $element;
         $this->onClick = <<<EOT
 
-                    if(!$('{$element}').length)
+                    if(!$('form.search-form {$element}').length)
                     {
                         var __field__ = document.createElement("input");
                         __field__.type = "hidden";
@@ -152,16 +152,16 @@ class ZTree implements Renderable
                         selected = '';
                     }
 
-                    if($('{$element}').hasClass('select2-use-ajax'))
+                    if($('form.search-form {$element}').hasClass('select2-use-ajax'))
                     {
-                        $('{$element}').empty().append('<option value="' + selected + '">' + treeNode.name + '</option>');
+                        $('form.search-form {$element}').empty().append('<option value="' + selected + '">' + treeNode.name + '</option>');
                     }
                     else
                     {
-                        $('{$element}').val(selected);
+                        $('form.search-form {$element}').val(selected);
                     }
-                    $('{$element}').trigger('change');
-                    $('.row-refresh').trigger('click');
+                    $('form.search-form {$element}').trigger('change');
+                    $('form.search-form .row-refresh').trigger('click');
 
 EOT;
         return $this;

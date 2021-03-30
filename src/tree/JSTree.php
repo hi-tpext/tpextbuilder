@@ -175,7 +175,7 @@ class JSTree implements Renderable
 
                     var treeNode = data.instance.get_selected(true)[0];
 
-                    if(!$('{$element}').length)
+                    if(!$('form.search-form {$element}').length)
                     {
                         var __field__ = document.createElement("input");
                         __field__.type = "hidden";
@@ -191,16 +191,16 @@ class JSTree implements Renderable
                         selected = '';
                     }
 
-                    if($('{$element}').hasClass('select2-use-ajax'))
+                    if($('form.search-form {$element}').hasClass('select2-use-ajax'))
                     {
-                        $('{$element}').empty().append('<option value="' + selected + '">' + treeNode.text + '</option>');
+                        $('form.search-form {$element}').empty().append('<option value="' + selected + '">' + treeNode.text + '</option>');
                     }
                     else
                     {
-                        $('{$element}').val(selected);
+                        $('form.search-form {$element}').val(selected);
                     }
-                    $('{$element}').trigger('change');
-                    $('.row-refresh').trigger('click');
+                    $('form.search-form {$element}').trigger('change');
+                    $('form.search-form .row-refresh').trigger('click');
 
 EOT;
         return $this;
