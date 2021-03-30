@@ -19,6 +19,7 @@ class TabLink implements Renderable
     protected $active = '';
     protected $id = '';
     protected $key = '';
+    protected $searchId = '';
 
     public function getId()
     {
@@ -27,6 +28,17 @@ class TabLink implements Renderable
         }
 
         return $this->id;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $id
+     * @return $this
+     */
+    public function searchId($id)
+    {
+        $this->searchId = $id;
     }
 
     /**
@@ -66,28 +78,28 @@ class TabLink implements Renderable
         $element = 'row-' . $this->key;
         $script = <<<EOT
 
-    if(!$('.{$element}').length)
+    if(!$('#{$this->searchId} .{$element}').length)
     {
         var __field__ = document.createElement("input");
         __field__.type = "hidden";
         __field__.name = '{$this->key}';
         __field__.className = '{$element}';
 
-        $('form.search-form').append(__field__);
+        $('#{$this->searchId} form.search-form').append(__field__);
     }
 
     $('body').on('click', '#{$id} .nav-item a', function(){
         var val = $(this).data('val');
-        if($('.{$element}').hasClass('select2-use-ajax'))
+        if($('#{$this->searchId} .{$element}').hasClass('select2-use-ajax'))
         {
-            $('.{$element}').empty().append('<option value="' + val + '">' + $(this).text() + '</option>');
+            $('#{$this->searchId} .{$element}').empty().append('<option value="' + val + '">' + $(this).text() + '</option>');
         }
         else
         {
-            $('.{$element}').val(val);
+            $('#{$this->searchId} .{$element}').val(val);
         }
-        $('.{$element}').trigger('change');
-        $('.row-refresh').trigger('click');
+        $('#{$this->searchId} .{$element}').trigger('change');
+        $('#{$this->searchId} .row-refresh').trigger('click');
         $('#{$id} .nav-item').removeClass('in active');
         $(this).parent('.nav-item').addClass('in active');
         return false;
