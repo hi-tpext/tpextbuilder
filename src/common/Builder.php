@@ -352,7 +352,7 @@ class Builder implements Renderable
     /**
      * 获取一个form
      *
-     * @param integer col大小
+     * @param integer $size col大小
      * @return Form
      */
     public function form($size = 12)
@@ -363,7 +363,7 @@ class Builder implements Renderable
     /**
      * 获取一个表格
      *
-     * @param integer col大小
+     * @param integer $size col大小
      * @return Table
      */
     public function table($size = 12)
@@ -374,7 +374,7 @@ class Builder implements Renderable
     /**
      * 获取一个工具栏
      *
-     * @param integer col大小
+     * @param integer $size col大小
      * @return Toolbar
      */
     public function toolbar($size = 12)
@@ -384,7 +384,8 @@ class Builder implements Renderable
 
     /**
      * 默认获取一个ZTree树
-     *
+     * 
+     * @param integer $size col大小
      * @return ZTree
      */
     public function tree($size = 12)
@@ -395,6 +396,7 @@ class Builder implements Renderable
     /**
      * 获取一个ZTree树
      *
+     * @param integer $size col大小
      * @return ZTree
      */
     public function zTree($size = 12)
@@ -405,6 +407,7 @@ class Builder implements Renderable
     /**
      * 获取一个JSTree树
      *
+     * @param integer $size col大小
      * @return JSTree
      */
     public function jsTree($size = 12)
@@ -415,7 +418,7 @@ class Builder implements Renderable
     /**
      * 获取一自定义内容
      *
-     * @param integer col大小
+     * @param integer $size col大小
      * @return Content
      */
     public function content($size = 12)
@@ -426,7 +429,7 @@ class Builder implements Renderable
     /**
      * 获取一tab内容
      *
-     * @param integer col大小
+     * @param integer $size col大小
      * @return Tab
      */
     public function tab($size = 12)
