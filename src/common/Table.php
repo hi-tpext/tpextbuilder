@@ -576,7 +576,6 @@ class Table extends TWrapper implements Renderable
      */
     public function beforRender()
     {
-
         ExtLoader::trigger('tpext_table_befor_render', $this);
 
         $this->initData();
@@ -585,7 +584,11 @@ class Table extends TWrapper implements Renderable
         Builder::getInstance()->addCss($this->css);
 
         if ($this->useToolbar) {
-            $this->getToolbar()->useSearch(!empty($this->searchForm))->beforRender();
+            $toolbar = $this->getToolbar();
+
+            $toolbar->useSearch(!empty($this->searchForm));
+            $toolbar->setTableCols($this->cols);
+            $toolbar->beforRender();
         }
 
         if ($this->useActionbar) {
@@ -604,7 +607,7 @@ class Table extends TWrapper implements Renderable
         if ($this->addTop) {
             $this->addTop->beforRender();
         }
-        
+
         if ($this->addBottom) {
             $this->addBottom->beforRender();
         }

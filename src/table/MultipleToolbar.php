@@ -13,7 +13,24 @@ class MultipleToolbar extends Toolbar
 
     protected $useExport = true;
 
+    protected $useChooseColumns = false;
+
     protected $btnExport = null;
+
+    protected $tableCols = [];
+
+    /**
+     * Undocumented function
+     * 
+     * @param array $cols
+     * @return array
+     */
+    public function setTableCols($cols)
+    {
+        $this->tableCols = $cols;
+
+        return $this;
+    }
 
     /**
      * Undocumented function
@@ -60,12 +77,43 @@ class MultipleToolbar extends Toolbar
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function useChooseColumns($val = true)
+    {
+        $this->useChooseColumns = $val;
+
+        return $this;
+    }
+
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function beforRender()
     {
         if (empty($this->elms)) {
             $this->buttons();
+        }
+
+        if ($this->useChooseColumns) {
+
+            foreach($this->tableCols as $col)
+            {
+                $items[] = [
+                    'key' => $col->getName(),
+                    'label' => $col->getLabel(),
+                    'icon' => 'mdi-eye-outline',
+                    'url' => '#',
+                    'attr' => '',
+                    'class' => '',
+                ];
+            }
+
+            $this->btnChooseColumns($items);
         }
 
         if ($this->useExport && !$this->btnExport) {
@@ -319,6 +367,12 @@ class MultipleToolbar extends Toolbar
 
         $this->dropdownBtns('exports', $label)->items($items)->addClass($class)->icon($icon)
             ->addAttr($attr . ' data-export-url="' . $postUrl . '"')->pullRight();
+        return $this;
+    }
+
+    public function btnChooseColumns($items, $label = '列', $class = 'btn-secondary', $icon = 'mdi-grid', $attr = 'title="选择要显示的列"')
+    {
+        $this->dropdownBtns('choose_columns', $label)->items($items)->addClass($class)->icon($icon)->addAttr($attr)->pullRight();
         return $this;
     }
 

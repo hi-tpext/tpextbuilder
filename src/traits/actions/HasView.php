@@ -91,14 +91,13 @@ trait HasView
                 || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea) {
 
                 $row->show($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
-
-            } else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) {
+            } 
+            else if ($displayer instanceof displayer\Select && $displayer->isAjax()) {// multipleSelect(ajax) / select(ajax)
+                //
+            }
+            else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) { // checkbox / select(非ajax)
 
                 $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
-
-            } else if ($displayer instanceof displayer\Select && $displayer->isAjax()) {
-
-                //
 
             } else if ($displayer instanceof displayer\Radio || $displayer instanceof displayer\Select) { // radio / select(非ajax)
 
@@ -115,6 +114,7 @@ trait HasView
 
                 $row->raw($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
             }
+
             $size = $displayer->getSize();
             $row->getDisplayer()->showLabel($displayer->isShowLabel())->size($size[0], $size[1]);
         }
