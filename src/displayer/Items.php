@@ -49,6 +49,10 @@ class Items extends Field
      */
     public function with(...$fields)
     {
+        if ($fields[0] instanceof \Closure) {
+            $fields[0]($this->form);
+        }
+
         $this->form->itemsEnd();
         return $this;
     }

@@ -57,6 +57,10 @@ class Fields extends Field
      */
     public function with(...$fields)
     {
+        if ($fields[0] instanceof \Closure) {
+            $fields[0]($this->widget);
+        }
+
         $this->widget->fieldsEnd();
         return $this;
     }
@@ -107,8 +111,10 @@ class Fields extends Field
             return $this;
         }
 
-        if (!empty($this->name) && isset($data[$this->name]) &&
-            (is_array($data[$this->name]) || $data[$this->name] instanceof Model)) {
+        if (
+            !empty($this->name) && isset($data[$this->name]) &&
+            (is_array($data[$this->name]) || $data[$this->name] instanceof Model)
+        ) {
             $this->data = $data[$this->name];
         } else {
             $this->data = $data;
