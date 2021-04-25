@@ -78,6 +78,36 @@ trait HasSelectPage
         }
 
         $selected = input('selected', '');
+
+        if (method_exists($this->dataModel, 'asTreeList')) {
+
+            $list = $this->dataModel->getOptionsData();
+            $data = [];
+
+            foreach ($list as $k => $v) {
+                if ($selected) {
+                    if ($selected && $k == $selected) {
+                        $data[] = [
+                            '__id__' => $k,
+                            '__text__' => $v,
+                        ];
+                        break;
+                    }
+                } else {
+                    $data[] = [
+                        '__id__' => $k,
+                        '__text__' => $v,
+                    ];
+                }
+            }
+            return json(
+                [
+                    'data' => $data,
+                    'has_more' => 0,
+                ]
+            );
+        }
+
         $where = [];
         $list = [];
 
@@ -165,7 +195,7 @@ trait HasSelectPage
                 $li['__id__'] = $li[$idField];
                 $li['__text__'] = str_replace($keys, $replace, $textField);
 
-                //处理关联不上的情况,如`member`表的`level_id`关联`level`表，但如果某条记录的`level_id`为０,则关联失败，下拉框会出现{level.name}
+                //处理关联不上的情况,如`member`表的`level_id`关联`level`表，但如果某条记录的`level_id`为0,则关联失败，下拉框会出现{level.name}
                 $li['__text__'] = preg_replace('/\{\w+\.\w+\}/', '-', $li['__text__']);
 
                 $data[] = $li;
