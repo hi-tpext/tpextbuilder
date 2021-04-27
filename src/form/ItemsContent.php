@@ -135,6 +135,22 @@ class ItemsContent extends FWrapper
     /**
      * Undocumented function
      *
+     * @param mixed ...$fields
+     * @return $this
+     */
+    public function with(...$fields)
+    {
+        if ($fields[0] instanceof \Closure) {
+            $fields[0]($this->form);
+        }
+
+        $this->form->fieldsEnd();
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param boolean $val
      * @return $this
      */

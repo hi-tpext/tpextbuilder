@@ -247,7 +247,7 @@ class Form extends FWrapper implements Renderable
      * @param string $label
      * @param boolean $active
      * @param string $name
-     * @return Tab
+     * @return FieldsContent
      */
     public function tab($label, $active = false, $name = '')
     {
@@ -258,7 +258,7 @@ class Form extends FWrapper implements Renderable
 
         $this->__tabs_content__ = $this->tab->addFieldsContent($label, $active, $name);
         $this->__tabs_content__->setForm($this);
-        return $this->tab;
+        return $this->__tabs_content__;
     }
 
     /**
@@ -278,7 +278,7 @@ class Form extends FWrapper implements Renderable
      * @param string $description
      * @param boolean $active
      * @param string $name
-     * @return Step
+     * @return FieldsContent
      */
     public function step($label, $description = '', $active = false, $name = '')
     {
@@ -289,7 +289,7 @@ class Form extends FWrapper implements Renderable
 
         $this->__tabs_content__ = $this->step->addFieldsContent($label, $description, $active, $name);
         $this->__tabs_content__->setForm($this);
-        return $this->step;
+        return $this->__tabs_content__;
     }
 
     /**
