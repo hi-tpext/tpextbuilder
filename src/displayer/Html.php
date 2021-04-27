@@ -2,6 +2,8 @@
 
 namespace tpext\builder\displayer;
 
+use think\response\View as ViewShow;
+
 class Html extends Field
 {
     protected $view = 'html';
@@ -9,7 +11,7 @@ class Html extends Field
     /**
      * Undocumented variable
      *
-     * @var \think\response\View
+     * @var ViewShow
      */
     protected $content;
 
@@ -35,7 +37,14 @@ class Html extends Field
     {
         $this->content = view($template);
 
-        $this->content->assign($vars)->assign([$this->name => $this->renderValue(), '__val__' => $this->renderValue()]);
+        $value = $this->renderValue();
+
+        $vars = array_merge($vars, [
+            $this->name => $value,
+            '__val__' => $value
+        ]);
+
+        $this->content->assign($vars);
         return $this;
     }
 
@@ -50,7 +59,14 @@ class Html extends Field
     {
         $this->content = view($content);
 
-        $this->content->assign($vars)->assign([$this->name => $this->renderValue(), '__val__' => $this->renderValue()])->isContent(true);
+        $value = $this->renderValue();
+
+        $vars = array_merge($vars, [
+            $this->name => $value,
+            '__val__' => $value
+        ]);
+
+        $this->content->assign($vars)->isContent(true);
         return $this;
     }
 
