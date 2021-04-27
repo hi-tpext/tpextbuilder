@@ -37,7 +37,7 @@ class Html extends Field
     {
         $this->content = view($template);
 
-        $this->content->assign($vars);
+        $this->content->assign($vars)->assign([$this->name => $this->renderValue(), '__val__' => $this->renderValue()]);
         return $this;
     }
 
@@ -52,7 +52,7 @@ class Html extends Field
     {
         $this->content = view($content);
 
-        $this->content->assign($vars)->isContent(true);
+        $this->content->assign($vars)->assign([$this->name => $this->renderValue(), '__val__' => $this->renderValue()])->isContent(true);
         return $this;
     }
 
