@@ -75,7 +75,8 @@ class MultipleFile extends Field
      * @return $this
      */
     function
-default($val = []) {
+    default($val = [])
+    {
         $this->default = $val;
         return $this;
     }
@@ -222,6 +223,10 @@ default($val = []) {
             $token = $this->getCsrfToken();
 
             $this->jsOptions['upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token])->__toString();
+        }
+
+        if (!$this->showInput) {
+            $this->readonly();
         }
 
         $vars = $this->commonVars();
