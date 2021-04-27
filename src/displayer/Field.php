@@ -252,7 +252,8 @@ class Field implements Fillable
      * @param string|int|mixed $val
      * @return $this
      */
-    function default($val = '') {
+    function default($val = '')
+    {
         $this->default = $val;
         return $this;
     }
@@ -852,8 +853,8 @@ EOT;
     {
         $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
 
-        $keys = ['{val}'];
-        $replace = [$value];
+        $keys = ['{val}', '{__val__}'];
+        $replace = [$value, $value];
 
         foreach ($data as $key => $val) {
             if (is_array($val)) {
@@ -896,7 +897,6 @@ EOT;
                     } else {
                         continue;
                     }
-
                 } else {
 
                     if (!isset($this->data[$field])) {
