@@ -41,7 +41,7 @@ class Attachment extends Controller
 
         $where = [];
 
-        if (request()->module() == 'admin') {
+        if (app('http')->getName() == 'admin') {
             
             $admin = session('admin_user');
 
