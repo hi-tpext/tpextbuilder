@@ -32,9 +32,9 @@ trait HasExport
 
         $this->isExporting = true;
         $this->table = $this->builder()->table();
-        $sortOrder = input('__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
+        $sortOrder = input('get.__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
 
-        $__ids__ = input('__ids__');
+        $__ids__ = input('get.__ids__');
 
         if (!empty($__ids__)) {
             $where = [[$this->getPk(), 'in', array_filter(explode(',', $__ids__))]];
@@ -49,7 +49,6 @@ trait HasExport
                 $data = $this->dataModel->getLineData();
 
                 if ($this->isExporting) {
-                    $__ids__ = input('__ids__');
                     if (!empty($__ids__)) {
                         $ids = explode(',', $__ids__);
                         $newd = [];
@@ -83,7 +82,7 @@ trait HasExport
 
         $displayers = $this->getDisplayers($cols);
 
-        $__file_type__ = input('__file_type__', '');
+        $__file_type__ = input('get.__file_type__', '');
 
         $logic = new Export;
 

@@ -173,7 +173,7 @@ trait HasBase
             $data = $this->dataModel->getLineData();
 
             if ($this->isExporting) {
-                $__ids__ = input('__ids__');
+                $__ids__ = input('get.__ids__');
                 if (!empty($__ids__)) {
                     $ids = explode(',', $__ids__);
                     $newd = [];

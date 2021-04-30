@@ -136,7 +136,7 @@ class Table extends TWrapper implements Renderable
     public function __construct()
     {
         $this->class = 'table-striped table-hover table-bordered table-condensed table-responsive';
-        $this->id = input('__table__', 'the-table');
+        $this->id = input('get.__table__', 'the-table');
 
         $this->emptyText = Module::config('table_empty_text');
     }
@@ -795,7 +795,7 @@ EOT;
             $this->usePagesizeDropdown = false;
         }
 
-        $sort = input('__sort__', $this->sortOrder);
+        $sort = input('get.__sort__', $this->sortOrder);
         $sortKey = '';
         $sortOrder = '';
 
