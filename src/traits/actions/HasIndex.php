@@ -38,22 +38,19 @@ trait HasIndex
 
             $tree->expandAll($this->treeExpandAll);
 
-            $table = $builder->table('1 right-table');
+            $this->table = $builder->table('1 right-table');
         } else {
-            $table = $builder->table();
+            $this->table = $builder->table();
         }
 
-        $table->pk($this->getPk());
-        $this->table = $table;
-        $this->search = $table->getSearch();
-
-        $this->buildSearch();
+        $this->table->pk($this->getPk());
         $this->buildDataList();
-
         if (request()->isAjax()) {
             return $this->table->partial()->render();
         }
 
+        $this->search = $this->table->getSearch();
+        $this->buildSearch();
         return $builder->render();
     }
 }
