@@ -213,11 +213,11 @@ trait TreeModel
 
         foreach ($this->allTreeData as $k => $d) {
 
-            if (!empty($this->except) && in_array($d[$this->treeIdField], $this->except)) {
+            if ($d[$this->treeParentIdField] != $this->treeRootId) {
                 continue;
             }
 
-            if ($d[$this->treeIdField] == $this->except) {
+            if (!empty($this->except) && in_array($d[$this->treeIdField], $this->except)) {
                 continue;
             }
 
