@@ -252,7 +252,7 @@ class Field implements Fillable
      * @param string|int|mixed $val
      * @return $this
      */
-    function default($val = '')
+    public function default($val = '')
     {
         $this->default = $val;
         return $this;
@@ -527,9 +527,19 @@ class Field implements Fillable
      *
      * @return string
      */
-    protected function getValue()
+    public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string|array
+     */
+    public function getDefault()
+    {
+        return $this->default;
     }
 
     /**
