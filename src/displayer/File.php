@@ -10,7 +10,7 @@ class File extends MultipleFile
      * @param string $val
      * @return $this
      */
-    function default($val = '') {
+    public function default($val = '') {
         $this->default = $val;
         return $this;
     }

@@ -92,7 +92,8 @@ class Checkbox extends Field
      * @param array|string $val
      * @return $this
      */
-    function default($val = []) {
+    public function default($val = [])
+    {
         $this->default = $val;
         return $this;
     }
