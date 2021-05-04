@@ -219,6 +219,44 @@ class Builder implements Renderable
      * @param array|string $val
      * @return $this
      */
+    public function removeJs($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+
+        foreach ($this->js as $k => $j) {
+            if (in_array($j, $val)) {
+                unset($this->js[$k]);
+            }
+        }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function removeCss($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+
+        foreach ($this->css as $k => $c) {
+            if (in_array($c, $val)) {
+                unset($this->css[$k]);
+            }
+        }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
     public function addScript($val)
     {
         if (!is_array($val)) {
