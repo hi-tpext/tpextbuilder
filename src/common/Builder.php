@@ -231,6 +231,8 @@ class Builder implements Renderable
                 unset($this->js[$k]);
             }
         }
+
+        return $this;
     }
 
     /**
@@ -250,6 +252,46 @@ class Builder implements Renderable
                 unset($this->css[$k]);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @param string $newVal
+     * @return $this
+     */
+    public function replaceJs($val, $newVal)
+    {
+        foreach ($this->js as $k => $j) {
+            if ($val == $j) {
+                $this->js[$k] = $newVal;
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @param string $newVal
+     * @return $this
+     */
+    public function replaceCss($val, $newVal)
+    {
+        foreach ($this->css as $k => $c) {
+            if ($val == $c) {
+                $this->css[$k] = $newVal;
+                break;
+            }
+        }
+
+        return $this;
     }
 
     /**
