@@ -473,6 +473,116 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
+     * @param array|string $val
+     * @return $this
+     */
+    public function addJs($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+        $this->js = array_merge($this->js, $val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function removeJs($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+
+        foreach ($this->js as $k => $j) {
+            if (in_array($j, $val)) {
+                unset($this->js[$k]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function removeCss($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+
+        foreach ($this->css as $k => $c) {
+            if (in_array($c, $val)) {
+                unset($this->css[$k]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @param string $newVal
+     * @return $this
+     */
+    public function replaceJs($val, $newVal)
+    {
+        foreach ($this->js as $k => $j) {
+            if ($val == $j) {
+                $this->js[$k] = $newVal;
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @param string $newVal
+     * @return $this
+     */
+    public function replaceCss($val, $newVal)
+    {
+        foreach ($this->css as $k => $c) {
+            if ($val == $c) {
+                $this->css[$k] = $newVal;
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function addCss($val)
+    {
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+        $this->css = array_merge($this->css, $val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn $wrapper
      * @return $this
      */
