@@ -461,11 +461,11 @@ class Form extends FWrapper implements Renderable
     {
         if ($create) {
             if ($this->readonly) {
-                $this->bottomOffset(5);
-                $this->btnLayerClose('返&nbsp;&nbsp;回', 2);
+                $this->bottomOffset('4 col-lg-5 col-sm-4 col-xs-4');
+                $this->btnLayerClose();
             } else {
                 $this->btnSubmit();
-                $this->html('', '', '2 col-xs-2')->showLabel(false);
+                $this->html('', '', '2 col-lg-2 col-sm-2 col-xs-2')->showLabel(false);
                 $this->btnReset();
             }
         }
@@ -477,7 +477,7 @@ class Form extends FWrapper implements Renderable
     public function bottomOffset($offset = 4)
     {
         $this->allContentsEnd();
-        $this->html('', '', 12)->value('<hr/>')->showLabel(false)->size(0, 12);
+        $this->html('', '', '12 col-lg-12 col-sm-12 col-xs-12')->value('<hr/>')->showLabel(false)->size(0, 12);
         $this->html('', '', $offset)->showLabel(false);
     }
 
@@ -489,9 +489,9 @@ class Form extends FWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '1 col-xs-2', $class = 'btn-success')
+    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '1 col-lg-1 col-sm-2 col-xs-3', $class = 'btn-info')
     {
-        $this->bottomOffset();
+        $this->bottomOffset('4 col-lg-4 col-sm-3 col-xs-2');
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
         return $this;
@@ -505,7 +505,7 @@ class Form extends FWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnReset($label = '重&nbsp;&nbsp;置', $size = '1 col-xs-2', $class = 'btn-warning')
+    public function btnReset($label = '重&nbsp;&nbsp;置', $size = '1 col-lg-1 col-sm-2 col-xs-3', $class = 'btn-warning')
     {
         $this->button('reset', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         return $this;
@@ -520,7 +520,7 @@ class Form extends FWrapper implements Renderable
      * @param string $attr
      * @return $this
      */
-    public function btnBack($label = '返&nbsp;&nbsp;回', $size = '1 col-xs-2', $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
+    public function btnBack($label = '返&nbsp;&nbsp;回', $size = '4 col-lg-2 col-sm-4 col-xs-4', $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
         $this->button('button', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->attr($attr);
         return $this;
@@ -534,7 +534,7 @@ class Form extends FWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = '1 col-xs-2', $class = 'btn-default')
+    public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = '4 col-lg-2 col-sm-4 col-xs-4', $class = 'btn-default')
     {
         $this->button('button', $label, $size)->class($class . ' btn-close-layer' . ' ' . $this->butonsSizeClass);
         return $this;
