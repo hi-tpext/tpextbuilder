@@ -1123,7 +1123,13 @@ EOT;
         $size = $this->size;
 
         if (is_int($size[0])) {
-            $size[0] .= " col-lg-{$this->size[0]} col-sm-3 col-xs-12";
+            if ($size[0] <= 3) {
+                $size[0] .= " col-lg-{$this->size[0]} col-sm-3 col-xs-12";
+            } else if ($size[0] <= 4) {
+                $size[0] .= " col-lg-{$this->size[0]} col-sm-4 col-xs-12";
+            } else {
+                $size[0] .= " col-lg-{$this->size[0]} col-sm-12 col-xs-12";
+            }
         } else {
             if (!strstr($size[0], 'col-lg-')) {
                 $size[0] .= ' col-lg-2';
@@ -1137,7 +1143,17 @@ EOT;
         }
 
         if (is_int($size[1])) {
-            $size[1] .= " col-lg-{$this->size[1]} col-sm-9 col-xs-12";
+            if (is_int($size[0])) {
+                if ($size[0] <= 3) {
+                    $size[1] .= " col-lg-{$this->size[1]} col-sm-9 col-xs-12";
+                } else if ($size[0] <= 4) {
+                    $size[1] .= " col-lg-{$this->size[1]} col-sm-8 col-xs-12";
+                } else {
+                    $size[1] .= " col-lg-{$this->size[1]} col-sm-12 col-xs-12";
+                }
+            } else {
+                $size[1] .= " col-lg-{$this->size[1]} col-sm-9 col-xs-12";
+            }
         } else {
             if (!strstr($size[1], 'col-lg-')) {
                 $size[1] .= ' col-lg-8';

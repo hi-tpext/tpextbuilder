@@ -10,7 +10,7 @@ class Button extends Field
 
     protected $bottom = false;
 
-    protected $size = [0, 12];
+    protected $size = [0, '12 col-lg-12 col-sm-12 col-xs-12'];
 
     protected $showLabel = false;
 
