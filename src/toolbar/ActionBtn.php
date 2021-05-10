@@ -88,7 +88,6 @@ class ActionBtn extends Bar
                     } else {
                         continue;
                     }
-
                 } else {
 
                     if (!isset($data[$field])) {
@@ -113,7 +112,7 @@ class ActionBtn extends Bar
                     $match = is_numeric($values[0]) && $val <= $values[0];
                 } else if ($logic == 'strpos' || $logic == 'strstr') {
                     $match = strstr($val, $values[0]);
-                } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strstr') {
+                } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strpos' || $logic == '!strstr') {
                     $match = !strstr($val, $values[0]);
                 } else //default in_array
                 {
@@ -122,7 +121,6 @@ class ActionBtn extends Bar
                 if ($match) {
                     $matchClass[] = $class;
                 }
-
             } else { // 'enable' => ['hidden' => '__hi_en__'],
                 if (isset($data[$mp]) && $data[$mp]) {
                     $matchClass[] = $class;

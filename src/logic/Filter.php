@@ -27,7 +27,7 @@ class Filter
 
             if (isset($searchData[$comumn]) && $searchData[$comumn] !== '' && $searchData[$comumn] !== []) {
 
-                $filter = $row->getFilter() ?: 'like';
+                $filter = $row->getFilter() ?: 'eq';
 
                 if (is_array($searchData[$comumn])) {
                     $filter = 'in';

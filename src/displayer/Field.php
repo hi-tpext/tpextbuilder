@@ -1041,7 +1041,7 @@ EOT;
                     $match = is_numeric($values[0]) && $val <= $values[0];
                 } else if ($logic == 'strpos' || $logic == 'strstr') {
                     $match = strstr($val, $values[0]);
-                } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strstr') {
+                } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strpos' || $logic == '!strstr') {
                     $match = !strstr($val, $values[0]);
                 } else //default in_array
                 {
@@ -1082,8 +1082,6 @@ EOT;
 
         $extendAttr = ($this->isRequired() ? ' required="true"' : '') . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '');
 
-        $this->size = [$this->size[0] . ' col-xs-12', $this->size[1] . ' col-xs-12'];
-
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,
@@ -1095,7 +1093,7 @@ EOT;
             'class' => ' row-' . preg_replace('/\W/', '', $this->name) . $this->getClass() . $mapClass,
             'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
-            'size' => $this->size,
+            'size' => $this->adjustSize(),
             'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label' : $this->labelClass . ' full-label',
             'labelAttr' => empty($this->labelAttr) ? '' : ' ' . $this->labelAttr,
             'help' => $this->help,
@@ -1113,6 +1111,46 @@ EOT;
         }
 
         return $vars;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function adjustSize()
+    {
+        $size = $this->size;
+
+        if (is_int($size[0])) {
+            $size[0] .= " col-lg-{$this->size[0]} col-sm-3 col-xs-12";
+        } else {
+            if (!strstr($size[0], 'col-lg-')) {
+                $size[0] .= ' col-lg-2';
+            }
+            if (!strstr($size[0], 'col-sm-')) {
+                $size[0] .= ' col-sm-3';
+            }
+            if (!strstr($size[0], 'col-xs-')) {
+                $size[0] .= ' col-xs-12';
+            }
+        }
+
+        if (is_int($size[1])) {
+            $size[1] .= " col-lg-{$this->size[1]} col-sm-9 col-xs-12";
+        } else {
+            if (!strstr($size[1], 'col-lg-')) {
+                $size[1] .= ' col-lg-8';
+            }
+            if (!strstr($size[1], 'col-sm-')) {
+                $size[1] .= ' col-sm-9';
+            }
+            if (!strstr($size[1], 'col-xs-')) {
+                $size[1] .= ' col-xs-12';
+            }
+        }
+
+        return $size;
     }
 
     /**
