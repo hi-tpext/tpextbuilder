@@ -266,10 +266,10 @@ class Search extends SWrapper implements Renderable
     {
         if ($create) {
             $this->fieldsEnd();
-            $this->fields('buttons', '', '3 col-xs-12')->size(0, 12)->showLabel(false)->with(
-                $this->html('', '', '2 col-xs-2')->showLabel(false),
-                $this->button('submit', '筛&nbsp;&nbsp;选', '5 col-xs-5')->class('btn-info ' . $this->butonsSizeClass),
-                $this->button('button', '重&nbsp;&nbsp;置', '5 col-xs-5')->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"')
+            $this->fields('buttons', '', '3 col-lg-3 col-sm-4 col-xs-12')->size(0, '12 col-lg-12 col-sm-12 col-xs-12')->showLabel(false)->with(
+                $this->html('', '', '2 col-lg-2 col-sm-2 col-xs-2')->showLabel(false),
+                $this->button('submit', '筛&nbsp;&nbsp;选', '5 col-lg-3 col-sm-5 col-xs-5')->class('btn-info ' . $this->butonsSizeClass),
+                $this->button('button', '重&nbsp;&nbsp;置', '5 col-lg-3 col-sm-5 col-xs-5')->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"')
             );
         }
 
@@ -285,7 +285,7 @@ class Search extends SWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '1 col-xs-12', $class = 'btn-info')
+    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '2 col-lg-2 col-sm-6 col-xs-12', $class = 'btn-info')
     {
         $this->fieldsEnd();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
@@ -301,7 +301,7 @@ class Search extends SWrapper implements Renderable
      * @param string $class
      * @return $this
      */
-    public function btnReset($label = '重&nbsp;&nbsp;置', $size = '1 col-xs-12', $class = 'btn-warning')
+    public function btnReset($label = '重&nbsp;&nbsp;置', $size = '2 col-lg-2 col-sm-6 col-xs-12', $class = 'btn-warning')
     {
         $this->button('reset', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"');
         return $this;
