@@ -409,6 +409,13 @@ form label.control-label,form label.full-label
     margin-bottom: 4px;
 }
 
+.drp-choose_columns .dropdown-menu > li > a
+{
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 80%;
+}
+
 span.the-field.default {
     color: #8b95a5;
 }

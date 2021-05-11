@@ -13,7 +13,7 @@ class MultipleToolbar extends Toolbar
 
     protected $useExport = true;
 
-    protected $useChooseColumns = false;
+    protected $useChooseColumns = ['*'];
 
     protected $btnExport = null;
 
@@ -23,7 +23,7 @@ class MultipleToolbar extends Toolbar
      * Undocumented function
      * 
      * @param array $cols
-     * @return array
+     * @return $this
      */
     public function setTableCols($cols)
     {
@@ -77,16 +77,33 @@ class MultipleToolbar extends Toolbar
     /**
      * Undocumented function
      *
-     * @param boolean $val
+     * @param boolean|array|string $val 默认显示的字段，false则禁用
      * @return $this
      */
-    public function useChooseColumns($val = true)
+    public function useChooseColumns($val = ['*'])
     {
+        if ($val === true) {
+            $val = ['*'];
+        } else if (empty($val)) {
+            $val = false;
+        } else if (is_string($val)) {
+            $val = explode(',', $val);
+        }
+
         $this->useChooseColumns = $val;
 
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getChooseColumns()
+    {
+        return $this->useChooseColumns;
+    }
 
     /**
      * Undocumented function
@@ -100,16 +117,16 @@ class MultipleToolbar extends Toolbar
         }
 
         if ($this->useChooseColumns) {
-
-            foreach($this->tableCols as $col)
-            {
+            foreach ($this->tableCols as $col) {
+                $name = $col->getName();
+                $checked = $this->useChooseColumns[0] == '*' || in_array($name, $this->useChooseColumns);
                 $items[] = [
                     'key' => $col->getName(),
                     'label' => $col->getLabel(),
-                    'icon' => 'mdi-eye-outline',
+                    'icon' => $checked ? 'mdi-checkbox-marked-outline' : 'mdi-checkbox-blank-outline',
                     'url' => '#',
                     'attr' => '',
-                    'class' => '',
+                    'class' => $checked ? 'checked' : '',
                 ];
             }
 
@@ -365,14 +382,15 @@ class MultipleToolbar extends Toolbar
             return $this;
         }
 
-        $this->dropdownBtns('exports', $label)->items($items)->addClass($class)->icon($icon)
+        $this->dropdownBtns('exports', $label)->items($items)->groupClass('drp-exports')->addClass($class)->icon($icon)
             ->addAttr($attr . ' data-export-url="' . $postUrl . '"')->pullRight();
         return $this;
     }
 
-    public function btnChooseColumns($items, $label = '列', $class = 'btn-secondary', $icon = 'mdi-grid', $attr = 'title="选择要显示的列"')
+    public function btnChooseColumns($items, $label = '显示', $class = 'btn-secondary', $icon = 'mdi-grid', $attr = 'title="选择要显示的列"')
     {
-        $this->dropdownBtns('choose_columns', $label)->items($items)->addClass($class)->icon($icon)->addAttr($attr)->pullRight();
+        $this->dropdownBtns('choose_columns', $label)->items($items)->groupClass('drp-choose_columns')
+            ->addClass($class)->icon($icon)->addAttr($attr)->pullRight();
         return $this;
     }
 
