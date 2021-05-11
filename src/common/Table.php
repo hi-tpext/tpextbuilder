@@ -61,6 +61,8 @@ class Table extends TWrapper implements Renderable
 
     protected $emptyText = '';
 
+    protected $useChooseColumns = ['*'];
+
     /**
      * Undocumented variable
      *
@@ -579,29 +581,34 @@ class Table extends TWrapper implements Renderable
 
         $this->initData();
 
-        Builder::getInstance()->addJs($this->js);
-        Builder::getInstance()->addCss($this->css);
+        if (!request()->isAjax()) {
 
-        if ($this->useToolbar) {
-            $toolbar = $this->getToolbar();
+            Builder::getInstance()->addJs($this->js);
+            Builder::getInstance()->addCss($this->css);
 
-            $toolbar->useSearch(!empty($this->searchForm));
-            $toolbar->setTableCols($this->cols);
-            $toolbar->beforRender();
+            if ($this->useToolbar) {
+                $toolbar = $this->getToolbar();
+
+                $toolbar->useSearch(!empty($this->searchForm));
+                $toolbar->setTableCols($this->cols);
+                $toolbar->beforRender();
+            }
+
+            if ($this->useActionbar) {
+                $this->getActionbar()->beforRender();
+            }
+
+            if (empty($this->searchForm)) {
+                $this->getSearch();
+                $this->searchForm->addClass('form-empty');
+            }
+
+            $this->searchForm->hidden('__columns__')->value(implode(',', $this->useChooseColumns));
+
+            $this->searchForm->beforRender();
+
+            $this->tableScript();
         }
-
-        if ($this->useActionbar) {
-            $this->getActionbar()->beforRender();
-        }
-
-        if (empty($this->searchForm)) {
-            $this->getSearch();
-            $this->searchForm->addClass('form-empty');
-        }
-
-        $this->searchForm->beforRender();
-
-        $this->tableScript();
 
         if ($this->addTop) {
             $this->addTop->beforRender();
@@ -702,6 +709,16 @@ EOT;
 
         $rows = 0;
 
+        $this->useChooseColumns = ['*'];
+        if (request()->isAjax()) {
+            $__columns__ = input('get.__columns__', '');
+            if ($__columns__) {
+                $this->useChooseColumns  = explode(',', $__columns__);
+            }
+        } else {
+            $this->useChooseColumns = $this->getToolbar()->getChooseColumns();
+        }
+
         foreach ($this->data as $key => $data) {
             $rows += 1;
 
@@ -713,6 +730,11 @@ EOT;
             }
 
             foreach ($cols as $col) {
+
+                if ($this->useChooseColumns && $this->useChooseColumns[0] != '*'  && !in_array($col, $this->useChooseColumns)) {
+                    unset($this->headers[$col]);
+                    continue;
+                }
 
                 $colunm = $this->cols[$col];
 

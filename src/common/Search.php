@@ -333,18 +333,12 @@ class Search extends SWrapper implements Renderable
         $this->hidden('__search__')->value($this->id);
         $this->hidden('__table__')->value($this->tableId);
         $this->hidden('__sort__');
+
         $this->addClass('search-form');
         $this->button('refresh', 'refresh', '1 hidden')->addClass('search-refresh');
         $this->searchScript();
 
         foreach ($this->rows as $row) {
-            if (!$row instanceof SRow) {
-                $row->beforRender();
-                continue;
-            }
-
-            $displayer = $row->getDisplayer();
-
             $row->beforRender();
         }
 
@@ -360,7 +354,7 @@ class Search extends SWrapper implements Renderable
         if ($this->addTop) {
             $this->addTop->beforRender();
         }
-        
+
         if ($this->addBottom) {
             $this->addBottom->beforRender();
         }
@@ -488,6 +482,37 @@ class Search extends SWrapper implements Renderable
             var url = $('#dropdown-exports{$extKey}').data('export-url');
             var fileType = $(this).data('key');
             window.__forms__['{$form}'].exportPost(url, fileType, 1);
+        });
+
+        $('body').on('click', '#dropdown-choose_columns{$extKey}-div .dropdown-menu', function(event){
+            event.stopPropagation();
+        });
+
+        $('body').on('click', '#dropdown-choose_columns{$extKey}-div .dropdown-menu li a', function(event){
+            var columns = [];
+            if($(this).hasClass('checked'))
+            {
+                $(this).removeClass('checked');
+                $(this).find('i').removeClass('mdi-checkbox-marked-outline').addClass('mdi-checkbox-blank-outline');
+            }
+            else
+            {
+                $(this).addClass('checked');
+                $(this).find('i').removeClass('mdi-checkbox-blank-outline').addClass('mdi-checkbox-marked-outline');
+            }
+            $('#dropdown-choose_columns{$extKey}-div .dropdown-menu li a.checked').each(function(i, e){
+                columns.push($(e).data('key'));
+            });
+            if(!columns.length)
+            {
+                lightyear.notify('至少显示一个字段', 'warning');
+                event.stopPropagation();
+                return false;
+            }
+            $('#$form form input[name="__columns__"]').val(columns.join(','));
+            window.__forms__['{$form}'].formSubmit();
+            event.stopPropagation();
+            return false;
         });
 
         $('body').on('click', '#form-submit{$extKey}', function(){
