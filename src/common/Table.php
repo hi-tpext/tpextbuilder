@@ -620,7 +620,7 @@ class Table extends TWrapper implements Renderable
 
         $script = <<<EOT
 
-        $('body').on('dblclick', '#{$table} tr', function(){
+        $('body').on('dblclick', '#{$table} tbody tr', function(){
             if($(this).find('td a.dbl-click').not('.hidden').length)
             {
                 $(this).find('td a.dbl-click').trigger('click');
@@ -634,6 +634,50 @@ class Table extends TWrapper implements Renderable
                 $(this).find('td a.action-view').trigger('click');
             }
             return false;
+        });
+
+        $('body').on('click', '#{$table} tbody tr td', function(){
+            if($(this).hasClass('table-checkbox') || $(this).hasClass('row-__action__'))
+            {
+                return;
+            }
+            if($(this).siblings('td.table-checkbox').length)
+            {
+                var box = $(this).siblings('td.table-checkbox').find('input:checkbox');
+                box.prop('checked', !box.is(':checked'));
+                box.trigger('change');
+            }
+
+            return false;
+        });
+
+        var checkall = $('#{$table} input.checkall');
+        var checkboxes = $('.' + checkall.data('check'));
+        var count = checkboxes.size();
+
+        checkall.on('change', function () {
+            var ischecked = checkall.is(':checked');
+            checkboxes.each(function (ii, ee) {
+                if ($(ee).attr('disabled') !== undefined || $(ee).attr('readonly') !== undefined) {
+                    return;
+                }
+                $(ee).prop('checked', ischecked).trigger('change');
+            });
+        });
+
+        checkboxes.on('change', function () {
+            var ss = 0;
+            checkboxes.each(function (ii, ee) {
+                if ($(ee).is(':checked')) {
+                    ss += 1;
+                    $(ee).parentsUntil('tbody', 'tr').addClass('checked');
+                }
+                else
+                {
+                    $(ee).parentsUntil('tbody', 'tr').removeClass('checked');
+                }
+            });
+            checkall.prop('checked', ss == count);
         });
 
 EOT;
