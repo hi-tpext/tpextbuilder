@@ -687,7 +687,7 @@ EOT;
                     ->extKey('-' . $this->id . '-' . $key)
                     ->extNameKey('-' . $key)
                     ->showLabel(false)
-                    ->size(0, 0)
+                    ->size('0', '0 col-lg-0 col-sm-0 col-xs-0')
                     ->beforRender();
 
                 $this->list[$key][$col] = [
