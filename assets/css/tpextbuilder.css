@@ -404,6 +404,11 @@ form label.control-label,form label.full-label
     color: #666;
 }
 
+.toolbar-btn-action .btn
+{
+    margin-bottom: 4px;
+}
+
 span.the-field.default {
     color: #8b95a5;
 }
@@ -443,6 +448,16 @@ span.the-field.yellow {
 .table-hover > tbody > tr:hover {
     background-color: #e4f2f9;
 }
+
+.table-hover > tbody > tr.checked:hover {
+    background-color: #e4f2f9;
+}
+
+.table > tbody > tr.checked
+{
+    background-color:  #e3f4ea;
+}
+
 .table td .fields-div
 {
     display: block;

@@ -58,8 +58,8 @@
                     </td>
                     {/if}
                     {foreach name="row" id="col" key="co"}
-                    <td class="col-md-{$col.wrapper->getColSizeClass()} {$tdClass} {$col.wrapper->getClass()} row-{$col.wrapper->getName()}-td" {$col.wrapper->
-                        getAttrWithStyle()|raw}>
+                    <td class="col-md-{$col.wrapper->getColSizeClass()} {$tdClass} {$col.wrapper->getClass()} row-{$col.wrapper->getName()}-td"
+                        {$col.wrapper->getAttrWithStyle()|raw}>
                         {$col.value|raw}
                     </td>
                     {/foreach}
@@ -94,24 +94,32 @@
         if (partial) {
             $('#form-__page__-{$id}').val('{$paginator->currentPage()}');
 
-            $('#{$id} input.checkall').each(function (i, e) {
-                var checkall = $(e);
-                var checkboxes = $('.' + checkall.data('check'));
-                var count = checkboxes.size();
+            var checkall = $('#{$id} input.checkall');
+            var checkboxes = $('.' + checkall.data('check'));
+            var count = checkboxes.size();
 
-                checkall.on('change', function () {
-                    checkboxes.prop('checked', checkall.is(':checked'));
+            checkall.on('change', function () {
+                var ischecked = checkall.is(':checked');
+                checkboxes.each(function (ii, ee) {
+                    if ($(ee).attr('disabled') !== undefined || $(ee).attr('readonly') !== undefined) {
+                        return;
+                    }
+                    $(ee).prop('checked', ischecked).trigger('change');
                 });
+            });
 
-                checkboxes.on('change', function () {
-                    var ss = 0;
-                    checkboxes.each(function (ii, ee) {
-                        if ($(ee).is(':checked')) {
-                            ss += 1;
-                        }
-                    });
-                    checkall.prop('checked', ss == count);
+            checkboxes.on('change', function () {
+                var ss = 0;
+                checkboxes.each(function (ii, ee) {
+                    if ($(ee).is(':checked')) {
+                        ss += 1;
+                        $(ee).parentsUntil('tbody', 'tr').addClass('checked');
+                    }
+                    else {
+                        $(ee).parentsUntil('tbody', 'tr').removeClass('checked');
+                    }
                 });
+                checkall.prop('checked', ss == count);
             });
 
             $('#{$id} input.table-row-checkall').trigger('change');
