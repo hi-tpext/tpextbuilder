@@ -76,6 +76,9 @@ class Export
             foreach ($displayers as $key => $displayer) {
                 $text = $displayer->fill($d)->renderValue();
                 $text = $this->replace($text);
+                if (is_numeric($text) && !strstr($text, '.')) {
+                    $text .= "\t";
+                }
                 $row[$key] = mb_convert_encoding($text, "GBK", "UTF-8");
             }
             fputcsv($fp, $row);
@@ -164,8 +167,10 @@ class Export
         if ($type == 'xls') {
             if ($lib == 'PhpOffice') {
                 $objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xls($obj);
+                $objWriter->setPreCalculateFormulas(false);
             } else {
                 $objWriter = new \PHPExcel_Writer_Excel5($obj);
+                $objWriter->setPreCalculateFormulas(false);
             }
 
             if (request()->isAjax()) {
@@ -184,19 +189,19 @@ class Export
                 $objWriter->save($fname);
 
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
-
             } else {
                 header('Content-Type: application/vnd.ms-excel');
                 header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . '.xls');
                 header('Cache-Control: max-age=0');
                 $objWriter->save('php://output');
             }
-
         } elseif ($type == 'xlsx') {
             if ($lib == 'PhpOffice') {
                 $objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($obj);
+                $objWriter->setPreCalculateFormulas(false);
             } else {
-                $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
+                $objWriter = new \PHPExcel_Writer_Excel2007($obj);
+                $objWriter->setPreCalculateFormulas(false);
             }
 
             if (request()->isAjax()) {
@@ -214,7 +219,6 @@ class Export
                 $objWriter->save($fname);
 
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
-
             } else {
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . '.xlsx');

@@ -49,6 +49,13 @@ class Search extends SWrapper implements Renderable
     /**
      * Undocumented variable
      *
+     * @var Table
+     */
+    protected $table;
+
+    /**
+     * Undocumented variable
+     *
      * @var Row
      */
     protected $addTop;
@@ -134,6 +141,7 @@ class Search extends SWrapper implements Renderable
      */
     public function search($table)
     {
+        $this->table = $table;
         $this->tableId = $table->getTableId();
         $this->id = 'search-' . $this->tableId;
         $this->ajax = true;
@@ -334,6 +342,7 @@ class Search extends SWrapper implements Renderable
         $this->hidden('__search__')->value($this->id);
         $this->hidden('__table__')->value($this->tableId);
         $this->hidden('__sort__');
+        $this->hidden('__columns__')->value(implode(',', $this->table->getChooseColumns()));
 
         $this->addClass('search-form');
         $this->button('refresh', 'refresh', '1 hidden')->addClass('search-refresh');
