@@ -62,11 +62,18 @@ class Actions extends DropdownBtns
             if (is_string($item)) {
                 $item = ['label' => $item];
             }
-            if (!isset($item['url'])) {
-                $item['url'] = $key;
-            }
-            if (stripos($item['url'], '/') === false) {
-                $item['url'] = url($item['url'])->__toString();
+            if (!isset($item['url']) || empty($item['url'])) {
+                if ($key == 'enable') {
+                    $item['url'] = url('enable', ['state' => 1])->__toString();
+                } else if ($key == 'disable') {
+                    $item['url'] = url('enable', ['state' => 0])->__toString();
+                } else {
+                    $item['url'] = url($key)->__toString();
+                }
+            } else {
+                if (stripos($item['url'], '/') === false) {
+                    $item['url'] = url($item['url'])->__toString();
+                }
             }
             $item['url'] = str_replace($keys, $replace, $item['url']);
         }
@@ -111,7 +118,6 @@ class Actions extends DropdownBtns
                         } else {
                             continue;
                         }
-
                     } else {
 
                         if (!isset($data[$field])) {
@@ -136,7 +142,7 @@ class Actions extends DropdownBtns
                         $match = is_numeric($values[0]) && $val <= $values[0];
                     } else if ($logic == 'strpos' || $logic == 'strstr') {
                         $match = strstr($val, $values[0]);
-                    } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strstr') {
+                    } else if ($logic == 'not_strpos' || $logic == 'not_strstr' || $logic == '!strpos' || $logic == '!strstr') {
                         $match = !strstr($val, $values[0]);
                     } else //default in_array
                     {

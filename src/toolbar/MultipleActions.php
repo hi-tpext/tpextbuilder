@@ -29,11 +29,18 @@ class MultipleActions extends DropdownBtns
             if (is_string($item)) {
                 $item = ['label' => $item];
             }
-            if (!isset($item['url'])) {
-                $item['url'] = $key;
-            }
-            if (stripos($item['url'], '/') === false) {
-                $item['url'] = url($item['url'])->__toString();
+            if (!isset($item['url']) || empty($item['url'])) {
+                if ($key == 'enable') {
+                    $item['url'] = url('enable', ['state' => 1])->__toString();
+                } else if ($key == 'disable') {
+                    $item['url'] = url('enable', ['state' => 0])->__toString();
+                } else {
+                    $item['url'] = url($key)->__toString();
+                }
+            } else {
+                if (stripos($item['url'], '/') === false) {
+                    $item['url'] = url($item['url'])->__toString();
+                }
             }
             if (!Builder::checkUrl($item['url'])) {
                 continue;
