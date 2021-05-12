@@ -431,6 +431,16 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return array
+     */
+    public function getChooseColumns()
+    {
+        return $this->useChooseColumns;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param int $dataTotal
      * @param integer $pageSize
      * @param string $paginatorClass
@@ -603,8 +613,6 @@ class Table extends TWrapper implements Renderable
                 $this->searchForm->addClass('form-empty');
             }
 
-            $this->searchForm->hidden('__columns__')->value(implode(',', $this->useChooseColumns));
-
             $this->searchForm->beforRender();
 
             $this->tableScript();
@@ -648,14 +656,16 @@ class Table extends TWrapper implements Renderable
             {
                 return;
             }
+            if($(this).find('input,textarea,select').length)
+            {
+                return;
+            }
             if($(this).siblings('td.table-checkbox').length)
             {
                 var box = $(this).siblings('td.table-checkbox').find('input:checkbox');
                 box.prop('checked', !box.is(':checked'));
                 box.trigger('change');
             }
-
-            return false;
         });
 
         var checkall = $('#{$table} input.checkall');
@@ -730,12 +740,6 @@ EOT;
             }
 
             foreach ($cols as $col) {
-
-                if ($this->useChooseColumns && $this->useChooseColumns[0] != '*'  && !in_array($col, $this->useChooseColumns)) {
-                    unset($this->headers[$col]);
-                    continue;
-                }
-
                 $colunm = $this->cols[$col];
 
                 if (!$colunm instanceof TColumn) {
@@ -743,6 +747,14 @@ EOT;
                 }
 
                 $displayer = $colunm->getDisplayer();
+
+                if ($this->useChooseColumns && $this->useChooseColumns[0] != '*'  && !in_array($col, $this->useChooseColumns)) {
+                    if (isset($this->headers[$col])) {
+                        $displayer->beforRender();
+                        unset($this->headers[$col]);
+                    }
+                    continue;
+                }
 
                 $displayer->clearScript();
 
@@ -773,6 +785,9 @@ EOT;
 
         if ($rows == 0) { // 数据为空，但某些js脚本是需要的，空跑一遍，把js脚本加载
             foreach ($cols as $col) {
+                if ($this->useChooseColumns && $this->useChooseColumns[0] != '*'  && !in_array($col, $this->useChooseColumns)) {
+                    unset($this->headers[$col]);
+                }
                 $colunm = $this->cols[$col];
                 $displayer = $colunm->getDisplayer();
                 $displayer->beforRender();
