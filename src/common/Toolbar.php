@@ -109,7 +109,7 @@ class Toolbar extends BWrapper implements Renderable
 
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar.html']);
+        $template = Module::getInstance()->getViewsPath() . 'toolbar.html';
 
         $viewshow = view($template);
 
@@ -135,7 +135,7 @@ class Toolbar extends BWrapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $class = static::$displayerMap[$name];
+            $class = static::$displayersMap[$name];
 
             $this->__elm__ = new $class($arguments[0], $count > 1 ? $arguments[1] : '');
 

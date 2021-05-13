@@ -4,11 +4,9 @@ namespace tpext\builder\common;
 
 class Wrapper
 {
-    protected $dfaultDisplayerSize = null;
-
     protected static $displayers = [];
 
-    protected static $displayerMap = [
+    protected static $displayersMap = [
         'field' => \tpext\builder\displayer\Field::class,
         'text' => \tpext\builder\displayer\Text::class,
         'textarea' => \tpext\builder\displayer\Textarea::class,
@@ -83,7 +81,7 @@ class Wrapper
     public static function isDisplayer($name)
     {
         if (empty(static::$displayers)) {
-            static::$displayers = array_keys(static::$displayerMap);
+            static::$displayers = array_keys(static::$displayersMap);
         }
 
         return in_array($name, static::$displayers);
@@ -112,12 +110,27 @@ class Wrapper
      */
     public static function extend($pair)
     {
-        static::$displayerMap = array_merge(static::$displayerMap, $pair);
+        static::$displayersMap = array_merge(static::$displayersMap, $pair);
     }
 
+    /**
+     * Undocumented function
+     * @deprecated 1.9.0010,3.3.2
+     * @return array
+     */
     public static function getDisplayerMap()
     {
-        return static::$displayerMap;
+        return static::$displayersMap;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public static function getDisplayersMap()
+    {
+        return static::$displayersMap;
     }
 
     /**

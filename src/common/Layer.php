@@ -1,4 +1,5 @@
 <?php
+
 namespace tpext\builder\common;
 
 use tpext\builder\common\Module;
@@ -27,7 +28,7 @@ class Layer
             ]);
         }
 
-        $view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'close.html']);
+        $view = Module::getInstance()->getViewsPath() . 'layer' . DIRECTORY_SEPARATOR . 'close.html';
 
         $vars = [
             'success' => $success ? 1 : 0,
@@ -51,7 +52,7 @@ class Layer
             ]);
         }
 
-        $view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closego.html']);
+        $view = Module::getInstance()->getViewsPath() . 'layer' . DIRECTORY_SEPARATOR . 'closego.html';
 
         $vars = [
             'success' => $success ? 1 : 0,
@@ -76,7 +77,7 @@ class Layer
             ]);
         }
 
-        $view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'layer', 'closerefresh.html']);
+        $view = Module::getInstance()->getViewsPath() . 'layer' . DIRECTORY_SEPARATOR . 'closerefresh.html';
 
         $vars = [
             'success' => $success ? 1 : 0,

@@ -259,7 +259,7 @@ EOT;
      */
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tree', 'ztree.html']);
+        $template = Module::getInstance()->getViewsPath() . 'tree' . DIRECTORY_SEPARATOR . 'ztree.html';
 
         $viewshow = view($template);
 

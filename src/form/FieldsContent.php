@@ -170,7 +170,7 @@ class FieldsContent extends FWrapper implements Renderable
      */
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', $this->view . '.html']);
+        $template = Module::getInstance()->getViewsPath() . 'form' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
         $viewshow = view($template);
 

@@ -628,7 +628,7 @@ class Builder implements Renderable
         $this->beforRender();
 
         if (empty($this->view)) {
-            $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'content.html']);
+            $this->view = Module::getInstance()->getViewsPath() . 'content.html';
         }
 
         if (!empty($this->notify)) {
