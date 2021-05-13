@@ -1123,7 +1123,9 @@ EOT;
         $size = $this->size;
 
         if (is_int($this->size[0])) {
-            if ($this->size[0] <= 3) {
+            if ($this->size[0] == 0) {
+                $size[0] .= " col-lg-0 col-sm-0 col-xs-0";
+            } else if ($this->size[0] <= 3) {
                 $size[0] .= " col-lg-{$this->size[0]} col-sm-3 col-xs-12";
             } else if ($this->size[0] <= 4) {
                 $size[0] .= " col-lg-{$this->size[0]} col-sm-4 col-xs-12";
@@ -1144,7 +1146,9 @@ EOT;
 
         if (is_int($size[1])) {
             if (is_int($this->size[0])) {
-                if ($this->size[0] <= 3) {
+                if ($this->size[0] == 0) {
+                    $size[0] .= " col-lg-12 col-sm-12 col-xs-12";
+                } else if ($this->size[0] <= 3) {
                     $size[1] .= " col-lg-{$this->size[1]} col-sm-9 col-xs-12";
                 } else if ($this->size[0] <= 4) {
                     $size[1] .= " col-lg-{$this->size[1]} col-sm-8 col-xs-12";

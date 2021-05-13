@@ -3,7 +3,7 @@
     var tpextbuilder = function () { };
     tpextbuilder.autoPost = function (classname, url, refresh) {
 
-        $('body').on('change', 'td.' + classname + ' :checkbox', function () {
+        $('body').on('change', '.' + classname + ' :checkbox', function () {
             if ($(this).hasClass('switch-box')) {
                 var text = $(this).parent('label').prev('input[type="hidden"]');
                 var name = text.attr('name');
@@ -19,7 +19,7 @@
             else {
                 var name = $(this).attr('name');
                 var values = [];
-                $('td.' + classname + " input[name='" + name + "']:checked").each(function (i, e) {
+                $('.' + classname + " input[name='" + name + "']:checked").each(function (i, e) {
                     values.push($(e).val());
                 });
                 var val = values.join(',');
@@ -34,9 +34,9 @@
 
         });
 
-        $('body').on('change', 'td.' + classname + ' :radio', function () {
+        $('body').on('change', '.' + classname + ' :radio', function () {
             var name = $(this).attr('name');
-            var val = $('td.' + classname + " input[name='" + name + "']:checked").val();
+            var val = $('.' + classname + " input[name='" + name + "']:checked").val();
             name = name.split('-')[0];
             var dataid = $(this).parents('tr.table-row-id').data('id');
             tpextbuilder.autoSendData({
@@ -48,7 +48,7 @@
 
         var timer = null;
 
-        $('body').on('change', 'td.' + classname + ' input[type="text"]', function () {
+        $('body').on('change', '.' + classname + ' input[type="text"]', function () {
             clearTimeout(timer);
             var that = this;
             timer = setTimeout(function () {
@@ -64,7 +64,7 @@
             }, 200);
         });
 
-        $('body').on('change', 'td.' + classname + ' textarea', function () {
+        $('body').on('change', '.' + classname + ' textarea', function () {
             clearTimeout(timer);
             var that = this;
             timer = setTimeout(function () {
@@ -80,7 +80,7 @@
             }, 200);
         });
 
-        $('body').on('change', 'td.' + classname + ' select', function () {
+        $('body').on('change', '.' + classname + ' select', function () {
             var name = $(this).attr('name');
             var val = $(this).val();
             name = name.split('-')[0];
@@ -311,7 +311,7 @@
     };
 
     tpextbuilder.postRowid = function (classname, url, confirm) {
-        $('body').on('click', 'td.row-__action__ .' + classname, function () {
+        $('body').on('click', '.row-__action__ .' + classname, function () {
             var val = $(this).data('id');
             if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
@@ -349,12 +349,12 @@
     };
 
     tpextbuilder.postActionsRowid = function (classname, confirms) {
-        $('body').on('click', 'td.row-__action__ .' + classname + ' .dropdown-menu li a', function () {
+        $('body').on('click', '.row-__action__ .' + classname + ' .dropdown-menu li a', function () {
             var url = $(this).data('url');
 
             var confirm = confirms[url];
 
-            var val = $('td.row-__action__ .' + classname).data('id');
+            var val = $('.row-__action__ .' + classname).data('id');
             if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
                     var text = $(this).text().trim() || $(this).attr('title') || '此';

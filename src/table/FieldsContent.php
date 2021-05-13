@@ -38,13 +38,16 @@ class FieldsContent extends TWrapper implements Renderable
                 continue;
             }
 
-            $col->beforRender();
-            $col->getDisplayer()
-                ->showLabel(false)
-                ->size(0, 0)
-                ->value('');
+            $displayer = $col->getDisplayer();
 
-            $col->fill($this->data);
+            $displayer->clearScript();
+
+            $displayer
+                ->value('')
+                ->fill($this->data)
+                ->showLabel(false)
+                ->size('0', '0 col-lg-0 col-sm-0 col-xs-0 row-' . $displayer->getName() . '-td')
+                ->beforRender();
         }
         return $this;
     }
