@@ -17,7 +17,7 @@ class BWrapper
 {
     protected static $displayers = [];
 
-    protected static $displayerMap = [
+    protected static $displayersMap = [
         'linkBtn' => \tpext\builder\toolbar\LinkBtn::class,
         'actionBtn' => \tpext\builder\toolbar\ActionBtn::class,
         'dropdownBtns' => \tpext\builder\toolbar\DropdownBtns::class,
@@ -43,7 +43,7 @@ class BWrapper
     public static function isDisplayer($name)
     {
         if (empty(static::$displayers)) {
-            static::$displayers = array_keys(static::$displayerMap);
+            static::$displayers = array_keys(static::$displayersMap);
         }
 
         return in_array($name, static::$displayers);
@@ -72,7 +72,7 @@ class BWrapper
      */
     public static function extend($pair)
     {
-        static::$displayerMap = array_merge(static::$displayerMap, $pair);
+        static::$displayersMap = array_merge(static::$displayersMap, $pair);
     }
 
     /**

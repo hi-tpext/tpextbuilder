@@ -158,7 +158,7 @@ class SRow extends SWrapper implements Renderable
     {
         if (static::isDisplayer($name)) {
 
-            $class = static::$displayerMap[$name];
+            $class = static::$displayersMap[$name];
 
             return $this->createDisplayer($class, $arguments);
         }

@@ -216,7 +216,7 @@ class Bar implements Renderable
 
     protected function getViewInstance()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'toolbar', $this->view . '.html']);
+        $template = Module::getInstance()->getViewsPath() . 'toolbar' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
         $viewshow = view($template);
 

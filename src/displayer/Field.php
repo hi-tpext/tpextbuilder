@@ -880,7 +880,7 @@ EOT;
 
     protected function getViewInstance()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', $this->view . '.html']);
+        $template = Module::getInstance()->getViewsPath() . 'displayer' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
         $viewshow = view($template);
 
@@ -1069,11 +1069,11 @@ EOT;
     public function commonVars()
     {
         if (empty(static::$helptempl)) {
-            static::$helptempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'helptempl.html']);
+            static::$helptempl = Module::getInstance()->getViewsPath() . 'displayer' . DIRECTORY_SEPARATOR . 'helptempl.html';
         }
 
         if (empty(static::$labeltempl)) {
-            static::$labeltempl = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'displayer', 'labeltempl.html']);
+            static::$labeltempl = Module::getInstance()->getViewsPath() . 'displayer' . DIRECTORY_SEPARATOR . 'labeltempl.html';
         }
 
         $mapClass = $this->parseMapClass();

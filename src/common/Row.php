@@ -139,7 +139,7 @@ class Row
 
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'row.html']);
+        $template = Module::getInstance()->getViewsPath() . 'row.html';
 
         $viewshow = view($template);
 

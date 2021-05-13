@@ -13,7 +13,7 @@ class Step implements Renderable
 {
     use HasDom;
 
-    private $view = '';
+    private $view = 'step';
 
     protected $navigateable = true;
 
@@ -90,7 +90,7 @@ class Step implements Renderable
         return $this;
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @param boolean $val
@@ -157,7 +157,7 @@ class Step implements Renderable
      * @param string $val
      * @return $this
      */
-    function class ($val)
+    function class($val)
     {
         $this->class = $val;
         return $this;
@@ -267,7 +267,7 @@ EOT;
      */
     public function render($partial = false)
     {
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form', 'step.html']);
+        $template = Module::getInstance()->getViewsPath() . $this->view . '.html';
 
         $names = array_keys($this->labels);
 
@@ -294,7 +294,7 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = view($this->view);
+        $viewshow = view($template);
 
         if ($partial) {
             return $viewshow->assign($vars);

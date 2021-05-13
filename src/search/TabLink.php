@@ -14,7 +14,7 @@ class TabLink implements Renderable
     use HasDom;
     use HasOptions;
 
-    private $view = '';
+    private $view = 'tab';
 
     protected $active = '';
     protected $id = '';
@@ -128,8 +128,7 @@ EOT;
      */
     public function render()
     {
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table', 'tab.html']);
-
+        $template = Module::getInstance()->getViewsPath() . 'table' . DIRECTORY_SEPARATOR . $this->view . '.html';
         $vars = [
             'options' => $this->options,
             'active' => $this->active,
@@ -138,8 +137,7 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = view($this->view);
-
+        $viewshow = view($template);
         return $viewshow->assign($vars)->getContent();
     }
 

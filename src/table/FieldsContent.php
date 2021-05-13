@@ -173,7 +173,7 @@ class FieldsContent extends TWrapper implements Renderable
 
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table', $this->view . '.html']);
+        $template = Module::getInstance()->getViewsPath() . 'table' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
         $viewshow = view($template);
 

@@ -18,9 +18,88 @@ class Column
 
     protected $elms = [];
 
+    protected static $widgets = [];
+
+    protected static $widgetsMap = [
+        'Form' => \tpext\builder\common\Form::class,
+        'Table' => \tpext\builder\common\Table::class,
+        'Toolbar' => \tpext\builder\common\Toolbar::class,
+        'JSTree' => \tpext\builder\tree\JSTree::class,
+        'ZTree' => \tpext\builder\tree\ZTree::class,
+        'Content' => \tpext\builder\common\Content::class,
+        'Tab' => \tpext\builder\common\Tab::class,
+        'Row' => \tpext\builder\common\Row::class,
+    ];
+
     public function __construct($size = 12)
     {
         $this->size = $size;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $pair
+     * @return void
+     */
+    public static function extend($pair)
+    {
+        static::$widgetsMap = array_merge(static::$widgetsMap, $pair);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public static function getWidgetMap()
+    {
+        return static::$widgetsMap;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public static function isWidget($name)
+    {
+        if (empty(static::$widgets)) {
+            static::$widgets = array_keys(static::$widgetsMap);
+        }
+
+        return in_array($name, static::$widgets);
+    }
+
+
+
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @param mixed $arguments
+     * 
+     * @return mixed
+     */
+    protected function createWidget($name, $arguments = [])
+    {
+        $widget = new static::$widgetsMap[$name]($arguments);
+        ExtLoader::trigger('tpext_create_' . strtolower($name), $widget);
+        $this->elms[] = $widget;
+        return $widget;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Renderable $rendable
+     * @return $this
+     */
+    public function append($rendable)
+    {
+        $this->elms[] = $rendable;
+        return $this;
     }
 
     /**
@@ -31,10 +110,7 @@ class Column
 
     public function form()
     {
-        $form = new Form();
-        ExtLoader::trigger('tpext_create_form', $form);
-        $this->elms[] = $form;
-        return $form;
+        return $this->createWidget('Form');
     }
 
     /**
@@ -44,10 +120,7 @@ class Column
      */
     public function table()
     {
-        $table = new Table();
-        ExtLoader::trigger('tpext_create_table', $table);
-        $this->elms[] = $table;
-        return $table;
+        return $this->createWidget('Table');
     }
 
     /**
@@ -57,10 +130,7 @@ class Column
      */
     public function toolbar()
     {
-        $toolbar = new Toolbar();
-        ExtLoader::trigger('tpext_create_toolbar', $toolbar);
-        $this->elms[] = $toolbar;
-        return $toolbar;
+        return $this->createWidget('Toolbar');
     }
 
     /**
@@ -80,10 +150,7 @@ class Column
      */
     public function zTree()
     {
-        $tree = new ZTree();
-        ExtLoader::trigger('tpext_create_ztree', $tree);
-        $this->elms[] = $tree;
-        return $tree;
+        return $this->createWidget('ZTree');
     }
 
     /**
@@ -93,10 +160,7 @@ class Column
      */
     public function jsTree()
     {
-        $tree = new JSTree();
-        ExtLoader::trigger('tpext_create_jstree', $tree);
-        $this->elms[] = $tree;
-        return $tree;
+        return $this->createWidget('JSTree');
     }
 
     /**
@@ -106,10 +170,7 @@ class Column
      */
     public function content()
     {
-        $content = new Content();
-        ExtLoader::trigger('tpext_create_content', $content);
-        $this->elms[] = $content;
-        return $content;
+        return $this->createWidget('Content');
     }
 
     /**
@@ -119,10 +180,7 @@ class Column
      */
     public function tab()
     {
-        $tab = new Tab();
-        ExtLoader::trigger('tpext_create_tab', $tab);
-        $this->elms[] = $tab;
-        return $tab;
+        return $this->createWidget('Tab');
     }
 
     /**
@@ -132,22 +190,7 @@ class Column
      */
     public function row()
     {
-        $row = new Row();
-        ExtLoader::trigger('tpext_create_row', $row);
-        $this->elms[] = $row;
-        return $row;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param Renderable $rendable
-     * @return $this
-     */
-    public function append($rendable)
-    {
-        $this->elms[] = $rendable;
-        return $this;
+        return $this->createWidget('Row');
     }
 
     /**
@@ -182,5 +225,15 @@ class Column
         }
 
         return $this;
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (static::isWidget($name)) {
+
+            return $this->createWidget($name, $arguments);
+        }
+
+        throw new \UnexpectedValueException('未知调用:' . $name);
     }
 }

@@ -12,7 +12,7 @@ class Tab implements Renderable
 {
     use HasDom;
 
-    private $view = '';
+    private $view = 'tab';
 
     protected $rows = [];
 
@@ -251,7 +251,7 @@ class Tab implements Renderable
      */
     public function render()
     {
-        $this->view = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'tab.html']);
+        $template = Module::getInstance()->getViewsPath() . $this->view . '.html';
 
         $this->labels[$this->active]['active'] = 'active';
         isset($this->rows[$this->active]) ? $this->rows[$this->active]['active'] = 'in active' : false;
@@ -265,7 +265,7 @@ class Tab implements Renderable
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = view($this->view);
+        $viewshow = view($template);
 
         if ($this->partial) {
             return $viewshow->assign($vars);

@@ -656,7 +656,7 @@ EOT;
      */
     public function render()
     {
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'form.html']);
+        $template = Module::getInstance()->getViewsPath() . 'form.html';
 
         $viewshow = view($template);
 

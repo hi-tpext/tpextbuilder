@@ -22,8 +22,6 @@ class Table extends TWrapper implements Renderable
 {
     use HasDom;
 
-    protected $view = '';
-
     protected $id = 'the-table';
 
     protected $js = [
@@ -862,7 +860,7 @@ EOT;
             $this->initData();
         }
 
-        $template = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', 'table.html']);
+        $template = Module::getInstance()->getViewsPath() . 'table.html';
 
         $viewshow = view($template);
 
