@@ -93,6 +93,9 @@ class Actions extends DropdownBtns
         $matchClass = [];
 
         foreach ($this->items as &$item) {
+            if (!isset($item['class'])) {
+                $item['class'] = '';
+            }
             if (!isset($item['mapClass'])) {
                 continue;
             }

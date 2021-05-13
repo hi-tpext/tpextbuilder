@@ -490,7 +490,7 @@ span.the-field.yellow {
     padding: 0;
 }
 
-.ztree,.jstree
+.tree-div .ztree,.tree-div .jstree
 {
     padding: 0;
     max-width: 100%;

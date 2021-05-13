@@ -66,7 +66,9 @@ class FRow extends FWrapper implements Renderable
 
         if (is_int($cloSizeClass)) {
             $col = $cloSizeClass;
-            if ($col <= 3) {
+            if ($col == 0) {
+                //
+            } else if ($col <= 3) {
                 $cloSizeClass .= " col-lg-{$col} col-sm-4 col-xs-6";
             } else if ($col <= 4) {
                 $cloSizeClass .= " col-lg-{$col} col-sm-6 col-xs-12";
@@ -76,7 +78,9 @@ class FRow extends FWrapper implements Renderable
         } else {
             if (preg_match('/^(\d{1,2})\s+.*/', $cloSizeClass, $mch)) {
                 $col = $mch[1];
-                if ($col <= 3) {
+                if ($col == 0) {
+                    //
+                } else if ($col <= 3) {
                     $cloSizeClass .= " col-lg-{$col}";
                     if (!strstr($cloSizeClass, 'col-sm-')) {
                         $cloSizeClass .= ' col-sm-4';
