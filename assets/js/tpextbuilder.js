@@ -396,7 +396,7 @@
         });
     };
 
-    tpextbuilder.autoSendData = function (data, url, refresh,del) {
+    tpextbuilder.autoSendData = function (data, url, refresh, del) {
         data.__token__ = w.__token__;
         data._method = /.+?\/(?:destroy|delete|remove|del)(?:\.\w+)?$/.test(url) ? "delete" : "patch";
         lightyear.loading('show');
@@ -535,7 +535,7 @@ window.renderFiles = function (elid) {
         });
 
 
-        if (jsOptions.canUpload) {
+        if (jsOptions.canUpload || !jsOptions.istable) {
 
             $file_list_upli.css({
                 'height': thumbnailHeight + 'px',
@@ -627,13 +627,13 @@ window.renderFiles = function (elid) {
                 if (response.status == 200) { // 返回200成功
                     if (jsOptions.fileNumLimit > 1) {
                         if ($input_file.val()) {
-                            $input_file.val($input_file.val() + ',' + response.picurl);
+                            $input_file.val($input_file.val() + ',' + response.picurl).trigger('change');
                         } else {
-                            $input_file.val(response.picurl);
+                            $input_file.val(response.picurl).trigger('change');
                         }
                         $li.find('.btn-remove-pic').attr('data-id', response.id).attr('data-url', response.picurl);
                     } else {
-                        $input_file.val(response.picurl);
+                        $input_file.val(response.picurl).trigger('change');
                     }
                 }
                 $('<div class="' + response.class + ' upload-result"></div>').text(response.info + '(' + $file_list.find('li.pic-item').size() + '/' + jsOptions.fileNumLimit + ')').appendTo($li.find('figure'));
@@ -689,10 +689,10 @@ window.renderFiles = function (elid) {
                                                 break;
                                             }
                                         }
-                                        $input_file.val(ids.join(','));
+                                        $input_file.val(ids.join(',')).trigger('change');
                                     }
                                 } else {
-                                    $input_file.val('');
+                                    $input_file.val('').trigger('change');
                                 }
 
                                 that.closest('.pic-item').remove();
@@ -725,6 +725,8 @@ window.chooseFile = function (id, $input_file_name) {
 
     var $file_list = $('#file_list_' + $input_file_name);
 
+    var chooseUrl = jsOptions.chooseUrl || '/tpextbuilder/admin/attachment/index?';
+
     if (jsOptions.fileNumLimit > 1 && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
         lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
         return false;
@@ -746,7 +748,7 @@ window.chooseFile = function (id, $input_file_name) {
         shade: 0.3,
         anim: 2,    //从最底部往上滑入
         area: size,
-        content: '/tpextbuilder/admin/attachment/index?choose=1&id=' + id + '&limit=' + jsOptions.fileNumLimit + '&ext=' + jsOptions.ext.join(','),
+        content: chooseUrl + 'choose=1&id=' + id + '&limit=' + jsOptions.fileNumLimit + '&ext=' + jsOptions.ext.join(','),
         success: function (layero, index) {
             $(':focus').blur();
             this.enterEsc = function (event) {

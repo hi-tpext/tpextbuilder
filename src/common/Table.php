@@ -3,16 +3,17 @@
 namespace tpext\builder\common;
 
 use think\Collection;
-use tpext\builder\inface\Renderable;
-use tpext\builder\table\Actionbar;
-use tpext\builder\table\FieldsContent;
-use tpext\builder\table\MultipleToolbar;
-use tpext\builder\table\Paginator;
-use tpext\builder\table\TColumn;
-use tpext\builder\table\TWrapper;
-use tpext\builder\toolbar\DropdownBtns;
-use tpext\builder\traits\HasDom;
 use tpext\common\ExtLoader;
+use tpext\builder\table\TColumn;
+use tpext\builder\traits\HasDom;
+use tpext\builder\table\TWrapper;
+use tpext\builder\table\Actionbar;
+use tpext\builder\table\Paginator;
+use tpext\builder\inface\Renderable;
+use tpext\builder\table\FieldsContent;
+use tpext\builder\toolbar\DropdownBtns;
+use tpext\builder\table\MultipleToolbar;
+use tpext\builder\displayer\MultipleFile;
 
 /**
  * Table class
@@ -965,6 +966,11 @@ EOT;
             }
 
             $displayer = $col->$name($arguments[0], $col->getLabel());
+
+            if ($displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
+                $displayer->canUpload(false);
+                $displayer->jsOptions(['istable' => 1]);
+            }
 
             return $displayer;
         }

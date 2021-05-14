@@ -319,10 +319,26 @@ td ul.lyear-uploads-pic li.pic-item
     padding: 1px;
 }
 
+.js-upload-files .input-group
+{
+    padding-top: 5px;
+}
+
 .js-upload-files .input-group-addon.opt-btn {
    cursor: pointer;
    border: none;
    border-right: 1px solid #ebebeb;
+}
+
+.in-table-in-items .js-upload-files .input-group-addon.opt-btn
+{
+    padding: 3px 0;
+    font-size: 12px;
+}
+
+.in-table-in-items .pic-item .btn
+{
+    padding: 2px;
 }
 
 .lyear-checkbox,.lyear-radio

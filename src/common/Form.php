@@ -3,17 +3,18 @@
 namespace tpext\builder\common;
 
 use think\Model;
-use tpext\builder\common\Builder;
-use tpext\builder\common\Module;
-use tpext\builder\form\FieldsContent;
-use tpext\builder\form\Fillable;
-use tpext\builder\form\FRow;
-use tpext\builder\form\FWrapper;
-use tpext\builder\form\ItemsContent;
-use tpext\builder\form\Step;
-use tpext\builder\inface\Renderable;
-use tpext\builder\traits\HasDom;
 use tpext\common\ExtLoader;
+use tpext\builder\form\FRow;
+use tpext\builder\form\Step;
+use tpext\builder\common\Module;
+use tpext\builder\form\Fillable;
+use tpext\builder\form\FWrapper;
+use tpext\builder\traits\HasDom;
+use tpext\builder\common\Builder;
+use tpext\builder\form\ItemsContent;
+use tpext\builder\inface\Renderable;
+use tpext\builder\form\FieldsContent;
+use tpext\builder\displayer\MultipleFile;
 
 /**
  * Form class
@@ -715,6 +716,10 @@ EOT;
 
             if ($name == 'button') {
                 $displayer->extKey('-' . $this->id . mt_rand(10, 99));
+            }
+
+            if ($this->__items__ && $displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
+                $displayer->jsOptions(['istable' => 1]);
             }
 
             return $displayer;

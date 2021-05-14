@@ -8,7 +8,7 @@ class Image extends File
     {
         $this->image();
 
-        $this->canUpload = !$this->readonly && $this->canUpload && empty($this->extKey);
+        $this->canUpload = !$this->readonly && $this->canUpload;
 
         if (!$this->canUpload) {
             if (empty($this->default)) {

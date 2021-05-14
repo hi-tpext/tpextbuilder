@@ -156,6 +156,23 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return $this
+     */
+    public function clearScript()
+    {
+        foreach ($this->rows as $row) {
+            if (!$row instanceof FRow) {
+                continue;
+            }
+
+            $row->getDisplayer()->clearScript();
+        }
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array|Model
      */
     public function getData()

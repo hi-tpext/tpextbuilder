@@ -4,8 +4,6 @@ namespace tpext\builder\traits;
 
 trait HasDom
 {
-    protected $name = '';
-
     protected $class = '';
 
     protected $attr = '';

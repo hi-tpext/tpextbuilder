@@ -163,9 +163,9 @@ class Attachment extends Controller
             $script = '';
 
             if ($limit < 2) {
-                $script = "<script>parent.$('#{$id}').val('{$file['url']}');parent.layer.close(parent.layer.getFrameIndex(window.name));</script>";
+                $script = "<script>parent.$('#{$id}').val('{$file['url']}').trigger('change');parent.layer.close(parent.layer.getFrameIndex(window.name));</script>";
             } else {
-                $script = "<script>parent.$('#{$id}').val(parent.$('#{$id}').val()+(parent.$('#{$id}').val()?',':'')+'{$file['url']}');parent.layer.close(parent.layer.getFrameIndex(window.name));</script>";
+                $script = "<script>parent.$('#{$id}').val(parent.$('#{$id}').val()+(parent.$('#{$id}').val()?',':'')+'{$file['url']}').trigger('change');parent.layer.close(parent.layer.getFrameIndex(window.name));</script>";
             }
 
             return json(['code' => 1, 'script' => $script]);
