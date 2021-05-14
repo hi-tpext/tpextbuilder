@@ -3,6 +3,7 @@
 namespace tpext\builder\common;
 
 use think\Model;
+use think\Collection;
 use tpext\common\ExtLoader;
 use tpext\builder\form\FRow;
 use tpext\builder\form\Step;
@@ -11,6 +12,8 @@ use tpext\builder\form\Fillable;
 use tpext\builder\form\FWrapper;
 use tpext\builder\traits\HasDom;
 use tpext\builder\common\Builder;
+use tpext\builder\displayer\Fields;
+use tpext\builder\displayer\Items;
 use tpext\builder\form\ItemsContent;
 use tpext\builder\inface\Renderable;
 use tpext\builder\form\FieldsContent;
@@ -538,6 +541,105 @@ class Form extends FWrapper implements Renderable
     {
         $this->button('button', $label, $size)->class($class . ' btn-close-layer' . ' ' . $this->butonsSizeClass);
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $colSize col大小
+     * @param Closure|null $fieldsCall
+     * @return Fields
+     */
+    public function left($colSize = 6, $fieldsCall = null)
+    {
+        $this->fieldsEnd(); //清理，避免被包含到其他fields中。因为fields可以包含fields的
+        $displayer =  $this->fields('left' . mt_rand(10, 99), '', $colSize)->size(0, 12)->showLabel(false);
+
+        if ($fieldsCall) {
+            if (!($fieldsCall instanceof \Closure)) {
+                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+            }
+            $fieldsCall($this);
+            $this->fieldsEnd();
+            //如果传入了fields，这里结束掉。如果未传，后面可以再使用->with(...$fields)
+            // $form->left(6, function(){//...$fields}); 或者 $form->left(6)->with(...$fields);
+        }
+
+        return $displayer;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $colSize col大小
+     * @param Closure|null $fieldsCall
+     * @return Fields
+     */
+    public function middle($colSize = 6, $fieldsCall = null)
+    {
+        $this->fieldsEnd(); //同上
+        $displayer =  $this->fields('middle' . mt_rand(10, 99), '', $colSize)->size(0, 12)->showLabel(false);
+
+        if ($fieldsCall) {
+            if (!($fieldsCall instanceof \Closure)) {
+                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+            }
+            $fieldsCall($this);
+            $this->fieldsEnd();
+        }
+
+        return $displayer;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $colSize col大小
+     * @param Closure|null $fieldsCall
+     * @return Fields
+     */
+    public function right($colSize = 6, $fieldsCall = null)
+    {
+        $this->fieldsEnd(); //同上
+        $displayer =  $this->fields('right' . mt_rand(10, 99), '', $colSize)->size(0, 12)->showLabel(false);
+
+        if ($fieldsCall) {
+            if (!($fieldsCall instanceof \Closure)) {
+                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+            }
+            $fieldsCall($this);
+            $this->fieldsEnd();
+        }
+
+        return $displayer;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|Collection dataList
+     * @param Closure|null $itemsCall
+     * @param array displayer大小 [12, 12] 为伤心结构，[2, 10]左右结构
+     * @return Items
+     */
+    public function logs($label, $dataList, $itemsCall = null, $displayer = [12, 12])
+    {
+        $this->itemsEnd();
+        $displayer =  $this->items('logs' . mt_rand(10, 99), $label, 12)->size($displayer[0], $displayer[1])->readonly();
+
+        if (is_array($dataList)) {
+            $displayer->fill($dataList);
+        } else if ($dataList instanceof Collection) {
+            $displayer->dataWithId($dataList);
+        }
+        if ($itemsCall) {
+            if (!($itemsCall instanceof \Closure)) {
+                throw new \UnexpectedValueException('itemsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+            }
+            $itemsCall($this);
+            $this->fieldsEnd();
+        }
+        return $displayer;
     }
 
     /**

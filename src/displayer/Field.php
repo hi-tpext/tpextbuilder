@@ -309,7 +309,8 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param integer $label
+     * @param integer $element
      * @return $this
      */
     public function size($label = 2, $element = 8)

@@ -2,6 +2,7 @@
 
 namespace tpext\builder\displayer;
 
+use think\Model;
 use think\Collection;
 use tpext\builder\form\ItemsContent;
 
@@ -49,7 +50,7 @@ class Items extends Field
      */
     public function with(...$fields)
     {
-        if ($fields[0] instanceof \Closure) {
+        if (count($fields) && $fields[0] instanceof \Closure) {
             $fields[0]($this->form);
         }
 
@@ -129,19 +130,28 @@ class Items extends Field
     /**
      * Undocumented function
      *
-     * @param array|Collection $data
+     * @param array|Model|Collection $data
      * @param boolean $overWrite
      * @return $this
      */
     public function fill($data = [], $overWrite = false)
     {
+        if ($data instanceof Collection) {
+            return $this->dataWithId($data, 'id', $overWrite);
+        }
+
         if (!$overWrite && !empty($this->data)) {
             return $this;
         }
 
-        if (!empty($this->name) && isset($data[$this->name]) &&
-            (is_array($data[$this->name]) || $data[$this->name] instanceof Collection)) {
-            $this->data = $data[$this->name];
+        if (!empty($this->name) && isset($data[$this->name])) {
+            if (is_array($data[$this->name])) {
+                $this->data = $data[$this->name];
+            } else if ($data[$this->name] instanceof Collection) {
+                return $this->dataWithId($data[$this->name], 'id', $overWrite);
+            } else {
+                //
+            }
         } else {
             $this->data = $data;
         }

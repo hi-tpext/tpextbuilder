@@ -140,7 +140,7 @@ class ItemsContent extends FWrapper
      */
     public function with(...$fields)
     {
-        if ($fields[0] instanceof \Closure) {
+        if (count($fields) && $fields[0] instanceof \Closure) {
             $fields[0]($this->form);
         }
 

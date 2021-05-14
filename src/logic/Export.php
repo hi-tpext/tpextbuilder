@@ -27,14 +27,12 @@ class Export
 
         $fname = '';
         if (request()->isAjax()) {
-            $dir = './uploads/export/' . date('Ymd') . '/';
+            $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
 
             if (!is_dir($dir)) {
-                mkdir($dir, 0755, true);
-                file_put_contents(
-                    $dir . 'index.html',
-                    ''
-                );
+                if (!mkdir($dir, 0755, true)) {
+                    return json(['code' => 0, 'msg' => '创建目录失败']);
+                }
             }
 
             $fname = $dir . $title . "-" . date('Ymd-His') . ".csv";
@@ -86,7 +84,8 @@ class Export
         unset($row, $text);
         fclose($fp);
         if ($fname) {
-            return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
+            $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+            return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
         }
     }
 
@@ -174,21 +173,19 @@ class Export
             }
 
             if (request()->isAjax()) {
-                $dir = './uploads/export/' . date('Ymd') . '/';
+                $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
 
                 if (!is_dir($dir)) {
-                    if (mkdir($dir, 0755, true)) {
-                        file_put_contents(
-                            $dir . 'index.html',
-                            ''
-                        );
+                    if (!mkdir($dir, 0755, true)) {
+                        return json(['code' => 0, 'msg' => '创建目录失败']);
                     }
                 }
 
                 $fname = $dir . $title . "-" . date('Ymd-His') . ".xls";
                 $objWriter->save($fname);
 
-                return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
+                $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+                return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
                 header('Content-Type: application/vnd.ms-excel');
                 header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . '.xls');
@@ -205,20 +202,18 @@ class Export
             }
 
             if (request()->isAjax()) {
-                $dir = './uploads/export/' . date('Ymd') . '/';
+                $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
                 if (!is_dir($dir)) {
-                    if (mkdir($dir, 0755, true)) {
-                        file_put_contents(
-                            $dir . 'index.html',
-                            ''
-                        );
+                    if (!mkdir($dir, 0755, true)) {
+                        return json(['code' => 0, 'msg' => '创建目录失败']);
                     }
                 }
 
                 $fname = $dir . $title . "-" . date('Ymd-His') . ".xlsx";
                 $objWriter->save($fname);
 
-                return json(['code' => 1, 'msg' => '文件已生成', 'data' => ltrim($fname, '.')]);;
+                $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+                return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . '.xlsx');
