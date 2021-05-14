@@ -6,7 +6,6 @@ use tpext\builder\common\Form;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
-use think\facade\Lang;
 
 class FRow extends FWrapper implements Renderable
 {
@@ -24,7 +23,7 @@ class FRow extends FWrapper implements Renderable
     {
         $this->name = trim($name);
         if (empty($label) && !empty($this->name)) {
-            $label = Lang::get(ucfirst($this->name));
+            $label = lang(ucfirst($this->name));
         }
 
         $this->label = $label;

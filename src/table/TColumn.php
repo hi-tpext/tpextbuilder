@@ -2,7 +2,6 @@
 
 namespace tpext\builder\table;
 
-use think\facade\Lang;
 use tpext\builder\common\Table;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
@@ -24,7 +23,7 @@ class TColumn extends TWrapper implements Renderable
     {
         $this->name = trim($name);
         if (empty($label) && !empty($this->name)) {
-            $label = Lang::get(ucfirst($this->name));
+            $label = lang(ucfirst($this->name));
         }
 
         $this->label = $label;
