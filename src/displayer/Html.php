@@ -2,8 +2,6 @@
 
 namespace tpext\builder\displayer;
 
-use think\response\View as ViewShow;
-
 class Html extends Field
 {
     protected $view = 'html';
@@ -11,7 +9,7 @@ class Html extends Field
     /**
      * Undocumented variable
      *
-     * @var ViewShow
+     * @var \think\response\View
      */
     protected $content;
 

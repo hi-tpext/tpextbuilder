@@ -3,7 +3,6 @@
 namespace tpext\builder\common;
 
 use think\facade\View;
-use think\response\View as ViewShow;
 use tpext\builder\inface\Auth;
 use tpext\builder\inface\Renderable;
 use tpext\builder\tree\JSTree;
@@ -618,7 +617,7 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @return ViewShow
+     * @return \think\response\View
      */
     public function render()
     {

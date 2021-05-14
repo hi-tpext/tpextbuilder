@@ -2,7 +2,6 @@
 
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use tpext\builder\common\Module;
 
 class Layer
@@ -10,7 +9,7 @@ class Layer
     /**
      * Undocumented variable
      *
-     * @var ViewShow
+     * @var \think\response\View
      */
     private $viewShow;
 

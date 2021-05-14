@@ -2,7 +2,6 @@
 
 namespace tpext\builder\common;
 
-use think\response\View as ViewShow;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\displayer\Button;
@@ -556,7 +555,7 @@ EOT;
     /**
      * Undocumented function
      *
-     * @return string|ViewShow
+     * @return string|\think\response\View
      */
     public function render()
     {
