@@ -480,7 +480,7 @@ class Form extends FWrapper implements Renderable
     public function bottomOffset($offset = 4)
     {
         $this->allContentsEnd();
-        $this->html('', '', '12 col-lg-12 col-sm-12 col-xs-12')->value('<hr/>')->showLabel(false)->size(0, 12);
+        $this->html('', '', '12 col-lg-12 col-sm-12 col-xs-12')->value('');
         $this->html('', '', $offset)->showLabel(false);
     }
 
