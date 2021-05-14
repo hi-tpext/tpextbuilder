@@ -28,6 +28,23 @@ trait HasExport
 
     public function export()
     {
+        if ($path = input('get.path')) { //文件下载
+            $filePath = app()->getRuntimePath() . 'export/' . $path;
+            if (!is_file($filePath)) {
+                exit('<h3>文件不存在</h3>' . 'runtime/export/' . $path);
+            }
+
+            $ftime = filectime($filePath) ?: 0;
+
+            if (time() - $ftime > 24 * 60 * 60) {
+                exit('<h3>文件已过期</h3>有效期为一天');
+            }
+
+            $name = preg_replace('/\d+\/(.+?)\.\w+$/', '$1', $path);
+
+            return download($filePath, $name);
+        }
+
         request()->withPost(request()->get()); //兼容以post方式获取参数
 
         $this->isExporting = true;

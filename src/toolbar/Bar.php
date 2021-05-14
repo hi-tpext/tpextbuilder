@@ -12,6 +12,8 @@ class Bar implements Renderable
 {
     use HasDom;
 
+    protected $name = '';
+
     protected $view = '';
 
     protected $extKey = '';

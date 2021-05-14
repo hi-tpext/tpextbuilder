@@ -90,7 +90,11 @@ class Import extends Controller
             \$fileurl = input('fileurl');
             if (is_file(app()->getRootPath() . 'public' . \$fileurl)) {
                 // 导入逻辑...
-                return Builder::getInstance()->layer()->closeRefresh(1, '导入成功：' . \$fileurl);
+                //....
+                
+                //返回成功提示并刷新列表页面
+                \$builder = Builder::getInstance();
+                return \$builder->layer()->closeRefresh(1, '导入成功：' . \$fileurl);
             }
 
             \$builder = Builder::getInstance('出错了');

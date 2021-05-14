@@ -99,6 +99,22 @@ class FieldsContent extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param mixed ...$fields
+     * @return $this
+     */
+    public function with(...$fields)
+    {
+        if (count($fields) && $fields[0] instanceof \Closure) {
+            $fields[0]($this->form);
+        }
+
+        $this->form->fieldsEnd();
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array|Model $data
      * @return $this
      */
