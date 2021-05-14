@@ -236,6 +236,23 @@ class ItemsContent extends FWrapper
      *
      * @return $this
      */
+    public function clearScript()
+    {
+        foreach ($this->cols as $col) {
+            if (!$col instanceof FRow) {
+                continue;
+            }
+
+            $col->getDisplayer()->clearScript();
+        }
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
     public function beforRender()
     {
         $this->initData();

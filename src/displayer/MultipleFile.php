@@ -74,8 +74,7 @@ class MultipleFile extends Field
      * @param array $val
      * @return $this
      */
-    function
-    default($val = [])
+    public function default($val = [])
     {
         $this->default = $val;
         return $this;
@@ -210,7 +209,7 @@ class MultipleFile extends Field
 
     public function render()
     {
-        $this->canUpload = !$this->readonly && $this->canUpload && empty($this->extKey);
+        $this->canUpload = !$this->readonly && $this->canUpload;
 
         if (!$this->canUpload) {
             if (empty($this->default)) {
@@ -227,6 +226,11 @@ class MultipleFile extends Field
 
         if (!$this->showInput) {
             $this->readonly();
+        }
+
+        if ($this->extKey) { //table 或 items 中
+            $this->addClass('hidden');//隐藏输入框
+            $this->getWrapper()->addClass('in-table-in-items');
         }
 
         $vars = $this->commonVars();

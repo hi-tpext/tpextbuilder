@@ -239,8 +239,8 @@ class Items extends Field
             else if($(obj).hasClass('lyear-switch'))
             {
                 var input = $(obj).prev('input');
-                $(input).attr('data-name', $(input).attr('name'));
-                $(input).removeAttr('name');
+                input.attr('data-name', input.attr('name'));
+                input.removeAttr('name');
             }
             else
             {
@@ -250,45 +250,67 @@ class Items extends Field
         });
 
         var i = 1;
-        var script ='';
+        var script = '';
 
-        function reset(obj)
+        if(!window.reset)
         {
-            if($(obj).hasClass('checkbox-label') || $(obj).hasClass('radio-label'))
+            window.reset=function(obj)
             {
-                var boxes = $(obj).find('input');
-                boxes.each(function(){
-                    $(this).attr('data-name', $(this).attr('name'));
-                    $(this).removeAttr('name');
-                    reset(this);
-                });
-                return;
-            }
-            else if($(obj).hasClass('lyear-switch'))
-            {
-                var input = $(obj).prev('input');
-                $(input).attr('data-name', $(input).attr('name'));
-                $(input).removeAttr('name');
-                reset(input);
-                return;
-            }
-            var name = $(obj).data('name');
-            var id = $(obj).attr('id');
-            if(!id)
-            {
-                return;
-            }
-            id = id.replace('-no-init-script', '');
-            var newid = id + '__new__' + i;
-            script = script.replace(new RegExp('#' + id,"gm"), '#' + newid);
-            $(obj).attr('id', newid);
-            name = name.replace(/(.+?)\[__new__\](.+?)/, '$1' + '[__new__' + i + ']$2');
-            $(obj).attr('name', name);
-            $(obj).removeAttr('data-name');
-            if($(obj).hasClass('item-field-required'))
-            {
-                $(obj).attr('required', true);
-            }
+                if($(obj).hasClass('checkbox-label') || $(obj).hasClass('radio-label'))
+                {
+                    var boxes = $(obj).find('input');
+                    boxes.each(function(){
+                        $(this).attr('data-name', $(this).attr('name'));
+                        $(this).removeAttr('name');
+                        reset(this);
+                    });
+                    return;
+                }
+                else if($(obj).hasClass('lyear-switch'))
+                {
+                    var input = $(obj).prev('input');
+                    input.attr('data-name', input.attr('name'));
+                    input.removeAttr('name');
+                    reset(input);
+                    return;
+                }
+                var oldName = $(obj).data('name');
+                var oldId = $(obj).attr('id');
+                var oldOldId = oldId;
+                if(!oldId)
+                {
+                    return;
+                }
+                oldId = oldId.replace('-no-init-script', '');
+                var newid = oldId + '__new__' + i;
+                script = script.replace(new RegExp('#' + oldId, "gm"), '#' + newid);
+                $(obj).attr('id', newid);
+                var newName = oldName.replace(/(.+?)\[__new__\](.+?)/, '$1' + '[__new__' + i + ']$2');
+    
+                console.log('oldId:'+oldId);
+                console.log('oldName:'+oldName);
+                console.log('newid:'+newid);
+                console.log('newName:'+newName);
+                console.log('-------------------------------------------');
+                $(obj).attr('name', newName);
+                $(obj).removeAttr('data-name');
+                if($(obj).hasClass('item-field-required'))
+                {
+                    $(obj).attr('required', true);
+                }
+                if($(obj).hasClass('file-url-input'))
+                {
+                    var prent = $(obj).parent('.input-group');
+                    var ulist = prent.prev('ul.lyear-uploads-pic');
+                    var picker = prent.find('.upload-picker');
+    
+                    ulist.attr('id', 'file_list_' + newid);
+                    $(obj).siblings('.input-group-addon.choose-file,.input-group-addon.upload-file').data('id', newid).data('name', newid);
+                    picker.attr('id', 'picker_'+newid);
+    
+                    window.uploadConfigs[newid] = window.uploadConfigs[oldOldId];
+                }
+            };
         }
 
         $(document).on('click', "#{$id}-add", function () {
@@ -303,7 +325,7 @@ class Items extends Field
             $(this).parents('tr').before(node);
             $('.items-empty-text').hide();
             script = script.replace(/-no-init-script/g, '');
-            console.log(script);
+            //console.log(script);
             if(script)
             {
                 if ($('#script-div').size()) {
@@ -312,7 +334,6 @@ class Items extends Field
                     $('body').append('<div class="hidden" id="script-div">' + '\<script\>' + script + '\</script\>' + '</div>');
                 }
             }
-            //console.log(script);
             //复制出来的，需要对应的初始化脚本
         });
 
