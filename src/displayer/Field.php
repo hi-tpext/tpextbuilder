@@ -2,7 +2,6 @@
 
 namespace tpext\builder\displayer;
 
-use think\facade\Lang;
 use think\Model;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
@@ -91,7 +90,7 @@ class Field implements Fillable
         $this->name = trim($name);
 
         if (empty($label) && !empty($this->name)) {
-            $label = Lang::get(ucfirst($this->name));
+            $label = lang(ucfirst($this->name));
         }
 
         if (strstr($this->name, '.')) {

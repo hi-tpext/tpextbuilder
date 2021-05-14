@@ -120,13 +120,13 @@ class Paginator extends Bootstrap
         }
 
         if ($this->summary) {
-
             $a = ($this->currentPage - 1) * $this->listRows + 1;
             $b = $a - 1 + $this->items->count();
             if ($this->total != $this->items->count()) {
                 $html = "<span class='pagination-summary'>共{$this->total}条记录，当前显示{$a}~{$b}条记录</span>" . $html;
-                if ($this->lastPage > 1) {
-                    $html .= "<ul class='pagination pagination-sm'><li><a data-last='{$this->lastPage}' class='goto-page'>&nbsp;&nbsp;输入&nbsp;&nbsp;</a></li></ul>";
+                if ($this->lastPage > 10) {
+                    $gotoPage = "<li><a data-last='{$this->lastPage}' class='goto-page'>&nbsp;&nbsp;输入&nbsp;&nbsp;</a></li>";
+                    $html = preg_replace('/^(.+)<\/ul>$/', '$1' . $gotoPage . '</ul>', $html);
                 }
             } else {
                 $html = "<span class='pagination-summary'>共{$this->total}条记录</span>" . $html;
