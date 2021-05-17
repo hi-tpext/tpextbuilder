@@ -2,12 +2,12 @@
 {:$searchForm->render()}
 {/notempty}
 {notempty name="toolbar"}
-<div class="row m-b-5 m-l-5">
+<div class="toolbar-wrapper">
     {:$toolbar->render()}
 </div>
 {/notempty}
 
-<div id="{$id}" class="row">
+<div id="{$id}">
     {notempty name="addTop"}
     {:$addTop->render()}
     {/notempty}

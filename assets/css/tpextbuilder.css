@@ -122,11 +122,6 @@ form.search-form .control-label + div
     color: red;
 }
 
-span.select2-container {
-    min-width: 100%;
-    max-width: 100%;
-}
-
 form .form-control {
     height: 33px;
 }
@@ -176,44 +171,6 @@ form textarea.form-control, .table textarea.form-control {
 
 .has-error .select2 span.select2-selection {
     border-color: #f96868 !important;
-}
-
-.select2-container .select2-selection.select2-selection--single {
-    height: 33px;
-}
-
-.select2-container .select2-selection.select2-selection--multiple {
-    height: auto;
-}
-
-.select2-container .select2-selection.select2-selection--single .select2-selection__rendered {
-    line-height: 33px;
-}
-
-.select2-container .select2-selection.select2-selection--multiple .select2-selection__rendered {
-    line-height: 30px;
-}
-
-.select2-container--default .select2-selection.select2-selection--multiple .select2-selection__clear
-{
-    margin-top: 0;
-    padding: 0;
-}
-
-.select2-container--default .select2-selection.select2-selection--multiple .select2-selection__choice
-{
-    margin-top: 2px;
-}
-
-.select2-selection.select2-selection--multiple .select2-selection__choice
-{
-    line-height: 25px;
-    font-size: 12px;
-}
-
-.select2-container--default .select2-search--inline .select2-search__field
-{
-    margin-top: 0;
 }
 
 .table .select2-container .select2-selection {
@@ -362,26 +319,6 @@ td ul.lyear-uploads-pic li.pic-item
     text-align: left;
 }
 
-.tree-div
-{
-    position: relative;
-    border-right: 1px solid #ebebeb;
-    width: 100%;
-    overflow: hidden;
-    min-height: 600px;
-    padding: 0;
-    margin: 0;
-    top: -15px;
-}
-
-.tree-div .hide-left
-{
-    cursor: pointer;
-    color: #999;
-    position: absolute;
-    right: 0px;
-}
-
 .search-form .lyear-checkbox, .search-form .lyear-radio
 {
     padding-left: 20px;
@@ -427,49 +364,32 @@ form label.control-label,form label.full-label
 
 .drp-choose_columns .dropdown-menu > li > a
 {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    font-size: 80%;
+    padding: 0;
+    font-size: 12px;
+}
+.drp-choose_columns .dropdown-menu > li > a > i
+{
+    font-size: 14px;
 }
 
-span.the-field.default {
-    color: #8b95a5;
+.toolbar-wrapper
+{
+    clear: both;
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 0;
 }
-span.the-field.primary {
-    color: #33cabb;
+.form-wrapper
+{
+    width: 100%;
+    clear: both;
+    margin: 0;
+    padding: 0;
 }
-span.the-field.success {
-    color: #72b754;
-}
-span.the-field.info {
-    color: #48b0f7;
-}
-span.the-field.warning {
-    color: #faa64b;
-}
-span.the-field.danger {
-    color: #f96868;
-}
-span.the-field.dark {
-    color: #465161;
-}
-span.the-field.secondary {
-    color: #e4e7ea;
-}
-span.the-field.purple {
-    color: #926dde;
-}
-span.the-field.pink {
-    color: #f96197;
-}
-span.the-field.cyan {
-    color: #57c7d4;
-}
-span.the-field.yellow {
-    color: #fcc525;
-}
-.table-hover > tbody > tr:hover {
-    background-color: #e4f2f9;
+
+.panel-body.page-main
+{
+    padding: 15px 8px;
 }
 
 .table-hover > tbody > tr.checked:hover {
@@ -513,10 +433,40 @@ span.the-field.yellow {
     margin: 0;
 }
 
+.tree-div
+{
+    position: relative;
+    border-right: 1px solid #ebebeb;
+    width: 100%;
+    overflow: hidden;
+    min-height: 600px;
+    padding: 0;
+    margin: 0;
+    top: -15px;
+}
+
+.tree-div .hide-left
+{
+    cursor: pointer;
+    color: #999;
+    position: absolute;
+    right: 0px;
+}
+
 .right-table
 {
     width:88%;
     float:right;
+    position: relative;
+}
+
+.right-table .show-left
+{
+    cursor: pointer;
+    color: #999;
+    position: absolute;
+    left: 7px;
+    top: -15px;
 }
 
 .items-content,.fields-content
@@ -547,7 +497,7 @@ label.radio-block span,label.checkbox-block span{
     background:#fff;
     border:1px solid #e7eaec;
     border-radius:2px;
-    padding: 10px 0;
+    padding: 10px 5px;
     position:relative
 }
 .tabs-container .nav-tabs>li.active>a,
@@ -663,6 +613,46 @@ label.radio-block span,label.checkbox-block span{
     z-index:1
 }
 /*tab end*/
+
+span.the-field.default {
+    color: #8b95a5;
+}
+span.the-field.primary {
+    color: #33cabb;
+}
+span.the-field.success {
+    color: #72b754;
+}
+span.the-field.info {
+    color: #48b0f7;
+}
+span.the-field.warning {
+    color: #faa64b;
+}
+span.the-field.danger {
+    color: #f96868;
+}
+span.the-field.dark {
+    color: #465161;
+}
+span.the-field.secondary {
+    color: #e4e7ea;
+}
+span.the-field.purple {
+    color: #926dde;
+}
+span.the-field.pink {
+    color: #f96197;
+}
+span.the-field.cyan {
+    color: #57c7d4;
+}
+span.the-field.yellow {
+    color: #fcc525;
+}
+.table-hover > tbody > tr:hover {
+    background-color: #e4f2f9;
+}
 
 label.radio-block input,label.checkbox-block input{
     display : none;
