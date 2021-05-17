@@ -245,22 +245,30 @@ EOT;
         var leftw = $('.tree-div').parent('div').outerWidth();
         var rightw = $('.tree-div').parent('div').next('div').outerWidth();
 
-        $('.tree-div .hide-left').click(function(){
-            var parent = $('.tree-div').parent('div');
-            if($(this).children('i').hasClass('mdi-format-horizontal-align-left'))
+        $('.left-tree').on('click', '.hide-left',function(){
+            var leftTree = $(this).parent('.tree-div').parent('div.left-tree');
+            leftTree.addClass('hidden');
+
+            var rightTree = leftTree.next('.right-table');
+            rightTree.css('width','100%');
+
+            if(!rightTree.find('.show-left').length)
             {
-                parent.next('div').css('width' ,(rightw + leftw - 25) + 'px');
-                parent.css({'width':'15px' ,'padding':0 ,'margin':0});
-                $(this).next('.jstree').addClass('hidden');
-                $(this).children('i').removeClass('mdi-format-horizontal-align-left').addClass('mdi mdi-format-horizontal-align-right');
+                rightTree.append('<a href="#" title="打开左侧" class="show-left"><i class="mdi mdi-format-horizontal-align-right"></i></a>');
             }
             else
             {
-                parent.next('div').removeAttr('style');
-                parent.removeAttr('style');
-                $(this).next('.jstree').removeClass('hidden');
-                $(this).children('i').removeClass('mdi-format-horizontal-align-right').addClass('mdi mdi-format-horizontal-align-left');
+                rightTree.find('.show-left').removeClass('hidden');
             }
+        });
+
+        $('.right-table').on('click', '.show-left', function(){
+            var rightTree = $(this).parent('.right-table');
+            rightTree.removeAttr('style');
+
+            var leftTree = rightTree.prev('div.left-tree');
+            leftTree.removeClass('hidden');
+            rightTree.find('.show-left').addClass('hidden');
         });
 
 EOT;

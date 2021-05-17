@@ -272,10 +272,9 @@ class Search extends SWrapper implements Renderable
     {
         if ($create) {
             $this->fieldsEnd();
-            $this->fields('buttons', '', '3 col-lg-3 col-sm-4 col-xs-12')->size(0, '12 col-lg-12 col-sm-12 col-xs-12')->showLabel(false)->with(
-                $this->html('', '', '2 col-lg-2 col-sm-2 col-xs-2')->showLabel(false),
-                $this->button('submit', '筛&nbsp;&nbsp;选', '5 col-lg-3 col-sm-5 col-xs-4')->class('btn-info ' . $this->butonsSizeClass),
-                $this->button('button', '重&nbsp;&nbsp;置', '5 col-lg-3 col-sm-5 col-xs-4')->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"')
+            $this->fields('buttons', ' ', '3 col-lg-2 col-sm-12 col-xs-12')->size('3 col-lg-4 col-sm-2 col-xs-12', '9 col-lg-8 col-sm-8 col-xs-12')->with(
+                $this->button('submit', '筛&nbsp;&nbsp;选', '6 col-lg-6 col-sm-6 col-xs-6')->class('btn-info ' . $this->butonsSizeClass),
+                $this->button('button', '重&nbsp;&nbsp;置', '6 col-lg-6 col-sm-6 col-xs-6')->class('btn-default ' . $this->butonsSizeClass)->attr('onclick="location.replace(location.href)"')
             );
         }
 
