@@ -15,7 +15,7 @@ class Row
     /**
      * Undocumented function
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return Column
      */
     public function column($size = 12)
@@ -28,7 +28,7 @@ class Row
     /**
      * Undocumented function
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return Form
      */
     public function form($size = 12)
@@ -39,7 +39,7 @@ class Row
     /**
      * Undocumented function
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return Table
      */
     public function table($size = 12)
@@ -50,7 +50,7 @@ class Row
     /**
      * 获取一个工具栏
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return Toolbar
      */
     public function toolbar($size = 12)
@@ -61,7 +61,7 @@ class Row
     /**
      * 默认获取一个ZTree树
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return ZTree
      */
     public function tree($size = 12)
@@ -72,7 +72,7 @@ class Row
     /**
      * 获取一个ZTree树
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return ZTree
      */
     public function zTree($size = 12)
@@ -83,7 +83,7 @@ class Row
     /**
      * 获取一个JSTree树
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return JSTree
      */
     public function jsTree($size = 12)
@@ -94,7 +94,7 @@ class Row
     /**
      * Undocumented function
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return Content
      */
     public function content($size = 12)
@@ -105,7 +105,7 @@ class Row
     /**
      * Undocumented function
      *
-     * @param integer $size
+     * @param integer|string $size
      * @return Tab
      */
     public function tab($size = 12)

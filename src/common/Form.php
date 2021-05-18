@@ -40,6 +40,8 @@ class Form extends FWrapper implements Renderable
 
     protected $botttomButtonsCalled = false;
 
+    protected $bottomOffsetCalled = false;
+
     protected $ajax = true;
 
     protected $defaultDisplayerSize = null;
@@ -225,6 +227,16 @@ class Form extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @return string
+     */
+    public function getButonsSizeClass()
+    {
+        return $this->butonsSizeClass;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param boolean $val
      * @return $this
      */
@@ -254,6 +266,9 @@ class Form extends FWrapper implements Renderable
      */
     public function tab($label, $active = false, $name = '')
     {
+        $this->__fields__ = null;
+        $this->__items__ = null;
+
         if (empty($this->tab)) {
             $this->tab = new Tab();
             $this->rows[] = $this->tab;
@@ -285,6 +300,9 @@ class Form extends FWrapper implements Renderable
      */
     public function step($label, $description = '', $active = false, $name = '')
     {
+        $this->__fields__ = null;
+        $this->__items__ = null;
+
         if (empty($this->step)) {
             $this->step = new Step();
             $this->rows[] = $this->step;
@@ -467,33 +485,51 @@ class Form extends FWrapper implements Renderable
                 $this->btnLayerClose();
             } else {
                 $this->btnSubmit();
-                $this->html('', '', '2 col-lg-2 col-sm-2 col-xs-2')->showLabel(false);
                 $this->btnReset();
             }
         }
 
-        $this->botttomButtonsCalled = true;
+        $this->fieldsEnd();
+
         return $this;
     }
 
-    public function bottomOffset($offset = 4)
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function bottomOffset()
     {
+        if ($this->bottomOffsetCalled) {
+            return $this;
+        }
         $this->allContentsEnd();
-        $this->html('', '', '12 col-lg-12 col-sm-12 col-xs-12')->value('');
-        $this->html('', '', $offset)->showLabel(false);
+        $this->html('', '', '12 col-lg-12 col-sm-12 col-xs-12')->value(''); //这里时一个空行
+        //此处开启了一个fields装载后面的操作按钮，不会调用fieldsEnd了，正常情况下，底部按钮后面不会有其他元素了。如果有，需要调用fieldsEnd结束按钮区域
+        //col-lg 比例:      左(4) | 中部按钮组(4) | 右(4)
+        //clo-md 比例:      左(4) | 中部按钮组(4) | 右(4)
+        //col-sm 比例:      左(3) | 中部按钮组(6) | 右(3)
+        //col-xs 比例:      左(2) | 中部按钮组(8) | 右(2)
+        $this->html('', '', '4 col-lg-4 col-sm-3 col-xs-2')->showLabel(false); //左侧offset 4,4,3,2
+        $this->fields('bottom_buttons', '', '4 col-lg-4 col-sm-6 col-xs-8 bottom-buttons') //中间按钮组 4,4,6,8
+            ->size(0, '12 col-lg-12 col-sm-12 col-xs-12')->showLabel(false);
+
+        $this->bottomOffsetCalled = true;
+        return $this;
     }
 
     /**
      * Undocumented function
      *
      * @param string $label
-     * @param integer $size
+     * @param integer|string $size
      * @param string $class
      * @return $this
      */
-    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '1 col-lg-1 col-sm-2 col-xs-3', $class = 'btn-info')
+    public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '6 col-lg-6 col-sm-6 col-xs-6', $class = 'btn-info')
     {
-        $this->bottomOffset('4 col-lg-4 col-sm-3 col-xs-2');
+        $this->bottomOffset();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
         return $this;
@@ -503,13 +539,15 @@ class Form extends FWrapper implements Renderable
      * Undocumented function
      *
      * @param string $label
-     * @param integer $size
+     * @param integer|string $size
      * @param string $class
      * @return $this
      */
-    public function btnReset($label = '重&nbsp;&nbsp;置', $size = '1 col-lg-1 col-sm-2 col-xs-3', $class = 'btn-warning')
+    public function btnReset($label = '重&nbsp;&nbsp;置', $size = '6 col-lg-6 col-sm-6 col-xs-6', $class = 'btn-warning')
     {
+        $this->bottomOffset();
         $this->button('reset', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
+        $this->botttomButtonsCalled = true;
         return $this;
     }
 
@@ -517,15 +555,16 @@ class Form extends FWrapper implements Renderable
      * Undocumented function
      *
      * @param string $label
-     * @param integer $size
+     * @param integer|string $size
      * @param string $class
      * @param string $attr
      * @return $this
      */
-    public function btnBack($label = '返&nbsp;&nbsp;回', $size = '4 col-lg-2 col-sm-4 col-xs-4', $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
+    public function btnBack($label = '返&nbsp;&nbsp;回', $size = '6 col-lg-6 col-sm-6 col-xs-6', $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
-        $this->bottomOffset('4 col-lg-5 col-sm-4 col-xs-4');
-        $this->button('button', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->attr($attr);
+        $this->bottomOffset();
+        $this->button('button', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->addAttr($attr);
+        $this->botttomButtonsCalled = true;
         return $this;
     }
 
@@ -533,14 +572,15 @@ class Form extends FWrapper implements Renderable
      * Undocumented function
      *
      * @param string $label
-     * @param integer $size
+     * @param integer|string $size
      * @param string $class
      * @return $this
      */
-    public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = '4 col-lg-2 col-sm-4 col-xs-4', $class = 'btn-default')
+    public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = '12 col-lg-12 col-sm-12 col-xs-12', $class = 'btn-default')
     {
-        $this->bottomOffset('4 col-lg-5 col-sm-4 col-xs-4');
+        $this->bottomOffset();
         $this->button('button', $label, $size)->class($class . ' btn-close-layer' . ' ' . $this->butonsSizeClass);
+        $this->botttomButtonsCalled = true;
         return $this;
     }
 
@@ -795,7 +835,6 @@ EOT;
             $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : $this->defaultDisplayerColSize));
 
             if ($this->__fields__) {
-
                 $this->__fields__->addRow($row);
             } else if ($this->__items__) {
 
