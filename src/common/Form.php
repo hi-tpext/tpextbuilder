@@ -464,7 +464,6 @@ class Form extends FWrapper implements Renderable
     {
         if ($create) {
             if ($this->readonly) {
-                $this->bottomOffset('4 col-lg-5 col-sm-4 col-xs-4');
                 $this->btnLayerClose();
             } else {
                 $this->btnSubmit();
@@ -525,6 +524,7 @@ class Form extends FWrapper implements Renderable
      */
     public function btnBack($label = '返&nbsp;&nbsp;回', $size = '4 col-lg-2 col-sm-4 col-xs-4', $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
+        $this->bottomOffset('4 col-lg-5 col-sm-4 col-xs-4');
         $this->button('button', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->attr($attr);
         return $this;
     }
@@ -539,6 +539,7 @@ class Form extends FWrapper implements Renderable
      */
     public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = '4 col-lg-2 col-sm-4 col-xs-4', $class = 'btn-default')
     {
+        $this->bottomOffset('4 col-lg-5 col-sm-4 col-xs-4');
         $this->button('button', $label, $size)->class($class . ' btn-close-layer' . ' ' . $this->butonsSizeClass);
         return $this;
     }
