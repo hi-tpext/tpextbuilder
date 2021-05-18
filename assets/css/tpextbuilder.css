@@ -169,6 +169,11 @@ form textarea.form-control, .table textarea.form-control {
     vertical-align: middle;
 }
 
+span.select2-container {
+    min-width: 100%;
+    max-width: 100%;
+}
+
 .has-error .select2 span.select2-selection {
     border-color: #f96868 !important;
 }
