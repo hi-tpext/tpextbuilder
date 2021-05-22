@@ -187,7 +187,6 @@
   border: 1px solid #ebebeb;
   border-radius: 2px;
   min-height: 33px;
-  height: 33px;
   cursor: text; }
   .select2-container--default .select2-selection--multiple .select2-selection__rendered {
     box-sizing: border-box;
@@ -195,7 +194,7 @@
     margin: 0;
     padding: 0 5px;
     width: 100%;
-    min-height: 27px; 
+    min-height: 26px; 
   }
     .select2-container--default .select2-selection--multiple .select2-selection__rendered li {
       list-style: none; 
@@ -206,7 +205,7 @@
     cursor: pointer;
     float: right;
     font-weight: bold;
-    margin-top: 4px;
+    margin-top: 3px;
     margin-right: 10px;
     padding: 1px; }
   .select2-container--default .select2-selection--multiple .select2-selection__choice {
