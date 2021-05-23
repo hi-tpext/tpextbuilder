@@ -35,6 +35,7 @@ class Items extends Field
 
         if (empty($this->name)) {
             $this->name = 'items' . mt_rand(100, 999);
+            $this->getWrapper()->setName($this->name);
         }
 
         $this->__items_content__->name($this->name);

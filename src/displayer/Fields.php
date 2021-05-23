@@ -44,6 +44,7 @@ class Fields extends Field
 
         if (empty($this->name)) {
             $this->name = 'fields' . mt_rand(100, 999);
+            $this->getWrapper()->setName($this->name);
         }
 
         return $this;

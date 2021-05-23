@@ -3,10 +3,12 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasOptions;
+use tpext\builder\traits\HasWhen;
 
 class DualListbox extends Field
 {
     use HasOptions;
+    use HasWhen;
 
     protected $view = 'duallistbox';
 
@@ -123,6 +125,7 @@ EOT;
     public function beforRender()
     {
         $this->dualListScript();
+        $this->parseWhens();
 
         return parent::beforRender();
     }

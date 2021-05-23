@@ -6,7 +6,9 @@ use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\displayer\Button;
 use tpext\builder\displayer\Text;
+use tpext\builder\displayer\Field;
 use tpext\builder\form\FieldsContent;
+use tpext\builder\form\When;
 use tpext\builder\form\Fillable;
 use tpext\builder\inface\Renderable;
 use tpext\builder\search\SRow;
@@ -78,6 +80,13 @@ class Search extends SWrapper implements Renderable
      */
     protected $__fields__ = null;
 
+     /**
+     * Undocumented variable
+     *
+     * @var When
+     */
+    protected $__when__ = null;
+
     public function __construct()
     {
         $this->class = 'form-horizontal';
@@ -121,12 +130,38 @@ class Search extends SWrapper implements Renderable
 
     /**
      * Undocumented function
+     * @param Field $watchFor
+     * @param string|int|array $cases
+     * @return When
+     */
+    public function createWhen($watchFor, $cases)
+    {
+        $this->__when__ = new When();
+        $this->__when__->watch($watchFor, $cases);
+        $this->__when__->setForm($this);
+        return $this->__when__;
+    }
+
+
+    /**
+     * Undocumented function
      *
      * @return $this
      */
     public function fieldsEnd()
     {
         $this->__fields__ = null;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function whenEnd()
+    {
+        $this->__when__ = null;
         return $this;
     }
 

@@ -4,6 +4,7 @@ namespace tpext\builder\form;
 
 use think\Model;
 use tpext\builder\common\Form;
+use tpext\builder\common\Search;
 use tpext\builder\common\Module;
 use tpext\builder\displayer\Field;
 use tpext\builder\inface\Renderable;
@@ -19,7 +20,7 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented variable
      *
-     * @var Form
+     * @var Form|Search
      */
     protected $form;
 
@@ -73,7 +74,7 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param Form $val
+     * @param Form|Search $val
      * @return $this
      */
     public function setForm($val)
@@ -85,7 +86,7 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return Form
+     * @return Form|Search
      */
     public function getForm()
     {
