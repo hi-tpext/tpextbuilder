@@ -3,14 +3,14 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasOptions;
+use tpext\builder\traits\HasWhen;
 
 class Select extends Field
 {
     use HasOptions;
+    use HasWhen;
 
     protected $view = 'select';
-
-    protected $class = '';
 
     protected $js = [
         '/assets/tpextbuilder/js/select2/select2.min.js',
@@ -164,7 +164,6 @@ class Select extends Field
                         idField : '{$id}' == '_' ? null : '{$id}',
                         textField : '{$text}' == '_' ? null : '{$text}'
                     };
-                    console.log(withParams{$key})
                     if(withParams{$key}.length)
                     {
                         for(var i in withParams{$key})
@@ -365,6 +364,8 @@ EOT;
             }
             $this->select2Script();
         }
+
+        $this->parseWhens();
 
         return parent::beforRender();
     }

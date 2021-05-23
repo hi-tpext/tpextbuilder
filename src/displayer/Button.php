@@ -14,8 +14,6 @@ class Button extends Field
 
     protected $showLabel = false;
 
-    protected $class = 'btn-default';
-
     protected $loading = false;
 
     public function created($fieldType = '')

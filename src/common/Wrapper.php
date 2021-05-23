@@ -57,7 +57,12 @@ class Wrapper
         'items' => \tpext\builder\displayer\Items::class,
     ];
 
-    protected static $defaultFieldClass = [];
+    protected static $defaultFieldClass = [
+        \tpext\builder\displayer\Button::class => 'btn-default',
+        \tpext\builder\displayer\Checkbox::class => 'checkbox-default',
+        \tpext\builder\displayer\Radio::class => 'radio-default',
+        \tpext\builder\displayer\SwitchBtn::class => 'switch-outline switch-primary',
+    ];
 
     protected static $using = [];
 

@@ -3,14 +3,14 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasOptions;
+use tpext\builder\traits\HasWhen;
 
 class Radio extends Field
 {
     use HasOptions;
+    use HasWhen;
 
     protected $view = 'radio';
-
-    protected $class = 'radio-default';
 
     protected $inline = true;
 
@@ -110,5 +110,11 @@ class Radio extends Field
         $viewshow = $this->getViewInstance();
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function beforRender()
+    {
+        $this->parseWhens();
+        return parent::beforRender();
     }
 }

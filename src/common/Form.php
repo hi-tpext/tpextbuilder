@@ -13,8 +13,10 @@ use tpext\builder\form\FWrapper;
 use tpext\builder\traits\HasDom;
 use tpext\builder\common\Builder;
 use tpext\builder\displayer\Fields;
+use tpext\builder\displayer\Field;
 use tpext\builder\displayer\Items;
 use tpext\builder\form\ItemsContent;
+use tpext\builder\form\When;
 use tpext\builder\inface\Renderable;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\displayer\MultipleFile;
@@ -97,6 +99,13 @@ class Form extends FWrapper implements Renderable
      * @var ItemsContent
      */
     protected $__items__ = null;
+
+    /**
+     * Undocumented variable
+     *
+     * @var When
+     */
+    protected $__when__ = null;
 
     public function __construct()
     {
@@ -342,6 +351,20 @@ class Form extends FWrapper implements Renderable
 
     /**
      * Undocumented function
+     * @param Field $watchFor
+     * @param string|int|array $cases
+     * @return When
+     */
+    public function createWhen($watchFor, $cases)
+    {
+        $this->__when__ = new When();
+        $this->__when__->watch($watchFor, $cases);
+        $this->__when__->setForm($this);
+        return $this->__when__;
+    }
+
+    /**
+     * Undocumented function
      *
      * @return $this
      */
@@ -361,6 +384,18 @@ class Form extends FWrapper implements Renderable
         $this->__items__ = null;
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function whenEnd()
+    {
+        $this->__when__ = null;
+        return $this;
+    }
+
 
     /**
      * Undocumented function
@@ -396,6 +431,7 @@ class Form extends FWrapper implements Renderable
         $this->__fields__ = null;
         $this->__tabs_content__ = null;
         $this->__items__content = null;
+        $this->__when__ = null;
         return $this;
     }
 
@@ -598,7 +634,7 @@ class Form extends FWrapper implements Renderable
 
         if ($fieldsCall) {
             if (!($fieldsCall instanceof \Closure)) {
-                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(若为null，请后续再使用->with(...$fields))');
             }
             $fieldsCall($this);
             $this->fieldsEnd();
@@ -623,7 +659,7 @@ class Form extends FWrapper implements Renderable
 
         if ($fieldsCall) {
             if (!($fieldsCall instanceof \Closure)) {
-                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(若为null，请后续再使用->with(...$fields))');
             }
             $fieldsCall($this);
             $this->fieldsEnd();
@@ -646,7 +682,7 @@ class Form extends FWrapper implements Renderable
 
         if ($fieldsCall) {
             if (!($fieldsCall instanceof \Closure)) {
-                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(若为null，请后续再使用->with(...$fields))');
             }
             $fieldsCall($this);
             $this->fieldsEnd();
@@ -851,6 +887,10 @@ EOT;
             $row->setForm($this);
 
             $displayer = $row->$name($arguments[0], $row->getLabel());
+
+            if ($this->__when__) {
+                $this->__when__->trigger($displayer);
+            }
 
             if ($this->defaultDisplayerSize) {
                 $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);

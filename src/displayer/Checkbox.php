@@ -3,14 +3,14 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasOptions;
+use tpext\builder\traits\HasWhen;
 
 class Checkbox extends Field
 {
     use HasOptions;
+    use HasWhen;
 
     protected $view = 'checkbox';
-
-    protected $class = 'checkbox-default';
 
     protected $inline = true;
 
@@ -156,5 +156,11 @@ class Checkbox extends Field
         $viewshow = $this->getViewInstance();
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function beforRender()
+    {
+        $this->parseWhens();
+        return parent::beforRender();
     }
 }

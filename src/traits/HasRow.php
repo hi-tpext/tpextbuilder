@@ -35,6 +35,28 @@ trait HasRow
 
     /**
      * Undocumented function
+     * @param string $val
+     * @return $this
+     */
+    public function setName($val)
+    {
+        $this->name = $val;
+        return  $this;
+    }
+
+    /**
+     * Undocumented function
+     * @param string $val
+     * @return $this
+     */
+    public function setLabel($val)
+    {
+        $this->label = $val;
+        return  $this;
+    }
+
+    /**
+     * Undocumented function
      *
      * @return int|string
      */
