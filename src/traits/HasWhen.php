@@ -42,6 +42,9 @@ trait HasWhen
             if ($toggleFields[0] instanceof \Closure) { //如果是匿名回调
                 $toggleFields[0]($when);
             } else {
+                if (is_array($toggleFields[0])) {
+                    $toggleFields = $toggleFields[0];
+                }
                 foreach ($toggleFields as $field) {
                     $this->__when__->trigger($field);
                 }
@@ -73,6 +76,9 @@ trait HasWhen
             if ($fields[0] instanceof \Closure) {
                 $fields[0]($form);
             } else {
+                if (is_array($fields[0])) {
+                    $fields = $fields[0];
+                }
                 foreach ($fields as $field) {
                     $this->__when__->trigger($field);
                 }
