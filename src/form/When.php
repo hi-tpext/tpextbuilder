@@ -60,7 +60,7 @@ class When
      * @param Field $field
      * @return $this
      */
-    public function trigger($field)
+    public function toggle($field)
     {
         $this->fields[] = $field;
         //
@@ -149,11 +149,6 @@ class When
                 var m = 0;
                 for(var i in cases{$key})
                 {
-                    if(match)
-                    {
-                        break;
-                    }
-
                     cases = cases{$key}[i].split('+');
                     if(val.length != cases.length)
                     {

@@ -46,7 +46,7 @@ trait HasWhen
                     $toggleFields = $toggleFields[0];
                 }
                 foreach ($toggleFields as $field) {
-                    $this->__when__->trigger($field);
+                    $this->__when__->toggle($field);
                 }
             }
 
@@ -80,7 +80,7 @@ trait HasWhen
                     $fields = $fields[0];
                 }
                 foreach ($fields as $field) {
-                    $this->__when__->trigger($field);
+                    $this->__when__->toggle($field);
                 }
             }
         }
