@@ -196,12 +196,23 @@ class When
             if(match)
             {
                 $('{$triggerNames}').removeClass('hidden');
-                $('{$triggerNames}').find('input,textadea,selcet').removeClass('ignore');//不验证
+                $('{$triggerNames}').find('input,textadea,selcet').each(function(i, e){
+                    $(e).removeClass('ignore');//验证
+                    $(e).attr('name', $(e).data('name'));
+                });
             }
             else
             {
                 $('{$triggerNames}').addClass('hidden');
-                $('{$triggerNames}').find('input,textadea,selcet').addClass('ignore');//不验证
+                $('{$triggerNames}').find('input,textadea,selcet')
+                $('{$triggerNames}').find('input,textadea,selcet').each(function(i, e){
+                    $(e).addClass('ignore');//不验证
+                    if($(e).attr('name'))
+                    {
+                        $(e).data('name', $(e).attr('name'));
+                        $(e).removeAttr('name');//移除name，不会被表单提交
+                    }
+                });
             }
         }).trigger('change');
 

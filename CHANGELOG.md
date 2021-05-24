@@ -2,6 +2,50 @@
 
 ## Tpextbuilder
 
+### 2021年5月24日
+
+增加表单联动[form]和[search]中可用。
+
+#### 单选: radio / select
+
+```php
+// 单选，radio / select 
+$form->radio('test1', '测试1')->options(['1' => '选项1', '2' => '选项2', '3' => '选项3'])->default(1)
+    ->when(
+        1, //选中值为1时
+        $form->text('test_1_a', 'test_1_a')->required()
+        //... 更多字段
+    )->when(
+        [2, 3],//选中值为[2 或 3]时，多个情况时传入参数为数组，数组各元素之间为[或]的关系
+        $form->text('test_1_b', 'test_1_b')->required(),
+        $form->textarea('test_1_c', 'test_1_c')->required()
+        //... 更多字段
+    );
+```
+
+#### 多选：checkbox / multipleSelect / dualListbox
+
+```php
+// 
+$form->checkbox('test2', '测试2')->options(['1' => '选项1', '2' => '选项2', '3' => '选项3', '4' => '选项4'])->default(1)
+    ->when(
+        1,//只选中一个值，且这个值为1时
+        $form->text('test_2_a', 'test_2_a')->required()
+        //... 更多字段
+    )->when(
+        [2, 3],//只选中一个值，且这个值为[2 或 3]时，多个情况时传入参数为数组，数组各元素之间为[或]的关系
+        $form->text('test_2_b', 'test_2_b')->required(),
+        $form->textarea('test_2_c', 'test_2_c')->required()
+        //... 更多字段
+    )->when(
+        [4, '3+4', '2+1+4'],//(只选中一个值，且这个值为4时) 或 (同时选中3,4两个值) 或 (同时选中1,2,4三个值)。
+        //数组各元素之间为[或]的关系，单个元素用+号连接多个值表示同时选中（值之间不分先后顺序[2+1+4]和[1+2+4]和[4+1+2]等情况等效）
+        $form->radio('test_2_d', 'test_2_d')->options([1 => '1', 2 => '2']),
+        $form->textarea('test_2_e', 'test_2_e')->required()
+        //... 更多字段
+    );
+```
+
 ### 2021年5月14日
 
 `form`增加了4个语法糖：`left`,`middle`,`right`,`logs`.  
