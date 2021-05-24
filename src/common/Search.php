@@ -640,6 +640,10 @@ EOT;
 
             $displayer = $row->$name($arguments[0], $row->getLabel());
 
+            if ($this->__when__) {
+                $this->__when__->trigger($displayer);
+            }
+
             if ($this->defaultDisplayerSize) {
                 $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);
             }
