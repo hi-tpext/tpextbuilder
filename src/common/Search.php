@@ -641,7 +641,7 @@ EOT;
             $displayer = $row->$name($arguments[0], $row->getLabel());
 
             if ($this->__when__) {
-                $this->__when__->trigger($displayer);
+                $this->__when__->toggle($displayer);
             }
 
             if ($this->defaultDisplayerSize) {
