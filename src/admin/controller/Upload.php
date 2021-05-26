@@ -337,29 +337,29 @@ class Upload extends Controller
             //var_dump($up->errorNumber);
             //echo json_encode(['status' => 500, 'info' => '上传失败，没有权限', 'class' => 'error']);
             // 失败跟成功同样的方式返回
-            return json_encode([
+            return [
                 "state" => "", // 上传状态，上传成功时必须返回"SUCCESS"
                 "url" => '', // 返回的地址
                 "title" => $up->errorInfo,
-            ]);
+            ];
         } else {
 
-            return json_encode([
+            return [
                 "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
                 "url" => $newPath, // 返回的地址
                 "title" => $newPath, // 附件名
-            ]);
+            ];
         }
     }
 
     private function catchFile()
     {
         // 假装抓取成功了
-        return json_encode([
+        return  [
             "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
             "url" => './upload/images/lyear_5de21f46cd8ba.jpg', // 返回的地址
             "title" => 'lyear_5de21f46cd8ba', // 附件名
-        ]);
+        ];
     }
 
     private function showFile($type = '', $config)
@@ -390,12 +390,12 @@ class Upload extends Controller
         /* 获取附件列表 */
         $files = $this->getfiles($path, $allowFiles);
         if (!count($files)) {
-            return json_encode(array(
+            return array(
                 "state" => "no match file",
                 "list" => array(),
                 "start" => $start,
                 "total" => count($files),
-            ));
+            );
         }
 
         /* 获取指定范围的列表 */
@@ -412,7 +412,7 @@ class Upload extends Controller
             "total" => count($files),
         );
 
-        return json_encode($result);
+        return $result;
     }
 
     private function getfiles($path = '', $allowFiles = '', &$files = array())
