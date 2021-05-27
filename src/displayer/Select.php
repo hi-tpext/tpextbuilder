@@ -365,7 +365,7 @@ EOT;
             $this->select2Script();
         }
 
-        $this->parseWhens();
+        $this->whenScript();
 
         return parent::beforRender();
     }

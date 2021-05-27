@@ -92,131 +92,26 @@ class When
     /**
      * Undocumented function
      *
-     * @return string
+     * @return string|int|array
      */
-    public function whenScript()
+    public function getCases()
     {
-        $script = '';
+        return $this->cases;
+    }
 
-        $watchFor = $this->watchFor->getId();
-
-        $names = [];
+    /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @return $this
+     */
+    public function setWrapperClass($key)
+    {
         foreach ($this->fields as $field) {
-            $names[] = '.row-' . $field->getName() . '-div';
+
+            $field->getWrapper()->addClass($key);
         }
 
-        $triggerNames = implode(',', $names);
-
-        $key = preg_replace('/\W/', '', $watchFor . $triggerNames . mt_rand(1000, 9999));
-
-        $cases = json_encode($this->cases);
-
-        $fieldType = class_basename($this->watchFor);
-
-        $box = '';
-
-        if ($fieldType == 'Checkbox') {
-            $box = ' input:checkbox';
-        } else if ($fieldType == 'Checkbox') {
-            $box = ' input:radio';
-        }
-
-        $script = <<<EOT
-
-        var cases{$key} =  {$cases};
-        var fieldType{$key} =  '{$fieldType}';
-
-        $("#{$watchFor}{$box}").on('change', function(){
-            var match = false;
-
-            if(fieldType{$key} == 'Checkbox' || fieldType{$key} == 'DualListbox' || fieldType{$key} == 'MultipleSelect')
-            {
-                var val = [];
-                if(fieldType{$key} == 'Checkbox')
-                {
-                    var checkboxes = $("#{$watchFor} input:checkbox");
-                    checkboxes.each(function (i, e) {
-                        if ($(e).is(':checked')) {
-                            val.push($(e).val());
-                        }
-                    });
-                }
-                else
-                {
-                    var val = $(this).val() || [];
-                }
-                var cases = [];
-                var m = 0;
-                for(var i in cases{$key})
-                {
-                    cases = cases{$key}[i].split('+');
-                    if(val.length != cases.length)
-                    {
-                        continue;
-                    }
-                    m = 0;
-                    for(var j in val)
-                    {
-                        for(var k in cases)
-                        {
-                            if(val[j] == cases[k])
-                            {
-                                m += 1;
-                            }
-                        }
-                    }
-
-                    if(m > 0 && m == val.length)
-                    {
-                        match = true;
-                        break;
-                    }
-                }
-            }
-            else // Radio / Select
-            {
-                var val = '';
-                if(fieldType{$key} == 'Radio')
-                {
-                    val = $("#{$watchFor} input:checked").val();
-                }
-                else
-                {
-                    val = $(this).val();
-                }
-                for(var i in cases{$key})
-                {
-                    if(val == cases{$key}[i])
-                    {
-                        match = true;
-                        break;
-                    }
-                }
-            }
-            if(match)
-            {
-                $('{$triggerNames}').removeClass('hidden');
-                $('{$triggerNames}').find('input,textadea,selcet').each(function(i, e){
-                    $(e).removeClass('ignore');//验证
-                    $(e).attr('name', $(e).data('name'));
-                });
-            }
-            else
-            {
-                $('{$triggerNames}').addClass('hidden');
-                $('{$triggerNames}').find('input,textadea,selcet')
-                $('{$triggerNames}').find('input,textadea,selcet').each(function(i, e){
-                    $(e).addClass('ignore');//不验证
-                    if($(e).attr('name'))
-                    {
-                        $(e).data('name', $(e).attr('name'));
-                        $(e).removeAttr('name');//移除name，不会被表单提交
-                    }
-                });
-            }
-        }).trigger('change');
-
-EOT;
-        return $script;
+        return $this;
     }
 }
