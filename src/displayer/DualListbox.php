@@ -125,7 +125,7 @@ EOT;
     public function beforRender()
     {
         $this->dualListScript();
-        $this->parseWhens();
+        $this->whenScript();
 
         return parent::beforRender();
     }

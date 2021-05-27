@@ -114,7 +114,7 @@ class Radio extends Field
 
     public function beforRender()
     {
-        $this->parseWhens();
+        $this->whenScript();
         return parent::beforRender();
     }
 }

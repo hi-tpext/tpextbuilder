@@ -114,14 +114,156 @@ trait HasWhen
     /**
      * Undocumented function
      *
-     * @return $this
+     * @return string
      */
-    protected function parseWhens()
+    public function whenScript()
     {
-        foreach ($this->whens as $when) {
-            $this->script[] = $when->whenScript();
+        if (count($this->whens) == 0) {
+            return '';
         }
 
-        return $this;
+        $watchFor = $this->getId();
+
+        $key = 'w_' . $this->getName();
+
+        $key = preg_replace('/\W/', '', $key);
+
+        $casesOptions = [];
+
+        $i = 1;
+        foreach ($this->whens as $when) {
+            $when->setWrapperClass($key . ' ' . $key . '_' . $i);
+            $casesOptions[$key . '_' . $i] = $when->getCases();
+            $i += 1;
+        }
+
+        $script = '';
+
+        $casesOptions = json_encode($casesOptions);
+
+        $fieldType = class_basename($this);
+
+        $box = '';
+
+        if ($fieldType == 'Checkbox') {
+            $box = ' input:checkbox';
+        } else if ($fieldType == 'Checkbox') {
+            $box = ' input:radio';
+        }
+
+        $script = <<<EOT
+
+        var casesOptions{$key} =  {$casesOptions};
+        var fieldType{$key} =  '{$fieldType}';
+
+        $("#{$watchFor}{$box}").on('change', function(){
+            $('.{$key}.match-case').removeClass('match-case');
+            if(fieldType{$key} == 'Checkbox' || fieldType{$key} == 'DualListbox' || fieldType{$key} == 'MultipleSelect')
+            {
+                var val = [];
+                if(fieldType{$key} == 'Checkbox')
+                {
+                    var checkboxes = $("#{$watchFor} input:checkbox");
+                    checkboxes.each(function (i, e) {
+                        if ($(e).is(':checked')) {
+                            val.push($(e).val());
+                        }
+                    });
+                }
+                else
+                {
+                    var val = $(this).val() || [];
+                }
+                var cases = [];
+                var m = 0;
+                for(var c in casesOptions{$key})
+                {
+                    m = 0;
+                    console.log(c);
+                    console.log(casesOptions{$key}[c]);
+                    for(var i in casesOptions{$key}[c])
+                    {
+                        cases = casesOptions{$key}[c][i].split('+');
+                        if(val.length != cases.length)
+                        {
+                            continue;
+                        }
+                        m = 0;
+                        for(var j in val)
+                        {
+                            for(var k in cases)
+                            {
+                                if(val[j] == cases[k])
+                                {
+                                    m += 1;
+                                }
+                            }
+                        }
+
+                        if(m > 0 && m == val.length)
+                        {
+                            $('.' + c).addClass('match-case');
+                            break;
+                        }
+                    }
+                }
+            }
+            else // Radio / Select
+            {
+                var val = '';
+                if(fieldType{$key} == 'Radio')
+                {
+                    val = $("#{$watchFor} input:checked").val();
+                }
+                else
+                {
+                    val = $(this).val();
+                }
+                for(var c in casesOptions{$key})
+                {
+                    console.log(c);
+                    console.log(casesOptions{$key}[c]);
+                    for(var i in casesOptions{$key}[c])
+                    {
+                        if(val == casesOptions{$key}[c][i])
+                        {
+                            $('.' + c).addClass('match-case');
+                            break;
+                        }
+                    }
+                }
+            }
+            console.log('.{$key}');
+            $('.{$key}.match-case').removeClass('hidden');
+            $('.{$key}.match-case').find('input,textadea,select').each(function(i, e){
+                $(e).removeClass('ignore');//验证
+                $(e).attr('name', $(e).data('name'));
+                $(e).attr('id', $(e).data('id'));
+            });
+
+            $('.{$key}').not('.match-case').addClass('hidden');
+            $('.{$key}').not('.match-case').find('input,textadea,select').each(function(i, e){
+                $(e).addClass('ignore');//不验证
+                if($(e).attr('name'))
+                {
+                    $(e).data('name', $(e).attr('name'));
+                    $(e).removeAttr('name');//移除name，不会被表单提交
+                }
+                if($(e).attr('id'))
+                {
+                    $(e).data('id', $(e).attr('id'));
+                    $(e).removeAttr('id');
+                }
+            });
+        });
+
+        setTimeout(function(){
+            $("#{$watchFor}{$box}").trigger('change');
+        }, 10);
+
+EOT;
+        $this->script[] = $script;
+
+        return $script;
     }
 }
