@@ -107,7 +107,7 @@ class When
 
         $triggerNames = implode(',', $names);
 
-        $key = preg_replace('/\W/', '', $watchFor . $triggerNames);
+        $key = preg_replace('/\W/', '', $watchFor . $triggerNames . mt_rand(1000, 9999));
 
         $cases = json_encode($this->cases);
 
