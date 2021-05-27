@@ -179,8 +179,6 @@ trait HasWhen
                 for(var c in casesOptions{$key})
                 {
                     m = 0;
-                    console.log(c);
-                    console.log(casesOptions{$key}[c]);
                     for(var i in casesOptions{$key}[c])
                     {
                         cases = casesOptions{$key}[c][i].split('+');
@@ -221,8 +219,6 @@ trait HasWhen
                 }
                 for(var c in casesOptions{$key})
                 {
-                    console.log(c);
-                    console.log(casesOptions{$key}[c]);
                     for(var i in casesOptions{$key}[c])
                     {
                         if(val == casesOptions{$key}[c][i])
@@ -233,7 +229,6 @@ trait HasWhen
                     }
                 }
             }
-            console.log('.{$key}');
             $('.{$key}.match-case').removeClass('hidden');
             $('.{$key}.match-case').find('input,textadea,select').each(function(i, e){
                 $(e).removeClass('ignore');//验证
