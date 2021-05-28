@@ -154,6 +154,14 @@ class Actions extends DropdownBtns
                     if ($match) {
                         $mapClass[] = $class;
                     }
+                } else if ($mp instanceof \Closure) {
+                    // 'delete' => ['hidden' => function ($data) {
+                    //     return $data['pay_status'] >1;
+                    // }],
+                    $match = $mp($data);
+                    if ($match) {
+                        $matchClass[] = $class;
+                    }
                 } else {
                     if (isset($data[$mp]) && $data[$mp]) {
                         $matchClass[] = $class;
