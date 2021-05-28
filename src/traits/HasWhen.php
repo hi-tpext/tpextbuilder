@@ -25,7 +25,7 @@ trait HasWhen
     /**
      * Undocumented function
      *
-     * @param string|int|array $cases 如：'1' 或 '1+2' 或 ['1+2', '2+3']
+     * @param string|int|array $cases 如：'1' 或 '1 + 2' 或 ['1 + 2', '2 + 3']
      * @param mixed ...$toggleFields
      * @return $this
      */
@@ -61,10 +61,10 @@ trait HasWhen
     /**
      * Undocumented function
      *
-     * @param mixed ...$fields
+     * @param mixed ...$toggleFields
      * @return $this
      */
-    public function toggleFields(...$fields)
+    public function with(...$toggleFields)
     {
         if (!$this->__when__) {
             throw new \LogicException('when(\$cases, ...\$toggleFields)第二个参数[toggleFields]已传入，后续不要继续');
@@ -72,14 +72,14 @@ trait HasWhen
 
         $form = $this->getForm();
 
-        if (count($fields)) {
-            if ($fields[0] instanceof \Closure) {
-                $fields[0]($form);
+        if (count($toggleFields)) {
+            if ($toggleFields[0] instanceof \Closure) {
+                $toggleFields[0]($form);
             } else {
-                if (is_array($fields[0])) {
-                    $fields = $fields[0];
+                if (is_array($toggleFields[0])) {
+                    $toggleFields = $toggleFields[0];
                 }
-                foreach ($fields as $field) {
+                foreach ($toggleFields as $field) {
                     $this->__when__->toggle($field);
                 }
             }
