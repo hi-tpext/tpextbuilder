@@ -783,7 +783,7 @@ EOT;
     /**
      * Undocumented function
      *
-     * @param array|string|int $values
+     * @param array|string|int|\Closure $values
      * @param string $class
      * @param string $field default current field
      * @param string $logic in_array|not_in_array|eq|gt|lt|egt|elt|strstr|not_strstr
@@ -795,7 +795,7 @@ EOT;
             $field = $this->name;
         }
 
-        if (!is_array($values)) {
+        if (!($values instanceof \Closure) && !is_array($values)) {
             $values = [$values];
         }
 
@@ -807,7 +807,7 @@ EOT;
      * 弃用，使用mapClass代替
      * @deprecated 1.8.93
      *
-     * @param array|string|int $values
+     * @param array|string|int|\Closure $values
      * @param string $class
      * @param string $field
      * @param string $logic
@@ -822,16 +822,31 @@ EOT;
      * Undocumented function
      *
      * @param array $groupArr
+     * @example location1 [[values1, $class1, $field1, $logic1], [values2, $class2, $field2, $logic2], ... ]
+     * @example location2 ['class1' => [values1, $field1, $logic1], 'class2'=> [values2, $field2, $logic2], ... ]
+     * @example location3 ['class1' => function closure1(){...}, 'class2'=> function closure2(){...}, ... ]
      * @return $this
      */
     public function mapClassGroup($groupArr)
     {
-        foreach ($groupArr as $g) {
-            $values = $g[0];
-            $class = $g[1];
-            $field = isset($g[2]) ? $g[2] : '';
-            $logic = isset($g[3]) ? $g[3] : '';
-            $this->mapClass($values, $class, $field, $logic);
+        foreach ($groupArr as $key => $g) {
+            if (is_int($key)) { //  1
+                $values = $g[0];
+                $class = $g[1];
+                $field = isset($g[2]) ? $g[2] : '';
+                $logic = isset($g[3]) ? $g[3] : '';
+                $this->mapClass($values, $class, $field, $logic);
+            } else if (is_string($key)) { //  2 /  3
+                if (is_array($g)) //2
+                {
+                    $values = $g[0];
+                    $field = isset($g[1]) ? $g[1] : '';
+                    $logic = isset($g[2]) ? $g[2] : '';
+                    $this->mapClass($values, $key, $field, $logic);
+                } else if ($g instanceof \Closure) {
+                    $this->mapClass($g, $key);
+                }
+            }
         }
 
         return $this;
@@ -1004,6 +1019,13 @@ EOT;
             foreach ($this->mapClass as $mp) {
                 $values = $mp[0];
                 $class = $mp[1];
+                if ($values instanceof \Closure) {
+                    $match = $values($this->data);
+                    if ($match) {
+                        $matchClass[] = $class;
+                    }
+                    continue;
+                }
                 $field = $mp[2];
                 $logic = $mp[3]; //in_array|not_in_array|eq|gt|lt|egt|elt|strstr|not_strstr
                 $val = '';
