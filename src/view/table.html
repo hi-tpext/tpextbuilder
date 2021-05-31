@@ -126,10 +126,15 @@
             if (window.renderFiles) {
                 window.renderFiles('#{$id} ');
             }
-            $("table .form-control.readonly").attr('readonly', 'readonly');
-            $("table .form-control.disabled").attr('disabled', 'disabled');
-            $("table .form-control.not-readonly").removeAttr('readonly');
-            $("table .form-control.not-disabled").removeAttr('disabled')
+            $("#{$id} table .form-control.readonly").attr('readonly', 'readonly');
+            $("#{$id} table .form-control.disabled").attr('disabled', 'disabled');
+            $("#{$id} table .form-control.not-readonly").removeAttr('readonly');
+            $("#{$id} table .form-control.not-disabled").removeAttr('disabled');
+
+            $("#{$id} table label.readonly input").attr('readonly', 'readonly');
+            $("#{$id} table label.disabled input").attr('disabled', 'disabled');
+            $("#{$id} table label.not-readonly input").removeAttr('readonly');
+            $("#{$id} table label.not-disabled input").removeAttr('disabled');
         }
     </script>
 </div>

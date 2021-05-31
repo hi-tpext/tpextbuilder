@@ -603,10 +603,6 @@ class Table extends TWrapper implements Renderable
                 $toolbar->beforRender();
             }
 
-            if ($this->useActionbar) {
-                $this->getActionbar()->beforRender();
-            }
-
             if (empty($this->searchForm)) {
                 $this->getSearch();
                 $this->searchForm->addClass('form-empty');
