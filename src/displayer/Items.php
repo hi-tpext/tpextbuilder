@@ -247,7 +247,7 @@ class Items extends Field
                     $(this).removeAttr('name');
                 });
             }
-            else if($(obj).hasClass('lyear-switch'))
+            else if($(obj).hasClass('switch-label'))
             {
                 var input = $(obj).prev('input');
                 input.attr('data-name', input.attr('name'));
@@ -277,7 +277,7 @@ class Items extends Field
                     });
                     return;
                 }
-                else if($(obj).hasClass('lyear-switch'))
+                else if($(obj).hasClass('switch-label'))
                 {
                     var input = $(obj).prev('input');
                     input.attr('data-name', input.attr('name'));
@@ -298,11 +298,11 @@ class Items extends Field
                 $(obj).attr('id', newid);
                 var newName = oldName.replace(/(.+?)\[__new__\](.+?)/, '$1' + '[__new__' + i + ']$2');
     
-                console.log('oldId:'+oldId);
-                console.log('oldName:'+oldName);
-                console.log('newid:'+newid);
-                console.log('newName:'+newName);
-                console.log('-------------------------------------------');
+                //console.log('oldId:'+oldId);
+                //console.log('oldName:'+oldName);
+                //console.log('newid:'+newid);
+                //console.log('newName:'+newName);
+                //console.log('-------------------------------------------');
                 $(obj).attr('name', newName);
                 $(obj).removeAttr('data-name');
                 if($(obj).hasClass('item-field-required'))

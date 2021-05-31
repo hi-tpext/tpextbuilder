@@ -917,7 +917,12 @@ $(function () {
     $(".form-control.readonly").attr('readonly', 'readonly');
     $(".form-control.disabled").attr('disabled', 'disabled');
     $(".form-control.not-readonly").removeAttr('readonly');
-    $(".form-control.not-disabled").removeAttr('disabled')
+    $(".form-control.not-disabled").removeAttr('disabled');
+
+    $("label.readonly input").attr('readonly', 'readonly');
+    $("label.disabled input").attr('disabled', 'disabled');
+    $("label.not-readonly input").removeAttr('readonly');
+    $("label.not-disabled input").removeAttr('disabled');
 
     window.renderFiles();
 });

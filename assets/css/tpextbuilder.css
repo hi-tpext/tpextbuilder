@@ -29,6 +29,15 @@
     width: 8px;
 }
 
+.lyear-switch input:disabled + span {
+    cursor: not-allowed;
+    background-color: #ebebeb;
+}
+
+.lyear-switch input:disabled + span::after {
+    opacity: .4;
+}
+
 form.search-form .form-group {
     margin-bottom: 3px;
 }
