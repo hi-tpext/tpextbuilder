@@ -236,7 +236,7 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
-     * @param string $val
+     * @param string|\Closure $val
      * @return $this
      */
     public function to($val)
@@ -822,8 +822,8 @@ EOT;
      * Undocumented function
      *
      * @param array $groupArr
-     * @example location1 [[values1, $class1, $field1, $logic1], [values2, $class2, $field2, $logic2], ... ]
-     * @example location2 ['class1' => [values1, $field1, $logic1], 'class2'=> [values2, $field2, $logic2], ... ]
+     * @example location1 [[$values1, $class1, $field1, $logic1], [$values2, $class2, $field2, $logic2], ... ]
+     * @example location2 ['class1' => [$values1, $field1, $logic1], 'class2'=> [$values2, $field2, $logic2], ... ]
      * @example location3 ['class1' => function closure1(){...}, 'class2'=> function closure2(){...}, ... ]
      * @return $this
      */
@@ -986,7 +986,13 @@ EOT;
 
     protected function parseToValue($value)
     {
-        $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
+        $data = $this->data;
+
+        $to = $this->to;
+
+        if ($to instanceof \Closure) {
+            return $to($value, $data);
+        }
 
         $keys = ['{val}', '{__val__}'];
         $replace = [$value, $value];
@@ -1003,7 +1009,7 @@ EOT;
             $replace[] = $val;
         }
 
-        $val = str_replace($keys, $replace, $this->to);
+        $val = str_replace($keys, $replace, $to);
 
         $val = preg_replace('/\{\w+\.\w+\}/', '-', $val); //处理模型关联不上的情况
 
