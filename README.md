@@ -1,7 +1,7 @@
 # tpextbuilder
 
 ## 文档 
-<https://gitee.com/ichynul/myadmin/wikis/pages>
+<https://gitee.com/tpext/myadmin/wikis/pages>
 
 #### 集成富文本编辑器 
 * ckeditor
