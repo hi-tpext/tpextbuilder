@@ -1025,13 +1025,6 @@ EOT;
             foreach ($this->mapClass as $mp) {
                 $values = $mp[0];
                 $class = $mp[1];
-                if ($values instanceof \Closure) {
-                    $match = $values($this->data);
-                    if ($match) {
-                        $matchClass[] = $class;
-                    }
-                    continue;
-                }
                 $field = $mp[2];
                 $logic = $mp[3]; //in_array|not_in_array|eq|gt|lt|egt|elt|strstr|not_strstr
                 $val = '';
@@ -1052,6 +1045,15 @@ EOT;
                     }
 
                     $val = $this->data[$field];
+                }
+
+
+                if ($values instanceof \Closure) {
+                    $match = $values($val, $this->data);
+                    if ($match) {
+                        $matchClass[] = $class;
+                    }
+                    continue;
                 }
 
                 $match = false;
