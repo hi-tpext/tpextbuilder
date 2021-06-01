@@ -35,11 +35,11 @@ class Export
                 }
             }
 
-            $fname = $dir . $title . "-" . date('Ymd-His') . ".csv";
+            $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".csv";
             $fp = fopen($fname, 'w');
         } else {
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename=' . $title . "-" . date('Ymd-His') . ".csv");
+            header('Content-Disposition: attachment;filename=' . $title . "-" . date('Ymd-His')  . ".csv");
             header('Cache-Control: max-age=0');
             $fp = fopen('php://output', 'a');
         }
@@ -181,14 +181,14 @@ class Export
                     }
                 }
 
-                $fname = $dir . $title . "-" . date('Ymd-His') . ".xls";
+                $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls";
                 $objWriter->save($fname);
 
                 $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
                 header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . '.xls');
+                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His')  . '.xls');
                 header('Cache-Control: max-age=0');
                 $objWriter->save('php://output');
             }
@@ -209,17 +209,102 @@ class Export
                     }
                 }
 
-                $fname = $dir . $title . "-" . date('Ymd-His') . ".xlsx";
+                $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx";
                 $objWriter->save($fname);
 
                 $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . '.xlsx');
+                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His')  . '.xlsx');
                 header('Cache-Control: max-age=0');
                 $objWriter->save('php://output');
             }
+        }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $title
+     * @param array|Collection|\Generator $data
+     * @param string $codeField 数据中要编码的字段名
+     * @param integer $QR_ECLEVEL QR_ECLEVEL_L=0,QR_ECLEVEL_M=1,QR_ECLEVEL_Q=2,QR_ECLEVEL_H=3;
+     * @param integer $size 二维码大小
+     * @param bool $requireLib 是否需要再引入`phpqrcode`库，如果在调用此方法前已经[require_once]引入了相关库，则设置为`false`
+     * @return void
+     */
+    public function toQrcode($title = '二维码', $data, $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true)
+    {
+        if ($requireLib) {
+            require_once app()->getRootPath() . 'extend/phpqrcode/phpqrcode.php';
+        }
+
+        $time = date('YmdHis') . '_' . mt_rand(100, 999);
+
+        $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
+        $dir2 = app()->getRuntimePath() .  'export/' . date('Ymd') . '/qr' . $time . '/';
+
+        if (!is_dir($dir2)) {
+            if (!mkdir($dir2, 0755, true)) {
+                return json(['code' => 0, 'msg' => '创建目录失败']);
+            }
+        }
+
+        $files = [];
+        foreach ($data as $d) {
+            $fillename = $dir2 . $d[$codeField] . '.png';
+            \QRcode::png($d[$codeField], $fillename, $QR_ECLEVEL, $size);
+            $files[] = $fillename;
+        }
+
+        $zip = new \ZipArchive();
+
+        $zfile = $dir . $title . '_共' . count($data) . '个' . date('Ymd-His') . mt_rand(100, 999) . '.zip';
+
+        $zip->open($zfile, \ZipArchive::CREATE);  //打开压缩包
+
+        foreach ($files as $imgFile) {
+            $zip->addFile($imgFile, basename($imgFile));  //向压缩包中添加文件
+        }
+
+        $zip->close(); //关闭压缩包
+
+        try {
+            $this->deleteDir($dir2);
+        } catch (\Exception $e) {
+            trace($e->getMessage());
+        }
+
+        $file = str_replace(app()->getRuntimePath() . 'export/', '', $zfile);
+
+        if (request()->isAjax()) {
+            return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
+        } else {
+            return redirect(url('export') . '?path=' . $file);
+        }
+    }
+
+    public function deleteDir($path)
+    {
+        if (is_dir($path)) {
+
+            $dir = opendir($path);
+
+            while (false !== ($file = readdir($dir))) {
+
+                if (($file != '.') && ($file != '..')) {
+
+                    $sonDir = $path . DIRECTORY_SEPARATOR . $file;
+                    if (is_dir($sonDir)) {
+                        static::deleteDir($sonDir);
+                    } else {
+                        unlink($sonDir);
+                    }
+                }
+            }
+            closedir($dir);
+            rmdir($path);
         }
     }
 }

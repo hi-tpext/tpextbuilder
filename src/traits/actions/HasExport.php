@@ -95,6 +95,10 @@ trait HasExport
             $data = $this->buildDataList();
         }
 
+        if (empty($data) || count($data) == 0) {
+            return json(['code' => 0, 'msg' => '数据未空']);
+        }
+
         $cols = $this->table->getCols();
 
         $displayers = $this->getDisplayers($cols);
