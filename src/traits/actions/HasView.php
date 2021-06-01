@@ -95,7 +95,7 @@ trait HasView
             else if ($displayer instanceof displayer\Select && $displayer->isAjax()) {// multipleSelect(ajax) / select(ajax)
                 //
             }
-            else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) { // checkbox / select(非ajax)
+            else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) { // checkbox / multipleSelect(非ajax)
 
                 $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
 
@@ -116,7 +116,11 @@ trait HasView
             }
 
             $size = $displayer->getSize();
-            $row->getDisplayer()->showLabel($displayer->isShowLabel())->size($size[0], $size[1]);
+            
+            $row->getDisplayer()
+                ->showLabel($displayer->isShowLabel())
+                ->size($size[0], $size[1])
+                ->help($displayer->getHelp());
         }
     }
 }

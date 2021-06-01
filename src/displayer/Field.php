@@ -655,6 +655,16 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
+     * @return string
+     */
+    public function getHelp()
+    {
+        return $this->help;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return array
      */
     public function getJs()
