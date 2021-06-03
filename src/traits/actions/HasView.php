@@ -8,6 +8,7 @@ use tpext\builder\form\FieldsContent;
 use tpext\builder\form\FRow;
 use tpext\builder\form\Step;
 
+define('FORM_VIEW', 2);
 /**
  * 查看
  */
@@ -27,8 +28,8 @@ trait HasView
 
             $form = $builder->form();
             $this->form = $form;
-
-            $this->buildForm(2, $data);
+            $this->isEdit = 2;
+            $this->buildForm($this->isEdit, $data);
             $rows = $this->form->getRows();
             $form->fill($data);
 
@@ -70,45 +71,41 @@ trait HasView
 
             $fieldName = $displayer->getName();
 
-            if ($displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
-                || $displayer instanceof displayer\Matche || $displayer instanceof displayer\Matches) {
+            if (
+                $displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
+                || $displayer instanceof displayer\Matche || $displayer instanceof displayer\Matches
+            ) {
                 continue;
             } else if ($displayer instanceof displayer\Items) {
 
                 $content = $displayer->getContent();
                 $this->turn($content->getCols());
-
             } else if ($displayer instanceof displayer\Fields) {
 
                 $content = $displayer->getContent();
                 $this->turn($content->getRows());
-
             } else if ($displayer instanceof displayer\Password) {
 
                 $row->show($fieldName, $row->getLabel())->default('*********');
-
-            } else if ($displayer instanceof displayer\Text || $displayer instanceof displayer\Tags
-                || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea) {
+            } else if (
+                $displayer instanceof displayer\Text || $displayer instanceof displayer\Tags
+                || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea
+            ) {
 
                 $row->show($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
-            } 
-            else if ($displayer instanceof displayer\Select && $displayer->isAjax()) {// multipleSelect(ajax) / select(ajax)
+            } else if ($displayer instanceof displayer\Select && $displayer->isAjax()) { // multipleSelect(ajax) / select(ajax)
                 //
-            }
-            else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) { // checkbox / multipleSelect(非ajax)
+            } else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) { // checkbox / multipleSelect(非ajax)
 
                 $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
-
             } else if ($displayer instanceof displayer\Radio || $displayer instanceof displayer\Select) { // radio / select(非ajax)
 
                 $row->match($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
-
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
                 $options = [$pair[0] => '是', $pair[1] => '否'];
                 $row->match($fieldName, $row->getLabel())->options($options)->value($displayer->renderValue());
-
             } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 
@@ -116,7 +113,7 @@ trait HasView
             }
 
             $size = $displayer->getSize();
-            
+
             $row->getDisplayer()
                 ->showLabel($displayer->isShowLabel())
                 ->size($size[0], $size[1])

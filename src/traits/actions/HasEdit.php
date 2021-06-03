@@ -2,6 +2,7 @@
 
 namespace tpext\builder\traits\actions;
 
+define('FORM_EDIT', 1);
 /**
  * 编辑
  */
@@ -21,12 +22,12 @@ trait HasEdit
 
             $form = $builder->form();
             $this->form = $form;
-            $this->buildForm(1, $data);
+            $this->isEdit = 1;
+            $this->buildForm($this->isEdit, $data);
             $form->fill($data);
             $form->method('put');
 
             return $builder->render();
-
         }
 
         $this->checkToken();

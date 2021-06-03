@@ -49,55 +49,23 @@ trait HasExport
 
         $this->isExporting = true;
         $this->table = $this->builder()->table();
-        $sortOrder = input('get.__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
+        $data = [];
 
-        $__ids__ = input('get.__ids__');
-
-        if (!empty($__ids__)) {
-            $where = [[$this->getPk(), 'in', array_filter(explode(',', $__ids__))]];
+        if ($this->asTreeList()) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
+            $data = $this->dataModel->getLineData();
         } else {
-            $where = $this->filterWhere();
-        }
-
-        if ($this->dataModel) {
-            if (method_exists($this->dataModel, 'asTreeList')) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
-
-                $this->table->sortable([]);
-                $data = $this->dataModel->getLineData();
-
-                if ($this->isExporting) {
-                    if (!empty($__ids__)) {
-                        $ids = explode(',', $__ids__);
-                        $newd = [];
-                        foreach ($data as $d) {
-                            if (in_array($d[$this->getPk()], $ids)) {
-                                $newd[] = $d;
-                            }
-                        }
-                        $data = $newd;
-                    }
-                }
-
-                $this->buildTable($data);
+            $__ids__ = input('get.__ids__');
+            if (!empty($__ids__)) {
+                $where = [[$this->getPk(), 'in', array_filter(explode(',', $__ids__))]];
             } else {
-                $list = $this->dataModel->with($this->indexWith)->where($where)->order($sortOrder)->cursor();
-                $data = [];
-
-                foreach ($list as $li) {
-                    $data[] = $li;
-                }
-
-                // TODO 真正发挥cursor的性能优势
-
-                $this->buildTable($data);
+                $where = $this->filterWhere();
             }
-        } else {
-            $data = $this->buildDataList();
+            $sortOrder = $this->getSortorder();
+            $this->pagesize = 99999999;
+            list($data, $total) = $this->queryList($where, $sortOrder, 1);
         }
 
-        if (empty($data) || count($data) == 0) {
-            return json(['code' => 0, 'msg' => '数据未空']);
-        }
+        $this->buildTable($data, true);
 
         $cols = $this->table->getCols();
 
