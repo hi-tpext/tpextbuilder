@@ -2,6 +2,14 @@
 
 ## Tpextbuilder
 
+### 2021年6月3日
+
+- 调整`buildDataList`逻辑，拆分出新的方法`queryList($where, $sortOrder, $page)`以供自定义数据源；
+- 新版本中不建议重写`buildDataList`方法，如果以前重写过，更新到新版本可能需要调整；
+- 同时`buildDataList`等方法移从`HasBase`动到`HasIndex`中。
+- 增加全局变量`isEdit`，以供判断当前表单模式，和`protected function buildForm($isEdit, &$data = [])`中的`$isEdit`等效。
+- 增加`getSortOrder`方法，如果需要增加一些额外的排序字段，可重写此方法。
+
 ### 2021年5月24日
 
 增加表单联动[form]和[search]中可用。

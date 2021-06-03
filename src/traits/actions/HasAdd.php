@@ -2,6 +2,7 @@
 
 namespace tpext\builder\traits\actions;
 
+define('FORM_ADD', 0);
 /**
  * 添加
  */
@@ -16,7 +17,8 @@ trait HasAdd
             $form = $builder->form();
             $data = [];
             $this->form = $form;
-            $this->buildForm(0, $data);
+            $this->isEdit = 0;
+            $this->buildForm($this->isEdit, $data);
             $form->fill($data);
             $form->method('post');
 
