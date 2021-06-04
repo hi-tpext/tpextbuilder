@@ -180,7 +180,7 @@ trait HasWhen
                 {
                     for(var i in casesOptions{$key}[c])
                     {
-                        cases = casesOptions{$key}[c][i].split('+');
+                        cases = ('' + casesOptions{$key}[c][i]).split('+');
                         if(val.length != cases.length)
                         {
                             continue;
@@ -220,7 +220,7 @@ trait HasWhen
                 {
                     for(var i in casesOptions{$key}[c])
                     {
-                        if(val == casesOptions{$key}[c][i].trim())
+                        if(val == ('' + casesOptions{$key}[c][i]).trim())
                         {
                             $('.' + c).addClass('match-case');
                             break;
