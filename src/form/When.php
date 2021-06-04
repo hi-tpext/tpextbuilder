@@ -47,7 +47,7 @@ class When
     {
         $this->watchFor = $watchFor;
         if (!is_array($cases)) {
-            $cases = [$cases];
+            $cases = ['' . $cases];
         }
         $this->cases = $cases;
         //
