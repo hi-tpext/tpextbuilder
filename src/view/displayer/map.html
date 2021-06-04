@@ -1,8 +1,13 @@
-{include file="$textTempl" /}
-
-<div class="col-md-{$size[1]} col-md-offset-{$size[0]}">
+{include file="$labeltempl" /}
+<div class="col-md-{$size[1]}">
+    <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        {$befor|raw}
+        <input type="text" class="form-control {$class}" placeholder="{$placeholder|default='请输入'.$label}"
+            value="{$value}" name="{$name}" id="{$id}" {$attr|raw}>
+        {$after|raw}
+    </div>
     {if condition="$maptype neq 'yandex'" }
-    <div class="input-group m-t-10 button-div">
+    <div class="input-group m-t-10 m-b-10 button-div">
         <input type="text" class="form-control input-sm" placeholder="搜索地点" id="search-{$id}">
         <span class="input-group-btn">
             <button class="btn btn-default btn-sm" type="button"><i class="mdi mdi-search"></i>搜索</button>
