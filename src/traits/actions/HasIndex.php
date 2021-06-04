@@ -68,6 +68,20 @@ trait HasIndex
 
         $builder = $this->builder($this->pageTitle, $this->indexText, 'index');
 
+        $this->createTable($builder);
+
+        $this->initTable();
+        if (request()->isAjax()) {
+            return $this->table->partial()->render();
+        }
+
+        $this->search = $this->table->getSearch();
+        $this->buildSearch();
+        return $builder->render();
+    }
+
+    protected function createTable($builder)
+    {
         if ($this->treeModel && $this->treeKey) { //左侧树模型
 
             $tree = null;
@@ -92,16 +106,6 @@ trait HasIndex
         } else {
             $this->table = $builder->table();
         }
-
-        $this->table->pk($this->getPk());
-        $this->buildDataList();
-        if (request()->isAjax()) {
-            return $this->table->partial()->render();
-        }
-
-        $this->search = $this->table->getSearch();
-        $this->buildSearch();
-        return $builder->render();
     }
 
     /**
@@ -129,9 +133,11 @@ trait HasIndex
      *
      * @return void
      */
-    protected function buildDataList()
+    protected function initTable()
     {
         $table = $this->table;
+
+        $this->table->pk($this->getPk());
 
         $data = [];
 
@@ -146,12 +152,23 @@ trait HasIndex
             $page = input('get.__page__/d', 1);
             $page = $page < 1 ? 1 : $page;
 
-            list($data, $total) = $this->queryList($where, $sortOrder, $page);
+            $total = -1;
 
-            $this->buildTable($data, false);
-            $table->fill($data);
-            $table->paginator($total, $this->pagesize);
-            $table->sortOrder($sortOrder);
+            $data = $this->buildDataList($where, $sortOrder, $page, $total);
+
+            if ($total == -1) {
+                trace('你使用的是旧版本的buildDataList()方法，建议升级写法新的写法:buildDataList($where = [], $sortOrder = \'\', $page = 1, &$total = -1)');
+                //兼容旧的程序，
+                //旧的`buildDataList`方法不传任何参数，所以不会改变$total的值。
+                //如果是旧的`buildDataList`，会做更多事情，比如`buildTable`,`fill`,`paginator`,`sortOrder`等，
+                //在此判断避免重复，
+                //往后的代码中，`buildDataList`只处理数据，不涉及其他。
+            } else {
+                $this->buildTable($data, false);
+                $table->fill($data);
+                $table->paginator($total, $this->pagesize);
+                $table->sortOrder($sortOrder);
+            }
         }
     }
 
@@ -165,9 +182,20 @@ trait HasIndex
         return $this->dataModel && method_exists($this->dataModel, 'asTreeList');
     }
 
+    /**
+     * 排序
+     *
+     * @return string
+     */
     protected function getSortOrder()
     {
         $sortOrder = input('get.__sort__', $this->sortOrder ? $this->sortOrder : $this->getPk() . ' desc');
+
+        //可重写此方法，比如用户点击除了create_time以外的任何个字段排序，都再加一个`create_time`倒序。
+
+        // if (!strstr($sortOrder, 'create_time')) {
+        //     return $sortOrder .' create_time desc';
+        // }
 
         return $sortOrder;
     }
@@ -178,12 +206,17 @@ trait HasIndex
      *
      * @param array $where
      * @param string $sortOrder
-     * @param int $page
+     * @param integer $page
+     * @param integer $total
      * @return array|\think\Collection|\Generator
      */
-    protected function queryList($where, $sortOrder, $page)
+    protected function buildDataList($where = [], $sortOrder = '', $page = 1, &$total = -1)
     {
-        $data = null;
+        $data = [];
+        $total = 0;
+        if (!$this->dataModel) {
+            return $data;
+        }
 
         if ($this->isExporting) { //如果是导出
             $data = $this->dataModel->with($this->indexWith)
@@ -199,6 +232,6 @@ trait HasIndex
 
         $total = $this->dataModel->where($where)->count();
 
-        return [$data, $total];
+        return $data;
     }
 }
