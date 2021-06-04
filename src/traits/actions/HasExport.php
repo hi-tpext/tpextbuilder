@@ -50,11 +50,15 @@ trait HasExport
         $this->isExporting = true;
         $this->table = $this->builder()->table();
         $data = [];
+        $__ids__ = input('get.__ids__');
+
+        $buildTable = false;
 
         if ($this->asTreeList()) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
             $data = $this->dataModel->getLineData();
+            $buildTable = true;
         } else {
-            $__ids__ = input('get.__ids__');
+
             if (!empty($__ids__)) {
                 $where = [[$this->getPk(), 'in', array_filter(explode(',', $__ids__))]];
             } else {
@@ -62,10 +66,44 @@ trait HasExport
             }
             $sortOrder = $this->getSortorder();
             $this->pagesize = 99999999;
-            list($data, $total) = $this->queryList($where, $sortOrder, 1);
+
+            $total = -1;
+            $data = $this->buildDataList($where, $sortOrder, 1, $total);
+
+            if ($data instanceof \Iterator) {
+                $newArr = [];
+                foreach ($data as $d) {
+                    $newArr[] = $d;
+                }
+                $data = $newArr;
+            }
+
+            if ($total == -1) {
+                $buildTable = false;
+                //兼容旧的程序，
+                //旧的`buildDataList`方法不传任何参数，所以不会改变$total的值。
+                //如果是旧的`buildDataList`，会做更多事情，比如`buildTable`,`fill`,`paginator`,`sortOrder`等，
+                //在此判断避免重复，
+                //往后的代码中，`buildDataList`只处理数据，不涉及其他。
+            } else {
+                $buildTable = true;
+            }
         }
 
-        $this->buildTable($data, true);
+        if (!empty($__ids__)) {
+            $ids = explode(',', $__ids__);
+            $newd = [];
+            foreach ($data as $d) {
+                if (in_array($d[$this->getPk()], $ids)) {
+                    $newd[] = $d;
+                }
+            }
+            $data = $newd;
+        }
+
+        if ($buildTable) {
+            $this->buildTable($data, true);
+        }
 
         $cols = $this->table->getCols();
 
