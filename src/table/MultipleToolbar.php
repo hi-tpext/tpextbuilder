@@ -85,7 +85,7 @@ class MultipleToolbar extends Toolbar
         if ($val === true) {
             $val = ['*'];
         } else if (empty($val)) {
-            $val = false;
+            $val = [];
         } else if (is_string($val)) {
             $val = explode(',', $val);
         }
@@ -102,7 +102,7 @@ class MultipleToolbar extends Toolbar
      */
     public function getChooseColumns()
     {
-        return $this->useChooseColumns;
+        return is_array($this->useChooseColumns) ? $this->useChooseColumns : [];
     }
 
     /**
