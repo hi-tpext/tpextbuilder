@@ -60,8 +60,6 @@ class Table extends TWrapper implements Renderable
 
     protected $emptyText = '';
 
-    protected $useChooseColumns = ['*'];
-
     /**
      * Undocumented variable
      *
@@ -201,17 +199,6 @@ class Table extends TWrapper implements Renderable
 
     /**
      * Undocumented function
-     * @param boolean $val
-     * @return $this
-     */
-    public function useCheckbox($val)
-    {
-        $this->useCheckbox = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
      *
      * @param boolean $val
      * @return $this
@@ -301,32 +288,6 @@ class Table extends TWrapper implements Renderable
         }
 
         $this->sortable = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function useExport($val = true)
-    {
-        $this->getToolbar()->useExport($val);
-
-        return $this;
-    }
-
-    /**
-     * 弃用，使用｀useExport｀代替
-     * @deprecated 1.8.93
-     * @param boolean $val
-     * @return $this
-     */
-    public function hasExport($val = true)
-    {
-        $this->getToolbar()->useExport($val);
-
         return $this;
     }
 
@@ -434,7 +395,7 @@ class Table extends TWrapper implements Renderable
      */
     public function getChooseColumns()
     {
-        return $this->useChooseColumns;
+        return $this->getToolbar()->getChooseColumns();
     }
 
     /**
@@ -506,6 +467,68 @@ class Table extends TWrapper implements Renderable
     }
 
     /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function useActionbar($val)
+    {
+        $this->useActionbar = $val;
+        return $this;
+    }    
+
+    /**
+     * Undocumented function
+     * @param boolean $val
+     * @return $this
+     */
+    public function useCheckbox($val)
+    {
+        $this->useCheckbox = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function useExport($val = true)
+    {
+        $this->getToolbar()->useExport($val);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean|array|string $val 默认显示的字段，false则禁用
+     * @return $this
+     */
+    public function useChooseColumns($val = true)
+    {
+        $this->getToolbar()->useChooseColumns($val);
+
+        return $this;
+    }
+
+    /**
+     * 弃用，使用｀useExport｀代替
+     * @deprecated 1.8.93
+     * @param boolean $val
+     * @return $this
+     */
+    public function hasExport($val = true)
+    {
+        $this->getToolbar()->useExport($val);
+
+        return $this;
+    }
+
+    /**
      * 获取一个actionbar
      *
      * @return Actionbar
@@ -517,18 +540,6 @@ class Table extends TWrapper implements Renderable
         }
 
         return $this->actionbar;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function useActionbar($val)
-    {
-        $this->useActionbar = $val;
-        return $this;
     }
 
     /**
@@ -714,14 +725,14 @@ EOT;
 
         $rows = 0;
 
-        $this->useChooseColumns = ['*'];
+        $chooseColumns = ['*'];
         if (request()->isAjax()) {
             $__columns__ = input('get.__columns__', '');
             if ($__columns__) {
-                $this->useChooseColumns  = explode(',', $__columns__);
+                $chooseColumns  = explode(',', $__columns__);
             }
         } else {
-            $this->useChooseColumns = $this->getToolbar()->getChooseColumns();
+            $chooseColumns = $this->getToolbar()->getChooseColumns();
         }
 
         foreach ($this->data as $key => $data) {
@@ -743,7 +754,7 @@ EOT;
 
                 $displayer = $colunm->getDisplayer();
 
-                if ($this->useChooseColumns && $this->useChooseColumns[0] != '*'  && !in_array($col, $this->useChooseColumns)) {
+                if ($chooseColumns && $chooseColumns[0] != '*'  && !in_array($col, $chooseColumns)) {
                     if (isset($this->headers[$col])) {
                         $displayer->beforRender();
                         unset($this->headers[$col]);
@@ -780,7 +791,7 @@ EOT;
 
         if ($rows == 0) { // 数据为空，但某些js脚本是需要的，空跑一遍，把js脚本加载
             foreach ($cols as $col) {
-                if ($this->useChooseColumns && $this->useChooseColumns[0] != '*'  && !in_array($col, $this->useChooseColumns)) {
+                if ($chooseColumns && $chooseColumns[0] != '*'  && !in_array($col, $chooseColumns)) {
                     unset($this->headers[$col]);
                 }
                 $colunm = $this->cols[$col];
