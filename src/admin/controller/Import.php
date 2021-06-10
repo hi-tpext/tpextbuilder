@@ -55,7 +55,7 @@ class Import extends Controller
 
         $token = Builder::getInstance()->getCsrfToken();
 
-        $uploadUrl = url('/tpextbuilder/admin/upload/upfiles')->__toString();
+        $uploadUrl = url('/admin/upload/upfiles', ['type' => 'dropzone', 'token' => $token])->__toString();
 
         $this->assign('admin_copyright', '');
         $this->assign('uploadUrl', $uploadUrl);

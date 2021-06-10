@@ -77,7 +77,7 @@ EOT;
 
             $token = $this->getCsrfToken();
 
-            $this->uploadUrl = url('/tpextbuilder/admin/upload/ueditor', ['token' => $token])->__toString();
+            $this->uploadUrl = url('/admin/upload/ueditor', ['token' => $token])->__toString();
         }
 
         $vars = $this->commonVars();

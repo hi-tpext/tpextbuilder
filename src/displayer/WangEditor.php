@@ -40,7 +40,7 @@ class WangEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['uploadImgServer'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token])->__toString();
+            $this->jsOptions['uploadImgServer'] = url('/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token])->__toString();
         }
 
         $this->jsOptions['uploadImgParams'] = [];

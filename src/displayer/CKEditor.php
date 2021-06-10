@@ -46,7 +46,7 @@ class CKEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['filebrowserImageUploadUrl'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'ckeditor', 'token' => $token])->__toString();
+            $this->jsOptions['filebrowserImageUploadUrl'] = url('/admin/upload/upfiles', ['type' => 'ckeditor', 'token' => $token])->__toString();
         }
 
         $configs = json_encode($this->jsOptions);

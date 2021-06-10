@@ -85,7 +85,7 @@ class MDEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['imageUploadURL'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token])->__toString();
+            $this->jsOptions['imageUploadURL'] = url('/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token])->__toString();
         }
 
         $configs = json_encode($this->jsOptions);
