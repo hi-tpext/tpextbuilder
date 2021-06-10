@@ -61,9 +61,10 @@ trait HasBase
      * Undocumented function
      *
      * @param array $data
+     * @param boolean $isExporting
      * @return void
      */
-    protected function buildTable(&$data = [], $isExporting = 0)
+    protected function buildTable(&$data = [], $isExporting = false)
     {
         $table = $this->table;
     }
