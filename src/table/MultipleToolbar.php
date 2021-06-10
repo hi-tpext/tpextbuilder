@@ -309,7 +309,7 @@ class MultipleToolbar extends Toolbar
     public function btnImport($afterSuccessUrl = '', $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['800px', '550px'], $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
     {
         if (empty($afterSuccessUrl)) {
-            $afterSuccessUrl = url('/tpextbuilder/admin/import/afterSuccess');
+            $afterSuccessUrl = url('/admin/import/afterSuccess');
         }
 
         if (is_array($acceptedExts)) {
@@ -326,7 +326,7 @@ class MultipleToolbar extends Toolbar
 
         $pagetoken = md5($importpagetoken . $acceptedExts . $fileSize);
 
-        $url = url('/tpextbuilder/admin/import/page') . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
+        $url = url('/admin/import/page') . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
 
         $this->linkBtn('import', $label)->useLayer(true, $layerSize)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
 

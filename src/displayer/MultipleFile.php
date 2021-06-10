@@ -221,7 +221,7 @@ class MultipleFile extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['upload_url'] = url('/tpextbuilder/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token]);
+            $this->jsOptions['upload_url'] = url('/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token]);
         }
 
         if (!$this->showInput) {
