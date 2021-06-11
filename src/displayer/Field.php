@@ -996,7 +996,7 @@ EOT;
 
     protected function parseToValue($value)
     {
-        $data = $this->data;
+        $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
 
         $to = $this->to;
 
