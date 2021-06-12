@@ -177,26 +177,33 @@ trait HasSelectPage
         if ($textField && $textField != 'text') {
             $keys = [];
             $replace = [];
+            $arr = null;
+            $matches = null;
             foreach ($list as $li) {
                 $li = $li->toArray();
                 $keys = [];
                 $replace = [];
-                foreach ($li as $key => $val) {
-                    if (is_array($val)) {
-                        foreach ($val as $k => $v) {
-                            $keys[] = '{' . $key . '.' . $k . '}';
-                            $replace[] = $v;
-                        }
-                        continue;
+                
+                preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
+
+                foreach ($matches[1] as $match) {
+                    $arr = explode('.', $match);
+        
+                    if (count($arr) == 1) {
+        
+                        $keys[] = '{' . $arr[0] . '}';
+                        $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '';
+                    } else if (count($arr) == 2) {
+        
+                        $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                        $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
+                    } else {
+                        //最多支持两层 xx 或 xx.yy
                     }
-                    $keys[] = '{' . $key . '}';
-                    $replace[] = $val;
                 }
+
                 $li['__id__'] = $li[$idField];
                 $li['__text__'] = str_replace($keys, $replace, $textField);
-
-                //处理关联不上的情况,如`member`表的`level_id`关联`level`表，但如果某条记录的`level_id`为0,则关联失败，下拉框会出现{level.name}
-                $li['__text__'] = preg_replace('/\{\w+\.\w+\}/', '-', $li['__text__']);
 
                 $data[] = $li;
             }
