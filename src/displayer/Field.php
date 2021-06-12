@@ -996,7 +996,7 @@ EOT;
 
     protected function parseToValue($value)
     {
-        $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
+        $data = $this->data;
 
         $to = $this->to;
 
@@ -1004,24 +1004,29 @@ EOT;
             return $to($value, $data);
         }
 
+        preg_match_all('/\{([\w\.]+)\}/', $this->to, $matches);
+
         $keys = ['{val}', '{__val__}'];
         $replace = [$value, $value];
+        $arr = null;
 
-        foreach ($data as $key => $val) {
-            if (is_array($val)) {
-                foreach ($val as $k => $v) {
-                    $keys[] = '{' . $key . '.' . $k . '}';
-                    $replace[] = $v;
-                }
-                continue;
+        foreach ($matches[1] as $match) {
+            $arr = explode('.', $match);
+
+            if (count($arr) == 1) {
+
+                $keys[] = '{' . $arr[0] . '}';
+                $replace[] = isset($data[$arr[0]]) ? $data[$arr[0]] : '';
+            } else if (count($arr) == 2) {
+
+                $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                $replace[] = isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]]) ? $data[$arr[0]][$arr[1]] : '-';
+            } else {
+                //最多支持两层 xx 或 xx.yy
             }
-            $keys[] = '{' . $key . '}';
-            $replace[] = $val;
         }
 
         $val = str_replace($keys, $replace, $to);
-
-        $val = preg_replace('/\{\w+\.\w+\}/', '-', $val); //处理模型关联不上的情况
 
         return $val;
     }

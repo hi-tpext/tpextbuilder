@@ -33,20 +33,26 @@ class ActionBtn extends Bar
     {
         $this->data = $data;
 
-        $data = $this->data instanceof Model ? $this->data->toArray() : $this->data;
+        preg_match_all('/__data\.([\w\.]+)__/', $this->href, $matches);
 
         $keys = ['__data.pk__'];
         $replace = [$this->dataId];
-        foreach ($data as $key => $val) {
-            if (is_array($val)) {
-                foreach ($val as $k => $v) {
-                    $keys[] = '__data.' . $key . '.' . $k . '__';
-                    $replace[] = $v;
-                }
-                continue;
+        $arr = null;
+
+        foreach ($matches[1] as $match) {
+            $arr = explode('.', $match);
+
+            if (count($arr) == 1) {
+
+                $keys[] = '__data.' . $arr[0] . '__';
+                $replace[] = isset($data[$arr[0]]) ? $data[$arr[0]] : '';
+            } else if (count($arr) == 2) {
+
+                $keys[] = '__data.' . $arr[0] . '.' . $arr[1] . '__';
+                $replace[] = isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]]) ? $data[$arr[0]][$arr[1]] : '';
+            } else {
+                //最多支持两层 xx 或 xx.yy
             }
-            $keys[] = '__data.' . $key . '__';
-            $replace[] = $val;
         }
 
         $this->__href__ = str_replace($keys, $replace, $this->href);
