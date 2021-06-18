@@ -5,6 +5,7 @@ namespace tpext\builder\traits\actions;
 use think\db\Query;
 use tpext\builder\logic\Filter;
 use tpext\builder\common\Search;
+use tpext\builder\common\Table;
 
 /**
  * 列表
