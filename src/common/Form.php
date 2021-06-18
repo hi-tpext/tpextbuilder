@@ -527,6 +527,8 @@ class Form extends FWrapper implements Renderable
 
         $this->fieldsEnd();
 
+        $this->botttomButtonsCalled = true;
+
         return $this;
     }
 

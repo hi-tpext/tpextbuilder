@@ -140,7 +140,7 @@ class JSTree implements Renderable
                     'state' => [
                         'opened' => true,
                     ],
-                    'children' => isset($d['children']) ? $d['children'] : $this->getChildren($treeData, $d[$idField], $pidField),
+                    'children' => isset($d['children']) ? $d['children'] : $this->getChildren($treeData, $d[$idField], $textField, $idField, $pidField),
                 ];
             }
         }
