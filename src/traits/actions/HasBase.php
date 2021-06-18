@@ -3,7 +3,6 @@
 namespace tpext\builder\traits\actions;
 
 use tpext\builder\common\Form;
-use tpext\builder\common\Table;
 use tpext\builder\common\Builder;
 
 /**
