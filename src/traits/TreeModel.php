@@ -213,7 +213,7 @@ trait TreeModel
 
         foreach ($this->allTreeData as $k => $d) {
 
-            if ($d[$this->treeParentIdField] != $this->treeRootId) {
+            if ('' . $d[$this->treeParentIdField] !== '' . $this->treeRootId) {
                 continue;
             }
 
@@ -245,7 +245,6 @@ trait TreeModel
             $d['__id__'] = $d[$this->treeIdField];
             $d['__text__'] = $d[$this->treeTextField];
             $d['__children__'] = $this->getChildrenData($d[$this->treeIdField]);
-
         }
     }
 
@@ -268,7 +267,7 @@ trait TreeModel
                 continue;
             }
 
-            if ($d[$this->treeParentIdField] == $pid) {
+            if ('' . $d[$this->treeParentIdField] === '' . $pid) {
 
                 $data[] = $d;
 

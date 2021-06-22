@@ -8,6 +8,20 @@ class Matches extends Raw
 {
     use HasOptions;
 
+    protected $separator = ',';
+
+    /**
+     * Undocumented function
+     * ','
+     * @param string $val
+     * @return $this
+     */
+    public function separator($val = ',')
+    {
+        $this->separator = $val;
+        return $this;
+    }
+
     public function renderValue()
     {
         $values = explode(',', $this->value);
@@ -19,7 +33,7 @@ class Matches extends Raw
             }
         }
 
-        $this->value = implode(',', $texts);
+        $this->value = implode($this->separator, $texts);
 
         return parent::renderValue();
     }
