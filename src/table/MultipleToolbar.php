@@ -117,6 +117,8 @@ class MultipleToolbar extends Toolbar
         }
 
         if ($this->useChooseColumns) {
+            $items = [];
+
             foreach ($this->tableCols as $col) {
                 $name = $col->getName();
                 $checked = $this->useChooseColumns[0] == '*' || in_array($name, $this->useChooseColumns);
