@@ -103,7 +103,7 @@ class JSTree implements Renderable
 
         foreach ($treeData as $k => $d) {
 
-            if ($d[$pidField] != 0) {
+            if ($d[$pidField] !== 0 && $d[$pidField] !== '') {
                 continue;
             }
 
@@ -130,7 +130,7 @@ class JSTree implements Renderable
 
         foreach ($treeData as $k => $d) {
 
-            if ($d[$pidField] == $pid) {
+            if ('' . $d[$pidField] === '' . $pid) {
 
                 unset($treeData[$k]);
 

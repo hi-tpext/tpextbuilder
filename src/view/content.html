@@ -15,9 +15,9 @@
   {notempty name="$title"}
   <div class="panel-heading content-header">
     <h4 class="panel-title">
-      {$title}
+      {$title|raw}
       {notempty name="$desc"}
-      <small> - {$desc}</small>
+      <small> - {$desc|raw}</small>
       {/notempty}
     </h4>
   </div>
