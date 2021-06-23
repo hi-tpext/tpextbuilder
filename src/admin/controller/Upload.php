@@ -6,6 +6,7 @@ use think\Controller;
 use tpext\builder\common\model\Attachment;
 use tpext\builder\common\Module;
 use tpext\builder\logic\Upload as UploadTool;
+use tpext\builder\logic\WebUploader;
 
 /* 参照 Light-Year-Example 相关上传处理方式*/
 
@@ -54,7 +55,13 @@ class Upload extends Controller
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];
 
-        $up = new UploadTool($_config);
+        $up = null;
+
+        if ($type == 'webuploader') {
+            $up = new WebUploader($_config);
+        } else {
+            $up = new UploadTool($_config);
+        }
 
         $newPath = $up->uploadFile($file_input_name);
 
@@ -140,39 +147,39 @@ class Upload extends Controller
         $config_file = realpath(dirname($scriptName)) . '/assets/builderueditor/config.json';
         $config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
-            /* 获取配置信息 */
+                /* 获取配置信息 */
             case 'config':
                 $result = $config;
                 break;
 
-            /* 上传图片 */
+                /* 上传图片 */
             case 'uploadimage':
-            /* 上传涂鸦 */
+                /* 上传涂鸦 */
             case 'uploadscrawl':
                 return json($this->saveFile('images'));
                 break;
 
-            /* 上传视频 */
+                /* 上传视频 */
             case 'uploadvideo':
                 return json($this->saveFile('videos'));
                 break;
 
-            /* 上传附件 */
+                /* 上传附件 */
             case 'uploadfile':
                 return json($this->saveFile('files'));
                 break;
 
-            /* 列出图片 */
+                /* 列出图片 */
             case 'listimage':
                 return json($this->saveFile('listimage'));
                 break;
 
-            /* 列出附件 */
+                /* 列出附件 */
             case 'listfile':
                 return json($this->showFile('listfile', $config));
                 break;
 
-            /* 抓取远程附件 */
+                /* 抓取远程附件 */
             case 'catchimage':
                 $result = $this->catchFile();
                 break;
@@ -252,7 +259,6 @@ class Upload extends Controller
             readfile($file);
             exit;
         }
-
     }
 
     private function base64_image_content($base64_image_content, $dirName)
@@ -366,14 +372,14 @@ class Upload extends Controller
     {
         /* 判断类型 */
         switch ($type) {
-            /* 列出附件 */
+                /* 列出附件 */
             case 'listfile':
                 $allowFiles = $config['fileManagerAllowFiles'];
                 $listSize = $config['fileManagerListSize'];
                 $path = realpath('./upload/files/');
                 break;
 
-            /* 列出图片 */
+                /* 列出图片 */
             case 'listimage':
             default:
                 $allowFiles = $config['imageManagerAllowFiles'];
