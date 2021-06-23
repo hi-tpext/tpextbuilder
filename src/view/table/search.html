@@ -36,6 +36,7 @@
                     lightyear.loading('show');
 
                     var postdata = $('#{$id} form').serialize();
+                    var scrollLeft = $('#' + that.searchFor + ' .table-wrapper').scrollLeft();
 
                     $.ajax({
                         url: '{$action}' || location.href,
@@ -47,6 +48,7 @@
                                 lightyear.loading('hide');
                             }, 500);
                             $('#' + that.searchFor).replaceWith(data);
+                            $('#' + that.searchFor + ' .table-wrapper').scrollLeft(scrollLeft);
                         },
                         error: function () {
                             lightyear.loading('hide');
