@@ -3,9 +3,16 @@
 namespace tpext\builder\logic;
 
 use tpext\builder\common\model\Attachment;
+use tpext\builder\inface\Storage;
 
 class Upload
 {
+    /**
+     * 存储驱动
+     *
+     * @var Storage
+     */
+    protected $driver = null;
     //文件上传保存路径
     protected $path = '';
     //允许文件上传的后缀
@@ -19,11 +26,14 @@ class Upload
         //
         "rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso",
         //
-        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md"];
+        "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md"
+    ];
 
     //允许文件上传的 Mime 类型
-    protected $allowMime = ['image/jpeg', 'image/gif', 'image/wbmp', 'image/wbmp', 'image/png',
-        'application/x-zip-compressed'];
+    protected $allowMime = [
+        'image/jpeg', 'image/gif', 'image/wbmp', 'image/wbmp', 'image/png',
+        'application/x-zip-compressed'
+    ];
 
     //允许文件上传的文件最大大小
     protected $maxSize = 20 * 1024 * 1024;
@@ -143,7 +153,10 @@ class Upload
             if (move_uploaded_file($this->tmpName, $this->path . $this->newName)) {
                 $url = "/uploads/{$this->dirName}/" . $date . '/' . $this->newName;
                 $name = str_replace(['.' . $this->suffix], '', $this->oldName);
-                Attachment::create([
+
+                $attachment = new Attachment;
+
+                $res = $attachment->save([
                     'name' => mb_substr($name, 0, 55),
                     'admin_id' => session('?admin_id') ? session('admin_id') : 0,
                     'user_id' => session('?user_id') ? session('user_id') : 0,
@@ -154,6 +167,10 @@ class Upload
                     'storage' => 'local',
                     'url' => $url,
                 ]);
+
+                if ($res) {
+                    $url =  $this->driver->process($attachment);
+                }
 
                 return $url;
             } else {

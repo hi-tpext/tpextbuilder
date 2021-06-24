@@ -3,9 +3,17 @@
 namespace tpext\builder\logic;
 
 use tpext\builder\common\model\Attachment;
+use tpext\builder\inface\Storage;
 
 class WebUploader
 {
+    /**
+     * 存储驱动
+     *
+     * @var Storage
+     */
+    protected $driver = null;
+
     //文件上传保存路径
     protected $path = '';
 
@@ -371,7 +379,9 @@ class WebUploader
         $url = "/uploads/{$this->dirName}/" . $date . '/' . $this->newName;
         $name = str_replace(['.' . $this->suffix], '', $this->oldName);
 
-        Attachment::create([
+        $attachment = new Attachment;
+
+        $res = $attachment->save([
             'name' => mb_substr($name, 0, 55),
             'admin_id' => session('?admin_id') ? session('admin_id') : 0,
             'user_id' => session('?user_id') ? session('user_id') : 0,
@@ -382,6 +392,10 @@ class WebUploader
             'storage' => 'local',
             'url' => $url,
         ]);
+
+        if ($res) {
+            $url =  $this->driver->process($attachment);
+        }
 
         return $url;
     }

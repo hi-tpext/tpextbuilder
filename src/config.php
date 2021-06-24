@@ -1,23 +1,25 @@
 <?php
 
+use tpext\builder\common\Module;
+
 return [
     'search_open' => 1,
     'layer_size' => '1000px,98%',
     'allow_suffix' =>
     //
     "jpg,jpeg,gif,wbmp,webpg,png,bmp,ico," .
-    //
-    "flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogv,mov,wmv,mp4,webm," .
-    //
-    "ogg,mp3,wav,mid," .
-    //
-    "rar,zip,tar,gz,7z,bz2,cab,iso," .
-    //
-    "doc,docx,xls,xlsx,ppt,pptx,pdf,txt,md"
-    ,
+        //
+        "flv,swf,mkv,avi,rm,rmvb,mpeg,mpg,ogv,mov,wmv,mp4,webm," .
+        //
+        "ogg,mp3,wav,mid," .
+        //
+        "rar,zip,tar,gz,7z,bz2,cab,iso," .
+        //
+        "doc,docx,xls,xlsx,ppt,pptx,pdf,txt,md",
     'max_size' => 20,
     'is_rand_name' => 1,
     'file_by_date' => 5,
+    'storage_driver' => \tpext\builder\logic\LocalStorage::class,
     'table_empty_text' => '<div class="text-center"><img src="/assets/tpextbuilder/images/empty.png" /><p>暂无相关数据~</p></div>',
     //
     '__hr__' => '地图api，按需配置',
@@ -35,6 +37,7 @@ return [
         'max_size' => ['type' => 'number', 'label' => '上传文件大小限制(MB)'],
         'is_rand_name' => ['type' => 'radio', 'label' => '随机文件名', 'options' => [0 => '否', 1 => '是']],
         'file_by_date' => ['type' => 'radio', 'label' => '文件目录归档', 'options' => [1 => 'Ym(年月)', 2 => 'Ymd(年月日)', 3 => 'Y/m(年/月)', 4 => 'Y/md(年/月日)', 5 => 'Ym/d(年月/日)', 6 => 'Y/m/d(年/月/日)']],
+        'storage_driver' => ['type' => 'select', 'label' => '存储驱动', 'col_size' => 6, 'size' => [4, 8], 'options' => Module::getInstance()->getStorageDrivers()],
         'table_empty_text' => ['type' => 'textarea', 'label' => '列表无数据显示', 'size' => [2, 10], 'help' => '支持html'],
         'amap_js_key' => ['type' => 'text', 'label' => '高德地图js'],
         'baidu_map_js_key' => ['type' => 'text', 'label' => '百度地图js'],

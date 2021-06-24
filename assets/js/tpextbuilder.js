@@ -807,7 +807,7 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
         var $btn = $li.find('a.btn-link-pic');
         $li.find('.btn-remove-pic').attr('data-id', i).attr('data-url', src);
         $file_list.append($li);
-        if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src) && error) {
+        if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src)) {
             src = '/index.php/tpextbuilder/admin/upload/ext/type/' + src.replace(/.+?\.(\w+)$/, '$1');
             $img.addClass('cantpreview');
             $btn.removeClass('btn-link-pic');

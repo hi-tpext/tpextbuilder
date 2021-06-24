@@ -55,6 +55,15 @@ class Upload extends Controller
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];
 
+        $storageDriver = Module::config('storage_driver');
+
+        $storageDriver = empty($storageDriver) || !class_exists($storageDriver)
+            ? \tpext\builder\logic\LocalStorage::class : $storageDriver;
+
+        $driver = new $storageDriver;
+
+        $_config['driver'] = $driver;
+
         $up = null;
 
         if ($type == 'webuploader') {
@@ -273,6 +282,12 @@ class Upload extends Controller
             $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
             $fileByDate = Module::config('file_by_date');
+            $storageDriver = Module::config('storage_driver');
+
+            $storageDriver = empty($storageDriver) || !class_exists($storageDriver)
+                ? \tpext\builder\logic\LocalStorage::class : $storageDriver;
+
+            $driver = new $storageDriver;
 
             $date = '';
 
@@ -303,7 +318,10 @@ class Upload extends Controller
 
                 $url = "/uploads/{$dirName}/" . $date . '/' . $newName;
                 $name = 'base64' . date('YmdHis');
-                Attachment::create([
+
+                $attachment = new Attachment;
+
+                $res = $attachment->save([
                     'name' => mb_substr($name, 0, 55),
                     'admin_id' => session('?admin_id') ? session('admin_id') : 0,
                     'user_id' => session('?user_id') ? session('user_id') : 0,
@@ -314,6 +332,10 @@ class Upload extends Controller
                     'storage' => 'local',
                     'url' => $url,
                 ]);
+
+                if ($res) {
+                    $url =  $driver->process($attachment);
+                }
 
                 return $url;
             } else {
