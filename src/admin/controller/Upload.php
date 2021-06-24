@@ -22,8 +22,11 @@ class Upload extends Controller
      * @title 上传文件
      * @return mixed
      */
-    public function upfiles($type = '', $token = '')
+    public function upfiles()
     {
+        $type = input('get.type');
+        $token = input('get.token');
+
         if (empty($token)) {
             return json(
                 ['info' => 'no token', 'picurl' => '']
@@ -54,6 +57,15 @@ class Upload extends Controller
         $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];
+
+        $storageDriver = Module::config('storage_driver');
+
+        $storageDriver = empty($storageDriver) || !class_exists($storageDriver)
+            ? \tpext\builder\logic\LocalStorage::class : $storageDriver;
+
+        $driver = new $storageDriver;
+
+        $_config['driver'] = $driver;
 
         $up = null;
 
@@ -117,7 +129,7 @@ class Upload extends Controller
                     return json(
                         [
                             "status" => 1,
-                            "info" => '上传成功',
+                            "info" => '上传成功-'.$type,
                             "url" => $newPath,
                         ]
                     );
@@ -273,6 +285,12 @@ class Upload extends Controller
             $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
             $fileByDate = Module::config('file_by_date');
+            $storageDriver = Module::config('storage_driver');
+
+            $storageDriver = empty($storageDriver) || !class_exists($storageDriver)
+                ? \tpext\builder\logic\LocalStorage::class : $storageDriver;
+
+            $driver = new $storageDriver;
 
             $date = '';
 
@@ -303,7 +321,10 @@ class Upload extends Controller
 
                 $url = "/uploads/{$dirName}/" . $date . '/' . $newName;
                 $name = 'base64' . date('YmdHis');
-                Attachment::create([
+
+                $attachment = new Attachment;
+
+                $res = $attachment->save([
                     'name' => mb_substr($name, 0, 55),
                     'admin_id' => session('?admin_id') ? session('admin_id') : 0,
                     'user_id' => session('?user_id') ? session('user_id') : 0,
@@ -314,6 +335,10 @@ class Upload extends Controller
                     'storage' => 'local',
                     'url' => $url,
                 ]);
+
+                if ($res) {
+                    $url =  $driver->process($attachment);
+                }
 
                 return $url;
             } else {
