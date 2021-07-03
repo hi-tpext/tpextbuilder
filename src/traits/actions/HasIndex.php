@@ -20,6 +20,8 @@ trait HasIndex
     protected $indexText = '列表';
     protected $pagesize = 14;
     protected $sortOrder = 'id desc';
+    protected $useSearch = true;
+
     /**
      * 表格是否为导出模式
      *
@@ -76,8 +78,11 @@ trait HasIndex
             return $this->table->partial()->render();
         }
 
-        $this->search = $this->table->getSearch();
-        $this->buildSearch();
+        if ($this->useSearch) {
+            $this->search = $this->table->getSearch();
+            $this->buildSearch();
+        }
+
         return $builder->render();
     }
 

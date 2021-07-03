@@ -110,7 +110,6 @@ class Select extends Field
     /**
      * Undocumented function
      *
-     * @param string $prev
      * @return string
      */
     protected function select2Script()
