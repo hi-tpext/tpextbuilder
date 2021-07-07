@@ -16,6 +16,8 @@ class MultipleImage extends MultipleFile
             }
         }
 
+        $this->jsOptions['isImage'] = true;
+
         return parent::render();
     }
 }
