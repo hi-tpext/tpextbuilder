@@ -16,6 +16,8 @@ class Image extends File
             }
         }
 
+        $this->jsOptions['isImage'] = true;
+
         return parent::render();
     }
 }

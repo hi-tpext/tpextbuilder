@@ -518,7 +518,7 @@ window.renderFiles = function (elid) {
             if ($btn && $btn.attr('href')) {
                 var href = $btn.attr('href');
                 $img = $li.find('img.preview-img');
-                if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)(\?.*)?$/i.test(href)) {
+                if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)(\?.*)?$/i.test(href)) {
                     $btn.removeClass('btn-link-pic');
                     $btn.attr('target', '_blank');
                     $img.attr('src', '/index.php/tpextbuilder/admin/upload/ext/type/' + href.replace(/.+?\.(\w+)$/, '$1'));
@@ -602,7 +602,7 @@ window.renderFiles = function (elid) {
                 }
                 $file_list.append($li);
                 uploader.makeThumb(file, function (error, src) {
-                    if (!/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(file.ext) && error) {
+                    if (!jsOptions.isImage && !/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(file.ext) && error) {
                         src = '/index.php/tpextbuilder/admin/upload/ext/type/' + file.ext;
                         $img.addClass('cantpreview');
                     }
@@ -807,7 +807,7 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
         var $btn = $li.find('a.btn-link-pic');
         $li.find('.btn-remove-pic').attr('data-id', i).attr('data-url', src);
         $file_list.append($li);
-        if (!/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src)) {
+        if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src)) {
             src = '/index.php/tpextbuilder/admin/upload/ext/type/' + src.replace(/.+?\.(\w+)$/, '$1');
             $img.addClass('cantpreview');
             $btn.removeClass('btn-link-pic');

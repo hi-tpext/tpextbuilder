@@ -58,6 +58,7 @@ class MultipleFile extends Field
         'fileSizeLimit' => 0,
         'thumbnailWidth' => 80,
         'thumbnailHeight' => 80,
+        'isImage' => false
     ];
 
     protected $extTypes = [
@@ -262,7 +263,7 @@ class MultipleFile extends Field
      * Undocumented function
      *
      * @param string|array $types ['jpg', 'jpeg', 'gif'] or 'jpg,jpeg,gif'
-     * @return void
+     * @return $this
      */
     public function extTypes($types)
     {
