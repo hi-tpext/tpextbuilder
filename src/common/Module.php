@@ -41,10 +41,10 @@ class Module extends baseModule
      * 添加存储驱动类
      *
      * @param string $class 驱动类名
-     * @param string $title 模板名称
+     * @param string $title 驱动名称
      * @return $this
      */
-    public function addstorageDriver($class, $title)
+    public function addStorageDriver($class, $title)
     {
         $this->storageDrivers[$class] = $title;
         return $this;
