@@ -2,8 +2,12 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasStorageDriver;
+
 class UEditor extends Field
 {
+    use HasStorageDriver;
+
     protected $view = 'ueditor';
 
     protected $minify = false;
@@ -42,7 +46,7 @@ class UEditor extends Field
 
     protected function editorScript()
     {
-        if (!class_exists('tpext\\builder\\ueditor\\common\\Resource')) {
+        if (!class_exists('\\tpext\\builder\\ueditor\\common\\Resource')) {
             $this->js = [];
             $this->script[] = 'layer.alert("未安装ueditor资源包！<pre>composer require ichynul/builder-ueditor</pre>");';
             return;
@@ -77,7 +81,7 @@ EOT;
 
             $token = $this->getCsrfToken();
 
-            $this->uploadUrl = url('/admin/upload/ueditor', ['token' => $token]);
+            $this->uploadUrl = url('/admin/upload/ueditor', ['token' => $token, 'driver' => $this->getStorageDriver()]);
         }
 
         $vars = $this->commonVars();

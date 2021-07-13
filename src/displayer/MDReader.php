@@ -2,8 +2,12 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasStorageDriver;
+
 class MDReader extends Field
 {
+    use HasStorageDriver;
+
     protected $view = 'mdeditor';
 
     protected $minify = false;
@@ -33,8 +37,7 @@ class MDReader extends Field
             margin: 0px;
 
         }
-        '
-    ;
+        ';
 
     protected $jsOptions = [
         'htmlDecode' => "style,script,iframe", // you can filter tags decode
@@ -59,7 +62,7 @@ class MDReader extends Field
 
     protected function editorScript()
     {
-        if (!class_exists('tpext\\builder\\mdeditor\\common\\Resource')) {
+        if (!class_exists('\\tpext\\builder\\mdeditor\\common\\Resource')) {
             $this->js = [];
             $this->css = [];
             $this->script[] = 'layer.alert("未安装mdeditor资源包！<pre>composer require ichynul/builder-mdeditor</pre>");';
@@ -80,7 +83,7 @@ class MDReader extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['imageUploadURL'] = url('/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token]);
+            $this->jsOptions['imageUploadURL'] = url('/admin/upload/upfiles', ['type' => 'editormd', 'token' => $token, 'driver' => $this->getStorageDriver()]);
         }
 
         $configs = json_encode($this->jsOptions);

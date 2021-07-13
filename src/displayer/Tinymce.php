@@ -2,8 +2,12 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasStorageDriver;
+
 class Tinymce extends Field
 {
+    use HasStorageDriver;
+
     protected $view = 'tinymce';
 
     protected $minify = false;
@@ -41,7 +45,7 @@ class Tinymce extends Field
 
     protected function editorScript()
     {
-        if (!class_exists('tpext\\builder\\tinymce\\common\\Resource')) {
+        if (!class_exists('\\tpext\\builder\\tinymce\\common\\Resource')) {
             $this->js = [];
             $this->script[] = 'layer.alert("未安装tinymce资源包！<pre>composer require ichynul/builder-tinymce</pre>");';
             return;
@@ -53,7 +57,7 @@ class Tinymce extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['images_upload_url'] = url('/admin/upload/upfiles', ['type' => 'tinymce', 'token' => $token]);
+            $this->jsOptions['images_upload_url'] = url('/admin/upload/upfiles', ['type' => 'tinymce', 'token' => $token, 'driver' => $this->getStorageDriver()]);
         }
 
         $this->jsOptions['selector'] = "#{$inputId}";

@@ -2,6 +2,8 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasStorageDriver;
+
 /**
  * MultipleFile class
  * @method $this  image()
@@ -12,6 +14,8 @@ namespace tpext\builder\displayer;
  */
 class MultipleFile extends Field
 {
+    use HasStorageDriver;
+
     protected $view = 'multiplefile';
 
     protected $js = [
@@ -222,7 +226,7 @@ class MultipleFile extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['upload_url'] = url('/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token]);
+            $this->jsOptions['upload_url'] = url('/admin/upload/upfiles', ['type' => 'webuploader', 'token' => $token, 'driver' => $this->getStorageDriver()]);
         }
 
         if (!$this->showInput) {
@@ -230,7 +234,7 @@ class MultipleFile extends Field
         }
 
         if ($this->extKey) { //table 或 items 中
-            $this->addClass('hidden');//隐藏输入框
+            $this->addClass('hidden'); //隐藏输入框
             $this->getWrapper()->addClass('in-table-in-items');
         }
 
