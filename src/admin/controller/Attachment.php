@@ -37,7 +37,7 @@ class Attachment extends Controller
         $where = [];
 
         if (request()->module() == 'admin') {
-            
+
             $admin = session('admin_user');
 
             if ($admin['role_id'] != 1) {
@@ -121,7 +121,7 @@ class Attachment extends Controller
 
         $table->getToolbar()
             ->btnRefresh()
-            ->btnImport(url('uploadSuccess'), '', ['250px', '205px'], 0, '上传')
+            ->btnImport(url('uploadSuccess'), '', ['250px', '205px'], 0, '上传', 'btn-pink', 'mdi-cloud-upload', 'title="上传文件"', '')
             ->btnToggleSearch();
 
         foreach ($data as &$d) {

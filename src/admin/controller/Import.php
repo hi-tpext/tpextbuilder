@@ -24,6 +24,7 @@ class Import extends Controller
         $fileSize = input('fileSize');
         $pageToken = input('pageToken');
         $successUrl = input('successUrl');
+        $driver = input('driver', '');
 
         if ($fileSize == '' || empty($pageToken) || empty($successUrl)) {
             $this->error('参数有误');
@@ -55,7 +56,7 @@ class Import extends Controller
 
         $token = Builder::getInstance()->getCsrfToken();
 
-        $uploadUrl = url('/admin/upload/upfiles', ['type' => 'dropzone', 'token' => $token]);
+        $uploadUrl = url('/admin/upload/upfiles', ['utype' => 'dropzone', 'token' => $token, 'driver' => $driver]);
 
         $this->assign('admin_copyright', '');
         $this->assign('uploadUrl', $uploadUrl);

@@ -22,7 +22,7 @@ class Upload extends Controller
      * @title 上传文件
      * @return mixed
      */
-    public function upfiles($type = '', $token = '', $driver = '')
+    public function upfiles($utype = '', $token = '', $driver = '')
     {
         if (empty($token)) {
             return json(
@@ -37,7 +37,7 @@ class Upload extends Controller
             return;
         }
 
-        switch ($type) {
+        switch ($utype) {
             case 'editormd':
                 $file_input_name = 'editormd-image-file';
                 break;
@@ -73,7 +73,7 @@ class Upload extends Controller
 
         $up = null;
 
-        if ($type == 'webuploader') {
+        if ($utype == 'webuploader') {
             $up = new WebUploader($_config);
         } else {
             $up = new UploadTool($_config);
@@ -88,7 +88,7 @@ class Upload extends Controller
             );
             // 失败跟成功同样的方式返回
         } else {
-            switch ($type) {
+            switch ($utype) {
                 case 'wangeditor':
                     return json(
                         ['url' => $newPath]
@@ -147,7 +147,7 @@ class Upload extends Controller
      * @title ueditor上传相关
      * @return mixed
      */
-    public function ueditor($token = '')
+    public function ueditor($token = '', $driver = '')
     {
         if (empty($token)) {
             exit('no token');
@@ -172,22 +172,22 @@ class Upload extends Controller
             case 'uploadimage':
                 /* 上传涂鸦 */
             case 'uploadscrawl':
-                return json($this->saveFile('images'));
+                return json($this->saveFile('images', $driver));
                 break;
 
                 /* 上传视频 */
             case 'uploadvideo':
-                return json($this->saveFile('videos'));
+                return json($this->saveFile('videos', $driver));
                 break;
 
                 /* 上传附件 */
             case 'uploadfile':
-                return json($this->saveFile('files'));
+                return json($this->saveFile('files', $driver));
                 break;
 
                 /* 列出图片 */
             case 'listimage':
-                return json($this->saveFile('listimage'));
+                return json($this->saveFile('listimage', $driver));
                 break;
 
                 /* 列出附件 */
@@ -353,7 +353,7 @@ class Upload extends Controller
         }
     }
 
-    private function saveFile($type = '')
+    private function saveFile($type = '', $driver = '')
     {
         $file_input_name = 'upfile';
 
@@ -364,8 +364,6 @@ class Upload extends Controller
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];
         $_config['dirName'] = $type;
-
-        $driver = input('get.driver');
 
         $storageDriver = Module::config('storage_driver');
 
