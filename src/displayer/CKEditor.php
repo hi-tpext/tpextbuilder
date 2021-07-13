@@ -2,8 +2,12 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasStorageDriver;
+
 class CKEditor extends Field
 {
+    use HasStorageDriver;
+
     protected $view = 'ckeditor';
 
     protected $minify = false;
@@ -33,7 +37,7 @@ class CKEditor extends Field
 
     protected function editorScript()
     {
-        if (!class_exists('tpext\\builder\\ckeditor\\common\\Resource')) {
+        if (!class_exists('\\tpext\\builder\\ckeditor\\common\\Resource')) {
             $this->js = [];
             $this->script[] = 'layer.alert("未安装ckeditor资源包！<pre>composer require ichynul/builder-ckeditor</pre>");';
             return;
@@ -46,7 +50,7 @@ class CKEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['filebrowserImageUploadUrl'] = url('/admin/upload/upfiles', ['type' => 'ckeditor', 'token' => $token])->__toString();
+            $this->jsOptions['filebrowserImageUploadUrl'] = url('/admin/upload/upfiles', ['type' => 'ckeditor', 'token' => $token, 'driver' => $this->getStorageDriver()])->__toString();
         }
 
         $configs = json_encode($this->jsOptions);

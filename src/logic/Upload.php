@@ -172,6 +172,11 @@ class Upload
                     $url =  $this->driver->process($attachment);
                 }
 
+                if (empty($url)) {
+                    $this->setOption('errorNumber', -7);
+                    return false;
+                }
+
                 return $url;
             } else {
                 $this->setOption('errorNumber', -7);

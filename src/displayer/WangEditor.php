@@ -2,8 +2,12 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\builder\traits\HasStorageDriver;
+
 class WangEditor extends Field
 {
+    use HasStorageDriver;
+
     protected $view = 'wangeditor';
 
     protected $minify = false;
@@ -40,7 +44,7 @@ class WangEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['uploadImgServer'] = url('/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token])->__toString();
+            $this->jsOptions['uploadImgServer'] = url('/admin/upload/upfiles', ['type' => 'wangeditor', 'token' => $token, 'driver' => $this->getStorageDriver()])->__toString();
         }
 
         $this->jsOptions['uploadImgParams'] = [];

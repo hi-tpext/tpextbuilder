@@ -397,6 +397,11 @@ class WebUploader
             $url =  $this->driver->process($attachment);
         }
 
+        if (empty($url)) {
+            $this->setOption('errorNumber', -7);
+            return false;
+        }
+
         return $url;
     }
 

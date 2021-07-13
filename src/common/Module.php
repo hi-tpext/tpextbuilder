@@ -6,7 +6,7 @@ use tpext\common\Module as baseModule;
 
 class Module extends baseModule
 {
-    protected $version = '1.0.2';
+    protected $version = '1.0.3';
 
     protected $name = 'tpext.builder';
 
@@ -31,6 +31,18 @@ class Module extends baseModule
      * @var array
      */
     protected $storageDrivers = [\tpext\builder\logic\LocalStorage::class => '本地'];
+
+    /**
+     * 版本列表，列出所有存在过的版本，即使没有升级脚本也要列出
+     * 版本号 => 升级脚本
+     *
+     * @var array
+     */
+    protected $versions = [
+        '1.0.1' => '',
+        '1.0.2' => '',
+        '1.0.3' => '1.0.3.sql',
+    ];
 
     public function setViewsPath($newPath)
     {

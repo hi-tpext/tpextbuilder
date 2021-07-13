@@ -26,6 +26,7 @@ class Upload extends Controller
     {
         $type = input('get.type');
         $token = input('get.token');
+        $driver = input('get.driver');
 
         if (empty($token)) {
             return json(
@@ -59,6 +60,13 @@ class Upload extends Controller
         $_config['fileByDate'] = $config['file_by_date'];
 
         $storageDriver = Module::config('storage_driver');
+
+        if ($driver) {
+            $driver = str_replace('-', '\\', $driver);
+            if (class_exists($driver)) {
+                $storageDriver = $driver;
+            }
+        }
 
         $storageDriver = empty($storageDriver) || !class_exists($storageDriver)
             ? \tpext\builder\logic\LocalStorage::class : $storageDriver;
@@ -143,7 +151,7 @@ class Upload extends Controller
      * @title ueditor上传相关
      * @return mixed
      */
-    public function ueditor($token = '')
+    public function ueditor($token = '',$driver ='')
     {
         if (empty($token)) {
             exit('no token');
@@ -360,6 +368,24 @@ class Upload extends Controller
         $_config['isRandName'] = $config['is_rand_name'];
         $_config['fileByDate'] = $config['file_by_date'];
         $_config['dirName'] = $type;
+
+        $driver = input('get.driver');
+
+        $storageDriver = Module::config('storage_driver');
+
+        if ($driver) {
+            $driver = str_replace('-', '\\', $driver);
+            if (class_exists($driver)) {
+                $storageDriver = $driver;
+            }
+        }
+
+        $storageDriver = empty($storageDriver) || !class_exists($storageDriver)
+            ? \tpext\builder\logic\LocalStorage::class : $storageDriver;
+
+        $driver = new $storageDriver;
+
+        $_config['driver'] = $driver;
 
         $up = new UploadTool($_config);
 
