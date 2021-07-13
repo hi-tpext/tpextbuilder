@@ -118,7 +118,7 @@ class MultipleToolbar extends Toolbar
 
         if ($this->useChooseColumns) {
             $items = [];
-            
+
             foreach ($this->tableCols as $col) {
                 $name = $col->getName();
                 $checked = $this->useChooseColumns[0] == '*' || in_array($name, $this->useChooseColumns);
@@ -306,9 +306,10 @@ class MultipleToolbar extends Toolbar
      * @param string $class
      * @param string $icon
      * @param string $attr
+     * @param string $driver
      * @return $this
      */
-    public function btnImport($afterSuccessUrl = '', $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['800px', '550px'], $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"')
+    public function btnImport($afterSuccessUrl = '', $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['800px', '550px'], $fileSize = '20', $label = '导入', $class = 'btn-pink', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"', $driver = '\\tpext\\builder\\logic\\LocalStorage')
     {
         if (empty($afterSuccessUrl)) {
             $afterSuccessUrl = url('/admin/import/afterSuccess')->__toString();
@@ -326,9 +327,11 @@ class MultipleToolbar extends Toolbar
 
         session('importpagetoken', $importpagetoken);
 
+        $driver = str_replace('\\', '-', $driver);
+
         $pagetoken = md5($importpagetoken . $acceptedExts . $fileSize);
 
-        $url = url('/admin/import/page')->__toString() . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken;
+        $url = url('/admin/import/page')->__toString() . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken . '&driver=' . $driver;
 
         $this->linkBtn('import', $label)->useLayer(true, $layerSize)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
 

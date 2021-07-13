@@ -18,7 +18,7 @@
     $(function () {
         // 默认使用情况
         $("#dropzone-elm").dropzone({
-            url: "{$uploadUrl}?type=dropzone&token={$uploadtoken}",
+            url: "{$uploadUrl|raw}",
             method: "post",  // 也可用put
             paramName: "file", // 默认为file
             maxFiles: 1,// 一次性上传的文件数量上限
