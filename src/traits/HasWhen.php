@@ -157,6 +157,7 @@ trait HasWhen
         var fieldType{$key} =  '{$fieldType}';
 
         $("#{$watchFor}{$box}").on('change', function(){
+            $('#help-block .error-label').html('');
             $('.{$key}.match-case').removeClass('match-case');
             if(fieldType{$key} == 'Checkbox' || fieldType{$key} == 'DualListbox' || fieldType{$key} == 'MultipleSelect')
             {
