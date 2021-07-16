@@ -674,10 +674,6 @@ class Builder implements Renderable
 
         $viewshow = view($this->view);
 
-        $instance = Module::getInstance();
-
-        $instance->setConfig(['page_title' => $this->desc, 'page_position' => $this->title]);
-
         View::assign(['admin_page_title' => $this->desc, 'admin_page_position' => $this->title]);
 
         return $viewshow->assign($vars);
