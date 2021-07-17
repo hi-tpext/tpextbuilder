@@ -356,6 +356,8 @@ EOT;
 
     public function beforRender()
     {
+        $this->getWrapper()->addClass('items-wrapper');
+
         if ($this->__items_content__->hasAction()) {
             $this->actionScript();
         }
