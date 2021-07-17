@@ -489,6 +489,11 @@ form label.control-label,form label.full-label
     float: left;
 }
 
+.fields-wrapper.form-group
+{
+    margin-bottom: 0;
+}
+
 .button-div
 {
     text-align: center;

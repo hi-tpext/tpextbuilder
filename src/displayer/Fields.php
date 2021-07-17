@@ -161,6 +161,7 @@ class Fields extends Field
 
     public function beforRender()
     {
+        $this->getWrapper()->addClass('fields-wrapper');
         $this->__fields_content__->beforRender();
         parent::beforRender();
         return $this;
