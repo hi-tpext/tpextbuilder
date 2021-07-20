@@ -107,6 +107,12 @@
                     return false;
                 }
 
+                lightyear.loading('show');
+
+                setTimeout(function(){
+                    lightyear.loading('hide');
+                }, 10000);
+
                 return true;
             },
             closeLayer: function (msg, style) {
