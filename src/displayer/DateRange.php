@@ -89,8 +89,7 @@ EOT;
 
     /**
      * Undocumented function
-     * yyyy-mm-dd
-     * @param string $val
+     * @param string $val yyyy-mm-dd
      * @return $this
      */
     public function format($val)

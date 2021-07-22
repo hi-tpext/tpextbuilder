@@ -34,6 +34,13 @@ class Bar implements Renderable
 
     protected $pullRight = false;
 
+    /**
+     * Undocumented variable
+     *
+     * @var \Closure
+     */
+    protected $rendering = null;
+
     public function __construct($name, $label = '')
     {
         $this->name = $name;
@@ -203,6 +210,10 @@ class Bar implements Renderable
 
         ExtLoader::trigger('tpext_bar_befor_render', $this);
 
+        if ($this->rendering instanceof \Closure) {
+            $this->rendering->call($this, $this);
+        }
+
         return $this;
     }
 
@@ -256,5 +267,15 @@ class Bar implements Renderable
         ];
 
         return $vars;
+    }
+
+    /**
+     * @param \Closure $callback
+     * @return $this
+     */
+    public function rendering($callback)
+    {
+        $this->rendering = $callback;
+        return $this;
     }
 }
