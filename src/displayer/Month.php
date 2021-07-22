@@ -8,8 +8,7 @@ class Month extends Date
 
     /**
      * Undocumented function
-     * MM
-     * @param string $val
+     * @param string $val MM
      * @return $this
      */
     public function format($val)

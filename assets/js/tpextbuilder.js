@@ -438,9 +438,9 @@
     w.tpextbuilder = tpextbuilder;
 
     w.layerOpen = function (obj, size, url) {
-        var href = url || $(obj).data('url');
+        var href = url || $(obj).data('url') || $(obj).attr('url') || $(obj).attr('href');
 
-        var text = $(obj).text() || $(obj).attr('title');
+        var text = $(obj).data('title') || $(obj).attr('title') || $(obj).text();
         if ($(obj).data('layer-size')) {
             size = $(obj).data('layer-size').split(',');
         }
@@ -900,6 +900,10 @@ $(function () {
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             parent.layer.close(index);
         }
+    });
+
+    $('body').on('click', '.layer-open,.btn-open-layer', function () {
+        window.layerOpen(this);
     });
 
     $('body').on('click', '.field-show .shwo-more', function () {

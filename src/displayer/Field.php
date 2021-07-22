@@ -85,6 +85,13 @@ class Field implements Fillable
 
     protected $data = [];
 
+    /**
+     * Undocumented variable
+     *
+     * @var \Closure
+     */
+    protected $rendering = null;
+
     public function __construct($name, $label = '')
     {
         $this->name = trim($name);
@@ -959,6 +966,10 @@ EOT;
             Builder::getInstance()->addStyleSheet($this->stylesheet);
         }
 
+        if ($this->rendering instanceof \Closure) {
+            $this->rendering->call($this, $this);
+        }
+
         ExtLoader::trigger('tpext_displayer_befor_render', $this);
 
         return $this;
@@ -1226,5 +1237,15 @@ EOT;
     public function customVars()
     {
         return [];
+    }
+
+    /**
+     * @param \Closure $callback
+     * @return $this
+     */
+    public function rendering($callback)
+    {
+        $this->rendering = $callback;
+        return $this;
     }
 }

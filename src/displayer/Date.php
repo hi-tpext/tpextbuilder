@@ -10,8 +10,7 @@ class Date extends DateTime
 
     /**
      * Undocumented function
-     * YYYY-MM-DD
-     * @param string $val
+     * @param string $val YYYY-MM-DD
      * @return $this
      */
     public function format($val)
