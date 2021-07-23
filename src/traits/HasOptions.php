@@ -124,4 +124,17 @@ trait HasOptions
         $this->options = array_merge($this->options, $options);
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @return $this
+     */
+    public function forget($key)
+    {
+        unset($this->options[$key]);
+
+        return $this;
+    }
 }
