@@ -134,8 +134,6 @@ EOT;
     {
         $vars = $this->commonVars();
 
-        $this->value = $vars['value'];
-
         if (!($this->value === '' || $this->value === null || $this->value === [])) {
             $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
         } else if (!($this->default === '' || $this->default === null || $this->default === [])) {
