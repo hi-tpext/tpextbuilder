@@ -2,6 +2,18 @@
 
 ## Tpextbuilder
 
+### 2021年7月
+
+- 修正：特殊情况下图片无后缀就不可预览
+- `$form`不使用`ajax`时自动出现加载提示
+- `ActionBtn`的`label`支持使用变量，如`评论({comments_count})` => `评论12`
+- `\tpext\builder\displayer\field`,`\tpext\builder\toolbar\Bar` 添加回调方法`rendering($callback)`，可以传入一个`Closure`，在渲染前调用
+
+### 2021年6月25日
+
+- 支持存储驱动扩展
+- 表格翻页刷后，恢复到次的滚动条位置
+
 ### 2021年6月4日
 
 - 梳理表格流程
