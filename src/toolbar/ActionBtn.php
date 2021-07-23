@@ -60,6 +60,43 @@ class ActionBtn extends Bar
         return $this;
     }
 
+    protected function parseLabel()
+    {
+        $data = $this->data;
+
+        $label = $this->label;
+
+        if ($label instanceof \Closure) {
+            return $label($data);
+        }
+
+        preg_match_all('/\{([\w\.]+)\}/', $label, $matches);
+
+        $keys = [];
+        $replace = [];
+        $arr = null;
+
+        foreach ($matches[1] as $match) {
+            $arr = explode('.', $match);
+
+            if (count($arr) == 1) {
+
+                $keys[] = '{' . $arr[0] . '}';
+                $replace[] = isset($data[$arr[0]]) ? $data[$arr[0]] : '';
+            } else if (count($arr) == 2) {
+
+                $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                $replace[] = isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]]) ? $data[$arr[0]][$arr[1]] : '-';
+            } else {
+                //最多支持两层 xx 或 xx.yy
+            }
+        }
+
+        $val = str_replace($keys, $replace, $label);
+
+        return $val;
+    }
+
     /**
      * Undocumented function
      *
@@ -239,6 +276,7 @@ EOT;
         $vars = array_merge($vars, [
             'class' => $vars['class'] . $this->extClass,
             'dataId' => $this->dataId,
+            'label' => $this->parseLabel()
         ]);
 
         $viewshow = $this->getViewInstance();
