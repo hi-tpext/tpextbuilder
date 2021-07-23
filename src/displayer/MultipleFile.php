@@ -240,6 +240,8 @@ class MultipleFile extends Field
 
         $vars = $this->commonVars();
 
+        $this->value = $vars['value'];
+
         if (!empty($this->value)) {
             $this->files = is_array($this->value) ? $this->value : explode(',', $this->value);
         } else if (!empty($this->default)) {
