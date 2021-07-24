@@ -167,7 +167,7 @@ class ItemsContent extends FWrapper
      */
     public function hasAction()
     {
-        return $this->cnaDelete;
+        return $this->cnaDelete || $this->canAdd;
     }
 
     /**
