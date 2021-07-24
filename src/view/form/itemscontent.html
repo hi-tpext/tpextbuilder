@@ -8,7 +8,7 @@
           {$header|raw}
         </th>
         {/volist}
-        {if condition="$cnaDelete"}
+        {if condition="$cnaDelete || $canAdd"}
         <th style="min-width: 50px;" class="text-center vertical-middle">{$actionRowText|raw}</th>
         {/if}
       </tr>
