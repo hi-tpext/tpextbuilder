@@ -58,6 +58,13 @@ class ItemsContent extends FWrapper
      */
     protected $form;
 
+    /**
+     * Undocumented variable
+     *
+     * @var \Closure
+     */
+    protected $templateFieldCall = null;
+
     public function __construct()
     {
         $this->class = 'table-striped table-hover table-bordered table-condensed table-responsive';
@@ -249,6 +256,16 @@ class ItemsContent extends FWrapper
     }
 
     /**
+     * @param \Closure $callback
+     * @return $this
+     */
+    public function templateFieldCall($callback)
+    {
+        $this->templateFieldCall = $callback;
+        return $this;
+    }
+
+    /**
      * Undocumented function
      *
      * @return $this
@@ -325,6 +342,10 @@ class ItemsContent extends FWrapper
             }
 
             $displayer->required(false);
+
+            if ($this->templateFieldCall && $this->templateFieldCall) {
+                $this->templateFieldCall->call($this, $displayer);
+            }
 
             $displayer
                 ->extKey('')

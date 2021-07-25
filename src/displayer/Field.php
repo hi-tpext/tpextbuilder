@@ -966,7 +966,7 @@ EOT;
             Builder::getInstance()->addStyleSheet($this->stylesheet);
         }
 
-        if ($this->rendering instanceof \Closure) {
+        if ($this->rendering && $this->rendering instanceof \Closure) {
             $this->rendering->call($this, $this);
         }
 

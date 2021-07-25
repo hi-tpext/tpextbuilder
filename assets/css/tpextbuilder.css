@@ -677,6 +677,11 @@ label.radio-block input,label.checkbox-block input{
     display : none;
 }
 
+.label
+{
+    font-size:100%;
+}
+
 label.radio-block input:checked + span,label.checkbox-block input:checked + span{
     border: 1px solid#33cabb;
     background: url(/assets/tpextbuilder/images/ico_checkon.svg) no-repeat right bottom;
