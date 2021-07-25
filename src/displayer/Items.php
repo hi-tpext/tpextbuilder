@@ -375,4 +375,16 @@ EOT;
             'items_content' => $this->__items_content__,
         ];
     }
+
+    /**
+     * 在每个模板字段上执行
+     * 
+     * @param \Closure $callback
+     * @return $this
+     */
+    public function templateFieldCall($callback)
+    {
+        $this->__items_content__->templateFieldCall($callback);
+        return $this;
+    }
 }
