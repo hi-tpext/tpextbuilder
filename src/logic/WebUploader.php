@@ -467,13 +467,35 @@ class WebUploader
     protected function getFileInfo($file)
     {
         //得到文件的 mime 类型
-        $this->mime = mime_content_type($file);
+        $this->mime = $this->mime_content_type($file);
         //得到文件临时路径
         $this->tmpName = $file;
         //得到文件大小
         $this->size = filesize($file);
         //得到文件后缀
         $this->suffix = pathinfo($file)['extension'];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $filename
+     * @return boolean
+     */
+    protected function mime_content_type($filename)
+    {
+        if (function_exists('mime_content_type')) {
+
+            return mime_content_type($filename);
+        }
+            
+        $result = new \finfo();
+
+        if (is_resource($result) === true) {
+            return $result->file($filename, FILEINFO_MIME_TYPE);
+        }
+
+        return false;
     }
 
     /**
