@@ -332,7 +332,7 @@ class Upload extends Controller
                     'name' => mb_substr($name, 0, 55),
                     'admin_id' => session('?admin_id') ? session('admin_id') : 0,
                     'user_id' => session('?user_id') ? session('user_id') : 0,
-                    'mime' => mime_content_type($path . $newName),
+                    'mime' => $this->mime_content_type($path . $newName),
                     'suffix' => $type,
                     'size' => filesize($path . $newName) / (1024 ** 2),
                     'sha1' => hash_file('sha1', $path . $newName),
@@ -351,6 +351,28 @@ class Upload extends Controller
         } else {
             return false;
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $filename
+     * @return boolean
+     */
+    protected function mime_content_type($filename)
+    {
+        if (function_exists('mime_content_type')) {
+
+            return mime_content_type($filename);
+        }
+            
+        $result = new \finfo();
+
+        if (is_resource($result) === true) {
+            return $result->file($filename, FILEINFO_MIME_TYPE);
+        }
+
+        return false;
     }
 
     private function saveFile($type = '', $driver = '')
