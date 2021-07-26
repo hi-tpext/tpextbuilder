@@ -147,7 +147,7 @@ trait HasWhen
 
         if ($fieldType == 'Checkbox') {
             $box = ' input:checkbox';
-        } else if ($fieldType == 'Checkbox') {
+        } else if ($fieldType == 'Radio') {
             $box = ' input:radio';
         }
 

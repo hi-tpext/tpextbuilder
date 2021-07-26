@@ -42,7 +42,7 @@ class MultipleFile extends Field
         'duplicate' => true,
         'ext' => [
             //
-            'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp',
+            'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp', 'ico',
             //
             "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
             //
@@ -66,7 +66,7 @@ class MultipleFile extends Field
     ];
 
     protected $extTypes = [
-        'image' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp'],
+        'image' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp', 'ico'],
         'office' => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf"],
         'video' => ["flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm"],
         'audio' => ["ogg", "mp3", "wav", "mid"],
