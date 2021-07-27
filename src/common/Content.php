@@ -67,7 +67,6 @@ class Content implements Renderable
      *
      * @param string $template
      * @param array $vars
-     * @param array $config
      * @return $this
      */
     public function display($content = '', $vars = [])
