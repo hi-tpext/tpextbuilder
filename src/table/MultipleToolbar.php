@@ -124,7 +124,7 @@ class MultipleToolbar extends Toolbar
                 $checked = $this->useChooseColumns[0] == '*' || in_array($name, $this->useChooseColumns);
                 $items[] = [
                     'key' => $col->getName(),
-                    'label' => $col->getLabel(),
+                    'label' => preg_replace('/<[bh]r\s*\/?>/i','',$col->getLabel()),
                     'icon' => $checked ? 'mdi-checkbox-marked-outline' : 'mdi-checkbox-blank-outline',
                     'url' => '#',
                     'attr' => '',
@@ -392,6 +392,16 @@ class MultipleToolbar extends Toolbar
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $items
+     * @param string $label
+     * @param string $class
+     * @param string $icon
+     * @param string $attr
+     * @return $this
+     */
     public function btnChooseColumns($items, $label = '显示', $class = 'btn-secondary', $icon = 'mdi-grid', $attr = 'title="选择要显示的列"')
     {
         $this->dropdownBtns('choose_columns', $label)->items($items)->groupClass('drp-choose_columns')
