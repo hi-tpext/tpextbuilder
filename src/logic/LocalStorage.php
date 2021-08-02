@@ -15,9 +15,6 @@ class LocalStorage implements Storage
      */
     public function process($attachment)
     {
-        $attachment['url'] = $attachment['url'] . '?id=' . $attachment['id'];
-        $attachment->save();
-
         return $attachment['url'];
     }
 }
