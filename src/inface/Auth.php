@@ -8,7 +8,7 @@ interface Auth
      * Undocumented function
      *
      * @param string $url
-     * @return void
+     * @return boolean
      */
     public static function checkUrl($url);
 }
