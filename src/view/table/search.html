@@ -105,14 +105,27 @@
                             layer.close(loading);
                             if(data.code)
                             {
-                                var filename = data.data.replace(/.+?([^\/]+)$/, '$1');
-                                layer.open({
-                                    type: 1,
-                                    title: '文件下载',
-                                    shadeClose: false,
-                                    area: ['400px','150px'],
-                                    content: '<div class="alert alert-success " role="alert" style="widht:94%;margin:2%;"><p>文件已生成，点击下载：</p><a onclick="layer.closeAll();" target="_blank" href="' + data.data + '">' + filename + '</a></div>',
-                                });
+                                if(data.open_url)//数据太多，打开页面，分页处理
+                                {
+                                    layer.open({
+                                        type: 2,
+                                        title: '生成数据中...',
+                                        scrollbar: false,
+                                        area: ['400px','150px'],
+                                        content: url + '?' + postdata
+                                    });
+                                }
+                                else//一次性生成文件，并返回下载链接
+                                {
+                                    var filename = data.data.replace(/.+?([^\/]+)$/, '$1');
+                                    layer.open({
+                                        type: 1,
+                                        title: '文件下载',
+                                        shadeClose: false,
+                                        area: ['400px','150px'],
+                                        content: '<div class="alert alert-success " role="alert" style="widht:94%;margin:2%;"><p>文件已生成，点击下载：</p><a onclick="layer.closeAll();" target="_blank" href="' + data.data + '">' + filename + '</a></div>',
+                                    });
+                                }
                             }
                             else
                             {

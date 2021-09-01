@@ -28,6 +28,8 @@ trait HasExport
 
     public function export()
     {
+        ini_set('max_execution_time', 0);
+        
         if ($path = input('get.path')) { //文件下载
             $filePath = app()->getRuntimePath() . 'export/' . $path;
             if (!is_file($filePath)) {
