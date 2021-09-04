@@ -158,6 +158,9 @@ trait HasIndex
             $page = input('get.__page__/d', 1);
             $page = $page < 1 ? 1 : $page;
 
+            $pagesize = input('get.__pagesize__/d', 0);
+            $this->pagesize = $pagesize ?: $this->pagesize;
+
             $total = -1;
 
             $data = $this->buildDataList($where, $sortOrder, $page, $total);
