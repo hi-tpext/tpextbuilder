@@ -444,6 +444,10 @@
         if ($(obj).data('layer-size')) {
             size = $(obj).data('layer-size').split(',');
         }
+        if (size) {
+            size[1] = '200px';
+        }
+        var winheight = $(window).height() - 14;
         layer.open({
             type: 2,
             title: text,
@@ -452,9 +456,24 @@
             maxmin: true,
             anim: 5,    //渐显
             shade: 0.3,
-            area: size || ['90%', '98%'],
+            maxHeight: winheight,
+            area: size || ['90%', '200px'],
+            offset: '7px',
             content: href,
             success: function (layero, index) {
+                var iframe = layero.find('iframe').get(0);
+
+                var mainheight = $(iframe.contentWindow.document.body).find('.panel-default.content').height() + 10;
+                if (mainheight < 400) {
+                    mainheight = 400;
+                }
+                if (mainheight > winheight - 43) {
+                    mainheight = winheight - 43;
+                }
+                $(iframe).height(mainheight);
+                //layero.css('top', ((winheight - mainheight - 43) / 2) + 'px');
+                parent.layer.iframeAuto(index);
+
                 $(':focus').blur();
                 this.enterEsc = function (event) {
                     if (event.keyCode === 13) {
