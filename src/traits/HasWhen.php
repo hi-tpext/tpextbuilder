@@ -52,7 +52,7 @@ trait HasWhen
 
             $form->whenEnd();
             $this->whenEnd();
-            //如果此处传入[toggleFields]参数，那么就结束，后面就不要再调用toggleFields方法了。否则，后面可以继续调用toggleFields方法;
+            //如果此处传入[toggleFields]参数，那么就结束，后面就不要再调用with($toggleFields)方法了。否则，后面可以继续调用with($toggleFields)方法;
         }
 
         return $this;
@@ -254,7 +254,7 @@ trait HasWhen
 
         setTimeout(function(){
             $("#{$watchFor}{$box}").trigger('change');
-        }, 10);
+        }, 200);
 
 EOT;
         $this->script[] = $script;
