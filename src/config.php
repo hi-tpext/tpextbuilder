@@ -4,7 +4,7 @@ use tpext\builder\common\Module;
 
 return [
     'search_open' => 1,
-    'layer_size' => '1000px,98%',
+    'layer_size' => '1000px,auto',
     'allow_suffix' =>
     //
     "jpg,jpeg,gif,wbmp,webpg,png,bmp,ico," .
@@ -32,7 +32,7 @@ return [
     //配置描述
     '__config__' => [
         'search_open' => ['type' => 'radio', 'label' => '列表页搜索默认展开', 'options' => [0 => '否', 1 => '是']],
-        'layer_size' => ['type' => 'text', 'label' => 'layer弹窗大小', 'size' => [2, 2]],
+        'layer_size' => ['type' => 'text', 'label' => 'layer弹窗大小', 'size' => [2, 2]], 'help' => '宽高以英文,号分割，若高为`auto`，则自适应'],
         'allow_suffix' => ['type' => 'textarea', 'label' => '允许上传的文件后缀', 'size' => [2, 10], 'help' => '以英文,号分割'],
         'max_size' => ['type' => 'number', 'label' => '上传文件大小限制(MB)'],
         'is_rand_name' => ['type' => 'radio', 'label' => '随机文件名', 'options' => [0 => '否', 1 => '是']],
