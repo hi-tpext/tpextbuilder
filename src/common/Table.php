@@ -727,10 +727,23 @@ EOT;
 
         $chooseColumns = ['*'];
         if (request()->isAjax()) {
-            $__columns__ = input('get.__columns__', '');
+            $__columns__ = input('get.__columns__', '*');
             if ($__columns__) {
                 $chooseColumns  = explode(',', $__columns__);
             }
+            $colAttr = [];
+            foreach ($cols as $col) {
+                $colunm = $this->cols[$col];
+                if (!($colunm instanceof TColumn)) {
+                    continue;
+                }
+                $colAttr = $colunm->getColAttr();
+
+                if ($colAttr['sortable']) {
+                    $this->sortable[] = $colunm->getName();
+                }
+            }
+
         } else {
             $colAttr = [];
 

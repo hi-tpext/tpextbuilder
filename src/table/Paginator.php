@@ -42,7 +42,7 @@ class Paginator extends Bootstrap
      */
     public function setItems($items)
     {
-        if (!$items instanceof Collection) {
+        if (!($items instanceof Collection)) {
             $items = Collection::make($items);
         }
 

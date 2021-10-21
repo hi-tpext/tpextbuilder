@@ -63,7 +63,7 @@ trait HasView
                 continue;
             }
 
-            if (!$row instanceof FRow) {
+            if (!($row instanceof FRow)) {
                 continue;
             }
 

@@ -246,7 +246,7 @@ class ItemsContent extends FWrapper
     public function clearScript()
     {
         foreach ($this->cols as $col) {
-            if (!$col instanceof FRow) {
+            if (!($col instanceof FRow)) {
                 continue;
             }
 
@@ -298,7 +298,7 @@ class ItemsContent extends FWrapper
 
                 $colunm = $this->cols[$col];
 
-                if (!$colunm instanceof FRow) {
+                if (!($colunm instanceof FRow)) {
                     continue;
                 }
 
@@ -328,7 +328,7 @@ class ItemsContent extends FWrapper
         }
 
         foreach ($this->cols as $key => $colunm) {
-            if (!$colunm instanceof FRow) {
+            if (!($colunm instanceof FRow)) {
                 continue;
             }
             $displayer = $colunm->getDisplayer();

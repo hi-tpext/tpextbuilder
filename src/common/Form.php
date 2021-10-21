@@ -150,7 +150,7 @@ class Form extends FWrapper implements Renderable
                     continue;
                 }
 
-                if (!$row instanceof FRow) {
+                if (!($row instanceof FRow)) {
                     continue;
                 }
 
@@ -736,7 +736,7 @@ class Form extends FWrapper implements Renderable
         foreach ($this->rows as $row) {
             $row->fill($this->data);
 
-            if (!$row instanceof FRow) {
+            if (!($row instanceof FRow)) {
                 $row->beforRender();
                 continue;
             }
