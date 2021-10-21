@@ -32,7 +32,7 @@ class FieldsContent extends TWrapper implements Renderable
     {
         foreach ($this->cols as $col) {
 
-            if (!$col instanceof TColumn) {
+            if (!($col instanceof TColumn)) {
                 $col->fill($this->data);
                 $col->beforRender();
                 continue;
@@ -150,7 +150,7 @@ class FieldsContent extends TWrapper implements Renderable
     public function extKey($val)
     {
         foreach ($this->cols as $col) {
-            if (!$col instanceof TColumn) {
+            if (!($col instanceof TColumn)) {
                 continue;
             }
 
@@ -168,7 +168,7 @@ class FieldsContent extends TWrapper implements Renderable
     public function clearScript()
     {
         foreach ($this->cols as $col) {
-            if (!$col instanceof TColumn) {
+            if (!($col instanceof TColumn)) {
                 continue;
             }
 
