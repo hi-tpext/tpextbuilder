@@ -476,7 +476,7 @@ class Table extends TWrapper implements Renderable
     {
         $this->useActionbar = $val;
         return $this;
-    }    
+    }
 
     /**
      * Undocumented function
@@ -732,7 +732,36 @@ EOT;
                 $chooseColumns  = explode(',', $__columns__);
             }
         } else {
-            $chooseColumns = $this->getToolbar()->getChooseColumns();
+            $colAttr = [];
+
+            $columns = [];
+
+            foreach ($cols as $col) {
+                $colunm = $this->cols[$col];
+                if (!($colunm instanceof TColumn)) {
+                    continue;
+                }
+                $colAttr = $colunm->getColAttr();
+
+                if ($colAttr['sortable']) {
+                    $this->sortable[] = $colunm->getName();
+                }
+
+                if (!$colAttr['hidden']) {
+                    $columns[] = $colunm->getName();
+                }
+            }
+
+            $useChooseColumns = $this->getToolbar()->getChooseColumns();
+
+            if ($useChooseColumns) {
+                if ($useChooseColumns[0] == '*') { //*号代表全部，转换为具体的字段列表
+                    $this->getToolbar()->useChooseColumns($columns);
+                    $chooseColumns = $columns;
+                }
+            } else {
+                $chooseColumns = false;
+            }
         }
 
         foreach ($this->data as $key => $data) {
@@ -748,7 +777,7 @@ EOT;
             foreach ($cols as $col) {
                 $colunm = $this->cols[$col];
 
-                if (!$colunm instanceof TColumn) {
+                if (!($colunm instanceof TColumn)) {
                     continue;
                 }
 
@@ -795,6 +824,9 @@ EOT;
                     unset($this->headers[$col]);
                 }
                 $colunm = $this->cols[$col];
+                if (!($colunm instanceof TColumn)) {
+                    continue;
+                }
                 $displayer = $colunm->getDisplayer();
                 $displayer->beforRender();
             }

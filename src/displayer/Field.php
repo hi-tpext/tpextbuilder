@@ -1248,4 +1248,28 @@ EOT;
         $this->rendering = $callback;
         return $this;
     }
+
+    /**
+     * 设置table列可排序
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function colSortable($val = true)
+    {
+        $this->getWrapper()->sortable($val);
+        return $this;
+    }
+
+    /**
+     * 设置table列默认隐藏
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function colHidden($val = true)
+    {
+        $this->getWrapper()->hidden($val);
+        return $this;
+    }
 }
