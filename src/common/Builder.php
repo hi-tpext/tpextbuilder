@@ -375,6 +375,17 @@ class Builder implements Renderable
 
     /**
      * Undocumented function
+     *
+     * @return $this
+     */
+    public function clearRows()
+    {
+        $this->rows = [];
+        $this->__row__ = null;
+    }
+
+    /**
+     * Undocumented function
      * lightyear.notify('修改成功，页面即将自动跳转~', 'success', 5000, 'mdi mdi-emoticon-happy', 'top', 'center');
      * @param string $msg
      * @param string $type
@@ -528,6 +539,36 @@ class Builder implements Renderable
         }
 
         return $this->layer;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $template
+     * @param array $vars
+     * @param integer|string $size col大小
+     * @return $this
+     */
+    public function fetch($template = '', $vars = [], $size = 12)
+    {
+        $this->content($size)->fetch($template, $vars);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $template
+     * @param array $vars
+     * @param integer|string $size col大小
+     * @return $this
+     */
+    public function display($content = '', $vars = [], $size = 12)
+    {
+        $this->content($size)->display($content, $vars);
+
+        return $this;
     }
 
     public function commonJs()

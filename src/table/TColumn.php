@@ -19,6 +19,11 @@ class TColumn extends TWrapper implements Renderable
      */
     protected $table;
 
+    protected $colAttr = [
+        'sortable' => false,
+        'hidden' => false,
+    ];
+
     public function __construct($name, $label = '', $colSize = 12)
     {
         $this->name = trim($name);
@@ -63,6 +68,53 @@ class TColumn extends TWrapper implements Renderable
     public function fill($data = [])
     {
         $this->displayer->fill($data);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $arr
+     * @return $this
+     */
+    public function colAttr($arr)
+    {
+        $this->colAttr = array_merge($this->colAttr, $arr);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getColAttr()
+    {
+        return $this->colAttr;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function sortable($val = true)
+    {
+        $this->colAttr['sortable'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function hidden($val = true)
+    {
+        $this->colAttr['hidden'] = $val;
         return $this;
     }
 

@@ -169,4 +169,37 @@ class DropdownBtns extends Bar
 
         return $viewshow->assign($vars)->getContent();
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function dataId($val)
+    {
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|Model $data
+     * @return $this
+     */
+    public function parseUrl($data)
+    {
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function parseMapClass($data)
+    {
+        return $this;
+    }
 }

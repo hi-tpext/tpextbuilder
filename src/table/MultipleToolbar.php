@@ -497,4 +497,27 @@ class MultipleToolbar extends Toolbar
         $this->multipleActions('multiple_actions', $label)->items($items)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function html($val)
+    {
+        parent::html($val);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * 换行
+     * @return $this
+     */
+    public function br()
+    {
+        parent::html('<br/>');
+        return $this;
+    }
 }
