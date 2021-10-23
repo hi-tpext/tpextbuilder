@@ -231,10 +231,12 @@ trait HasIndex
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)
                 ->order($sortOrder)
+                ->limit(($page - 1) * $this->pagesize, $this->pagesize)
                 ->cursor(); //select和cursor均可，最好是返回cursor
         } else {
             $data = $this->dataModel->with($this->indexWith)
-                ->where($where)->order($sortOrder)
+                ->where($where)
+                ->order($sortOrder)
                 ->limit(($page - 1) * $this->pagesize, $this->pagesize)
                 ->select();
         }

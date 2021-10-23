@@ -18,41 +18,37 @@ class Export
      * @param string $title
      * @param array|Collection|\Generator $data
      * @param array $displayers
-     * @return void
+     * @param array $pathinfo
+     * @return array
      */
-    public function toCsv($title, $data, $displayers)
+    public function toCsv($title, $data, $displayers, $pathinfo)
     {
         $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
         ob_end_clean();
 
         $fname = '';
-        if (request()->isAjax()) {
-            $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
+        $dir = $pathinfo['dir'];
+        $name = $pathinfo['name'];
 
-            if (!is_dir($dir)) {
-                if (!mkdir($dir, 0755, true)) {
-                    return json(['code' => 0, 'msg' => '创建目录失败']);
-                }
+        if (!is_dir($dir)) {
+            if (!mkdir($dir, 0755, true)) {
+                return ['code' => 0, 'msg' => '创建目录失败'];
             }
-
-            $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".csv";
-            $fp = fopen($fname, 'w');
-        } else {
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename=' . $title . "-" . date('Ymd-His')  . ".csv");
-            header('Cache-Control: max-age=0');
-            $fp = fopen('php://output', 'a');
         }
+
+        $fname = $dir . $title . "-" . $name . ".csv";
+        $fp = fopen($fname, 'a');
 
         $headerData = [];
 
-        foreach ($displayers as $key => $displayer) {
-            $label = $displayer->getLabel();
-            $label = preg_replace('/id/i', '编号', $label);
-            $headerData[$key] = mb_convert_encoding($label, "GBK", "UTF-8");
+        if ($pathinfo['start'] == 0) {
+            foreach ($displayers as $key => $displayer) {
+                $label = $displayer->getLabel();
+                $label = preg_replace('/id/i', '编号', $label);
+                $headerData[$key] = mb_convert_encoding($label, "GBK", "UTF-8");
+            }
+            fputcsv($fp, $headerData);
         }
-
-        fputcsv($fp, $headerData);
 
         //来源网络
         $num = 0;
@@ -83,10 +79,10 @@ class Export
         }
         unset($row, $text);
         fclose($fp);
-        if ($fname) {
-            $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
-            return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
-        }
+
+        $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+
+        return ['code' => 1, 'msg' => '文件已生成', 'data' => $file];
     }
 
     private function replace($text)
@@ -105,44 +101,92 @@ class Export
      * @param array|Collection|\Generator $data
      * @param array $displayers
      * @param string $type
-     * @return void
+     * @param array $pathinfo
+     * @return array
      */
-    public function toExcel($title, $data, $displayers, $type = 'xls')
+    public function toExcel($title, $data, $displayers, $type = 'xls', $pathinfo)
     {
         $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
 
         ob_end_clean();
         $lib = '';
-
         $obj = null;
-        if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet')) {
-            $obj = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-            $this->worksheet = $obj->getActiveSheet();
-            $lib = 'PhpOffice';
-        } else if (class_exists('\\PHPExcel')) {
-            $obj = new \PHPExcel();
-            $this->worksheet = $obj->getActiveSheet();
-            $lib = 'PHPExcel';
+
+        $fname = '';
+        $dir = $pathinfo['dir']; //app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
+        $name = $pathinfo['name'];
+
+        if (!is_dir($dir)) {
+            if (!mkdir($dir, 0755, true)) {
+                return ['code' => 0, 'msg' => '创建目录失败'];
+            }
+        }
+
+        if ($type == 'xls') {
+            $fname = $dir . $title . "-" . $name . ".xls";
+        } elseif ($type == 'xlsx') {
+            $fname = $dir . $title . "-" . $name . ".xlsx";
+        }
+
+        if ($pathinfo['start'] == 0) {
+            if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet')) {
+                $obj = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+                $this->worksheet = $obj->getActiveSheet();
+                $lib = 'PhpOffice';
+            } else if (class_exists('\\PHPExcel')) {
+                $obj = new \PHPExcel();
+                $this->worksheet = $obj->getActiveSheet();
+                $lib = 'PHPExcel';
+            } else {
+                return ['code' => 0, 'msg' => '未安装PHPExcel或PhpOffice', 'data' => ''];
+            }
         } else {
-            return json(['code' => 0, 'msg' => '未安装PHPExcel或PhpOffice', 'data' => '']);
+            $reader = null;
+            if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet')) {
+                if ($type == 'xls') {
+                    $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls;
+                } elseif ($type == 'xlsx') {
+                    $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+                }
+
+                $obj = $reader->load($fname);
+
+                $this->worksheet = $obj->getActiveSheet();
+                $lib = 'PhpOffice';
+            } else if (class_exists('\\PHPExcel')) {
+                if ($type == 'xls') {
+                    $reader = new \PHPExcel_Reader_Excel5();
+                } elseif ($type == 'xlsx') {
+                    $reader = new \PHPExcel_Reader_Excel2007();
+                }
+
+                $obj = $reader->load($fname);
+
+                $this->worksheet = $obj->getActiveSheet();
+                $lib = 'PHPExcel';
+            } else {
+                return ['code' => 0, 'msg' => '未安装PHPExcel或PhpOffice', 'data' => ''];
+            }
         }
 
         $this->worksheet->setTitle($title);
 
-        // 列标
         $list = [
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-            'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', //够用就行
+            'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ', //够用就行
         ];
 
         // 填充第一行数据
-
-        foreach ($displayers as $k => $displayer) {
-            $label = $displayer->getLabel();
-            $label = preg_replace('/id/i', '编号', $label);
-            $this->worksheet->setCellValue($list[$k] . '1', $label);
+        if ($pathinfo['start'] == 0) {
+            // 列标
+            foreach ($displayers as $k => $displayer) {
+                $label = $displayer->getLabel();
+                $label = preg_replace('/id/i', '编号', $label);
+                $this->worksheet->setCellValue($list[$k] . '1', $label);
+            }
         }
-        $num = 0;
+
+        $num = $pathinfo['start'];
         $text = null;
         $c = 0;
         foreach ($data as $d) {
@@ -172,26 +216,10 @@ class Export
                 $objWriter->setPreCalculateFormulas(false);
             }
 
-            if (request()->isAjax()) {
-                $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
+            $objWriter->save($fname);
 
-                if (!is_dir($dir)) {
-                    if (!mkdir($dir, 0755, true)) {
-                        return json(['code' => 0, 'msg' => '创建目录失败']);
-                    }
-                }
-
-                $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls";
-                $objWriter->save($fname);
-
-                $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
-                return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
-            } else {
-                header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His')  . '.xls');
-                header('Cache-Control: max-age=0');
-                $objWriter->save('php://output');
-            }
+            $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+            return ['code' => 1, 'msg' => '文件已生成', 'data' => $file];
         } elseif ($type == 'xlsx') {
             if ($lib == 'PhpOffice') {
                 $objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($obj);
@@ -201,25 +229,12 @@ class Export
                 $objWriter->setPreCalculateFormulas(false);
             }
 
-            if (request()->isAjax()) {
-                $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
-                if (!is_dir($dir)) {
-                    if (!mkdir($dir, 0755, true)) {
-                        return json(['code' => 0, 'msg' => '创建目录失败']);
-                    }
-                }
+            $fname = $dir . $title . "-" . $name . ".xlsx";
+            $objWriter->save($fname);
 
-                $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx";
-                $objWriter->save($fname);
+            $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
 
-                $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
-                return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
-            } else {
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His')  . '.xlsx');
-                header('Cache-Control: max-age=0');
-                $objWriter->save('php://output');
-            }
+            return ['code' => 1, 'msg' => '文件已生成', 'data' => $file];
         }
     }
 
@@ -232,9 +247,10 @@ class Export
      * @param integer $QR_ECLEVEL QR_ECLEVEL_L=0,QR_ECLEVEL_M=1,QR_ECLEVEL_Q=2,QR_ECLEVEL_H=3;
      * @param integer $size 二维码大小
      * @param bool $requireLib 是否需要再引入`phpqrcode`库，如果在调用此方法前已经[require_once]引入了相关库，则设置为`false`
-     * @return void
+     * @param array $pathinfo
+     * @return array
      */
-    public function toQrcode($title = '二维码', $data, $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true)
+    public function toQrcode($title = '二维码', $data, $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true, $pathinfo)
     {
         if ($requireLib) {
             require_once app()->getRootPath() . 'extend/phpqrcode/phpqrcode.php';
@@ -242,12 +258,14 @@ class Export
 
         $time = date('YmdHis') . '_' . mt_rand(100, 999);
 
-        $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
-        $dir2 = app()->getRuntimePath() .  'export/' . date('Ymd') . '/qr' . $time . '/';
+        $dir = $pathinfo['dir'];
+        $name = $pathinfo['name'];
+
+        $dir2 = rtrim($dir, '/') . '/qr' . $time . '/';
 
         if (!is_dir($dir2)) {
             if (!mkdir($dir2, 0755, true)) {
-                return json(['code' => 0, 'msg' => '创建目录失败']);
+                return ['code' => 0, 'msg' => '创建目录失败'];
             }
         }
 
@@ -260,9 +278,9 @@ class Export
 
         $zip = new \ZipArchive();
 
-        $zfile = $dir . $title . '_共' . count($data) . '个' . date('Ymd-His') . mt_rand(100, 999) . '.zip';
+        $fname = $dir . $title . "-" . $name . ".zip";
 
-        $zip->open($zfile, \ZipArchive::CREATE);  //打开压缩包
+        $zip->open($fname, \ZipArchive::CREATE);  //打开压缩包
 
         foreach ($files as $imgFile) {
             $zip->addFile($imgFile, basename($imgFile));  //向压缩包中添加文件
@@ -276,13 +294,9 @@ class Export
             trace($e->getMessage());
         }
 
-        $file = str_replace(app()->getRuntimePath() . 'export/', '', $zfile);
+        $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
 
-        if (request()->isAjax()) {
-            return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
-        } else {
-            return redirect(url('export') . '?path=' . $file);
-        }
+        return ['code' => 1, 'msg' => '文件已生成', 'data' => $file];
     }
 
     public function deleteDir($path)
