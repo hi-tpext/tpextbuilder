@@ -14,7 +14,7 @@ class Raw extends Field
      * @param boolean $val
      * @return $this
      */
-    public function inline($val)
+    public function inline($val = true)
     {
         $this->inline = $val;
         return $this;
