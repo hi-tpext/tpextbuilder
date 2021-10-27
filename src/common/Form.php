@@ -790,7 +790,6 @@ class Form extends FWrapper implements Renderable
             focusInvalid: false,  // 禁用无效元素的聚焦
             rules: {$rules},
             errorPlacement: function errorPlacement(error, element) {
-                $('#help-block').removeClass('hidden');
                 var parent = $(element).closest('div.form-group');
                 if($(element).hasClass('item-field'))
                 {
@@ -816,7 +815,7 @@ class Form extends FWrapper implements Renderable
                 $(element).closest('div.form-group').removeClass('has-error');
                 if($('.form-group.has-error').size() == 0 && $('.item-field.has-error').size() == 0)
                 {
-                    $('#help-block .error-label').html('');
+                    $('#help-block .error-label').html('&nbsp;');
                 }
             },
             submitHandler: function(form) {
