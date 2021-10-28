@@ -10,6 +10,8 @@ class SwitchBtn extends Field
 
     protected $pair = [1, 0];
 
+    protected $required = false;
+
     /**
      * Undocumented function
      * @example 1 (1, 0) / ('yes', 'no') / ('on', 'off') etc...
@@ -31,6 +33,18 @@ class SwitchBtn extends Field
     public function getPair()
     {
         return $this->pair;
+    }
+
+    /**
+     * SwitchBtn 不需要设置 required
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function required($val = true)
+    {
+        $this->required = false;
+        return $this;
     }
 
     protected function boxScript()
