@@ -92,7 +92,7 @@ trait HasIndex
 
             $tree = null;
             if ($this->treeType == 'ztree') {
-                $tree = $builder->ztree('1 left-tree');
+                $tree = $builder->zTree('1 left-tree');
             } else {
                 $tree = $builder->jsTree('1 left-tree');
             }
