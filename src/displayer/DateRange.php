@@ -23,7 +23,7 @@ class DateRange extends Text
 
     protected $separator = ',';
 
-    protected $timespan = '';
+    protected $timespan = 'Y-m-d';
 
     protected $jsOptions = [
         'weekStart' => 1,
@@ -129,16 +129,16 @@ EOT;
      */
     public function renderValue()
     {
-        if ($this->timespan && is_numeric($this->value)) {
-            $arr = explode($this->separator, $this->value);
-            if (isset($arr[0]) && is_numeric($arr[0])) {
-                $arr[0] = date($this->timespan, $arr[0]);
-            }
-            if (isset($arr[1]) && is_numeric($arr[1])) {
-                $arr[1] = date($this->timespan, $arr[1]);
-            }
-            $this->value = implode($this->separator, $arr);
+        $arr = explode($this->separator, $this->value);
+
+        if ($this->timespan && isset($arr[0]) && is_numeric($arr[0]) && $arr[0] > 0) {
+            $arr[0] = date($this->timespan, $arr[0]);
         }
+        if ($this->timespan && isset($arr[1]) && is_numeric($arr[1]) && $arr[1] > 0) {
+            $arr[1] = date($this->timespan, $arr[1]);
+        }
+        
+        $this->value = implode($this->separator, $arr);
 
         return parent::renderValue();
     }

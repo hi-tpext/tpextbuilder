@@ -8,6 +8,8 @@ class Date extends DateTime
 
     protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-range"></i></span>';
 
+    protected $timespan = 'Y-m-d';
+
     /**
      * Undocumented function
      * @param string $val YYYY-MM-DD
