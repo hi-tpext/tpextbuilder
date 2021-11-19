@@ -21,7 +21,7 @@ class DateTime extends Text
 
     protected $befor = '<span class="input-group-addon"><i class="mdi mdi-calendar-clock"></i></span>';
 
-    protected $timespan = '';
+    protected $timespan = 'Y-m-d H:i:s';
 
     protected $jsOptions = [
         'useCurrent' => false,
@@ -112,7 +112,7 @@ EOT;
      */
     public function renderValue()
     {
-        if ($this->timespan && is_numeric($this->value)) {
+        if ($this->timespan && is_numeric($this->value) && $this->value > 0) {
             $this->value = date($this->timespan, $this->value);
         }
 
