@@ -319,7 +319,7 @@ class Actionbar extends Toolbar
      */
     public function br()
     {
-        parent::html('<br/>');
+        parent::html('<br />');
         return $this;
     }
 }

@@ -16,7 +16,7 @@ trait HasDom
      * @param string $val
      * @return $this
      */
-    function class ($val)
+    function class($val)
     {
         $this->class = $val;
         return $this;

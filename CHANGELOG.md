@@ -2,6 +2,39 @@
 
 ## Tpextbuilder
 
+### 2021年11月23
+
+#### 新增几个方法，在Toolbar和Actionbar链式调用时方便控制当前元素。
+
+- barPullRight
+- barUseLayer
+- barLayerSize
+- barLabel
+- barIcon
+- barHref
+- barName
+- barClass
+- barAttr
+- barStyle
+- barAddClass
+- barAddAttr
+- barAddStyle
+
+```php
+ $table->getToolbar()
+    ->btnAdd()->barPullRight()
+    ->btnDelete()
+    ->btnRefresh()
+    ->br()
+    ->html('<b>666</b>')->barPullRight();
+
+$table->getActionbar()
+    ->btnEdit()->barAddAttr('xxx="000"')->barIcon('mdi-account-edit')
+    ->btnView()
+    ->btnLink('test1', url('test1'))->barName('test')->barHref(url('test1'))->barLabel('测试2')
+    ->btnDelete();
+```
+
 ### 2021年7月
 
 - 修正：特殊情况下图片无后缀就不可预览
