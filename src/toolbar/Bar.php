@@ -165,6 +165,18 @@ class Bar implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $val
+     * @return $this
+     */
+    public function name($val)
+    {
+        $this->name = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param boolean $val
      * @return $this
      */

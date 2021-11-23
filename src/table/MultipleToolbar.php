@@ -124,7 +124,7 @@ class MultipleToolbar extends Toolbar
                 $checked = $this->useChooseColumns[0] == '*' || in_array($name, $this->useChooseColumns);
                 $items[] = [
                     'key' => $col->getName(),
-                    'label' => preg_replace('/<[bh]r\s*\/?>/i','',$col->getLabel()),
+                    'label' => preg_replace('/<[bh]r\s*\/?>/i', '', $col->getLabel()),
                     'icon' => $checked ? 'mdi-checkbox-marked-outline' : 'mdi-checkbox-blank-outline',
                     'url' => '#',
                     'attr' => '',
@@ -517,7 +517,7 @@ class MultipleToolbar extends Toolbar
      */
     public function br()
     {
-        parent::html('<br/>');
+        parent::html('<br />');
         return $this;
     }
 }
