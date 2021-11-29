@@ -50,7 +50,7 @@ class CKEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['filebrowserImageUploadUrl'] = url('/admin/upload/upfiles', ['utype' => 'ckeditor', 'token' => $token, 'driver' => $this->getStorageDriver()])->__toString();
+            $this->jsOptions['filebrowserImageUploadUrl'] = url('/admin/upload/upfiles', ['utype' => 'ckeditor', 'token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()])->__toString();
         }
 
         $configs = json_encode($this->jsOptions);

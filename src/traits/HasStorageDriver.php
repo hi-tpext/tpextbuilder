@@ -8,6 +8,8 @@ trait HasStorageDriver
 {
     protected $storageDriver;
 
+    protected $isRandName = '';
+
     /**
      * 设置文件上传驱动
      *
@@ -28,6 +30,29 @@ trait HasStorageDriver
     /**
      * Undocumented function
      *
+     * @param boolean $val
+     * @return $this
+     */
+    public function randName($val = true)
+    {
+        $this->isRandName = $val ? 'y' : 'n';
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string 'y' or 'n'
+     */
+    public function isRandName()
+    {
+        return $this->isRandName;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return string
      */
     public function getStorageDriver()
@@ -35,7 +60,7 @@ trait HasStorageDriver
         if (empty($this->storageDriver)) {
             return '';
         }
-        
+
         return str_replace('\\', '-', $this->storageDriver);
     }
 }

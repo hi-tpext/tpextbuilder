@@ -226,7 +226,7 @@ class MultipleFile extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['upload_url'] = url('/admin/upload/upfiles', ['utype' => 'webuploader', 'token' => $token, 'driver' => $this->getStorageDriver()])->__toString();
+            $this->jsOptions['upload_url'] = url('/admin/upload/upfiles', ['utype' => 'webuploader', 'token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()])->__toString();
         }
 
         if (!$this->showInput) {
