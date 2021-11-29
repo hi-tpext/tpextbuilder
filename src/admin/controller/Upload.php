@@ -22,7 +22,7 @@ class Upload extends Controller
      * @title 上传文件
      * @return mixed
      */
-    public function upfiles($utype = '', $token = '', $driver = '')
+    public function upfiles($utype = '', $token = '', $driver = '', $is_rand_name = '')
     {
         if (empty($token)) {
             return json(
@@ -52,7 +52,15 @@ class Upload extends Controller
 
         $_config['allowSuffix'] = explode(',', $config['allow_suffix']);
         $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
-        $_config['isRandName'] = $config['is_rand_name'];
+
+        if ($is_rand_name == 'n') {
+            $_config['isRandName'] = 0;
+        } else if ($is_rand_name == 'y') {
+            $_config['isRandName'] = 1;
+        } else {
+            $_config['isRandName'] = $config['is_rand_name'];
+        }
+
         $_config['fileByDate'] = $config['file_by_date'];
 
         $storageDriver = Module::config('storage_driver');
@@ -147,7 +155,7 @@ class Upload extends Controller
      * @title ueditor上传相关
      * @return mixed
      */
-    public function ueditor($token = '', $driver = '')
+    public function ueditor($token = '', $driver = '', $is_rand_name = '')
     {
         if (empty($token)) {
             exit('no token');
@@ -172,22 +180,22 @@ class Upload extends Controller
             case 'uploadimage':
                 /* 上传涂鸦 */
             case 'uploadscrawl':
-                return json($this->saveFile('images', $driver));
+                return json($this->saveFile('images', $driver, $is_rand_name));
                 break;
 
                 /* 上传视频 */
             case 'uploadvideo':
-                return json($this->saveFile('videos', $driver));
+                return json($this->saveFile('videos', $driver, $is_rand_name));
                 break;
 
                 /* 上传附件 */
             case 'uploadfile':
-                return json($this->saveFile('files', $driver));
+                return json($this->saveFile('files', $driver, $is_rand_name));
                 break;
 
                 /* 列出图片 */
             case 'listimage':
-                return json($this->saveFile('listimage', $driver));
+                return json($this->saveFile('listimage', $driver, $is_rand_name));
                 break;
 
                 /* 列出附件 */
@@ -365,7 +373,7 @@ class Upload extends Controller
 
             return mime_content_type($filename);
         }
-            
+
         $result = new \finfo();
 
         if (is_resource($result) === true) {
@@ -375,7 +383,7 @@ class Upload extends Controller
         return false;
     }
 
-    private function saveFile($type = '', $driver = '')
+    private function saveFile($type = '', $driver = '', $is_rand_name = '')
     {
         $file_input_name = 'upfile';
 
@@ -383,7 +391,15 @@ class Upload extends Controller
 
         $_config['allowSuffix'] = explode(',', $config['allow_suffix']);
         $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
-        $_config['isRandName'] = $config['is_rand_name'];
+
+        if ($is_rand_name == 'n') {
+            $_config['isRandName'] = 0;
+        } else if ($is_rand_name == 'y') {
+            $_config['isRandName'] = 1;
+        } else {
+            $_config['isRandName'] = $config['is_rand_name'];
+        }
+
         $_config['fileByDate'] = $config['file_by_date'];
         $_config['dirName'] = $type;
 

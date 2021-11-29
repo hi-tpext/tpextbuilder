@@ -81,7 +81,7 @@ EOT;
 
             $token = $this->getCsrfToken();
 
-            $this->uploadUrl = url('/admin/upload/ueditor', ['token' => $token, 'driver' => $this->getStorageDriver()]);
+            $this->uploadUrl = url('/admin/upload/ueditor', ['token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()]);
         }
 
         $vars = $this->commonVars();
