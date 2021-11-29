@@ -19,7 +19,10 @@ trait HasStorageDriver
         if (!is_string($driverClass) && ($driverClass instanceof Storage)) {
             $driverClass = get_class($driverClass);
         }
+
         $this->storageDriver = $driverClass;
+
+        return $this;
     }
 
     /**
