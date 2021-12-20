@@ -348,7 +348,7 @@ class ItemsContent extends FWrapper
             }
 
             $displayer
-                ->extKey('')
+                ->extKey($this->name)
                 ->arrayName([$this->name . '[' . '__new__' . '][', ']'])
                 ->showLabel(false)
                 ->value('')
@@ -357,7 +357,7 @@ class ItemsContent extends FWrapper
                 ->addAttr('data-label="' . $colunm->getLabel() . '"')
                 ->beforRender();
 
-            $displayer->extKey('-no-init-script'); //模板的id改了，避免被初始化，添加以后再初始化
+            $displayer->extKey($this->name . '-no-init-script'); //模板的id改了，避免被初始化，添加以后再初始化
 
             $this->template[] = [
                 'value' => $displayer->render(),
