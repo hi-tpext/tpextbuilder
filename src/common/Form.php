@@ -696,15 +696,16 @@ class Form extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param string $label
      * @param array|Collection dataList
      * @param Closure|null $itemsCall
-     * @param array displayer大小 [12, 12] 为伤心结构，[2, 10]左右结构
+     * @param array displayerSize 大小 [12, 12] 为上下结构，[2, 10]为左右结构
      * @return Items
      */
-    public function logs($label, $dataList, $itemsCall = null, $displayer = [12, 12])
+    public function logs($label, $dataList, $itemsCall = null, $displayerSize = [12, 12])
     {
         $this->itemsEnd();
-        $displayer =  $this->items('logs' . mt_rand(10, 99), $label, 12)->size($displayer[0], $displayer[1])->readonly();
+        $displayer =  $this->items('logs' . mt_rand(10, 99), $label, 12)->size($displayerSize[0], $displayerSize[1])->readonly();
 
         if (is_array($dataList)) {
             $displayer->fill($dataList);
