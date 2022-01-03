@@ -1,0 +1,123 @@
+<?php
+
+namespace tpext\builder\displayer;
+
+class Load extends Field
+{
+    protected $view = 'load';
+
+    public $loadingText = '加载中...';
+
+    protected $jsOptions = [
+        'ajax' => [
+            'url' => '',
+            'text' => '',
+            'separator' => '、'
+        ]
+    ];
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val 加载中...|&nbsp;
+     * @return $this
+     */
+    public function loadingText($val = '&nbsp;')
+    {
+        $this->loadingText = $val;
+
+        return $this;
+    }
+
+    public function beforRender()
+    {
+        $this->loadTextScript();
+
+        return parent::beforRender();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $url
+     * @param string $textField text|name
+     * @return $this
+     */
+    public function dataUrl($url, $textField = '')
+    {
+        $this->jsOptions['ajax'] = array_merge($this->jsOptions['ajax'], [
+            'url' => $url,
+            'text' => $textField,
+        ]);
+
+        return $this;
+    }
+
+    protected function loadTextScript()
+    {
+        $script = '';
+        $selectId = $this->getId();
+
+        $ajax = $this->jsOptions['ajax'];
+        $url = $ajax['url'];
+        $text = $ajax['text'] ?: '_';
+        $separator = $ajax['separator'] ?: '、';
+
+        $configs = json_encode($this->jsOptions);
+
+        $configs = substr($configs, 1, strlen($configs) - 2);
+
+        $key = preg_replace('/\W/', '', $selectId);
+
+        $script = <<<EOT
+
+        var selected{$key} = $('#{$selectId}').data('selected');
+
+        if(selected{$key})
+        {
+            $.ajax({
+                url: '{$url}',
+                data: {selected : selected{$key}},
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var list = (data.data ? data.data : data) || [];
+                    var d = null;
+                    var texts = [];
+                    for(var i in list)
+                    {
+                        d = list[i];
+                        texts.push(d.__text__ || d['{$text}'] || d.text);
+                    }
+                    $('#{$selectId}').text(texts.join('{$separator}'));
+                },
+                error:function(){
+                    $('#{$selectId}').data('selected', '');
+                    $('#{$selectId}').text('-加载出错-');
+                }
+            });
+        }
+
+EOT;
+
+        $this->script[] = $script;
+
+        return $script;
+    }
+
+    public function customVars()
+    {
+        $checked = '';
+
+        if (!($this->value === '' || $this->value === null)) {
+            $checked = $this->value;
+        } else {
+            $checked = $this->default;
+        }
+
+        return [
+            'checked' => $checked,
+            'loadingText' => $this->loadingText
+        ];
+    }
+}

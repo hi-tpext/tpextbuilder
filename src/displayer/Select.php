@@ -31,6 +31,8 @@ class Select extends Field
 
     protected $withParams = [];
 
+    protected $checked = '';
+
     protected $jsOptions = [
         'placeholder' => '',
         'allowClear' => true,
@@ -105,6 +107,16 @@ class Select extends Field
     {
         $this->jsOptions = array_merge($this->jsOptions, $options);
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getAjax()
+    {
+        return $this->jsOptions['ajax'] ?? ['url' => '', 'text' => ''];
     }
 
     /**
@@ -232,6 +244,7 @@ class Select extends Field
                 },
                 error:function(){
                     $('#{$selectId}').data('selected', '');
+                    $('#{$selectId}-text').text('-加载出错-');
                     if(!readonly{$key})
                     {
                         init{$key}();
@@ -243,7 +256,7 @@ class Select extends Field
         {
             if(readonly{$key})
             {
-                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">-空-</span>');
+                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">加载中...</span>');
                 $('#{$selectId}-text').parent('div').addClass('field-show');
             }
             else

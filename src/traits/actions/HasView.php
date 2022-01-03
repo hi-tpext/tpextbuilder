@@ -74,6 +74,7 @@ trait HasView
             if (
                 $displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
                 || $displayer instanceof displayer\Matche || $displayer instanceof displayer\Matches
+                || $displayer instanceof displayer\Load || $displayer instanceof displayer\Loads
             ) {
                 continue;
             } else if ($displayer instanceof displayer\Items) {
@@ -94,7 +95,13 @@ trait HasView
 
                 $row->show($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
             } else if ($displayer instanceof displayer\Select && $displayer->isAjax()) { // multipleSelect(ajax) / select(ajax)
-                //
+                $ajax = $displayer->getAjax();
+
+                if ($displayer instanceof displayer\multipleSelect) {
+                    $row->loads($fieldName, $row->getLabel())->dataUrl($ajax['url'], $ajax['text'])->value($displayer->renderValue());
+                } else {
+                    $row->load($fieldName, $row->getLabel())->dataUrl($ajax['url'], $ajax['text'])->value($displayer->renderValue());
+                }
             } else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) { // checkbox / multipleSelect(非ajax)
 
                 $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
