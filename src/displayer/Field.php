@@ -37,6 +37,9 @@ class Field implements Fillable
 
     protected $view = 'field';
 
+    /**
+     * @var string|array
+     */
     protected $value = '';
 
     protected $default = '';
@@ -66,8 +69,6 @@ class Field implements Fillable
     protected $disabled = '';
 
     protected $wrapper = null;
-
-    protected $useDefauleFieldClass = true;
 
     protected static $helptempl;
 
@@ -463,18 +464,6 @@ class Field implements Fillable
     public function canMinify()
     {
         return $this->minify;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function useDefauleFieldClass($val)
-    {
-        $this->useDefauleFieldClass = $val;
-        return $this;
     }
 
     /**

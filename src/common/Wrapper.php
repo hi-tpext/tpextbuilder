@@ -55,6 +55,8 @@ class Wrapper
         'fields' => \tpext\builder\displayer\Fields::class,
         'map' => \tpext\builder\displayer\Map::class,
         'items' => \tpext\builder\displayer\Items::class,
+        'load' => \tpext\builder\displayer\Load::class,
+        'loads' => \tpext\builder\displayer\Loads::class,
     ];
 
     protected static $defaultFieldClass = [
