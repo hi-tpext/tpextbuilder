@@ -253,7 +253,7 @@ EOT;
             $row['content']->beforRender();
         }
 
-        Builder::getInstance()->addJs('/assets/tpextbuilder/js/jquery.bootstrap.wizard.min.js');
+        Builder::getInstance()->addJs('/assets/lightyearadmin/js/jquery.bootstrap.wizard.min.js');
 
         $this->stepScript();
 
