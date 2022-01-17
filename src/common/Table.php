@@ -823,7 +823,7 @@ EOT;
                 ];
             }
 
-            if ($this->useActionbar && isset($this->ids[$key])) {
+            if ($this->useActionbar) {
 
                 $actionbar->extKey('-' . $this->id . '-' . $key)->rowData($data)->beforRender();
 
@@ -842,6 +842,13 @@ EOT;
                 }
                 $displayer = $colunm->getDisplayer();
                 $displayer->beforRender();
+            }
+
+            if ($this->useActionbar) {
+
+                $actionbar->extKey('-' . $this->id . '-' . 0)->beforRender();
+
+                $this->actionbars[0] = $actionbar->render();
             }
         }
 
