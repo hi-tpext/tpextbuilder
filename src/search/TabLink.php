@@ -98,7 +98,7 @@ class TabLink implements Renderable
             $('#{$this->searchId} .{$element}').val(val);
         }
         $('#{$this->searchId} .{$element}').trigger('change');
-        $('#{$this->searchId} .row-refresh').trigger('click');
+        $('#{$this->searchId} .row-submit').trigger('click');
         $('#{$id} .nav-item').removeClass('in active');
         $(this).parent('.nav-item').addClass('in active');
         return false;
