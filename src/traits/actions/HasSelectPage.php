@@ -85,8 +85,8 @@ trait HasSelectPage
             $data = [];
 
             foreach ($list as $k => $v) {
-                if ($selected) {
-                    if ($selected && $k == $selected) {
+                if ($selected !== '') {
+                    if ($k == $selected) {
                         $data[] = [
                             '__id__' => $k,
                             '__text__' => $v,
@@ -137,7 +137,7 @@ trait HasSelectPage
         $pagesize = $this->selectPagesize ?: ($this->pagesize ?: 20);
 
         $hasMore = 1;
-        if ($selected != '') { //初始化已选中的
+        if ($selected !== '') { //初始化已选中的
             if (is_numeric($selected)) {
                 $where[] = [$idField, 'eq', $selected];
             } else {
