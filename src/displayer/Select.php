@@ -209,7 +209,7 @@ class Select extends Field
         var selected{$key} = $('#{$selectId}').data('selected');
         var readonly{$key} = $('#{$selectId}').attr('readonly') != undefined;
 
-        if(selected{$key})
+        if(selected{$key} !== '')
         {
             $.ajax({
                 url: '{$url}',
@@ -230,7 +230,7 @@ class Select extends Field
                             texts.push(d.__text__ || d['{$text}'] || d.text);
                         }
 
-                        $('#{$selectId}-text').text(texts.join('、'));
+                        $('#{$selectId}-text').text(texts.length ? texts.join('、') : '-空-');
                     }
                     else
                     {
