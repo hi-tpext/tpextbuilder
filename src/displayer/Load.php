@@ -73,7 +73,7 @@ class Load extends Field
 
         var selected{$key} = $('#{$selectId}').data('selected');
 
-        if(selected{$key})
+        if(selected{$key} !== '')
         {
             $.ajax({
                 url: '{$url}',
@@ -89,7 +89,7 @@ class Load extends Field
                         d = list[i];
                         texts.push(d.__text__ || d['{$text}'] || d.text);
                     }
-                    $('#{$selectId}').text(texts.join('{$separator}'));
+                    $('#{$selectId}').text(texts.length ? texts.join('{$separator}') : '-空-');
                 },
                 error:function(){
                     $('#{$selectId}').data('selected', '');
