@@ -29,7 +29,7 @@ trait HasRow
      */
     public function cloSize($val)
     {
-        $this->size = $val;
+        $this->cloSize = $val;
         return $this;
     }
 
