@@ -83,7 +83,7 @@ class MDReader extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['imageUploadURL'] = url('/admin/upload/upfiles', ['utype' => 'editormd', 'token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()]);
+            $this->jsOptions['imageUploadURL'] = url($this->getUploadUrl(), ['utype' => 'editormd', 'token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()]);
         }
 
         $configs = json_encode($this->jsOptions);

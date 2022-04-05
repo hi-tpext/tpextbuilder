@@ -3,6 +3,7 @@
 namespace tpext\builder\traits;
 
 use tpext\builder\inface\Storage;
+use tpext\builder\common\Module;
 
 trait HasStorageDriver
 {
@@ -62,5 +63,15 @@ trait HasStorageDriver
         }
 
         return str_replace('\\', '-', $this->storageDriver);
+    }
+
+    /**
+     * 获取上传url路径
+     * 默认：'/admin/upload/upfiles'
+     * @return string
+     */
+    public function getUploadUrl()
+    {
+        return Module::getInstance()->getUploadUrl();
     }
 }

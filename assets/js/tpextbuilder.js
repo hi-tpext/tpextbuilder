@@ -540,7 +540,7 @@ window.renderFiles = function (elid) {
                 if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)(\?.*)?$/i.test(href)) {
                     $btn.removeClass('btn-link-pic');
                     $btn.attr('target', '_blank');
-                    $img.attr('src', '/index.php/tpextbuilder/admin/upload/ext/type/' + href.replace(/.+?\.(\w+)$/, '$1'));
+                    $img.attr('src', '/index.php/tpextbuilder/index/file/extimg/type/' + href.replace(/.+?\.(\w+)$/, '$1'));
                 }
                 $img.css({
                     'display': 'block',
@@ -622,7 +622,7 @@ window.renderFiles = function (elid) {
                 $file_list.append($li);
                 uploader.makeThumb(file, function (error, src) {
                     if (!jsOptions.isImage && !/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(file.ext) && error) {
-                        src = '/index.php/tpextbuilder/admin/upload/ext/type/' + file.ext;
+                        src = '/index.php/tpextbuilder/index/file/extimg/type/' + file.ext;
                         $img.addClass('cantpreview');
                     }
                     $img.attr('src', src);
@@ -744,7 +744,7 @@ window.chooseFile = function (id, $input_file_name) {
 
     var $file_list = $('#file_list_' + $input_file_name);
 
-    var chooseUrl = jsOptions.chooseUrl || '/tpextbuilder/admin/attachment/index?';
+    var chooseUrl = jsOptions.chooseUrl || '/admin/attachment/index?';
 
     if (jsOptions.fileNumLimit > 1 && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
         lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
@@ -827,7 +827,7 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
         $li.find('.btn-remove-pic').attr('data-id', i).attr('data-url', src);
         $file_list.append($li);
         if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src)) {
-            src = '/index.php/tpextbuilder/admin/upload/ext/type/' + src.replace(/.+?\.(\w+)$/, '$1');
+            src = '/index.php/tpextbuilder/index/file/extimg/type/' + src.replace(/.+?\.(\w+)$/, '$1');
             $img.addClass('cantpreview');
             $btn.removeClass('btn-link-pic');
             $btn.attr('target', '_blank');

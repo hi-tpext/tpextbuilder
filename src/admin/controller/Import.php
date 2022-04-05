@@ -56,7 +56,7 @@ class Import extends Controller
 
         $token = Builder::getInstance()->getCsrfToken();
 
-        $uploadUrl = url('/admin/upload/upfiles', ['utype' => 'dropzone', 'token' => $token, 'driver' => $driver]);
+        $uploadUrl = url(Module::getInstance()->getUploadUrl(), ['utype' => 'dropzone', 'token' => $token, 'driver' => $driver]);
 
         $this->assign('admin_copyright', '');
         $this->assign('uploadUrl', $uploadUrl);
