@@ -20,17 +20,8 @@ class Module extends baseModule
 
     protected $modules = [
         'admin' => ['upload', 'import', 'attachment'],
+        'index' => ['file'],
     ];
-
-    //所有视图的基础路径
-    protected $viewsPath = '';
-
-    /**
-     * 存储驱动类列表
-     *
-     * @var array
-     */
-    protected $storageDrivers = [\tpext\builder\logic\LocalStorage::class => '本地'];
 
     /**
      * 版本列表，列出所有存在过的版本，即使没有升级脚本也要列出
@@ -44,9 +35,89 @@ class Module extends baseModule
         '1.0.3' => '1.0.3.sql',
     ];
 
+    /**扩展基本信息完**/
+
+    //所有视图的基础路径
+    protected $viewsPath = '';
+
+    /**
+     * 通用文件上传url，不需要经过url()的
+     * 默认 '/admin/upload/upfiles'
+     * @var string
+     */
+    protected $uploadUrl = '';
+
+    /**
+     * 导入页面url，不需要经过url()的
+     * 默认 '/admin/import/page'
+     * @var string
+     */
+    protected $importUrl = '';
+
+    /**
+     * 文件上传：选择文件列表页url
+     *默认 '/admin/attachment/index'
+     * @var string
+     */
+    protected $chooseUrl ='';
+
+    /**
+     * 存储驱动类列表
+     *
+     * @var array
+     */
+    protected $storageDrivers = [\tpext\builder\logic\LocalStorage::class => '本地'];
+
+    /**
+     * Undocumented function
+     *
+     * @param string $newPath
+     * @return $this
+     */
     public function setViewsPath($newPath)
     {
         $this->viewsPath = $newPath;
+
+        return $this;
+    }
+
+    /**
+     * 设置所有上传的目标url
+     *
+     * @param string $newUrl 不需要经过url()的
+     * @return $this
+     */
+    public function setUploadUrl($newUrl)
+    {
+        $this->uploadUrl = $newUrl;
+
+        return $this;
+    }
+
+    /**
+     * 设置所有上传的目标url
+     *
+     * @param string $newUrl 不需要经过url()的
+     * @return $this
+     */
+    public function setImportUrl($newUrl)
+    {
+        $this->importUrl = $newUrl;
+
+        return $this;
+    }
+
+    /**
+     * 设置选择文件列表页url
+     *
+     * @param string $newUrl 不需要经过url()的
+     * @return $this
+     */
+    public function setChooseUrl($newUrl)
+    {
+        $this->chooseUrl = $newUrl;
+
+        return $this;
     }
 
     /**
@@ -59,9 +130,15 @@ class Module extends baseModule
     public function addStorageDriver($class, $title)
     {
         $this->storageDrivers[$class] = $title;
+
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     public function getViewsPath()
     {
         //如果未设置新的视图路径,则设置为默认路径 root/src/view/
@@ -70,6 +147,36 @@ class Module extends baseModule
         }
 
         return $this->viewsPath;
+    }
+
+    /**
+     * 获取上传url路径
+     * 默认：'/admin/upload/upfiles'
+     * @return string
+     */
+    public function getUploadUrl()
+    {
+        return $this->uploadUrl ?: '/admin/upload/upfiles';
+    }
+
+     /**
+     * 获取导入页面url路径
+     * 默认：'/admin/import/page'
+     * @return string
+     */
+    public function getImportUrl()
+    {
+        return $this->importUrl ?: '/admin/import/page';
+    }
+
+    /**
+     * 获取上传url路径
+     * 默认：'/admin/attachment/index'
+     * @return string
+     */
+    public function getChooseUrl()
+    {
+        return $this->chooseUrl ?: '/admin/attachment/index';
     }
 
     /**

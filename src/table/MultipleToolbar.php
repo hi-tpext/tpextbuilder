@@ -4,6 +4,7 @@ namespace tpext\builder\table;
 
 use tpext\builder\common\Builder;
 use tpext\builder\common\Toolbar;
+use tpext\builder\common\Module;
 
 class MultipleToolbar extends Toolbar
 {
@@ -331,7 +332,7 @@ class MultipleToolbar extends Toolbar
 
         $pagetoken = md5($importpagetoken . $acceptedExts . $fileSize);
 
-        $url = url('/admin/import/page')->__toString() . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken . '&driver=' . $driver;
+        $url = url(Module::getInstance()->getImportUrl())->__toString() . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken . '&driver=' . $driver;
 
         $this->linkBtn('import', $label)->useLayer(true, $layerSize)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
 
