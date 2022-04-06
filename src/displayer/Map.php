@@ -401,7 +401,18 @@ EOT;
 
         $configs = substr($configs, 1, strlen($configs) - 2);
 
+        $jscode = '';
+
+        if (preg_match('/jscode=([^&]+)/i', $jsKey, $mch)) {
+            $jscode = $mch[1]; //得到安全密钥
+            $jsKey = str_replace($jscode, '', $jsKey); //替换url中的安全密钥
+        }
+
         $script = <<<EOT
+
+        window._AMapSecurityConfig = {
+            securityJsCode : '{$jscode}',
+        }
 
         window.amapInit = function(){
             var input = $('#{$inputId}');
