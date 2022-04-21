@@ -199,7 +199,7 @@ class Builder implements Renderable
     }
 
     /**
-     * Undocumented function添加自定义css，不会被minify
+     * 添加自定义css，不会被minify
      *
      * @param array|string $val
      * @return $this
