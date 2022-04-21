@@ -234,7 +234,7 @@ class WebUploader
 
         $this->oldName = $fileName;
 
-        $this->suffix = preg_replace('/.+?(\w+)$/', '$1', $fileName);
+        $this->suffix = strtolower(preg_replace('/.+?(\w+)$/', '$1', $fileName));
 
         $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
@@ -473,7 +473,7 @@ class WebUploader
         //得到文件大小
         $this->size = filesize($file);
         //得到文件后缀
-        $this->suffix = pathinfo($file)['extension'];
+        $this->suffix = strtolower(pathinfo($file)['extension']);
     }
 
     /**
@@ -533,7 +533,7 @@ class WebUploader
      */
     protected function checkSuffix()
     {
-        if (in_array(strtolower($this->suffix), ['php', 'phps', 'php5', 'php7', 'htaccess', 'cgi', 'config', 'conf', 'js', 'css', 'html', 'htm', 'exe', 'asp', 'dll', 'aspx', 'asa', 'asax', 'ascx', 'asmx', 'ashx', 'axd', 'jsp', 'jspx', 'cer', 'cdx'])) {
+        if (in_array($this->suffix, ['php', 'phps', 'php5', 'php7', 'htaccess', 'cgi', 'config', 'conf', 'js', 'css', 'html', 'htm', 'exe', 'asp', 'dll', 'aspx', 'asa', 'asax', 'ascx', 'asmx', 'ashx', 'axd', 'jsp', 'jspx', 'cer', 'cdx'])) {
             $this->setOption('errorNumber', -5);
             return false;
         }
@@ -542,7 +542,7 @@ class WebUploader
             return false;
         }
         /* 对图像文件进行严格检测 */
-        if (in_array(strtolower($this->suffix), ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->tmpName), [1, 2, 3, 4, 6, 13])) {
+        if (in_array($this->suffix, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->tmpName), [1, 2, 3, 4, 6, 13])) {
             $this->setOption('errorNumber', -5);
             return false;
         }
