@@ -368,6 +368,7 @@ class Search extends SWrapper implements Renderable
             }
         } else {
             $this->addClass('form-empty');
+            $this->button('submit', '筛&nbsp;&nbsp;选', '6 col-lg-6 col-sm-6 col-xs-6')->class('btn-info ' . $this->butonsSizeClass);
         }
 
         $this->hidden('__page__')->value(1);
