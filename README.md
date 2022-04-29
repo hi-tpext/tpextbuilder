@@ -19,3 +19,7 @@
 `composer require ichynul/builder-tinymce`
 
 `composer require ichynul/builder-ueditor`
+
+#### 图片压缩／水印
+
+使用`intervention/image 2.x`库，支出`Gd`和`Imagic`(推荐)两种php图片处理库

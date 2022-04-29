@@ -3,6 +3,7 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasStorageDriver;
+use tpext\builder\traits\HasImageDriver;
 use tpext\builder\common\Module;
 
 /**
@@ -16,6 +17,7 @@ use tpext\builder\common\Module;
 class MultipleFile extends Field
 {
     use HasStorageDriver;
+    use HasImageDriver;
 
     protected $view = 'multiplefile';
 
@@ -225,20 +227,20 @@ class MultipleFile extends Field
 
         if ($this->canUpload) {
 
-            if(!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url']))
-            {
+            if (!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url'])) {
                 $token = $this->getCsrfToken();
                 $this->jsOptions['upload_url'] = url($this->getUploadUrl(), [
                     'utype' => 'webuploader',
                     'token' => $token,
                     'driver' => $this->getStorageDriver(),
                     'is_rand_name' => $this->isRandName(),
+                    'image_driver' => $this->getImageDriver(),
+                    'image_commonds' => $this->getImageCommands()
                 ])->__toString();
             }
 
-            if(!isset($this->jsOptions['chooseUrl']) || empty($this->jsOptions['chooseUrl']))
-            {
-                $this->jsOptions['chooseUrl'] = url(Module::getInstance()->getChooseUrl())->__toString() . '?';
+            if (!isset($this->jsOptions['chooseUrl']) || empty($this->jsOptions['chooseUrl'])) {
+                $this->jsOptions['chooseUrl'] = url(Module::getInstance()->getChooseUrl()) . '?';
             }
         }
 

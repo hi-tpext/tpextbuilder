@@ -4,6 +4,7 @@ namespace tpext\builder\logic;
 
 use tpext\builder\common\model\Attachment;
 use tpext\builder\inface\Storage;
+use tpext\builder\inface\Image;
 
 class Upload
 {
@@ -13,6 +14,16 @@ class Upload
      * @var Storage
      */
     protected $driver = null;
+
+    /**
+     * 图片驱动
+     *
+     * @var Image
+     */
+    protected $imageDriver = null;
+
+    protected $imageCommonds = [];
+
     //文件上传保存路径
     protected $path = '';
     //允许文件上传的后缀
@@ -56,6 +67,8 @@ class Upload
     protected $tmpName; //文件临时路径
     protected $newName; //文件新名字
     protected $dirName;
+    protected $admin_id = 0;
+    protected $user_id = 0;
 
     public function __construct($arr = [])
     {
@@ -158,8 +171,8 @@ class Upload
 
                 $res = $attachment->save([
                     'name' => mb_substr($name, 0, 55),
-                    'admin_id' => session('?admin_id') ? session('admin_id') : 0,
-                    'user_id' => session('?user_id') ? session('user_id') : 0,
+                    'admin_id' => $this->admin_id ?: 0,
+                    'user_id' => $this->user_id ?: 0,
                     'mime' => $this->mime,
                     'suffix' => $this->suffix,
                     'size' => $this->size / (1024 ** 2),
@@ -169,6 +182,12 @@ class Upload
                 ]);
 
                 if ($res) {
+
+                    if (in_array($this->suffix, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+
+                        $url =  $this->imageDriver->process($attachment, $this->imageCommonds);
+                    }
+
                     $url =  $this->driver->process($attachment);
                 }
 

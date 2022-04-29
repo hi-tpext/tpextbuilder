@@ -625,6 +625,10 @@ window.renderFiles = function (elid) {
                         src = '/index.php/tpextbuilder/index/file/extimg/type/' + file.ext;
                         $img.addClass('cantpreview');
                     }
+                    else
+                    {
+                        $img.addClass('imgpreview');
+                    }
                     $img.attr('src', src);
                     $img.css({
                         'display': 'block',
@@ -659,6 +663,7 @@ window.renderFiles = function (elid) {
                 if ($li.find('.cantpreview').size() > 0) {
                     $li.find('a.btn-link-pic').attr('href', response.picurl).removeClass('btn-link-pic').attr('target', '_blank');
                 } else {
+                    $li.find('.imgpreview').attr('src',response.picurl);
                     $li.find('a.btn-link-pic').attr('href', response.picurl);
                 }
                 setTimeout(function () {
