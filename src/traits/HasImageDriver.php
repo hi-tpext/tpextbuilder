@@ -52,6 +52,10 @@ trait HasImageDriver
      */
     public function imageResize($width = 0,  $height = 0, $aspectRatio = true, $upsize = true)
     {
+        if (empty($width) && empty($height)) {
+            return $this;
+        }
+
         $this->imageCommands[] = [
             'name' => 'resize',
             'args' => [
