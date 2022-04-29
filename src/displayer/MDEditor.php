@@ -3,10 +3,12 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasStorageDriver;
+use tpext\builder\traits\HasImageDriver;
 
 class MDEditor extends Field
 {
     use HasStorageDriver;
+    use HasImageDriver;
 
     protected $view = 'mdeditor';
 
@@ -89,7 +91,14 @@ class MDEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['imageUploadURL'] = url($this->getUploadUrl(), ['utype' => 'editormd', 'token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()]);
+            $this->jsOptions['imageUploadURL'] = url($this->getUploadUrl(), [
+                'utype' => 'editormd',
+                'token' => $token,
+                'driver' => $this->getStorageDriver(),
+                'is_rand_name' => $this->isRandName(),
+                'image_driver' => $this->getImageDriver(),
+                'image_commonds' => $this->getImageCommands()
+            ]);
         }
 
         $configs = json_encode($this->jsOptions);

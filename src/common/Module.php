@@ -6,7 +6,7 @@ use tpext\common\Module as baseModule;
 
 class Module extends baseModule
 {
-    protected $version = '1.0.3';
+    protected $version = '1.0.4';
 
     protected $name = 'tpext.builder';
 
@@ -33,6 +33,7 @@ class Module extends baseModule
         '1.0.1' => '',
         '1.0.2' => '',
         '1.0.3' => '1.0.3.sql',
+        '1.0.4' => '',
     ];
 
     /**扩展基本信息完**/

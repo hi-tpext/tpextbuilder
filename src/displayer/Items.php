@@ -98,7 +98,7 @@ class Items extends Field
      * @param boolean $val
      * @return $this
      */
-    public function cnaDelete($val)
+    public function canDelete($val)
     {
         $this->__items_content__->cnaDelete($val);
         return $this;

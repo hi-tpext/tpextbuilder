@@ -3,10 +3,13 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasStorageDriver;
+use tpext\builder\traits\HasImageDriver;
+
 
 class Tinymce extends Field
 {
     use HasStorageDriver;
+    use HasImageDriver;
 
     protected $view = 'tinymce';
 
@@ -57,7 +60,14 @@ class Tinymce extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['images_upload_url'] = url($this->getUploadUrl(), ['utype' => 'tinymce', 'token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()]);
+            $this->jsOptions['images_upload_url'] = url($this->getUploadUrl(), [
+                'utype' => 'tinymce',
+                'token' => $token,
+                'driver' => $this->getStorageDriver(),
+                'is_rand_name' => $this->isRandName(),
+                'image_driver' => $this->getImageDriver(),
+                'image_commonds' => $this->getImageCommands()
+            ]);
         }
 
         $this->jsOptions['selector'] = "#{$inputId}";

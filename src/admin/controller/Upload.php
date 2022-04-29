@@ -22,7 +22,7 @@ class Upload extends Controller
      * @title 上传文件
      * @return mixed
      */
-    public function upfiles($utype = '', $token = '', $driver = '', $is_rand_name = '')
+    public function upfiles($utype = '', $token = '', $driver = '', $is_rand_name = '', $image_driver = '', $image_commonds = '')
     {
         if (empty($token)) {
             return json(
@@ -37,12 +37,22 @@ class Upload extends Controller
             return;
         }
 
+        if ($utype == 'ueditor') { //ueditor
+            $action = $_GET['action'];
+            if (!in_array($action, ['uploadimage', 'uploadscrawl', 'uploadvideo', 'uploadfile'])) { //不是上传文件动作
+                return $this->ueditor($token, $driver, $is_rand_name, $image_driver, $image_commonds);
+            }
+        }
+
         switch ($utype) {
             case 'editormd':
                 $file_input_name = 'editormd-image-file';
                 break;
             case 'ckeditor':
                 $file_input_name = 'upload';
+                break;
+            case 'ueditor':
+                $file_input_name = 'upfile';
                 break;
             default:
                 $file_input_name = 'file';
@@ -63,7 +73,7 @@ class Upload extends Controller
 
         $_config['fileByDate'] = $config['file_by_date'];
 
-        $storageDriver = Module::config('storage_driver');
+        $storageDriver = $config['storage_driver'];
 
         if ($driver) {
             $driver = str_replace('-', '\\', $driver);
@@ -78,6 +88,38 @@ class Upload extends Controller
         $driver = new $storageDriver;
 
         $_config['driver'] = $driver;
+        $_config['imageDriver'] = $image_driver && class_exists($image_driver) ? new $image_driver : new \tpext\builder\logic\ImageHandler;
+
+        $_config['imageCommonds'] = [];
+
+        if ($config['image_water']) {
+
+            $_config['imageCommonds'][] = [
+                'name' => 'water',
+                'args' => ['imgPath' => $config['image_water'], 'position' => $config['image_water_position']],
+                'is_global_config' => 'image_water',
+            ];
+        }
+        if ($config['image_size_limit']) {
+            $arr = explode(',', $config['image_size_limit']);
+
+            $_config['imageCommonds'][] = [
+                'name' => 'resize',
+                'args' => ['width' => intval($arr[0]), 'height' => intval($arr[1] ?? 0)],
+                'is_global_config' => 'image_size_limit',
+            ];
+        }
+
+        if ($image_commonds) {
+            $imgCmd = json_decode(base64_decode($image_commonds), true);
+
+            if ($imgCmd) {
+                $_config['imageCommonds'] = array_merge($_config['imageCommonds'], $imgCmd);
+            }
+        }
+
+        $_config['admin_id'] = session('?admin_id') ? session('admin_id') : 0;
+        $_config['user_id'] = session('?user_id') ? session('user_id') : 0;
 
         $up = null;
 
@@ -137,6 +179,13 @@ class Upload extends Controller
                         ]
                     );
                     break;
+                case 'ueditor':
+                    return json([
+                        "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
+                        "url" => $newPath, // 返回的地址
+                        "title" => $newPath, // 附件名
+                        '666' => 1
+                    ]);
                 default:
                     return json(
                         [
@@ -155,16 +204,8 @@ class Upload extends Controller
      * @title ueditor上传相关
      * @return mixed
      */
-    public function ueditor($token = '', $driver = '', $is_rand_name = '')
+    protected function ueditor()
     {
-        if (empty($token)) {
-            exit('no token');
-        }
-
-        if (session('_csrf_token_') != $token) {
-            exit('token error');
-        }
-
         $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
         $action = $_GET['action'];
@@ -175,27 +216,9 @@ class Upload extends Controller
             case 'config':
                 $result = $config;
                 break;
-
-                /* 上传图片 */
-            case 'uploadimage':
-                /* 上传涂鸦 */
-            case 'uploadscrawl':
-                return json($this->saveFile('images', $driver, $is_rand_name));
-                break;
-
-                /* 上传视频 */
-            case 'uploadvideo':
-                return json($this->saveFile('videos', $driver, $is_rand_name));
-                break;
-
-                /* 上传附件 */
-            case 'uploadfile':
-                return json($this->saveFile('files', $driver, $is_rand_name));
-                break;
-
                 /* 列出图片 */
             case 'listimage':
-                return json($this->saveFile('listimage', $driver, $is_rand_name));
+                return json($this->showFile('listimage', $config));
                 break;
 
                 /* 列出附件 */
@@ -381,64 +404,6 @@ class Upload extends Controller
         }
 
         return false;
-    }
-
-    private function saveFile($type = '', $driver = '', $is_rand_name = '')
-    {
-        $file_input_name = 'upfile';
-
-        $config = Module::getInstance()->getConfig();
-
-        $_config['allowSuffix'] = explode(',', $config['allow_suffix']);
-        $_config['maxSize'] = $config['max_size'] * 1024 * 1024;
-
-        if ($is_rand_name == 'n') {
-            $_config['isRandName'] = 0;
-        } else if ($is_rand_name == 'y') {
-            $_config['isRandName'] = 1;
-        } else {
-            $_config['isRandName'] = $config['is_rand_name'];
-        }
-
-        $_config['fileByDate'] = $config['file_by_date'];
-        $_config['dirName'] = $type;
-
-        $storageDriver = Module::config('storage_driver');
-
-        if ($driver) {
-            $driver = str_replace('-', '\\', $driver);
-            if (class_exists($driver)) {
-                $storageDriver = $driver;
-            }
-        }
-
-        $storageDriver = empty($storageDriver) || !class_exists($storageDriver)
-            ? \tpext\builder\logic\LocalStorage::class : $storageDriver;
-
-        $driver = new $storageDriver;
-
-        $_config['driver'] = $driver;
-
-        $up = new UploadTool($_config);
-
-        $newPath = $up->uploadFile($file_input_name);
-        if ($newPath === false) {
-            //var_dump($up->errorNumber);
-            //echo json_encode(['status' => 500, 'info' => '上传失败，没有权限', 'class' => 'error']);
-            // 失败跟成功同样的方式返回
-            return [
-                "state" => "", // 上传状态，上传成功时必须返回"SUCCESS"
-                "url" => '', // 返回的地址
-                "title" => $up->errorInfo,
-            ];
-        } else {
-
-            return [
-                "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
-                "url" => $newPath, // 返回的地址
-                "title" => $newPath, // 附件名
-            ];
-        }
     }
 
     private function catchFile()

@@ -3,10 +3,12 @@
 namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasStorageDriver;
+use tpext\builder\traits\HasImageDriver;
 
 class UEditor extends Field
 {
     use HasStorageDriver;
+    use HasImageDriver;
 
     protected $view = 'ueditor';
 
@@ -81,7 +83,14 @@ EOT;
 
             $token = $this->getCsrfToken();
 
-            $this->uploadUrl = url($this->getUploadUrl(), ['token' => $token, 'driver' => $this->getStorageDriver(), 'is_rand_name' => $this->isRandName()]);
+            $this->uploadUrl = url($this->getUploadUrl(), [
+                'utype' => 'ueditor',
+                'token' => $token,
+                'driver' => $this->getStorageDriver(),
+                'is_rand_name' => $this->isRandName(),
+                'image_driver' => $this->getImageDriver(),
+                'image_commonds' => $this->getImageCommands()
+            ]);
         }
 
         $vars = $this->commonVars();
