@@ -28,6 +28,8 @@ class ImageHandler implements IImage
             return $attachment['url'];
         }
 
+        $imgPath = $this->checkFile($attachment['url']);
+
         $clear_global_config = [];
 
         foreach ($commonds as $cmd) {
@@ -43,7 +45,7 @@ class ImageHandler implements IImage
                 continue;
             }
             if ($cmd['name'] == 'crop') {
-                $attachment['url'] = $this->crop($attachment['url'], $cmd['args']);
+                $attachment['url'] = $this->crop($imgPath, $cmd['args']);
             }
         }
 
@@ -52,7 +54,7 @@ class ImageHandler implements IImage
                 continue;
             }
             if ($cmd['name'] == 'resize') {
-                $attachment['url'] = $this->resize($attachment['url'], $cmd['args']);
+                $attachment['url'] = $this->resize($imgPath, $cmd['args']);
             }
         }
 
@@ -61,7 +63,7 @@ class ImageHandler implements IImage
                 continue;
             }
             if ($cmd['name'] == 'text') {
-                $attachment['url'] = $this->text($attachment['url'], $cmd['args']);
+                $attachment['url'] = $this->text($imgPath, $cmd['args']);
             }
         }
 
@@ -70,11 +72,9 @@ class ImageHandler implements IImage
                 continue;
             }
             if ($cmd['name'] == 'water') {
-                $attachment['url'] = $this->water($attachment['url'], $cmd['args']);
+                $attachment['url'] = $this->water($imgPath, $cmd['args']);
             }
         }
-
-        $imgPath = $this->checkFile($attachment['url']);
 
         //修改了图片，更新文件信息
         $attachment['size'] = filesize($imgPath) / (1024 ** 2);
@@ -149,7 +149,7 @@ class ImageHandler implements IImage
 
                     $fontType = strtolower(pathinfo($args['fontFile'])['extension']);
 
-                    if (!in_array($fontType, ['fft', 'otf', 'woff', 'woff2']) || !is_file($args['fontFile'])) {
+                    if (!in_array($fontType, ['fft', 'otf', 'woff', 'woff2'])) {
                         unset($args['fontFile']);
                     }
                 } else {
@@ -211,10 +211,6 @@ class ImageHandler implements IImage
         }
 
         $args['imgPath'] = $this->checkFile($args['imgPath']);
-
-        if (!is_file($args['imgPath'])) {
-            return $imgPath;
-        }
 
         $imageInstance = $this->image($imgPath);
 
@@ -305,8 +301,14 @@ class ImageHandler implements IImage
      */
     public function checkFile($path)
     {
-        if (!is_file($path) && substr($path, 0, 1) != '.' && is_file('.' . $path)) {
-            $path = '.' . $path;
+        //本站绝对路径
+        if (stripos($path, app()->getRoutePath()) !== false) {
+            return $path;
+        }
+
+        //本站相对路径
+        if (substr($path, 0, 1) != '.') {
+            return '.' . $path;
         }
 
         return $path;

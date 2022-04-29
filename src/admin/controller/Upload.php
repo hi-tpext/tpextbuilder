@@ -103,11 +103,13 @@ class Upload extends Controller
         if ($config['image_size_limit']) {
             $arr = explode(',', $config['image_size_limit']);
 
-            $_config['imageCommonds'][] = [
-                'name' => 'resize',
-                'args' => ['width' => intval($arr[0]), 'height' => intval($arr[1] ?? 0)],
-                'is_global_config' => 'image_size_limit',
-            ];
+            if (count($arr) > 1 && (intval($arr[0]) > 0 || intval($arr[0]) > 0)) {
+                $_config['imageCommonds'][] = [
+                    'name' => 'resize',
+                    'args' => ['width' => intval($arr[0]) ?: null, 'height' => intval($arr[1]) ?: null],
+                    'is_global_config' => 'image_size_limit',
+                ];
+            }
         }
 
         if ($image_commonds) {
