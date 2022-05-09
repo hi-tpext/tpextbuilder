@@ -216,6 +216,8 @@ a.sortable.mdi-sort {
 .table .row-__action__ .btn.btn-xs {
     padding: 0 3px;
     margin: 1px;
+    min-height: 22px;
+    min-width: 22px;
 }
 
 .lyear-uploads-pic .webuploader-pick {
