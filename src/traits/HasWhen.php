@@ -243,15 +243,6 @@ trait HasWhen
                     
                     $(e).removeAttr('name');//移除name，不会被表单提交
                 }
-                if($(e).attr('id'))
-                {
-                    if(!$(e).data('id'))
-                    {
-                        $(e).data('id', $(e).attr('id'));
-                    }
-                    
-                    $(e).removeAttr('id');
-                }
             });
 
             $('.{$key}.match-case').find('input,textadea,select').each(function(i, e){
@@ -260,16 +251,10 @@ trait HasWhen
                 {
                     $(e).attr('name', $(e).data('name'));
                 }
-                if($(e).data('id'))
-                {
-                    $(e).attr('id', $(e).data('id'));
-                }
             });
         });
 
-        setTimeout(function(){
-            $("#{$watchFor}{$box}").trigger('change');
-        }, 200);
+        $("#{$watchFor}{$box}").trigger('change');
 
 EOT;
         $this->script[] = $script;
