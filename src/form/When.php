@@ -2,7 +2,6 @@
 
 namespace tpext\builder\form;
 
-use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
 use tpext\builder\displayer;
 use tpext\builder\common\Form;
 use tpext\builder\common\Search;
