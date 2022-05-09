@@ -2,7 +2,8 @@
 
 namespace tpext\builder\form;
 
-use tpext\builder\displayer\Field;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
+use tpext\builder\displayer;
 use tpext\builder\common\Form;
 use tpext\builder\common\Search;
 
@@ -11,14 +12,14 @@ class When
     /**
      * Undocumented variable
      *
-     * @var Field
+     * @var displayer\Field
      */
     protected $watchFor = null;
 
     /**
      * Undocumented variable
      *
-     * @var string|int|array
+     * @var array
      */
     protected $cases = '';
 
@@ -39,7 +40,7 @@ class When
     /**
      * Undocumented function
      *
-     * @param Field $watchFor
+     * @param displayer\Field $watchFor
      * @param string|int|array $cases
      * @return $this
      */
@@ -57,7 +58,7 @@ class When
     /**
      * Undocumented function
      *
-     * @param Field $field
+     * @param displayer\Field $field
      * @return $this
      */
     public function toggle($field)
@@ -65,9 +66,44 @@ class When
         //防止不同case中有重复字段的一些问题，因为trigger('change')调用时机，js处理重name/id有局限。
         $key = $this->watchFor->getName() . md5(json_encode($this->cases));
 
+        $watchForValue = $this->watchFor->renderValue();
+
+        $matchCase = false;
+
+        if ($this->watchFor instanceof displayer\Checkbox || $this->watchFor instanceof displayer\DualListbox || $this->watchFor instanceof displayer\MultipleSelect) {
+
+            $watchForValueArr = explode(',', trim($watchForValue, ','));
+
+            foreach ($this->cases as $cs) {
+
+                $csArr = explode('+', $cs);
+
+                if (count($watchForValueArr) !== count($csArr)) {
+                    continue;
+                }
+
+                $m = 0;
+
+                foreach ($csArr as $ca) {
+
+                    if (in_array(trim($ca), $watchForValueArr)) {
+                        $m += 1;
+                    }
+                }
+
+                if ($m > 0 && $m == count($watchForValueArr)) {
+                    $matchCase = true;
+                    break;
+                }
+            }
+        } else // Radio / Select
+        {
+            $matchCase = in_array($watchForValue, $this->cases);
+        }
+
         $field->extKey('-' . $key) //防止id重复
             ->addAttr('data-name="' . $field->getName() . '"')->extNameKey('_' . $key) //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
-            ->getWrapper()->addClass('hidden');
+            ->getWrapper()->addClass($matchCase ? '' : 'hidden');
 
         $this->fields[] = $field;
         //
