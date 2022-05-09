@@ -112,8 +112,20 @@ EOT;
      */
     public function renderValue()
     {
+        /**
+         * 数字格式时间戳自动转为日期格式
+         * 但要避免没有`-/`分割的时间格式被转换，如：20200630 => 1970-08-23 03:17:10
+         * 解决办法，截取前字符串4位，如果大于2099或小于1900则认为是时间戳，否则认为是`-/`分割的时间
+         * 如果值是数字但可以确定值不是时间戳，可主动使用->timespan('')清空格式避免自动转换。
+         */
         if ($this->timespan && is_numeric($this->value) && $this->value > 0) {
-            $this->value = date($this->timespan, $this->value);
+
+            $char4 = substr((string)$this->value, 0, 4);
+
+            if ($char4 < 1900 || $char4 > 2099) //1900~2099区间不会误判
+            {
+                $this->value = date($this->timespan, $this->value);
+            }
         }
 
         return parent::renderValue();
