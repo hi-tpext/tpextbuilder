@@ -230,24 +230,39 @@ trait HasWhen
                 }
             }
             $('.{$key}.match-case').removeClass('hidden');
-            $('.{$key}.match-case').find('input,textadea,select').each(function(i, e){
-                $(e).removeClass('ignore');//验证
-                $(e).attr('name', $(e).data('name'));
-                $(e).attr('id', $(e).data('id'));
-            });
 
             $('.{$key}').not('.match-case').addClass('hidden');
             $('.{$key}').not('.match-case').find('input,textadea,select').each(function(i, e){
                 $(e).addClass('ignore');//不验证
                 if($(e).attr('name'))
                 {
-                    $(e).data('name', $(e).attr('name'));
+                    if(!$(e).data('name'))
+                    {
+                        $(e).data('name', $(e).attr('name'));
+                    }
+                    
                     $(e).removeAttr('name');//移除name，不会被表单提交
                 }
                 if($(e).attr('id'))
                 {
-                    $(e).data('id', $(e).attr('id'));
+                    if(!$(e).data('id'))
+                    {
+                        $(e).data('id', $(e).attr('id'));
+                    }
+                    
                     $(e).removeAttr('id');
+                }
+            });
+
+            $('.{$key}.match-case').find('input,textadea,select').each(function(i, e){
+                $(e).removeClass('ignore');//验证
+                if($(e).data('name'))
+                {
+                    $(e).attr('name', $(e).data('name'));
+                }
+                if($(e).data('id'))
+                {
+                    $(e).attr('id', $(e).data('id'));
                 }
             });
         });
