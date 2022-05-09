@@ -39,7 +39,7 @@ class When
     /**
      * Undocumented function
      *
-     * @param $this $watchFor
+     * @param Field $watchFor
      * @param string|int|array $cases
      * @return $this
      */
@@ -62,6 +62,12 @@ class When
      */
     public function toggle($field)
     {
+        //防止不同case中有重复字段的一些问题，因为trigger('change')调用时机，js处理重name/id有局限。
+        $key = $this->watchFor->getName() . md5(json_encode($this->cases));
+
+        $field->extKey('-' . $key); //防止id重复
+        $field->addAttr('data-name="' . $field->getName() . '"')->extNameKey('_' . $key); //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
+
         $this->fields[] = $field;
         //
         return $this;
