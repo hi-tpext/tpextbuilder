@@ -245,7 +245,7 @@ trait HasWhen
                 }
             });
 
-            $('.{$key}.match-case').find('input,textadea,select').each(function(i, e){
+            $('.{$key}.match-case').find('input,textarea,select').each(function(i, e){
                 $(e).removeClass('ignore');//验证
                 if($(e).data('name'))
                 {
