@@ -750,6 +750,31 @@ class Field implements Fillable
             }
         }
 
+        /**
+         * 兼容性处理
+         * $form->fields('a')->with(
+         *   $form->text('b'),
+         * )->fill(
+         *    ['a.b' => 1]
+         * );
+         * 
+         * $form->fields('a')->with(
+         *     $form->text('a.b'),
+         * )->fill(
+         *     ['b' => 1]
+         * );
+         */
+
+        foreach ($data as $k => $v) {
+            if (stripos($k, $this->name . '.') === false) {
+                // 键为 'b' => 'v'，自动添加一个 'a.b' => 'v',
+                $data[$this->name . '.' . $k] = $v;
+            } else {
+                // 键为 'a.b' => 'v'，自动添加一个 'b' => 'v',
+                $data[str_replace($this->name . '.', '', $k)] = $v;
+            }
+        }
+
         $this->data = $data;
 
         return $this;
