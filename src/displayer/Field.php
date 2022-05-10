@@ -731,9 +731,18 @@ class Field implements Fillable
 
                 $arr = explode('.', $this->name);
 
-                if (isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]])) {
-                    $value = $data[$arr[0]][$arr[1]];
-                    $hasVal = true;
+                if (isset($data[$arr[0]])) {
+
+                    if (isset($data[$arr[0]][$arr[1]])) {
+                        $value = $data[$arr[0]][$arr[1]];
+                        $hasVal = true;
+                    }
+                } else { //尝试读取上一层级的值
+                    if (isset($data[$this->name])) {
+
+                        $value = $data[$this->name];
+                        $hasVal = true;
+                    }
                 }
             } else if (isset($data[$this->name])) {
 
@@ -747,31 +756,6 @@ class Field implements Fillable
 
             if ($hasVal) {
                 $this->value = $value;
-            }
-        }
-
-        /**
-         * 兼容性处理
-         * $form->fields('a')->with(
-         *   $form->text('b'),
-         * )->fill(
-         *    ['a.b' => 1]
-         * );
-         * 
-         * $form->fields('a')->with(
-         *     $form->text('a.b'),
-         * )->fill(
-         *     ['b' => 1]
-         * );
-         */
-
-        foreach ($data as $k => $v) {
-            if (stripos($k, $this->name . '.') === false) {
-                // 键为 'b' => 'v'，自动添加一个 'a.b' => 'v',
-                $data[$this->name . '.' . $k] = $v;
-            } else {
-                // 键为 'a.b' => 'v'，自动添加一个 'b' => 'v',
-                $data[str_replace($this->name . '.', '', $k)] = $v;
             }
         }
 
