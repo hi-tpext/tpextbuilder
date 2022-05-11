@@ -105,6 +105,18 @@ class Items extends Field
     }
 
     /**
+     * canDelete的错误写法，保留兼容
+     * @deprecated  1.9.0044
+     * @param boolean $val
+     * @return $this
+     */
+    public function cnaDelete($val)
+    {
+        $this->__items_content__->cnaDelete($val);
+        return $this;
+    }
+
+    /**
      * Undocumented function
      *
      * @param boolean $val
