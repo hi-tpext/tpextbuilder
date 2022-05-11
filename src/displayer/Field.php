@@ -738,9 +738,9 @@ class Field implements Fillable
                         $hasVal = true;
                     }
                 } else { //尝试读取上一层级的值
-                    if (isset($data[$this->name])) {
 
-                        $value = $data[$this->name];
+                    if (isset($data[$arr[1]])) {
+                        $value = $data[$arr[1]];
                         $hasVal = true;
                     }
                 }

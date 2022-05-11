@@ -116,42 +116,9 @@ class Fields extends Field
             !empty($this->name) && isset($data[$this->name]) &&
             (is_array($data[$this->name]) || $data[$this->name] instanceof Model)
         ) {
-            $this->data = $data[$this->name];
+            $this->data = array_merge($this->data, $data[$this->name]);
         } else {
             $this->data = $data;
-        }
-
-        /**
-         * 兼容性处理
-         * 
-         * $form->fields('a')->with(
-         *   $form->text('b'),
-         * )->fill(
-         *    ['a' => ['b' => 1]]
-         * );
-         * 
-         * $form->fields('a')->with(
-         *     $form->text('a.b'),
-         * )->fill(
-         *     ['b' => 1]
-         * );
-         */
-
-        foreach ($this->data as $k => $v) {
-            if (stripos($k, $this->name . '.') === false) {
-                // 键为 'b' => 'v'，自动添加一个 'a->b' => 'v',
-                if (!isset($this->data[$this->name])) {
-                    $this->data[$this->name] = [];
-                }
-
-                $this->data[$this->name][$k] = $v;
-            } else {
-                // 键为 'a.b' => 'v'，自动添加一个 'b' => 'v',
-
-                if (!isset($this->data[str_replace($this->name . '.', '', $k)])) {
-                    $this->data[str_replace($this->name . '.', '', $k)] = $v;
-                }
-            }
         }
 
         $this->__fields_content__->fill($this->data);
