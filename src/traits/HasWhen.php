@@ -232,7 +232,7 @@ trait HasWhen
             $('.{$key}.match-case').removeClass('hidden');
 
             $('.{$key}').not('.match-case').addClass('hidden');
-            $('.{$key}').not('.match-case').find('input,textadea,select').each(function(i, e){
+            $('.{$key}').not('.match-case').find('input,textarea,select').each(function(i, e){
                 $(e).addClass('ignore');//不验证
                 if($(e).attr('name'))
                 {
