@@ -74,4 +74,26 @@ class Show extends Field
             'inline' => $this->inline,
         ];
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = false)
+    {
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function disabled($val = false)
+    {
+        return $this;
+    }
 }

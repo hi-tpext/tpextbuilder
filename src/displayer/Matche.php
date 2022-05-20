@@ -18,4 +18,26 @@ class Matche extends Raw
 
         return parent::renderValue();
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function readonly($val = false)
+    {
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function disabled($val = false)
+    {
+        return $this;
+    }
 }
