@@ -64,9 +64,9 @@ class Field implements Fillable
 
     protected $help = '';
 
-    protected $readonly = '';
+    protected $readonly = false;
 
-    protected $disabled = '';
+    protected $disabled = false;
 
     protected $wrapper = null;
 
