@@ -471,7 +471,7 @@
                     }
                     $(iframe).height(mainheight);
                     //layero.css('top', ((winheight - mainheight - 43) / 2) + 'px');
-                    parent.layer.iframeAuto(index);
+                    layer.iframeAuto(index);
                 }
 
                 $(':focus').blur();
