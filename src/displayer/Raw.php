@@ -6,6 +6,8 @@ class Raw extends Field
 {
     protected $view = 'raw';
 
+    protected $isInput = false;
+    
     protected $inline = false;
 
     /**
@@ -25,27 +27,5 @@ class Raw extends Field
         return [
             'inline' => $this->inline,
         ];
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function readonly($val = false)
-    {
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function disabled($val = false)
-    {
-        return $this;
     }
 }

@@ -37,24 +37,12 @@ class MDEditor extends Field
 
     protected $jsOptions = [
         'height' => 500,
-        'width' => 1200,
+        'width' => '100%',
         'path' => "/assets/buildermdeditor/lib/",
         'codeFold' => true,
         'htmlDecode' => 'iframe|on*', // 开启标签
         'imageUpload' => true,
     ];
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
 
     /**
      * Undocumented function

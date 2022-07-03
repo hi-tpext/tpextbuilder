@@ -15,8 +15,10 @@ define('FORM_VIEW', 2);
 
 trait HasView
 {
-    public function view($id)
+    public function view()
     {
+        $id = input('id');
+
         if (request()->isGet()) {
 
             $builder = $this->builder($this->pageTitle, $this->viewText, 'view');

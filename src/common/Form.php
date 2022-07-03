@@ -20,6 +20,7 @@ use tpext\builder\form\When;
 use tpext\builder\inface\Renderable;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\displayer\MultipleFile;
+use tpext\think\View;
 
 /**
  * Form class
@@ -107,9 +108,15 @@ class Form extends FWrapper implements Renderable
      */
     protected $__when__ = null;
 
-    public function __construct()
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function created()
     {
         $this->class = 'form-horizontal';
+        return $this;
     }
 
     /**
@@ -833,13 +840,33 @@ EOT;
     /**
      * Undocumented function
      *
-     * @return string|\think\response\View
+     * @return array
      */
-    public function render()
+    public function customVars()
+    {
+        return [];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getViewemplate()
     {
         $template = Module::getInstance()->getViewsPath() . 'form.html';
 
-        $viewshow = view($template);
+        return $template;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string|View
+     */
+    public function render()
+    {
+        $viewshow = new View($this->getViewemplate());
 
         $vars = [
             'rows' => $this->rows,
@@ -850,6 +877,12 @@ EOT;
             'id' => $this->getFormId(),
             'ajax' => $this->ajax ? 1 : 0,
         ];
+
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
 
         if ($this->partial) {
             return $viewshow->assign($vars);
@@ -870,7 +903,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : $this->defaultDisplayerColSize));
+            $row = FRow::make($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : $this->defaultDisplayerColSize));
 
             if ($this->__fields__) {
                 $this->__fields__->addRow($row);
@@ -910,5 +943,16 @@ EOT;
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);
+    }
+
+    /**
+     * 创建自身
+     *
+     * @param mixed $arguments
+     * @return static
+     */
+    public static function make(...$arguments)
+    {
+        return Widget::makeWidget('Form', $arguments);
     }
 }

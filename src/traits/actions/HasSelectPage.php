@@ -78,6 +78,10 @@ trait HasSelectPage
         }
 
         $selected = input('selected', '');
+        
+        if (is_array($selected)) {
+            $selected = implode(',', $selected);
+        }
 
         if (method_exists($this->dataModel, 'asTreeList')) {
 
@@ -183,18 +187,18 @@ trait HasSelectPage
                 $li = $li->toArray();
                 $keys = [];
                 $replace = [];
-                
+
                 preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
 
                 foreach ($matches[1] as $match) {
                     $arr = explode('.', $match);
-        
+
                     if (count($arr) == 1) {
-        
+
                         $keys[] = '{' . $arr[0] . '}';
                         $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '';
                     } else if (count($arr) == 2) {
-        
+
                         $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
                         $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
                     } else {

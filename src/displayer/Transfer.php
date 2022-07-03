@@ -5,16 +5,18 @@ namespace tpext\builder\displayer;
 use tpext\builder\traits\HasOptions;
 use tpext\builder\traits\HasWhen;
 
-class DualListbox extends Field
+class Transfer extends Field
 {
     use HasOptions;
     use HasWhen;
 
-    protected $view = 'duallistbox';
+    protected $view = 'transfer';
+
+    protected $default = [];
 
     protected $checked = [];
 
-    protected $default = [];
+    protected $disabledOptions = [];
 
     protected $js = [
         '/assets/tpextbuilder/js/bootstrap-duallistbox/jquery.bootstrap-duallistbox.min.js',
@@ -69,19 +71,18 @@ class DualListbox extends Field
     /**
      * Undocumented function
      *
-     * @param array $options
+     * @param string|array $val
      * @return $this
      */
-    public function jsOptions($options)
+    public function disabledOptions($val)
     {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
+        $this->disabledOptions = $val;
         return $this;
     }
 
     /**
      * Undocumented function
      *
-     * @param string $prev
      * @return string
      */
     protected function dualListScript()
@@ -148,6 +149,13 @@ EOT;
             $ck = '-' . $ck;
         }
 
+        if ($this->disabledOptions && !is_array($this->disabledOptions)) {
+            $this->disabledOptions = explode(',', $this->disabledOptions);
+        }
+        foreach ($this->disabledOptions as &$di) {
+            $di = '-' . $di;
+        }
+
         unset($ck);
 
         $vars = array_merge($vars, [
@@ -155,6 +163,7 @@ EOT;
             'dataSelected' => implode(',', $dataSelected),
             'group' => $this->group,
             'options' => $this->options,
+            'disabledOptions' => $this->disabledOptions,
         ]);
 
         $viewshow = $this->getViewInstance();

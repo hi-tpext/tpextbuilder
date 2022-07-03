@@ -4,10 +4,12 @@ namespace tpext\builder\tree;
 
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
+use tpext\builder\common\Widget;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
+use tpext\think\View;
 
-class ZTree implements Renderable
+class ZTree extends Widget implements Renderable
 {
     use HasDom;
 
@@ -264,7 +266,7 @@ EOT;
     {
         $template = Module::getInstance()->getViewsPath() . 'tree' . DIRECTORY_SEPARATOR . 'ztree.html';
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         $vars = [
             'class' => $this->class,

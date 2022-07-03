@@ -2,14 +2,18 @@
 
 namespace tpext\builder\displayer;
 
+use tpext\think\View;
+
 class Html extends Field
 {
     protected $view = 'html';
 
+    protected $isInput = false;
+
     /**
      * Undocumented variable
      *
-     * @var \think\response\View
+     * @var View
      */
     protected $content;
 
@@ -33,7 +37,7 @@ class Html extends Field
      */
     public function fetch($template = '', $vars = [])
     {
-        $this->content = view($template);
+        $this->content = new View($template);
 
         $value = $this->renderValue();
 
@@ -55,7 +59,7 @@ class Html extends Field
      */
     public function display($content = '', $vars = [])
     {
-        $this->content = view($content);
+        $this->content = new View($content);
 
         $value = $this->renderValue();
 
@@ -80,27 +84,5 @@ class Html extends Field
         }
 
         return parent::render();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function readonly($val = false)
-    {
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function disabled($val = false)
-    {
-        return $this;
     }
 }

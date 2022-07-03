@@ -10,10 +10,6 @@ class Number extends Field
 
     protected $size = [2, 3];
 
-    protected $min = 0;
-
-    protected $max = 9999999;
-
     protected $js = [
         '/assets/tpextbuilder/js/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js',
     ];
@@ -27,6 +23,8 @@ class Number extends Field
     protected $jsOptions = [
         //'postfix' => '%',
         //'prefix' => '¥',
+        'min' => 0,
+        'max' => 9999999,
         'step' => 1,
         'verticalbuttons' => true,
         'initval' => 0,
@@ -40,7 +38,7 @@ class Number extends Field
      */
     public function min($val)
     {
-        $this->min = $val;
+        $this->jsOptions['min'] = $val;
         return $this;
     }
 
@@ -52,7 +50,19 @@ class Number extends Field
      */
     public function max($val)
     {
-        $this->max = $val;
+        $this->jsOptions['max'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param int $val
+     * @return $this
+     */
+    public function step($val)
+    {
+        $this->jsOptions['step'] = $val;
         return $this;
     }
 
@@ -68,26 +78,9 @@ class Number extends Field
         return $this;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
     protected function numberScript()
     {
         $inputId = $this->getId();
-
-        $this->jsOptions = array_merge($this->jsOptions, [
-            'min' => $this->min,
-            'max' => $this->max,
-        ]);
 
         $configs = json_encode($this->jsOptions);
 

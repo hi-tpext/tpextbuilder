@@ -3,13 +3,14 @@
 namespace tpext\builder\common;
 
 use tpext\builder\common\Module;
+use tpext\think\View;
 
-class Layer
+class Layer extends Widget
 {
     /**
      * Undocumented variable
      *
-     * @var \think\response\View
+     * @var View
      */
     private $viewShow;
 
@@ -35,7 +36,7 @@ class Layer
             'msg' => $msg,
         ];
 
-        $this->viewShow = view($view);
+        $this->viewShow = new View($view);
 
         $this->viewShow->assign($vars);
 
@@ -60,7 +61,7 @@ class Layer
             'url' => $url,
         ];
 
-        $this->viewShow = view($view);
+        $this->viewShow = new View($view);
 
         $this->viewShow->assign($vars);
 
@@ -84,7 +85,7 @@ class Layer
             'msg' => $msg,
         ];
 
-        $this->viewShow = view($view);
+        $this->viewShow = new View($view);
 
         $this->viewShow->assign($vars);
 

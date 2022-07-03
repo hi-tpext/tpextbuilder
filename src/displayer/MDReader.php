@@ -12,6 +12,8 @@ class MDReader extends Field
     
     protected $view = 'mdeditor';
 
+    protected $isInput = false;
+    
     protected $minify = false;
 
     protected $js = [
@@ -42,6 +44,7 @@ class MDReader extends Field
         ';
 
     protected $jsOptions = [
+        'width' => '100%',
         'htmlDecode' => "style,script,iframe", // you can filter tags decode
         'emoji' => true,
         'taskList' => true,
@@ -49,18 +52,6 @@ class MDReader extends Field
         'flowChart' => true, // 默认不解析
         'sequenceDiagram' => true, // 默认不解析
     ];
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
 
     protected function editorScript()
     {

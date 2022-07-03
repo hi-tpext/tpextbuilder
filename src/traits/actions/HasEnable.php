@@ -8,8 +8,10 @@ namespace tpext\builder\traits\actions;
 
 trait HasEnable
 {
-    public function enable($state)
+    public function enable()
     {
+        $state = input('state');
+
         $ids = input('post.ids', '');
         $ids = array_filter(explode(',', $ids), 'strlen');
         if (empty($ids)) {

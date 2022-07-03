@@ -3,6 +3,7 @@
 namespace tpext\builder\logic;
 
 use think\Collection;
+use tpext\think\App;
 
 class Export
 {
@@ -23,11 +24,14 @@ class Export
     public function toCsv($title, $data, $displayers)
     {
         $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
-        ob_end_clean();
+        
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
 
         $fname = '';
         if (request()->isAjax()) {
-            $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
+            $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
 
             if (!is_dir($dir)) {
                 if (!mkdir($dir, 0755, true)) {
@@ -84,7 +88,7 @@ class Export
         unset($row, $text);
         fclose($fp);
         if ($fname) {
-            $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+            $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
             return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
         }
     }
@@ -173,7 +177,7 @@ class Export
             }
 
             if (request()->isAjax()) {
-                $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
+                $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
 
                 if (!is_dir($dir)) {
                     if (!mkdir($dir, 0755, true)) {
@@ -184,7 +188,7 @@ class Export
                 $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls";
                 $objWriter->save($fname);
 
-                $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+                $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
                 header('Content-Type: application/vnd.ms-excel');
@@ -202,7 +206,7 @@ class Export
             }
 
             if (request()->isAjax()) {
-                $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
+                $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
                 if (!is_dir($dir)) {
                     if (!mkdir($dir, 0755, true)) {
                         return json(['code' => 0, 'msg' => '创建目录失败']);
@@ -212,7 +216,7 @@ class Export
                 $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx";
                 $objWriter->save($fname);
 
-                $file = str_replace(app()->getRuntimePath() . 'export/', '', $fname);
+                $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -237,13 +241,13 @@ class Export
     public function toQrcode($title = '二维码', $data, $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true)
     {
         if ($requireLib) {
-            require_once app()->getRootPath() . 'extend/phpqrcode/phpqrcode.php';
+            require_once App::getRootPath() . 'extend/phpqrcode/phpqrcode.php';
         }
 
         $time = date('YmdHis') . '_' . mt_rand(100, 999);
 
-        $dir = app()->getRuntimePath() . 'export/' . date('Ymd') . '/';
-        $dir2 = app()->getRuntimePath() .  'export/' . date('Ymd') . '/qr' . $time . '/';
+        $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
+        $dir2 = App::getRuntimePath() .  'export/' . date('Ymd') . '/qr' . $time . '/';
 
         if (!is_dir($dir2)) {
             if (!mkdir($dir2, 0755, true)) {
@@ -276,7 +280,7 @@ class Export
             trace($e->getMessage());
         }
 
-        $file = str_replace(app()->getRuntimePath() . 'export/', '', $zfile);
+        $file = str_replace(App::getRuntimePath() . 'export/', '', $zfile);
 
         if (request()->isAjax()) {
             return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);

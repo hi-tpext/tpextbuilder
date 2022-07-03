@@ -63,18 +63,6 @@ class Map extends Text
     /**
      * Undocumented function
      *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
      * @return $this
      */
     public function amap()

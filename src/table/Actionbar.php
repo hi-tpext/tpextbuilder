@@ -33,6 +33,17 @@ class Actionbar extends Toolbar
     /**
      * Undocumented function
      *
+     * @param string $barType
+     * @return $this
+     */
+    public function created($barType = '')
+    {
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function beforRender()

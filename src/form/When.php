@@ -69,7 +69,7 @@ class When
 
         $matchCase = false;
 
-        if ($this->watchFor instanceof displayer\Checkbox || $this->watchFor instanceof displayer\DualListbox || $this->watchFor instanceof displayer\MultipleSelect) {
+        if ($this->watchFor instanceof displayer\Checkbox || $this->watchFor instanceof displayer\Transfer || $this->watchFor instanceof displayer\MultipleSelect) {
 
             $watchForValueArr = explode(',', trim($watchForValue, ','));
 

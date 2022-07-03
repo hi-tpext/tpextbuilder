@@ -7,6 +7,7 @@ use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasOptions;
+use tpext\think\View;
 
 class TabLink implements Renderable
 {
@@ -123,7 +124,7 @@ EOT;
     /**
      * Undocumented function
      *
-     * @return string|\think\response\View
+     * @return string|View
      */
     public function render()
     {
@@ -136,7 +137,7 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
         return $viewshow->assign($vars)->getContent();
     }
 

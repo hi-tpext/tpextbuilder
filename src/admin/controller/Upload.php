@@ -2,11 +2,13 @@
 
 namespace tpext\builder\admin\controller;
 
+use tpext\think\App;
 use think\Controller;
-use tpext\builder\common\model\Attachment;
+use think\facade\Session;
 use tpext\builder\common\Module;
-use tpext\builder\logic\Upload as UploadTool;
 use tpext\builder\logic\WebUploader;
+use tpext\builder\common\model\Attachment;
+use tpext\builder\logic\Upload as UploadTool;
 
 /* 参照 Light-Year-Example 相关上传处理方式*/
 
@@ -22,15 +24,22 @@ class Upload extends Controller
      * @title 上传文件
      * @return mixed
      */
-    public function upfiles($utype = '', $token = '', $driver = '', $is_rand_name = '', $image_driver = '', $image_commonds = '')
+    public function upfiles()
     {
+        $utype = input('utype'); 
+        $token = input('token'); 
+        $driver = input('driver'); 
+        $is_rand_name = input('is_rand_name'); 
+        $image_driver = input('image_driver'); 
+        $image_commonds = input('image_commonds'); 
+
         if (empty($token)) {
             return json(
                 ['info' => 'no token', 'picurl' => '']
             );
         }
 
-        if (session('_csrf_token_') != $token) {
+        if (Session::get('_csrf_token_') != $token) {
             return json(
                 ['info' => 'token error', 'picurl' => '']
             );
@@ -38,7 +47,7 @@ class Upload extends Controller
         }
 
         if ($utype == 'ueditor') { //ueditor
-            $action = $_GET['action'];
+            $action = request()->get('action');
             if (!in_array($action, ['uploadimage', 'uploadscrawl', 'uploadvideo', 'uploadfile'])) { //不是上传文件动作
                 return $this->ueditor($token, $driver, $is_rand_name, $image_driver, $image_commonds);
             }
@@ -120,8 +129,8 @@ class Upload extends Controller
             }
         }
 
-        $_config['admin_id'] = session('?admin_id') ? session('admin_id') : 0;
-        $_config['user_id'] = session('?user_id') ? session('user_id') : 0;
+        $_config['admin_id'] = Session::has('admin_id') ? Session::get('admin_id') : 0;
+        $_config['user_id'] = Session::has('user_id') ? Session::get('user_id') : 0;
 
         $up = null;
 
@@ -208,10 +217,8 @@ class Upload extends Controller
      */
     protected function ueditor()
     {
-        $scriptName = $_SERVER['SCRIPT_FILENAME'];
-
-        $action = $_GET['action'];
-        $config_file = realpath(dirname($scriptName)) . '/assets/builderueditor/config.json';
+        $action = request()->get('action');
+        $config_file = App::getPublicPath() . '/assets/builderueditor/config.json';
         $config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents($config_file)), true);
         switch ($action) {
                 /* 获取配置信息 */
@@ -239,9 +246,9 @@ class Upload extends Controller
         }
 
         /* 输出结果 */
-        if (isset($_GET["callback"])) {
-            if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
-                echo htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
+        if ($callback = request()->get("callback")) {
+            if (preg_match("/^[\w_]+$/", $callback)) {
+                echo htmlspecialchars($callback) . '(' . $result . ')';
             } else {
                 return json(['state' => 'callback参数不合法']);
             }
@@ -258,7 +265,7 @@ class Upload extends Controller
      */
     public function base64()
     {
-        $picdata = $_POST['picdata'];
+        $picdata =  request()->post('picdata');
 
         if (empty($picdata)) {
             return json(['state' => 400, 'message' => '上传数据为空']);
@@ -279,8 +286,10 @@ class Upload extends Controller
      * @title 文件缩略图
      * @return mixed
      */
-    public function ext($type)
+    public function ext()
     {
+        $type = input('type');
+        
         $file = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', $type . '.png']);
         if (!file_exists($file)) {
             $file = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', '0.png']);
@@ -291,12 +300,12 @@ class Upload extends Controller
         $gmt_mtime = gmdate('r', filemtime($file));
         $ETag = '"' . md5($gmt_mtime . $file) . '"';
 
-        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $_SERVER['HTTP_IF_MODIFIED_SINCE'] === $gmt_mtime) {
+        if (request()->server('HTTP_IF_MODIFIED_SINCE') === $gmt_mtime) {
             header('ETag: ' . $ETag, true, 304);
             exit;
         }
 
-        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] === $ETag) {
+        if (request()->server('HTTP_IF_NONE_MATCH') === $ETag) {
             header('ETag: ' . $ETag, true, 304);
             exit;
         } else {
@@ -318,9 +327,7 @@ class Upload extends Controller
             if (!preg_match('/^(png|jpg|jpeg|bmp|gif|webpg)$/i', $type)) {
                 return false;
             }
-
-            $scriptName = $_SERVER['SCRIPT_FILENAME'];
-
+            
             $fileByDate = Module::config('file_by_date');
             $storageDriver = Module::config('storage_driver');
 
@@ -345,7 +352,7 @@ class Upload extends Controller
                 $date = date('Ym');
             }
 
-            $path = realpath(dirname($scriptName)) . "/uploads/{$dirName}/" . $date . '/';
+            $path = App::getPublicPath() . "/uploads/{$dirName}/" . $date . '/';
 
             if (!is_dir($path)) {
                 //检查是否有该文件夹，如果没有就创建，并给予最高权限
@@ -363,8 +370,8 @@ class Upload extends Controller
 
                 $res = $attachment->save([
                     'name' => mb_substr($name, 0, 55),
-                    'admin_id' => session('?admin_id') ? session('admin_id') : 0,
-                    'user_id' => session('?user_id') ? session('user_id') : 0,
+                    'admin_id' => Session::has('?admin_id') ? Session::get('admin_id') : 0,
+                    'user_id' => Session::has('?user_id') ? Session::get('user_id') : 0,
                     'mime' => $this->mime_content_type($path . $newName),
                     'suffix' => $type,
                     'size' => filesize($path . $newName) / (1024 ** 2),
@@ -439,8 +446,8 @@ class Upload extends Controller
         $allowFiles = substr(str_replace(".", "|", join("", $allowFiles)), 1);
 
         /* 获取参数 */
-        $size = isset($_GET['size']) ? htmlspecialchars($_GET['size']) : $listSize;
-        $start = isset($_GET['start']) ? htmlspecialchars($_GET['start']) : 0;
+        $size = request()->get('size', $listSize);
+        $start = request()->get('start', 0);
         $end = $start + $size;
 
         /* 获取附件列表 */
@@ -490,7 +497,7 @@ class Upload extends Controller
                 } else {
                     if (preg_match("/\.(" . $allowFiles . ")$/i", $file)) {
                         $files[] = array(
-                            'url' => str_replace("\\", "/", substr($path2, strlen($_SERVER['DOCUMENT_ROOT']))),
+                            'url' => str_replace("\\", "/", substr($path2, strlen(request()->server('DOCUMENT_ROOT')))),
                             'mtime' => filemtime($path2),
                         );
                     }

@@ -3,37 +3,18 @@
 namespace tpext\builder\common;
 
 use tpext\builder\inface\Renderable;
+use tpext\think\View;
 
-class Content implements Renderable
+class Content extends Widget implements Renderable
 {
     /**
      * Undocumented variable
      *
-     * @var \think\response\View
+     * @var View
      */
     protected $content;
 
     protected $partial = false;
-
-    /**
-     * Undocumented function
-     *
-     * @return string|\think\response\View
-     */
-    public function render()
-    {
-        if ($this->partial) {
-            return $this->content;
-        }
-
-        return $this->content->getContent();
-    }
-
-    public function __toString()
-    {
-        $this->partial = false;
-        return $this->render();
-    }
 
     /**
      * Undocumented function
@@ -56,7 +37,7 @@ class Content implements Renderable
      */
     public function fetch($template = '', $vars = [])
     {
-        $this->content = view($template);
+        $this->content = new View($template);
 
         $this->content->assign($vars);
         return $this;
@@ -71,7 +52,7 @@ class Content implements Renderable
      */
     public function display($content = '', $vars = [])
     {
-        $this->content = view($content);
+        $this->content = new View($content);
 
         $this->content->assign($vars)->isContent(true);
         return $this;
@@ -80,5 +61,25 @@ class Content implements Renderable
     public function beforRender()
     {
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string|View
+     */
+    public function render()
+    {
+        if ($this->partial) {
+            return $this->content;
+        }
+
+        return $this->content->getContent();
+    }
+
+    public function __toString()
+    {
+        $this->partial = false;
+        return $this->render();
     }
 }

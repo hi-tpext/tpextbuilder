@@ -27,17 +27,25 @@ class Select extends Field
 
     protected $select2 = true;
 
+    /**
+     * Undocumented variable
+     *
+     * @var Select
+     */
     protected $prevSelect = null;
 
     protected $withParams = [];
 
     protected $checked = '';
 
+    protected $disabledOptions = [];
+
     protected $jsOptions = [
         'placeholder' => '',
         'allowClear' => true,
         'minimumInputLength' => 0,
         'language' => 'zh-CN',
+        'closeOnSelect' => true,
     ];
 
     /**
@@ -78,6 +86,18 @@ class Select extends Field
     /**
      * Undocumented function
      *
+     * @param string|array $val
+     * @return $this
+     */
+    public function disabledOptions($val)
+    {
+        $this->disabledOptions = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return boolean
      */
     public function isAjax()
@@ -94,18 +114,6 @@ class Select extends Field
     public function placeholder($val)
     {
         $this->jsOptions['placeholder'] = $val;
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
         return $this;
     }
 
@@ -179,7 +187,7 @@ class Select extends Field
                     {
                         for(var i in withParams{$key})
                         {
-                            data[withParams{$key}[i]] =　$(":input[name='" + withParams{$key}[i] + "']").val();
+                            data[withParams{$key}[i]] = $(":input[name='" + withParams{$key}[i] + "']").val();
                         }
                     }
                     return data;
@@ -244,8 +252,15 @@ class Select extends Field
                 },
                 error:function(){
                     $('#{$selectId}').data('selected', '');
-                    $('#{$selectId}-text').text('-加载出错-');
-                    if(!readonly{$key})
+                    
+                    if(readonly{$key})
+                    {
+                        $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text"></span>');
+                        $('#{$selectId}-text').parent('div').addClass('field-show');
+                        $('#{$selectId}-text').text('-加载出错-');
+                        
+                    }
+                    else
                     {
                         init{$key}();
                     }
@@ -398,12 +413,20 @@ EOT;
             $this->options = ['' => $this->jsOptions['placeholder']] + $this->options;
         }
 
+        if ($this->disabledOptions && !is_array($this->disabledOptions)) {
+            $this->disabledOptions = explode(',', $this->disabledOptions);
+        }
+        foreach ($this->disabledOptions as &$di) {
+            $di = '-' . $di;
+        }
+
         $vars = array_merge($vars, [
             'checked' => '-' . $this->checked,
             'dataSelected' => $this->checked,
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,
+            'disabledOptions' => $this->disabledOptions,
         ]);
 
         $viewshow = $this->getViewInstance();

@@ -57,18 +57,6 @@ class DateTimeRange extends Text
         return $this;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
     protected function dateTimeRangeScript()
     {
         $inputId = $this->getId();
@@ -163,7 +151,7 @@ EOT;
 
             if ($char4 < 1900 || $char4 > 2099) //1900~2099区间不会误判
             {
-                $arr[1] = date($this->timespan, $arr[0]);
+                $arr[1] = date($this->timespan, $arr[1]);
             }
         }
 

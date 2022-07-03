@@ -4,6 +4,7 @@ namespace tpext\builder\logic;
 
 use tpext\builder\common\model\Attachment;
 use tpext\builder\inface\Storage;
+use tpext\think\App;
 
 class WebUploader
 {
@@ -163,19 +164,16 @@ class WebUploader
             return false;
         }
 
-        if (!empty($_FILES)) {
-            if ($_FILES[$key]["error"]) {
-                $this->setOption('errorNumber', $_FILES[$key]["error"]);
-                return false;
-            }
+        $filses = request()->file();
 
-            if (!is_uploaded_file($_FILES[$key]["tmp_name"])) {
+        $file = request()->file($key);
+        if ($file) {
+            if (!$file->isValid()) {
                 $this->setOption('errorNumber', -7);
                 return false;
             }
-
             // Read binary input stream and append it to temp file
-            if (!$in = @fopen($_FILES[$key]["tmp_name"], "rb")) {
+            if (!$in = @fopen($filses[$key]->getPathname(), "rb")) {
                 $this->setOption('errorNumber', 4);
                 return false;
             }
@@ -235,10 +233,10 @@ class WebUploader
         @set_time_limit(5 * 60);
 
         // Get a file name
-        if (isset($_REQUEST["name"])) {
-            $fileName = $_REQUEST["name"];
-        } elseif (!empty($_FILES)) {
-            $fileName = $_FILES[$key]["name"];
+        if (request()->post("name")) {
+            $fileName = request()->post("name");
+        } else if (!empty(request()->file($key))) {
+            $fileName = request()->file($key)->getBasename();
         } else {
             return false;
         }
@@ -247,9 +245,7 @@ class WebUploader
 
         $this->suffix = strtolower(preg_replace('/.+?(\w+)$/', '$1', $fileName));
 
-        $scriptName = $_SERVER['SCRIPT_FILENAME'];
-
-        $this->targetDir = realpath(dirname($scriptName)) . "/uploads/tmp/";
+        $this->targetDir = App::getPublicPath() . "/uploads/tmp/";
 
         //判断该路径是否存在，是否可写
         if (!$this->checkTmp()) {
@@ -262,8 +258,8 @@ class WebUploader
         $filePath = $this->targetDir . DIRECTORY_SEPARATOR . $fileName;
 
         // Chunking might be enabled
-        $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
-        $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 1;
+        $chunk = request()->post('chunk', 0);
+        $chunks = request()->post('chunks', 1);
 
         $cleanup = $this->cleanupTargetDir($this->targetDir, $chunk, $filePath);
 
@@ -344,8 +340,6 @@ class WebUploader
             }
         }
 
-        $scriptName = $_SERVER['SCRIPT_FILENAME'];
-
         $date = '';
 
         if ($this->fileByDate == 2) {
@@ -362,7 +356,7 @@ class WebUploader
             $date = date('Ym');
         }
 
-        $this->path = realpath(dirname($scriptName)) . "/uploads/{$this->dirName}/" . $date . '/';
+        $this->path = App::getPublicPath() . "/uploads/{$this->dirName}/" . $date . '/';
 
         //判断该路径是否存在，是否可写
         if (!$this->check()) {

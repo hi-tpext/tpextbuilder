@@ -14,6 +14,7 @@ use tpext\builder\table\FieldsContent;
 use tpext\builder\toolbar\DropdownBtns;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\displayer\MultipleFile;
+use tpext\think\View;
 
 /**
  * Table class
@@ -22,15 +23,11 @@ class Table extends TWrapper implements Renderable
 {
     use HasDom;
 
+    protected $js = [];
+
+    protected $css = [];
+
     protected $id = 'the-table';
-
-    protected $js = [
-        '/assets/tpextbuilder/js/jquery-toolbar/jquery.toolbar.min.js',
-    ];
-
-    protected $css = [
-        '/assets/tpextbuilder/js/jquery-toolbar/jquery-toolbar.min.css',
-    ];
 
     protected $headTextAlign = 'text-center';
 
@@ -132,12 +129,19 @@ class Table extends TWrapper implements Renderable
 
     protected $usePagesizeDropdown = true;
 
-    public function __construct()
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function created()
     {
         $this->class = 'table-striped table-hover table-bordered table-condensed table-responsive';
         $this->id = input('get.__table__', 'the-table');
 
         $this->emptyText = Module::config('table_empty_text');
+
+        return $this;
     }
 
     /**
@@ -349,6 +353,10 @@ class Table extends TWrapper implements Renderable
      */
     public function fill($data = [])
     {
+        if (empty($data)) {
+            return $this;
+        }
+        
         $this->data = $data;
         if (count($data) > 0 && empty($this->cols)) {
             $cols = [];
@@ -412,7 +420,7 @@ class Table extends TWrapper implements Renderable
             $pageSize = 10;
         }
 
-        $paginator = Paginator::make($this->data, $pageSize, input('get.__page__', 1), $dataTotal);
+        $paginator = new Paginator($this->data, $pageSize, input('get.__page__/d', 1), $dataTotal);
 
         if ($dataTotal < 10) {
             $this->usePagesizeDropdown = false;
@@ -447,7 +455,7 @@ class Table extends TWrapper implements Renderable
     public function getToolbar()
     {
         if (empty($this->toolbar)) {
-            $this->toolbar = new MultipleToolbar();
+            $this->toolbar = Widget::makeWidget('MultipleToolbar');
             $this->toolbar->extKey('-' . $this->id);
         }
 
@@ -536,7 +544,7 @@ class Table extends TWrapper implements Renderable
     public function getActionbar()
     {
         if (empty($this->actionbar)) {
-            $this->actionbar = new Actionbar();
+            $this->actionbar = Widget::makeWidget('Actionbar');
         }
 
         return $this->actionbar;
@@ -584,7 +592,7 @@ class Table extends TWrapper implements Renderable
     public function getSearch()
     {
         if (empty($this->searchForm)) {
-            $this->searchForm = new Search();
+            $this->searchForm = Widget::makeWidget('Search');
             $this->searchForm->search($this);
         }
         return $this->searchForm;
@@ -743,7 +751,6 @@ EOT;
                     $this->sortable[] = $colunm->getName();
                 }
             }
-
         } else {
             $colAttr = [];
 
@@ -812,10 +819,11 @@ EOT;
                     ->extKey('-' . $this->id . '-' . $key)
                     ->extNameKey('-' . $key)
                     ->showLabel(false)
-                    ->size('0', '0 col-lg-0 col-sm-0 col-xs-0')
+                    ->size('0', '12 col-lg-12 col-sm-12 col-xs-12')
                     ->beforRender();
 
                 $this->list[$key][$col] = [
+                    'label' => $displayer->getLabel(),
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
                     'attr' => $displayer->getAttrWithStyle(),
@@ -863,7 +871,7 @@ EOT;
     public function addTop()
     {
         if (empty($this->addTop)) {
-            $this->addTop = new Row();
+            $this->addTop = Row::make();
             $this->addTop->class('table-top');
         }
 
@@ -878,7 +886,7 @@ EOT;
     public function addBottom()
     {
         if (empty($this->addBottom)) {
-            $this->addBottom = new Row();
+            $this->addBottom = Row::make();
             $this->addBottom->class('table-bottom');
         }
 
@@ -911,7 +919,29 @@ EOT;
     /**
      * Undocumented function
      *
-     * @return string|\think\response\View
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getViewemplate()
+    {
+        $template = Module::getInstance()->getViewsPath() . 'table.html';
+
+        return $template;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string|View
      */
     public function render()
     {
@@ -919,14 +949,12 @@ EOT;
             $this->initData();
         }
 
-        $template = Module::getInstance()->getViewsPath() . 'table.html';
-
-        $viewshow = view($template);
+        $viewshow = new View($this->getViewemplate());
 
         $count = count($this->data);
         if (!$this->paginator) {
             $this->pageSize = $count ? $count : 10;
-            $this->paginator = Paginator::make($this->data, $this->pageSize, 1, $count);
+            $this->paginator = new Paginator($this->data, $this->pageSize, 1, $count);
             $this->usePagesizeDropdown = false;
         }
 
@@ -951,7 +979,7 @@ EOT;
 
         if ($this->usePagesizeDropdown && $this->pageSize && empty($this->pagesizeDropdown)) {
             $items = [
-                0 => '默认', 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30', 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120',
+                0 => '默认', 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30', 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120', 200 => '200', 350 => '350',
             ];
 
             ksort($items);
@@ -991,6 +1019,12 @@ EOT;
             'addBottom' => $this->addBottom,
         ];
 
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
+
         if ($this->partial) {
             return $viewshow->assign($vars);
         }
@@ -1010,7 +1044,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $col = new TColumn($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0);
+            $col = TColumn::make($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0);
 
             $col->setTable($this);
 
@@ -1035,5 +1069,16 @@ EOT;
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);
+    }
+
+    /**
+     * 创建自身
+     *
+     * @param mixed $arguments
+     * @return static
+     */
+    public static function make(...$arguments)
+    {
+        return Widget::makeWidget('Table', $arguments);
     }
 }

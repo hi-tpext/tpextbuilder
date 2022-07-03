@@ -6,6 +6,8 @@ class Loads extends Load
 {
     protected $view = 'load';
 
+    protected $isInput = false;
+    
     /**
      * Undocumented function
      * '、'

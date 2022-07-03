@@ -10,6 +10,10 @@ class Items extends Field
 {
     protected $view = 'items';
 
+    protected $isInput = false;
+
+    protected $isFieldsGroup = true;
+
     protected $data = [];
 
     /**
@@ -182,7 +186,7 @@ class Items extends Field
      */
     public function readonly($val = true)
     {
-        $this->cnaDelete(false);
+        $this->canDelete(false);
         $this->canAdd(false);
         $this->__items_content__->readonly($val);
         return $this;
