@@ -20,26 +20,14 @@ class RangeSlider extends Text
 
     protected $checked = [];
 
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
     protected function rangeScript()
     {
         $inputId = $this->getId();
 
         if (!empty($this->value)) {
-            $this->checked = is_array($this->value) ? $this->value : explode(';', $this->value);
+            $this->checked = is_array($this->value) ? $this->value : explode(';', str_replace(',', ';', $this->value));
         } else if (!empty($this->default)) {
-            $this->checked = is_array($this->default) ? $this->default : explode(';', $this->default);
+            $this->checked = is_array($this->default) ? $this->default : explode(';', str_replace(',', ';', $this->default));
         }
 
         if (count($this->checked) > 0) {

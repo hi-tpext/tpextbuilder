@@ -14,6 +14,10 @@ class Fields extends Field
 {
     protected $view = 'fields';
 
+    protected $isInput = false;
+
+    protected $isFieldsGroup = true;
+
     protected $data = [];
 
     /**

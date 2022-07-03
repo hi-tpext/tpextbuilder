@@ -8,71 +8,19 @@ use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\tree\JSTree;
 use tpext\builder\tree\ZTree;
-use tpext\common\ExtLoader;
 
-class Column
+class Column extends Widget
 {
     use HasDom;
 
     public $size = 12;
-
+    
     protected $elms = [];
-
-    protected static $widgets = [];
-
-    protected static $widgetsMap = [
-        'Form' => \tpext\builder\common\Form::class,
-        'Table' => \tpext\builder\common\Table::class,
-        'Toolbar' => \tpext\builder\common\Toolbar::class,
-        'JSTree' => \tpext\builder\tree\JSTree::class,
-        'ZTree' => \tpext\builder\tree\ZTree::class,
-        'Content' => \tpext\builder\common\Content::class,
-        'Tab' => \tpext\builder\common\Tab::class,
-        'Row' => \tpext\builder\common\Row::class,
-    ];
 
     public function __construct($size = 12)
     {
         $this->size = $size;
     }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $pair
-     * @return void
-     */
-    public static function extend($pair)
-    {
-        static::$widgetsMap = array_merge(static::$widgetsMap, $pair);
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return array
-     */
-    public static function getWidgetMap()
-    {
-        return static::$widgetsMap;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $name
-     * @return boolean
-     */
-    public static function isWidget($name)
-    {
-        if (empty(static::$widgets)) {
-            static::$widgets = array_keys(static::$widgetsMap);
-        }
-
-        return in_array($name, static::$widgets);
-    }
-
-
 
     /**
      * Undocumented function
@@ -84,8 +32,7 @@ class Column
      */
     protected function createWidget($name, $arguments = [])
     {
-        $widget = new static::$widgetsMap[$name]($arguments);
-        ExtLoader::trigger('tpext_create_' . strtolower($name), $widget);
+        $widget = Widget::makeWidget($name, $arguments);
         $this->elms[] = $widget;
         return $widget;
     }
@@ -206,7 +153,7 @@ class Column
     /**
      * Undocumented function
      *
-     * @return integer
+     * @return int|string
      */
     public function getSize()
     {
@@ -221,6 +168,9 @@ class Column
     public function beforRender()
     {
         foreach ($this->elms as $elm) {
+            if (!($elm instanceof Renderable)) {
+                continue;
+            }
             $elm->beforRender();
         }
 
@@ -229,9 +179,11 @@ class Column
 
     public function __call($name, $arguments)
     {
-        if (static::isWidget($name)) {
+        if (self::isWidget($name)) {
 
-            return $this->createWidget($name, $arguments);
+            $widget = $this->createWidget($name, $arguments);
+
+            return $widget;
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);

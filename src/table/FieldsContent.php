@@ -7,6 +7,7 @@ use tpext\builder\common\Module;
 use tpext\builder\common\Table;
 use tpext\builder\displayer\Field;
 use tpext\builder\inface\Renderable;
+use tpext\think\View;
 
 class FieldsContent extends TWrapper implements Renderable
 {
@@ -187,15 +188,31 @@ class FieldsContent extends TWrapper implements Renderable
         return $this->data;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
+    }
+
     public function render()
     {
         $template = Module::getInstance()->getViewsPath() . 'table' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         $vars = [
             'cols' => $this->cols,
         ];
+
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
 
         return $viewshow->assign($vars)->getContent();
     }
@@ -210,7 +227,7 @@ class FieldsContent extends TWrapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $col = new TColumn($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0);
+            $col = TColumn::make($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0);
 
             $this->col[$arguments[0]] = $col;
 

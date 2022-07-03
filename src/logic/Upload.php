@@ -5,6 +5,9 @@ namespace tpext\builder\logic;
 use tpext\builder\common\model\Attachment;
 use tpext\builder\inface\Storage;
 use tpext\builder\inface\Image;
+use tpext\think\App;
+use think\file\UploadedFile;
+use Webman\Http\UploadFile;
 
 class Upload
 {
@@ -112,14 +115,18 @@ class Upload
     public function uploadFile($key)
     {
         //判断$_FILES 里面的 error 信息是否为 0，如果为 0，说明文件信息在服务器端可以直接获取，提取信息保存到成员属性中
-        $error = $_FILES[$key]['error'];
-        if ($error) {
-            $this->setOption('errorNumber', $error);
+        $file = request()->file($key);
+        if (!$file) {
+            $this->setOption('errorNumber', 4);
             return false;
-        } else {
-            //提取文件相关信息并且保存到成员属性中
-            $this->getFileInfo($key);
         }
+        if (!$file->isValid()) {
+            $this->setOption('errorNumber', -7);
+            return false;
+        }
+        //提取文件相关信息并且保存到成员属性中
+        $this->getFileInfo($file);
+
         //判断文件的大小、mime、后缀是否符合
         if (!$this->checkSize() /*|| !$this->checkMime() */ || !$this->checkSuffix()) {
             return false;
@@ -132,8 +139,6 @@ class Upload
                 $this->dirName = 'files';
             }
         }
-
-        $scriptName = $_SERVER['SCRIPT_FILENAME'];
 
         $date = '';
 
@@ -151,7 +156,7 @@ class Upload
             $date = date('Ym');
         }
 
-        $this->path = realpath(dirname($scriptName)) . "/uploads/{$this->dirName}/" . $date . '/';
+        $this->path = App::getPublicPath() . "/uploads/{$this->dirName}/" . $date . '/';
 
         //判断该路径是否存在，是否可写
         if (!$this->check()) {
@@ -161,48 +166,55 @@ class Upload
 
         //得到新的文件名字
         $this->newName = $this->createNewName();
-        //判断是否是上传文件，并且移动上传文件
-        if (is_uploaded_file($this->tmpName)) {
-            if (move_uploaded_file($this->tmpName, $this->path . $this->newName)) {
-                $url = "/uploads/{$this->dirName}/" . $date . '/' . $this->newName;
-                $name = str_replace(['.' . $this->suffix], '', $this->oldName);
 
-                $attachment = new Attachment;
+        $result = false;
 
-                $res = $attachment->save([
-                    'name' => mb_substr($name, 0, 55),
-                    'admin_id' => $this->admin_id ?: 0,
-                    'user_id' => $this->user_id ?: 0,
-                    'mime' => $this->mime,
-                    'suffix' => $this->suffix,
-                    'size' => $this->size / (1024 ** 2),
-                    'sha1' => hash_file('sha1', $this->path . $this->newName),
-                    'storage' => 'local',
-                    'url' => $url,
-                ]);
+        if ($file instanceof UploadedFile) {
+            $result = $file->move($this->path, $this->newName);
+        } else if ($file instanceof UploadFile) {
+            $result = $file->move($this->path . $this->newName);
+        } else {
+            $this->setOption('errorNumber', 7);
+            return false;
+        }
+        //移动上传文件
+        if ($result) {
 
-                if ($res) {
+            $url = "/uploads/{$this->dirName}/" . $date . '/' . $this->newName;
+            $name = str_replace(['.' . $this->suffix], '', $this->oldName);
 
-                    if (in_array($this->suffix, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+            $attachment = new Attachment;
 
-                        $url =  $this->imageDriver->process($attachment, $this->imageCommonds);
-                    }
+            $res = $attachment->save([
+                'name' => mb_substr($name, 0, 55),
+                'admin_id' => $this->admin_id ?: 0,
+                'user_id' => $this->user_id ?: 0,
+                'mime' => $this->mime,
+                'suffix' => $this->suffix,
+                'size' => $this->size / (1024 ** 2),
+                'sha1' => hash_file('sha1', $this->path . $this->newName),
+                'storage' => 'local',
+                'url' => $url,
+            ]);
 
-                    $url =  $this->driver->process($attachment);
+            if ($res) {
+
+                if (in_array($this->suffix, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+
+                    $url =  $this->imageDriver->process($attachment, $this->imageCommonds);
                 }
 
-                if (empty($url)) {
-                    $this->setOption('errorNumber', -7);
-                    return false;
-                }
+                $url =  $this->driver->process($attachment);
+            }
 
-                return $url;
-            } else {
+            if (empty($url)) {
                 $this->setOption('errorNumber', -7);
                 return false;
             }
+
+            return $url;
         } else {
-            $this->setOption('errorNumber', -6);
+            $this->setOption('errorNumber', 7);
             return false;
         }
     }
@@ -245,21 +257,32 @@ class Upload
     /**
      * 提取文件相关信息并且保存到成员属性中
      *
-     * @param string $key
+     * @param UploadedFile|UploadFile $file
      * @return void
      */
-    protected function getFileInfo($key)
+    protected function getFileInfo($file)
     {
-        // 得到文件名字
-        $this->oldName = $_FILES[$key]['name'];
-        //得到文件的 mime 类型
-        $this->mime = $_FILES[$key]['type'];
+        if ($file instanceof UploadedFile) {
+            // 得到文件名字
+            $this->oldName = $file->getOriginalName();
+            //得到文件的 mime 类型
+            $this->mime = $file->getOriginalMime();
+
+            //得到文件后缀
+            $this->suffix = $file->getOriginalExtension();
+        } else {
+            // 得到文件名字
+            $this->oldName = $file->getUploadName();
+            //得到文件的 mime 类型
+            $this->mime = $file->getUploadMineType();
+            //得到文件后缀
+            $this->suffix = $file->getUploadExtension();
+        }
+
         //得到文件临时路径
-        $this->tmpName = $_FILES[$key]['tmp_name'];
+        $this->tmpName = $file->getPathname();
         //得到文件大小
-        $this->size = $_FILES[$key]['size'];
-        //得到文件后缀
-        $this->suffix = strtolower(pathinfo($this->oldName)['extension']);
+        $this->size = $file->getSize();
     }
 
     /**

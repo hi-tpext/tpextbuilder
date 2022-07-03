@@ -458,8 +458,7 @@
             offset: '7px',
             content: href,
             success: function (layero, index) {
-                if(!size || size[1] == 'auto' || size[1] == '' || size[1] == '0')
-                {
+                if (!size || size[1] == 'auto' || size[1] == '' || size[1] == '0') {
                     var iframe = layero.find('iframe').get(0);
 
                     var mainheight = $(iframe.contentWindow.document.body).find('.panel-default.content').height() + 10;
@@ -540,7 +539,10 @@ window.renderFiles = function (elid) {
                 if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)(\?.*)?$/i.test(href)) {
                     $btn.removeClass('btn-link-pic');
                     $btn.attr('target', '_blank');
-                    $img.attr('src', '/index.php/tpextbuilder/index/file/extimg/type/' + href.replace(/.+?\.(\w+)$/, '$1'));
+                    $img.attr('src', '/index/file/extimg?type=' + href.replace(/.+?\.(\w+)$/, '$1'));
+                }
+                else {
+                    $img.attr('src', href);
                 }
                 $img.css({
                     'display': 'block',
@@ -622,11 +624,10 @@ window.renderFiles = function (elid) {
                 $file_list.append($li);
                 uploader.makeThumb(file, function (error, src) {
                     if (!jsOptions.isImage && !/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(file.ext) && error) {
-                        src = '/index.php/tpextbuilder/index/file/extimg/type/' + file.ext;
+                        src = '/index/file/extimg?type=' + file.ext;
                         $img.addClass('cantpreview');
                     }
-                    else
-                    {
+                    else {
                         $img.addClass('imgpreview');
                     }
                     $img.attr('src', src);
@@ -663,7 +664,7 @@ window.renderFiles = function (elid) {
                 if ($li.find('.cantpreview').size() > 0) {
                     $li.find('a.btn-link-pic').attr('href', response.picurl).removeClass('btn-link-pic').attr('target', '_blank');
                 } else {
-                    $li.find('.imgpreview').attr('src',response.picurl);
+                    $li.find('.imgpreview').attr('src', response.picurl);
                     $li.find('a.btn-link-pic').attr('href', response.picurl);
                 }
                 setTimeout(function () {
@@ -832,7 +833,7 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
         $li.find('.btn-remove-pic').attr('data-id', i).attr('data-url', src);
         $file_list.append($li);
         if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src)) {
-            src = '/index.php/tpextbuilder/index/file/extimg/type/' + src.replace(/.+?\.(\w+)$/, '$1');
+            src = '/index/file/extimg?type=' + src.replace(/.+?\.(\w+)$/, '$1');
             $img.addClass('cantpreview');
             $btn.removeClass('btn-link-pic');
             $btn.attr('target', '_blank');

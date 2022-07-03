@@ -5,8 +5,9 @@ namespace tpext\builder\common;
 use tpext\builder\traits\HasDom;
 use tpext\builder\tree\ZTree;
 use tpext\builder\tree\JSTree;
+use tpext\think\View;
 
-class Row
+class Row extends Widget
 {
     use HasDom;
 
@@ -20,7 +21,7 @@ class Row
      */
     public function column($size = 12)
     {
-        $col = new Column($size);
+        $col = self::makeWidget('Column', $size);
         $this->cols[] = $col;
         return $col;
     }
@@ -137,17 +138,33 @@ class Row
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
+    }
+
     public function render()
     {
         $template = Module::getInstance()->getViewsPath() . 'row.html';
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         $vars = [
             'cols' => $this->cols,
             'class' => $this->class,
             'attr' => $this->getAttrWithStyle(),
         ];
+
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
 
         return $viewshow->assign($vars)->getContent();
     }

@@ -2,6 +2,7 @@
 
 namespace tpext\builder\traits\actions;
 
+use think\facade\Session;
 use tpext\builder\common\Form;
 use tpext\builder\common\Builder;
 
@@ -169,7 +170,7 @@ trait HasBase
 
     protected function checkToken()
     {
-        $token = session('_csrf_token_');
+        $token = Session::get('_csrf_token_');
 
         if (empty($token) || $token != input('__token__')) {
             $this->error('token错误');

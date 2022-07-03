@@ -6,8 +6,9 @@ use think\Model;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
+use tpext\think\View;
 
-class Tab implements Renderable
+class Tab extends Widget implements Renderable
 {
     use HasDom;
 
@@ -91,7 +92,7 @@ class Tab implements Renderable
             $this->active = $name;
         }
 
-        $row = new Row();
+        $row = Row::make();
 
         $this->rows[$name] = ['content' => $row, 'active' => ''];
         $this->labels[$name] = ['content' => $label, 'active' => '', 'href' => '#' . $this->getId() . '-' . $name, 'attr' => 'data-toggle="tab"'];
@@ -202,6 +203,11 @@ class Tab implements Renderable
         return $this;
     }
 
+    public function isFieldsGroup()
+    {
+        return true;
+    }
+
     /**
      * Undocumented function
      *
@@ -246,7 +252,17 @@ class Tab implements Renderable
     /**
      * Undocumented function
      *
-     * @return string|\think\response\View
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string|View
      */
     public function render()
     {
@@ -264,7 +280,13 @@ class Tab implements Renderable
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = view($template);
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
+
+        $viewshow = new View($template);
 
         if ($this->partial) {
             return $viewshow->assign($vars);

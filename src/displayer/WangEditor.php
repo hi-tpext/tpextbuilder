@@ -26,18 +26,6 @@ class WangEditor extends Field
         'zIndex' => 99
     ];
 
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
     protected function editorScript()
     {
         $inputId = $this->getId();

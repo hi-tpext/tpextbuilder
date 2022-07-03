@@ -18,7 +18,8 @@ class Wrapper
         'button' => \tpext\builder\displayer\Button::class,
         'select' => \tpext\builder\displayer\Select::class,
         'multipleSelect' => \tpext\builder\displayer\MultipleSelect::class,
-        'dualListbox' => \tpext\builder\displayer\DualListbox::class,
+        'dualListbox' => \tpext\builder\displayer\Transfer::class,
+        'transfer' => \tpext\builder\displayer\Transfer::class,
         'hidden' => \tpext\builder\displayer\Hidden::class,
         'switchBtn' => \tpext\builder\displayer\SwitchBtn::class,
         'tags' => \tpext\builder\displayer\Tags::class,
@@ -122,12 +123,13 @@ class Wrapper
 
     /**
      * Undocumented function
-     * @deprecated 1.9.0010,3.3.2
-     * @return array
+     *
+     * @param array $pair
+     * @return void
      */
-    public static function getDisplayerMap()
+    public static function setDefaultFieldClass($pair)
     {
-        return static::$displayersMap;
+        static::$defaultFieldClass = array_merge(static::$defaultFieldClass, $pair);
     }
 
     /**
@@ -148,16 +150,5 @@ class Wrapper
     public static function getUsing()
     {
         return static::$using;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $pair
-     * @return void
-     */
-    public static function setDefaultFieldClass($pair)
-    {
-        static::$defaultFieldClass = array_merge(static::$defaultFieldClass, $pair);
     }
 }

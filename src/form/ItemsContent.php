@@ -9,6 +9,7 @@ use tpext\builder\displayer\Field;
 use tpext\builder\form\FRow;
 use tpext\builder\table\Actionbar;
 use tpext\builder\traits\HasDom;
+use tpext\think\View;
 
 class ItemsContent extends FWrapper
 {
@@ -312,7 +313,7 @@ class ItemsContent extends FWrapper
                     ->extKey($key . $this->name)
                     ->arrayName([$this->name . '[' . $this->ids[$key] . '][', ']'])
                     ->showLabel(false)
-                    ->size(12, 12)
+                    ->size('0', '12 col-lg-12 col-sm-12 col-xs-12')
                     ->addClass('item-field ' . ($displayer->isRequired() ? ' item-field-required' : ''))
                     ->addAttr('data-label="' . $colunm->getLabel() . '"')
                     ->beforRender();
@@ -376,13 +377,18 @@ class ItemsContent extends FWrapper
     /**
      * Undocumented function
      *
-     * @return string
+     * @return array
      */
+    public function customVars()
+    {
+        return [];
+    }
+
     public function render()
     {
         $template = Module::getInstance()->getViewsPath() . 'form' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         $vars = [
             'name' => $this->name,
@@ -401,6 +407,12 @@ class ItemsContent extends FWrapper
             'template' => $this->template,
         ];
 
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
+
         return $viewshow->assign($vars)->getContent();
     }
 
@@ -410,7 +422,7 @@ class ItemsContent extends FWrapper
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $col = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 1);
+            $col = FRow::make($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 1);
 
             $this->headers[$arguments[0]] = $col->getLabel();
             $this->cols[$arguments[0]] = $col;

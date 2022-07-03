@@ -14,14 +14,11 @@ class Color extends Text
         '/assets/tpextbuilder/js/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css',
     ];
 
-    protected $format = 'hex';
-
-    protected $inline = false;
-
     protected $befor = '<span class="input-group-addon"><i style="background-color: blue;"></i></span>';
 
     protected $jsOptions = [
-
+        'format' => 'hex',
+        'inline' => false,
     ];
 
     /**
@@ -32,7 +29,7 @@ class Color extends Text
      */
     public function format($val)
     {
-        $this->format = $val;
+        $this->jsOptions['format'] = $val;
         return $this;
     }
 
@@ -99,17 +96,14 @@ class Color extends Text
      */
     public function inline($val = true)
     {
-        $this->inline = $val;
+        $this->jsOptions['inline'] = $val;
         return $this;
     }
 
     protected function colorScript()
     {
         $inputId = $this->getId();
-
-        $this->jsOptions['format'] = $this->format;
-        $this->jsOptions['inline'] = $this->inline;
-
+        
         $configs = json_encode($this->jsOptions);
 
         $configs = substr($configs, 1, strlen($configs) - 2);

@@ -6,9 +6,12 @@ use think\Model;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\common\Wrapper;
+use tpext\builder\common\SizeAdapter;
 use tpext\builder\form\Fillable;
+use tpext\think\View;
 use tpext\builder\traits\HasDom;
 use tpext\common\ExtLoader;
+use think\facade\Lang;
 
 /**
  * Field class
@@ -18,73 +21,46 @@ class Field implements Fillable
     use HasDom;
 
     protected $extKey = '';
-
     protected $extNameKey = '';
-
     protected $name = '';
-
     protected $innerName = '';
-
     protected $label = '';
-
     protected $js = [];
-
     protected $css = [];
-
     protected $stylesheet = '';
-
     protected $script = [];
-
     protected $view = 'field';
+    protected $isInput = true; //是否为可输入元素
+    protected $isFieldsGroup = false;
 
     /**
      * @var string|array
      */
     protected $value = '';
-
+    protected $lockValue = false;
     protected $default = '';
-
     protected $icon = '';
-
     protected $autoPost = '';
-
     protected $autoPostRefresh = false;
-
     protected $showLabel = true;
-
     protected $labelClass = '';
-
     protected $labelArrt = '';
-
     protected $errorClass = '';
-
     protected $error = '';
-
     protected $size = [2, 8];
-
     protected $help = '';
-
     protected $readonly = false;
-
     protected $disabled = false;
-
     protected $wrapper = null;
-
     protected static $helptempl;
-
     protected static $labeltempl;
-
     protected $mapClass = [];
-
     protected $required = false;
-
     protected $minify = true;
-
     protected $arrayName = false;
-
     protected $to = '';
-
     protected $data = [];
+    protected $jsOptions = [];
 
     /**
      * Undocumented variable
@@ -98,7 +74,7 @@ class Field implements Fillable
         $this->name = trim($name);
 
         if (empty($label) && !empty($this->name)) {
-            $label = lang(ucfirst($this->name));
+            $label = Lang::get(ucfirst($this->name));
         }
 
         if (strstr($this->name, '.')) {
@@ -132,6 +108,29 @@ class Field implements Fillable
         ExtLoader::trigger('tpext_displayer_created', $this);
 
         return $this;
+    }
+
+    /**
+     * 判断是否为某个类型的
+     *
+     * @param string $type
+     * @return boolean
+     */
+    public function isDisplayerType($type)
+    {
+        $thisType = class_basename($this);
+
+        return strtolower($thisType) === strtolower($type);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getDisplayerType()
+    {
+        return class_basename($this);
     }
 
     /**
@@ -212,6 +211,18 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
+     * @param array $options
+     * @return $this
+     */
+    public function jsOptions($options)
+    {
+        $this->jsOptions = array_merge($this->jsOptions, $options);
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param string $url
      * @param boolean $refresh
      * @return $this
@@ -229,16 +240,49 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
-     * @param string $val
+     * @return boolean
+     */
+    public function isInput()
+    {
+        return $this->isInput;
+    }
+
+    public function isFieldsGroup()
+    {
+        return $this->isFieldsGroup;
+    }
+
+    /**
+     * 设置字段值
+     *
+     * @param string|array|mixed $val 值
      * @return $this
      */
     public function value($val)
     {
+        if ($this->lockValue) {
+            return $this;
+        }
+
         if (is_array($val)) {
             $val = implode(',', $val);
         }
         $this->value = $val;
         return $this;
+    }
+
+    /**
+     * 锁定$value，不会被后续value()/fill()方法覆盖值
+     * 
+     * $form->text('field_a', 'A')->value('hello')->lockValue();
+     * $form->fill(['field_a' => 'world']);//field_a不会覆被盖
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function lockValue($val = true)
+    {
+        $this->lockValue = $val;
     }
 
     /**
@@ -454,6 +498,26 @@ class Field implements Fillable
     public function isRequired()
     {
         return $this->required;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isReadonly()
+    {
+        return $this->readonly;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isDisabled()
+    {
+        return $this->disabled;
     }
 
     /**
@@ -723,6 +787,11 @@ class Field implements Fillable
      */
     public function fill($data = [])
     {
+        if ($this->lockValue) {
+            $this->data = $data;
+            return $this;
+        }
+
         if (!empty($this->name)) {
 
             $hasVal = false;
@@ -755,7 +824,8 @@ class Field implements Fillable
             }
 
             if ($hasVal) {
-                $this->value = $value;
+
+                $this->value($value);
             }
         }
 
@@ -912,7 +982,7 @@ EOT;
     {
         $template = Module::getInstance()->getViewsPath() . 'displayer' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         return $viewshow;
     }
@@ -1134,7 +1204,11 @@ EOT;
 
         $value = $this->renderValue();
 
-        $extendAttr = ($this->isRequired() ? ' required="true"' : '') . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '');
+        $extendAttr = '';
+
+        if ($this->isInput) {
+            $extendAttr = ($this->isRequired() ? ' required="true"' : '') . ($this->disabled ? ' disabled' : '') . ($this->readonly ? ' readonly onclick="return false;"' : '');
+        }
 
         $vars = [
             'id' => $this->getId(),
@@ -1148,10 +1222,10 @@ EOT;
             'attr' => $this->getAttrWithStyle() . $extendAttr,
             'error' => $this->error,
             'size' => $this->adjustSize(),
-            'labelClass' => $this->size[0] < 12 ? $this->labelClass . ' control-label' : $this->labelClass . ' full-label',
+            'labelClass' => is_numeric($this->size[0]) && $this->size[0] < 12 ? $this->labelClass . ' control-label' : $this->labelClass . ' full-label',
             'labelAttr' => empty($this->labelAttr) ? '' : ' ' . $this->labelAttr,
             'help' => $this->help,
-            'showLabel' => $this->showLabel,
+            'showLabel' => is_numeric($this->size[0]) && $this->size[0] == 0 ? false : $this->showLabel,
             'helptempl' => static::$helptempl,
             'labeltempl' => static::$labeltempl,
             'readonly' => $this->readonly,
@@ -1174,57 +1248,7 @@ EOT;
      */
     public function adjustSize()
     {
-        $size = $this->size;
-
-        if (is_int($this->size[0])) {
-            if ($this->size[0] == 0) {
-                $size[0] .= " col-lg-0 col-sm-0 col-xs-0";
-            } else if ($this->size[0] <= 3) {
-                $size[0] .= " col-lg-{$this->size[0]} col-sm-3 col-xs-12";
-            } else if ($this->size[0] <= 4) {
-                $size[0] .= " col-lg-{$this->size[0]} col-sm-4 col-xs-12";
-            } else {
-                $size[0] .= " col-lg-{$this->size[0]} col-sm-12 col-xs-12";
-            }
-        } else {
-            if (!strstr($size[0], 'col-lg-')) {
-                $size[0] .= ' col-lg-2';
-            }
-            if (!strstr($size[0], 'col-sm-')) {
-                $size[0] .= ' col-sm-3';
-            }
-            if (!strstr($size[0], 'col-xs-')) {
-                $size[0] .= ' col-xs-12';
-            }
-        }
-
-        if (is_int($size[1])) {
-            if (is_int($this->size[0])) {
-                if ($this->size[0] == 0) {
-                    $size[0] .= " col-lg-12 col-sm-12 col-xs-12";
-                } else if ($this->size[0] <= 3) {
-                    $size[1] .= " col-lg-{$this->size[1]} col-sm-9 col-xs-12";
-                } else if ($this->size[0] <= 4) {
-                    $size[1] .= " col-lg-{$this->size[1]} col-sm-8 col-xs-12";
-                } else {
-                    $size[1] .= " col-lg-{$this->size[1]} col-sm-12 col-xs-12";
-                }
-            } else {
-                $size[1] .= " col-lg-{$this->size[1]} col-sm-9 col-xs-12";
-            }
-        } else {
-            if (!strstr($size[1], 'col-lg-')) {
-                $size[1] .= ' col-lg-8';
-            }
-            if (!strstr($size[1], 'col-sm-')) {
-                $size[1] .= ' col-sm-9';
-            }
-            if (!strstr($size[1], 'col-xs-')) {
-                $size[1] .= ' col-xs-12';
-            }
-        }
-
-        return $size;
+        return SizeAdapter::make()->adjustDisplayerSize($this->size);
     }
 
     /**

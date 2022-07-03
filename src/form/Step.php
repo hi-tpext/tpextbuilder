@@ -8,6 +8,7 @@ use tpext\builder\common\Module;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
+use tpext\think\View;
 
 class Step implements Renderable
 {
@@ -102,6 +103,11 @@ class Step implements Renderable
             $content->readonly($val);
         }
         return $this;
+    }
+
+    public function isFieldsGroup()
+    {
+        return true;
     }
 
     /**
@@ -294,7 +300,7 @@ EOT;
             'attr' => $this->getAttrWithStyle(),
         ];
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         if ($partial) {
             return $viewshow->assign($vars);

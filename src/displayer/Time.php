@@ -6,6 +6,8 @@ class Time extends DateTime
 {
     protected $format = 'HH:mm:ss';
 
+    protected $timespan = '';
+
     protected $befor = '<span class="input-group-addon"><i class="mdi mdi-clock"></i></span>';
 
     /**

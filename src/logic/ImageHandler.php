@@ -5,6 +5,7 @@ namespace tpext\builder\logic;
 use tpext\builder\inface\Image as IImage;
 use tpext\builder\common\model\Attachment;
 use tpext\builder\common\Module;
+use tpext\think\App;
 
 class ImageHandler implements IImage
 {
@@ -302,7 +303,7 @@ class ImageHandler implements IImage
     public function checkFile($path)
     {
         //本站绝对路径
-        if (stripos($path, app()->getRoutePath()) !== false) {
+        if (stripos($path, App::getRootPath()) !== false) {
             return $path;
         }
 

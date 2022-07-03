@@ -6,6 +6,8 @@ class Show extends Field
 {
     protected $view = 'show';
 
+    protected $isInput = false;
+    
     protected $sublen = 0;
 
     protected $more = '...';

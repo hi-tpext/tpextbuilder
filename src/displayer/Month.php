@@ -6,6 +6,8 @@ class Month extends Date
 {
     protected $format = 'MM';
 
+    protected $timespan = '';
+    
     /**
      * Undocumented function
      * @param string $val MM

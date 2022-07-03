@@ -2,17 +2,21 @@
 <div class="col-md-{$size[1]}">
     <select class="form-control {$class}" name="{$name}" id="{$id}" data-selected="{$dataSelected}" {$attr|raw}>
         {if condition="$group"}
-            {volist name="options" id="group"}
-            <optgroup label="{$group.label}">
-                {volist name="group.options" id="option"}
-                <option value="{$key}" {if condition="'-'.$key eq $checked"}selected{/if}>{$option}</option>
-                {/volist}
-            </optgroup>
+        {volist name="options" id="group"}
+        <optgroup label="{$group.label}">
+            {volist name="group.options" id="option"}
+            <option value="{$key}" {if condition="'-'.$key eq $checked" }selected{/if} {in name="'-'.$key"
+                value="$disabledOptions" }style="color:#ccc;cursor:not-allowed" title="选项禁用" disabled{/in}>{$option}
+            </option>
             {/volist}
+        </optgroup>
+        {/volist}
         {else/}
-            {volist name="options" id="option"}
-            <option value="{$key}" {if condition="'-'.$key eq $checked" }selected{/if}>{$option}</option>
-            {/volist}
+        {volist name="options" id="option"}
+        <option value="{$key}" {if condition="'-'.$key eq $checked" }selected{/if} {in name="'-'.$key"
+            value="$disabledOptions" }style="color:#ccc;cursor:not-allowed" title="选项禁用" disabled{/in}>{$option}
+        </option>
+        {/volist}
         {/if}
     </select>
     {include file="$helptempl" /}

@@ -23,5 +23,12 @@
         "files": [
             "src/helper.php"
         ]
+    },
+    "extra": {
+        "think": {
+            "services": [
+                "tpext\\builder\\common\\Service"
+            ]
+        }
     }
 }

@@ -9,8 +9,10 @@ define('FORM_EDIT', 1);
 
 trait HasEdit
 {
-    public function edit($id)
+    public function edit()
     {
+        $id = input('id');
+
         if (request()->isGet()) {
 
             $builder = $this->builder($this->pageTitle, $this->editText, 'edit');

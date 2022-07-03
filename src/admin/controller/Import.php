@@ -3,8 +3,9 @@
 namespace tpext\builder\admin\controller;
 
 use think\Controller;
-use tpext\builder\common\Builder;
+use think\facade\Session;
 use tpext\builder\common\Module;
+use tpext\builder\common\Builder;
 
 /**
  * Undocumented class
@@ -21,16 +22,16 @@ class Import extends Controller
     public function page()
     {
         $acceptedExts = input('acceptedExts', '');
-        $fileSize = input('fileSize');
-        $pageToken = input('pageToken');
-        $successUrl = input('successUrl');
+        $fileSize = input('fileSize', '');
+        $pageToken = input('pageToken', '');
+        $successUrl = input('successUrl', '');
         $driver = input('driver', '');
 
         if ($fileSize == '' || empty($pageToken) || empty($successUrl)) {
             $this->error('参数有误');
         }
 
-        $importpagetoken = session('importpagetoken');
+        $importpagetoken = Session::get('importpagetoken');
 
         $_pageToken = md5($importpagetoken . $acceptedExts . $fileSize);
 
@@ -89,7 +90,7 @@ class Import extends Controller
         public function afterSuccess()
         {
             \$fileurl = input('fileurl');
-            if (is_file(app()->getRootPath() . 'public' . \$fileurl)) {
+            if (is_file('.' . \$fileurl)) {
                 // 导入逻辑...
                 //....
                 

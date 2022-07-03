@@ -2,6 +2,8 @@
 
 namespace tpext\builder\toolbar;
 
+use tpext\common\ExtLoader;
+
 /**
  * Class Wapper.
  *
@@ -15,9 +17,9 @@ namespace tpext\builder\toolbar;
 
 class BWrapper
 {
-    protected static $displayers = [];
+    protected static $bars = [];
 
-    protected static $displayersMap = [
+    protected static $barsMap = [
         'linkBtn' => \tpext\builder\toolbar\LinkBtn::class,
         'actionBtn' => \tpext\builder\toolbar\ActionBtn::class,
         'dropdownBtns' => \tpext\builder\toolbar\DropdownBtns::class,
@@ -26,7 +28,7 @@ class BWrapper
         'html' => \tpext\builder\toolbar\Html::class,
     ];
 
-    protected static $defaultFieldClass = [
+    protected static $defaultBarClass = [
         \tpext\builder\toolbar\LinkBtn::class => 'btn-xs',
         \tpext\builder\toolbar\ActionBtn::class => 'btn-xs',
         \tpext\builder\toolbar\DropdownBtns::class => 'btn-xs',
@@ -40,13 +42,13 @@ class BWrapper
      * @param string $name
      * @return boolean
      */
-    public static function isDisplayer($name)
+    public static function isBar($name)
     {
-        if (empty(static::$displayers)) {
-            static::$displayers = array_keys(static::$displayersMap);
+        if (empty(self::$bars)) {
+            self::$bars = array_keys(self::$barsMap);
         }
 
-        return in_array($name, static::$displayers);
+        return in_array($name, self::$bars);
     }
 
     /**
@@ -55,10 +57,10 @@ class BWrapper
      * @param string $type
      * @return string
      */
-    public static function hasDefaultFieldClass($type)
+    public static function hasDefaultBarClass($type)
     {
-        if (isset(static::$defaultFieldClass[$type])) {
-            return static::$defaultFieldClass[$type];
+        if (isset(self::$defaultBarClass[$type])) {
+            return self::$defaultBarClass[$type];
         }
 
         return '';
@@ -72,7 +74,7 @@ class BWrapper
      */
     public static function extend($pair)
     {
-        static::$displayersMap = array_merge(static::$displayersMap, $pair);
+        self::$barsMap = array_merge(self::$barsMap, $pair);
     }
 
     /**
@@ -81,8 +83,42 @@ class BWrapper
      * @param array $pair
      * @return void
      */
-    public static function setdefaultFieldClass($pair)
+    public static function setDefaultBarClass($pair)
     {
-        static::$defaultFieldClass = array_merge(static::$defaultFieldClass, $pair);
+        self::$defaultBarClass = array_merge(self::$defaultBarClass, $pair);
+    }
+
+    /**
+     * 创建自身
+     *
+     * @param mixed $arguments
+     * @return static
+     */
+    public static function make(...$arguments)
+    {
+        return self::makeBar(basename(get_called_class()), $arguments);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @param array $arguments
+     * 
+     * @return mixed
+     */
+    public static function makeBar($name, $arguments = [])
+    {
+        if (!is_array($arguments)) {
+            $arguments = [$arguments];
+        }
+        
+        $bar = new self::$barsMap[$name](...$arguments);
+
+        $bar->created();
+
+        ExtLoader::trigger('tpext_bar_created', $bar);
+
+        return $bar;
     }
 }

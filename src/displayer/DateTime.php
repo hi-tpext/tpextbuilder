@@ -33,18 +33,6 @@ class DateTime extends Text
         'inline' => false,
     ];
 
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
     protected function dateTimeScript()
     {
         $inputId = $this->getId();

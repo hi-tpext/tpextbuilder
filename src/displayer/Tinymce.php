@@ -34,18 +34,6 @@ class Tinymce extends Field
         'toolbar' => "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code",
     ];
 
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
     protected function editorScript()
     {
         if (!class_exists('\\tpext\\builder\\tinymce\\common\\Resource')) {

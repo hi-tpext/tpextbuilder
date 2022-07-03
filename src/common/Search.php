@@ -15,9 +15,10 @@ use tpext\builder\search\SRow;
 use tpext\builder\search\SWrapper;
 use tpext\builder\search\TabLink;
 use tpext\builder\traits\HasDom;
+use tpext\think\View;
 
 /**
- * Form class
+ * Search class
  */
 class Search extends SWrapper implements Renderable
 {
@@ -80,18 +81,25 @@ class Search extends SWrapper implements Renderable
      */
     protected $__fields__ = null;
 
-     /**
+    /**
      * Undocumented variable
      *
      * @var When
      */
     protected $__when__ = null;
 
-    public function __construct()
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function created()
     {
         $this->class = 'form-horizontal';
 
         $this->open = Module::config('search_open') == 1;
+
+        return $this;
     }
 
     /**
@@ -239,7 +247,7 @@ class Search extends SWrapper implements Renderable
     public function addTop()
     {
         if (empty($this->addTop)) {
-            $this->addTop = new Row();
+            $this->addTop = Row::make();
             $this->addTop->class('search-top');
         }
 
@@ -254,7 +262,7 @@ class Search extends SWrapper implements Renderable
     public function addBottom()
     {
         if (empty($this->addBottom)) {
-            $this->addBottom = new Row();
+            $this->addBottom = Row::make();
             $this->addBottom->class('search-bottom');
         }
 
@@ -445,35 +453,28 @@ class Search extends SWrapper implements Renderable
 
         $('body').on('click', '#{$this->tableId} ul.pagination .goto-page', function(){
             var last = $(this).data('last');
-            $.confirm({
-                title: '跳转页面',
-                content: '<div class="form-group">' +
-                '<input id="page-input" type="text" placeholder="请输入页码(1~' + last + ')" class="name form-control"/>' +
-                '</div>',
-                buttons: {
-                    formSubmit: {
-                        text: '跳转',
-                        btnClass: 'btn-success',
-                        action: function () {
-                            var page = $('#page-input').val().replace(/\D/,'');
-                            if(!page || page <1)
-                            {
-                                $.alert('输入有误');
-                                return false;
-                            }
-                            else if(page > last)
-                            {
-                                $.alert('页码不能超过:' + last);
-                                return false;
-                            }
-                            $('#{$form} form input[name="__page__"]').val(page);
-                            window.__forms__['{$form}'].formSubmit();
-                        }
-                    },
-                    cancel: {
-                        text: '取消'
-                    },
+            layer.prompt({
+                formType: 0,
+                value: '',
+                title: '请输入页码(1~' + last + ')'
+            }, function(value, index, elem){
+                var page = parseInt(value);
+                if(!page || page <1)
+                {
+                    layer.msg('输入有误', {
+                        time: 500
+                    });
+                    return false;
                 }
+                else if(page > last)
+                {
+                    layer.msg('页码不能超过:' + last, {
+                        time: 500
+                    });
+                    return false;
+                }
+                $('#{$form} form input[name="__page__"]').val(page);
+                window.__forms__['{$form}'].formSubmit();
             });
         });
 
@@ -592,13 +593,33 @@ EOT;
     /**
      * Undocumented function
      *
-     * @return string|\think\response\View
+     * @return array
      */
-    public function render()
+    public function customVars()
+    {
+        return [];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function getViewemplate()
     {
         $template = Module::getInstance()->getViewsPath() . 'table' . DIRECTORY_SEPARATOR . 'search.html';
 
-        $viewshow = view($template);
+        return $template;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string|View
+     */
+    public function render()
+    {
+        $viewshow = new View($this->getViewemplate());
 
         $vars = [
             'rows' => $this->rows,
@@ -613,6 +634,12 @@ EOT;
             'addTop' => $this->addTop,
             'addBottom' => $this->addBottom,
         ];
+
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
 
         return $viewshow->assign($vars)->getContent();
     }
@@ -629,7 +656,7 @@ EOT;
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new SRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : $this->defaultDisplayerColSize, $count > 3 ? $arguments[3] : '');
+            $row = SRow::make($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : $this->defaultDisplayerColSize, $count > 3 ? $arguments[3] : '');
 
             if ($this->__fields__) {
                 $this->__fields__->addRow($row);
@@ -662,5 +689,16 @@ EOT;
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);
+    }
+
+    /**
+     * 创建自身
+     *
+     * @param mixed $arguments
+     * @return static
+     */
+    public static function make(...$arguments)
+    {
+        return Widget::makeWidget('Search', $arguments);
     }
 }

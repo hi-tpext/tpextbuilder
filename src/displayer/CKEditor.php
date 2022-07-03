@@ -25,18 +25,6 @@ class CKEditor extends Field
         'image_previewText' => ' ',
     ];
 
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
-
     protected function editorScript()
     {
         if (!class_exists('\\tpext\\builder\\ckeditor\\common\\Resource')) {

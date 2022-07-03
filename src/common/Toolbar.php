@@ -6,6 +6,7 @@ use tpext\builder\inface\Renderable;
 use tpext\builder\toolbar\Bar;
 use tpext\builder\toolbar\BWrapper;
 use tpext\builder\traits\HasDom;
+use tpext\think\View;
 
 class Toolbar extends BWrapper implements Renderable
 {
@@ -27,6 +28,16 @@ class Toolbar extends BWrapper implements Renderable
     protected $elmsRight = [];
 
     protected $elmsLeft = [];
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function created()
+    {
+        return $this;
+    }
 
     /**
      * Undocumented function
@@ -83,75 +94,6 @@ class Toolbar extends BWrapper implements Renderable
         $this->elmsLeft = [];
 
         return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return $this
-     */
-    public function beforRender()
-    {
-        $this->elmsLeft = $this->elmsRight = [];
-
-        foreach ($this->elms as $elm) {
-
-            if ($this->extKey) {
-                $elm->extKey($this->extKey);
-            }
-
-            if ($elm->isPullRight()) {
-                $this->elmsRight[] = $elm;
-            } else {
-                $this->elmsLeft[] = $elm;
-            }
-
-            $elm->beforRender();
-        }
-
-        return $this;
-    }
-
-    public function render()
-    {
-        $template = Module::getInstance()->getViewsPath() . 'toolbar.html';
-
-        $viewshow = view($template);
-
-        $vars = [
-            'elms' => $this->elms,
-            'elmsLeft' => $this->elmsLeft,
-            'elmsRight' => $this->elmsRight,
-            'class' => $this->class,
-            'attr' => $this->getAttrWithStyle(),
-        ];
-
-        return $viewshow->assign($vars)->getContent();
-    }
-
-    public function __toString()
-    {
-        return $this->render();
-    }
-
-    public function __call($name, $arguments)
-    {
-        $count = count($arguments);
-
-        if ($count > 0 && static::isDisplayer($name)) {
-
-            $class = static::$displayersMap[$name];
-
-            $this->__elm__ = new $class($arguments[0], $count > 1 ? $arguments[1] : '');
-
-            $this->__elm__->created();
-
-            $this->elms[] = $this->__elm__;
-
-            return $this->__elm__;
-        }
-
-        throw new \UnexpectedValueException('未知调用:' . $name);
     }
 
     /**
@@ -361,5 +303,99 @@ class Toolbar extends BWrapper implements Renderable
             $this->__elm__->addStyle($val);
         }
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @param mixed $arguments
+     * 
+     * @return mixed
+     */
+    protected function createBar($name, $arguments = [])
+    {
+        $this->__elm__ = BWrapper::makeBar($name, $arguments);
+        $this->elms[] = $this->__elm__;
+        return $this->__elm__;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function beforRender()
+    {
+        $this->elmsLeft = $this->elmsRight = [];
+
+        foreach ($this->elms as $elm) {
+
+            if ($this->extKey) {
+                $elm->extKey($this->extKey);
+            }
+
+            if ($elm->isPullRight()) {
+                $this->elmsRight[] = $elm;
+            } else {
+                $this->elmsLeft[] = $elm;
+            }
+
+            $elm->beforRender();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
+    }
+
+    public function render()
+    {
+        $template = Module::getInstance()->getViewsPath() . 'toolbar.html';
+
+        $viewshow = new View($template);
+
+        $vars = [
+            'elms' => $this->elms,
+            'elmsLeft' => $this->elmsLeft,
+            'elmsRight' => $this->elmsRight,
+            'class' => $this->class,
+            'attr' => $this->getAttrWithStyle(),
+        ];
+
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
+
+        return $viewshow->assign($vars)->getContent();
+    }
+
+    public function __call($name, $arguments)
+    {
+        $count = count($arguments);
+
+        if ($count > 0 && self::isBar($name)) {
+
+            $bar = $this->createBar($name, $arguments);
+
+            return $bar;
+        }
+
+        throw new \UnexpectedValueException('未知调用:' . $name);
+    }
+
+    public function __toString()
+    {
+        return $this->render();
     }
 }

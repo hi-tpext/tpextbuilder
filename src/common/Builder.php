@@ -2,20 +2,21 @@
 
 namespace tpext\builder\common;
 
-use think\facade\View;
-use tpext\builder\inface\Auth;
-use tpext\builder\inface\Renderable;
-use tpext\builder\tree\JSTree;
-use tpext\builder\tree\ZTree;
+use tpext\think\View;
+use think\facade\Session;
 use tpext\common\ExtLoader;
+use tpext\builder\tree\ZTree;
+use tpext\builder\inface\Auth;
+use tpext\builder\tree\JSTree;
+use tpext\builder\inface\Renderable;
 
 class Builder implements Renderable
 {
-    private $view = '';
+    protected $view = '';
 
     protected $title = '';
 
-    protected $desc = null;
+    protected $desc = '';
 
     protected $csrf_token = '';
 
@@ -49,6 +50,17 @@ class Builder implements Renderable
 
     protected $layer;
 
+    protected $commonJs = [
+        '/assets/tpextbuilder/js/jquery-validate/jquery.validate.min.js',
+        '/assets/tpextbuilder/js/jquery-validate/messages_zh.min.js',
+        '/assets/tpextbuilder/js/layer/layer.js',
+        '/assets/tpextbuilder/js/tpextbuilder.js',
+    ];
+
+    protected $commonCss = [
+        '/assets/tpextbuilder/css/tpextbuilder.css'
+    ];
+
     /**
      * Undocumented variable
      *
@@ -73,24 +85,55 @@ class Builder implements Renderable
      *
      * @param string $title
      * @param string $desc
-     * @return $this
+     * @return static
      */
     public static function getInstance($title = '', $desc = '')
     {
-        if (static::$instance == null) {
-            static::$instance = new static($title, $desc);
+        if (self::$instance == null) {
 
-            ExtLoader::trigger('tpext_create_builder', static::$instance);
+            $config = Module::getInstance()->getConfig();
+
+            $uiDriver = $config['ui_driver'] ?? '';
+
+            if ($uiDriver && class_exists($uiDriver)) {
+                self::$instance = new $uiDriver($title, $desc);
+            } else {
+                self::$instance = new static($title, $desc);
+            }
+
+            self::$instance->created();
+
+            ExtLoader::trigger('tpext_create_builder', self::$instance);
         } else {
             if ($title) {
-                static::$instance->title($title);
+                self::$instance->title($title);
             }
             if ($desc) {
-                static::$instance->desc($desc);
+                self::$instance->desc($desc);
             }
         }
 
-        return static::$instance;
+        return self::$instance;
+    }
+
+    /**
+     * 销毁实列
+     *
+     * @return void
+     */
+    public static function destroyInstance()
+    {
+        self::$instance = null;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    protected function created()
+    {
+        return $this;
     }
 
     /**
@@ -139,15 +182,14 @@ class Builder implements Renderable
     {
         if (!$this->csrf_token) {
 
-            $token = session('_csrf_token_');
+            $token = Session::get('_csrf_token_');
 
             if (empty($token)) {
                 $token = md5('_csrf_token_' . time() . uniqid());
-                session('_csrf_token_', $token);
+                Session::set('_csrf_token_', $token);
             }
 
             $this->csrf_token = $token;
-            View::assign(['__token__' => $token]);
         }
 
         return $this->csrf_token;
@@ -418,7 +460,7 @@ class Builder implements Renderable
      */
     public function row()
     {
-        $row = new Row();
+        $row = Row::make();
         $this->rows[] = $row;
         $this->__row__ = $row;
         return $row;
@@ -532,10 +574,10 @@ class Builder implements Renderable
      *
      * @return Layer
      */
-    public function layer()
+    public function layer(...$arguments)
     {
         if (!$this->layer) {
-            $this->layer = new Layer;
+            $this->layer = Column::makeWidget('Layer', ...$arguments);
         }
 
         return $this->layer;
@@ -571,19 +613,24 @@ class Builder implements Renderable
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array|string
+     */
     public function commonJs()
     {
-        return [
-            '/assets/tpextbuilder/js/jquery-validate/jquery.validate.min.js',
-            '/assets/tpextbuilder/js/jquery-validate/messages_zh.min.js',
-            '/assets/tpextbuilder/js/layer/layer.js',
-            '/assets/tpextbuilder/js/tpextbuilder.js',
-        ];
+        return $this->commonJs;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array|string
+     */
     public function commonCss()
     {
-        return '/assets/tpextbuilder/css/tpextbuilder.css';
+        return $this->commonCss;
     }
 
     public function beforRender()
@@ -658,7 +705,17 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @return \think\response\View
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return View
      */
     public function render()
     {
@@ -713,9 +770,19 @@ class Builder implements Renderable
             'script' => implode('', array_unique($this->script)),
         ];
 
-        $viewshow = view($this->view);
+        View::share([
+            '__token__' => $this->getCsrfToken(),
+            'admin_page_title' => $this->desc,
+            'admin_page_position' => $this->title
+        ]);
 
-        View::assign(['admin_page_title' => $this->desc, 'admin_page_position' => $this->title]);
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
+
+        $viewshow = new View($this->view);
 
         return $viewshow->assign($vars);
     }

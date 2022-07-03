@@ -10,6 +10,8 @@ class TimeRange extends DateTimeRange
 
     protected $timePicker = true;
 
+    protected $timespan = '';
+
     /**
      * Undocumented function
      * HH:mm:ss

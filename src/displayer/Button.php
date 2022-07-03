@@ -6,6 +6,8 @@ class Button extends Field
 {
     protected $view = 'button';
 
+    protected $isInput = false;
+
     protected $type = 'button';
 
     protected $bottom = false;

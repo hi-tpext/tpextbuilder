@@ -5,6 +5,7 @@ namespace tpext\builder\traits\actions;
 use tpext\builder\displayer;
 use tpext\builder\logic\Export;
 use tpext\builder\table\TColumn;
+use tpext\think\App;
 
 /**
  * 导出
@@ -29,20 +30,20 @@ trait HasExport
     public function export()
     {
         ini_set('max_execution_time', 0);
-        
+
         if ($path = input('get.path')) { //文件下载
-            $filePath = app()->getRuntimePath() . 'export/' . $path;
+            $filePath = App::getRuntimePath() . 'export/' . $path;
             if (!is_file($filePath)) {
-                exit('<h3>文件不存在</h3>' . 'runtime/export/' . $path);
+                return '<h3>文件不存在</h3>' . 'runtime/export/' . $path;
             }
 
             $ftime = filectime($filePath) ?: 0;
 
             if (time() - $ftime > 24 * 60 * 60) {
-                exit('<h3>文件已过期</h3>有效期为一天');
+                return '<h3>文件已过期</h3>有效期为一天';
             }
 
-            $name = preg_replace('/\d+\/(.+?)\.\w+$/', '$1', $path);
+            $name = preg_replace('/\d+\/(.+?\.\w+)$/', '$1', $path);
 
             return download($filePath, $name);
         }
@@ -70,14 +71,13 @@ trait HasExport
             $this->pagesize = 99999999;
 
             $total = -1;
-            $data = $this->buildDataList($where, $sortOrder, 1, $total);
+            $BuildData = $this->buildDataList($where, $sortOrder, 1, $total);
 
-            if ($data instanceof \Iterator) {
-                $newArr = [];
-                foreach ($data as $d) {
-                    $newArr[] = $d;
+            if ($BuildData instanceof \Iterator) {
+                $data = [];
+                foreach ($BuildData as $d) {
+                    $data[] = $d;
                 }
-                $data = $newArr;
             }
 
             if ($total == -1) {

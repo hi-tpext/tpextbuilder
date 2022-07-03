@@ -8,6 +8,7 @@ use tpext\builder\common\Search;
 use tpext\builder\common\Module;
 use tpext\builder\displayer\Field;
 use tpext\builder\inface\Renderable;
+use tpext\think\View;
 
 class FieldsContent extends FWrapper implements Renderable
 {
@@ -184,17 +185,28 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return string
+     * @return array
      */
+    public function customVars()
+    {
+        return [];
+    }
+
     public function render()
     {
         $template = Module::getInstance()->getViewsPath() . 'form' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         $vars = [
             'rows' => $this->rows,
         ];
+
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
 
         return $viewshow->assign($vars)->getContent();
     }
@@ -205,7 +217,7 @@ class FieldsContent extends FWrapper implements Renderable
 
         if ($count > 0 && static::isDisplayer($name)) {
 
-            $row = new FRow($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : 12));
+            $row = FRow::make($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : ($name == 'button' ? 1 : 12));
 
             $this->rows[] = $row;
 

@@ -17,23 +17,14 @@ class Icon extends Text
 
     protected $jsOptions = [
         'theme' => 'fip-bootstrap',
+        'url' => '/assets/tpextbuilder/js/fontIconPicker/fontjson/materialdesignicons.json',
     ];
-
-    /**
-     * Undocumented function
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function jsOptions($options)
-    {
-        $this->jsOptions = array_merge($this->jsOptions, $options);
-        return $this;
-    }
 
     protected function iconScript()
     {
         $inputId = $this->getId();
+
+        $url = $this->jsOptions['url'];
 
         $str = preg_replace('/\W/', '', $this->name);
 
@@ -48,7 +39,7 @@ class Icon extends Text
         });
 
         $.ajax({
-            url: '/assets/tpextbuilder/js/fontIconPicker/fontjson/materialdesignicons.json',
+            url: '{$url}',
             type: 'GET',
             dataType: 'json'
         }).done(function(response) {

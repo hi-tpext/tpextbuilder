@@ -6,6 +6,7 @@ use tpext\builder\common\Builder;
 use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
+use tpext\think\View;
 use tpext\common\ExtLoader;
 
 class Bar implements Renderable
@@ -60,13 +61,11 @@ class Bar implements Renderable
 
         $barType = lcfirst($barType);
 
-        $defaultClass = BWrapper::hasDefaultFieldClass($barType);
+        $defaultClass = BWrapper::hasDefaultBarClass($barType);
 
         if (!empty($defaultClass)) {
             $this->class = $defaultClass;
         }
-
-        ExtLoader::trigger('tpext_bar_created', $this);
 
         return $this;
     }
@@ -243,9 +242,19 @@ class Bar implements Renderable
     {
         $template = Module::getInstance()->getViewsPath() . 'toolbar' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
-        $viewshow = view($template);
+        $viewshow = new View($template);
 
         return $viewshow;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function customVars()
+    {
+        return [];
     }
 
     /**
@@ -270,13 +279,19 @@ class Bar implements Renderable
             'id' => $this->getId(),
             'label' => $this->label,
             'name' => $this->getName(),
-            'class' => ' ' . $this->class,
+            'class' => $this->getClass(),
             'href' => empty($this->__href__) ? $this->href : $this->__href__,
             'icon' => $this->icon,
             'attr' => $this->getAttrWithStyle(),
             'useLayer' => $this->useLayer,
             'pullRight' => $this->pullRight
         ];
+
+        $customVars = $this->customVars();
+
+        if (!empty($customVars)) {
+            $vars = array_merge($vars, $customVars);
+        }
 
         return $vars;
     }

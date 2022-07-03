@@ -2,9 +2,10 @@
 
 namespace tpext\builder\table;
 
+use think\facade\Session;
+use tpext\builder\common\Module;
 use tpext\builder\common\Builder;
 use tpext\builder\common\Toolbar;
-use tpext\builder\common\Module;
 
 class MultipleToolbar extends Toolbar
 {
@@ -46,6 +47,17 @@ class MultipleToolbar extends Toolbar
             $elm->useLayer($val, $size);
         }
 
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $barType
+     * @return $this
+     */
+    public function created($barType = '')
+    {
         return $this;
     }
 
@@ -324,9 +336,9 @@ class MultipleToolbar extends Toolbar
 
         $afterSuccessUrl = preg_replace('/(.+?)(\.html)?$/', '$1', $afterSuccessUrl);
 
-        $importpagetoken = session('importpagetoken') ? session('importpagetoken') : md5('importpagetoken' . time() . uniqid());
+        $importpagetoken = Session::has('importpagetoken') ? Session::get('importpagetoken') : md5('importpagetoken' . time() . uniqid());
 
-        session('importpagetoken', $importpagetoken);
+        Session::set('importpagetoken', $importpagetoken);
 
         $driver = str_replace('\\', '-', $driver);
 

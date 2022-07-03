@@ -80,11 +80,11 @@ class Radio extends Field
             $this->checked = $this->default;
         }
 
-        if ($this->disabledOptions && is_string($this->disabledOptions)) {
+        if ($this->disabledOptions && !is_array($this->disabledOptions)) {
             $this->disabledOptions = explode(',', $this->disabledOptions);
         }
 
-        if ($this->readonlyOptions && is_string($this->readonlyOptions)) {
+        if ($this->readonlyOptions && !is_array($this->readonlyOptions)) {
             $this->readonlyOptions = explode(',', $this->readonlyOptions);
         }
 

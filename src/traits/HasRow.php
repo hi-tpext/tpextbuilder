@@ -2,6 +2,9 @@
 
 namespace tpext\builder\traits;
 
+use tpext\builder\common\Widget;
+use tpext\common\ExtLoader;
+
 trait HasRow
 {
     protected $name = '';
@@ -72,7 +75,7 @@ trait HasRow
      */
     public function getColSizeClass()
     {
-        return $this->cloSize;
+        return Widget::getSizeAdapter()->adjustColSize($this->cloSize);
     }
 
     /**
@@ -160,6 +163,31 @@ trait HasRow
         static::addUsing($displayer);
 
         return $displayer;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function created()
+    {
+        return $this;
+    }
+
+    /**
+     * 创建自身
+     *
+     * @param mixed $arguments
+     * @return static
+     */
+    public static function make(...$arguments)
+    {
+        $row = Widget::makeWidget(basename(get_called_class()), $arguments);
+
+        ExtLoader::trigger('tpext_row_created', $row);
+
+        return $row;
     }
 
     /**

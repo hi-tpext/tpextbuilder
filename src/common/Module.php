@@ -6,7 +6,7 @@ use tpext\common\Module as baseModule;
 
 class Module extends baseModule
 {
-    protected $version = '1.0.4';
+    protected $version = '1.0.5';
 
     protected $name = 'tpext.builder';
 
@@ -34,6 +34,7 @@ class Module extends baseModule
         '1.0.2' => '',
         '1.0.3' => '1.0.3.sql',
         '1.0.4' => '',
+        '1.0.5' => '',
     ];
 
     /**扩展基本信息完**/
@@ -60,7 +61,7 @@ class Module extends baseModule
      *默认 '/admin/attachment/index'
      * @var string
      */
-    protected $chooseUrl ='';
+    protected $chooseUrl = '';
 
     /**
      * 存储驱动类列表
@@ -68,6 +69,13 @@ class Module extends baseModule
      * @var array
      */
     protected $storageDrivers = [\tpext\builder\logic\LocalStorage::class => '本地'];
+
+    /**
+     * UI驱动类列表
+     *
+     * @var array
+     */
+    protected $uiDrivers = [\tpext\builder\common\Builder::class => '默认（tpextbuilder）'];
 
     /**
      * Undocumented function
@@ -136,6 +144,20 @@ class Module extends baseModule
     }
 
     /**
+     * 添加UI驱动类
+     *
+     * @param string $class 驱动类名
+     * @param string $title 驱动名称
+     * @return $this
+     */
+    public function addUiDriver($class, $title)
+    {
+        $this->uiDrivers[$class] = $title;
+
+        return $this;
+    }
+
+    /**
      * Undocumented function
      *
      * @return string
@@ -150,6 +172,11 @@ class Module extends baseModule
         return $this->viewsPath;
     }
 
+    protected function getViewInstance()
+    {
+        
+    }
+
     /**
      * 获取上传url路径
      * 默认：'/admin/upload/upfiles'
@@ -160,7 +187,7 @@ class Module extends baseModule
         return $this->uploadUrl ?: '/admin/upload/upfiles';
     }
 
-     /**
+    /**
      * 获取导入页面url路径
      * 默认：'/admin/import/page'
      * @return string
@@ -188,5 +215,15 @@ class Module extends baseModule
     public function getStorageDrivers()
     {
         return $this->storageDrivers;
+    }
+
+    /**
+     * 获取存储驱动类列表
+     *
+     * @return array
+     */
+    public function getUiDrivers()
+    {
+        return $this->uiDrivers;
     }
 }

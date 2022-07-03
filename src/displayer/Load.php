@@ -6,6 +6,8 @@ class Load extends Field
 {
     protected $view = 'load';
 
+    protected $isInput = false;
+
     public $loadingText = '加载中...';
 
     protected $jsOptions = [
@@ -119,27 +121,5 @@ EOT;
             'checked' => $checked,
             'loadingText' => $this->loadingText
         ];
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function readonly($val = false)
-    {
-        return $this;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function disabled($val = false)
-    {
-        return $this;
     }
 }

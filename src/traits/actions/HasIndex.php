@@ -147,6 +147,8 @@ trait HasIndex
 
         $data = [];
 
+        $this->isExporting = false;
+
         if ($this->asTreeList()) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
             $table->sortable([]);
             $data = $this->dataModel->getLineData();

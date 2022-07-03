@@ -3,11 +3,12 @@
 namespace tpext\builder\admin\controller;
 
 use think\Controller;
-use tpext\builder\common\model\Attachment as AttachmentModel;
+use think\facade\Session;
 use tpext\builder\common\Module;
-use tpext\builder\traits\actions\HasAutopost;
 use tpext\builder\traits\actions\HasBase;
 use tpext\builder\traits\actions\HasIndex;
+use tpext\builder\traits\actions\HasAutopost;
+use tpext\builder\common\model\Attachment as AttachmentModel;
 
 /**
  * Undocumented class
@@ -41,13 +42,10 @@ class Attachment extends Controller
 
         $where = [];
 
-        if (app('http')->getName() == 'admin') {
-            
-            $admin = session('admin_user');
+        $admin = Session::get('admin_user');
 
-            if ($admin['role_id'] != 1) {
-                $where[] = ['admin_id', '=', $admin['id']];
-            }
+        if ($admin['role_id'] != 1) {
+            $where[] = ['admin_id', '=', $admin['id']];
         }
 
         if (!empty($searchData['name'])) {
@@ -86,7 +84,7 @@ class Attachment extends Controller
         $exts = [];
         $arr = [];
 
-        $ext = input('get.ext');
+        $ext = input('ext');
         if ($ext) {
             $arr = explode(',', $ext);
         } else {
@@ -109,7 +107,7 @@ class Attachment extends Controller
     {
         $table = $this->table;
 
-        $choose = input('get.choose', 0);
+        $choose = input('choose', 0);
 
         $table->show('id', 'ID');
         $table->text('name', '文件名')->autoPost();
@@ -150,8 +148,10 @@ class Attachment extends Controller
      * @title 选中文件
      * @return mixed
      */
-    public function choose($id, $limit)
+    public function choose()
     {
+        $id = input('id');
+        $limit = input('limit');
         $ids = input('post.ids/d', '0');
         if (empty($ids)) {
             $this->error('参数有误');
