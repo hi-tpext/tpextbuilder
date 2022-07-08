@@ -183,7 +183,7 @@ trait HasRow
      */
     public static function make(...$arguments)
     {
-        $row = Widget::makeWidget(basename(get_called_class()), $arguments);
+        $row = Widget::makeWidget(class_basename(get_called_class()), $arguments);
 
         ExtLoader::trigger('tpext_row_created', $row);
 

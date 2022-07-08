@@ -96,7 +96,7 @@ class BWrapper
      */
     public static function make(...$arguments)
     {
-        return self::makeBar(basename(get_called_class()), $arguments);
+        return self::makeBar(class_basename(get_called_class()), $arguments);
     }
 
     /**
