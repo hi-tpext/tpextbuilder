@@ -113,7 +113,7 @@ class Widget
      */
     public static function make(...$arguments)
     {
-        return self::makeWidget(basename(get_called_class()), $arguments);
+        return self::makeWidget(class_basename(get_called_class()), $arguments);
     }
 
     /**
