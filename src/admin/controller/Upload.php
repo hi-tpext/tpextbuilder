@@ -370,8 +370,8 @@ class Upload extends Controller
 
                 $res = $attachment->save([
                     'name' => mb_substr($name, 0, 55),
-                    'admin_id' => Session::has('?admin_id') ? Session::get('admin_id') : 0,
-                    'user_id' => Session::has('?user_id') ? Session::get('user_id') : 0,
+                    'admin_id' => Session::has('admin_id') ? Session::get('admin_id') : 0,
+                    'user_id' => Session::has('user_id') ? Session::get('user_id') : 0,
                     'mime' => $this->mime_content_type($path . $newName),
                     'suffix' => $type,
                     'size' => filesize($path . $newName) / (1024 ** 2),
