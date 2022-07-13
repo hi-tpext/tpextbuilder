@@ -26,12 +26,12 @@ class Upload extends Controller
      */
     public function upfiles()
     {
-        $utype = input('utype'); 
-        $token = input('token'); 
-        $driver = input('driver'); 
-        $is_rand_name = input('is_rand_name'); 
-        $image_driver = input('image_driver'); 
-        $image_commonds = input('image_commonds'); 
+        $utype = input('utype');
+        $token = input('token');
+        $driver = input('driver');
+        $is_rand_name = input('is_rand_name');
+        $image_driver = input('image_driver');
+        $image_commonds = input('image_commonds');
 
         if (empty($token)) {
             return json(
@@ -288,7 +288,7 @@ class Upload extends Controller
             if (!preg_match('/^(png|jpg|jpeg|bmp|gif|webpg)$/i', $type)) {
                 return false;
             }
-            
+
             $fileByDate = Module::config('file_by_date');
             $storageDriver = Module::config('storage_driver');
 
@@ -386,7 +386,7 @@ class Upload extends Controller
         ];
     }
 
-    private function showFile($type = '', $config)
+    private function showFile($type = '', $config = [])
     {
         /* 判断类型 */
         switch ($type) {
