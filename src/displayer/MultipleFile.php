@@ -45,9 +45,9 @@ class MultipleFile extends Field
         'duplicate' => true,
         'ext' => [
             //
-            'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp', 'ico',
+            'jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm',
             //
-            "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
+            "flv", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
             //
             "ogg", "mp3", "wav", "mid",
             //
@@ -69,9 +69,9 @@ class MultipleFile extends Field
     ];
 
     protected $extTypes = [
-        'image' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp', 'ico'],
+        'image' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm'],
         'office' => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf"],
-        'video' => ["flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm"],
+        'video' => ["flv", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm"],
         'audio' => ["ogg", "mp3", "wav", "mid"],
         'pkg' => ["rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso"],
     ];

@@ -32,9 +32,9 @@ class Upload
     //允许文件上传的后缀
     protected $allowSuffix = [
         //
-        'jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp', 'ico',
+        'jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm',
         //
-        "flv", "swf", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
+        "flv", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
         //
         "ogg", "mp3", "wav", "mid",
         //
@@ -43,9 +43,11 @@ class Upload
         "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md"
     ];
 
+    public const IMAGE_TYPES = ['jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm'];
+
     //允许文件上传的 Mime 类型
     protected $allowMime = [
-        'image/jpeg', 'image/gif', 'image/wbmp', 'image/wbmp', 'image/png',
+        'image/jpeg', 'image/gif', 'image/wbmp', 'image/webp', 'image/png',
         'application/x-zip-compressed'
     ];
 
@@ -135,7 +137,7 @@ class Upload
         if (!$this->dirName) {
 
             $this->dirName = 'images';
-            if (!in_array($this->suffix, ['jpg', 'jpeg', 'gif', 'wbmp', 'webpg', 'png', 'bmp'])) {
+            if (!in_array($this->suffix, self::IMAGE_TYPES)) {
                 $this->dirName = 'files';
             }
         }
@@ -329,7 +331,7 @@ class Upload
             return false;
         }
         /* 对图像文件进行严格检测 */
-        if (in_array($this->suffix, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->tmpName), [1, 2, 3, 4, 6, 13])) {
+        if (in_array($this->suffix, self::IMAGE_TYPES) && !in_array($this->getImageType($this->tmpName), [1, 2, 3, 4, 6, 13])) {
             $this->setOption('errorNumber', -5);
             return false;
         }
