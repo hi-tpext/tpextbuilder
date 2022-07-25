@@ -275,6 +275,10 @@ class Bar implements Renderable
             $this->addAttr('data-layer-size="' . $this->layerSize . '"');
         }
 
+        if (strpos($this->attr, 'target=') !== false) {
+            $this->useLayer = false;
+        }
+
         $vars = [
             'id' => $this->getId(),
             'label' => $this->label,
