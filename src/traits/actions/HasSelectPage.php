@@ -13,7 +13,7 @@ trait HasSelectPage
      *
      * @var array
      */
-    protected $selectScope = []; //如 [['enable', 'eq', 1]]
+    protected $selectScope = []; //如 [['enable', '=', 1]]
 
     /**
      * 模糊查询字段，如 'name|title'
@@ -143,13 +143,13 @@ trait HasSelectPage
         $hasMore = 1;
         if ($selected !== '') { //初始化已选中的
             if (is_numeric($selected)) {
-                $where[] = [$idField, 'eq', $selected];
+                $where[] = [$idField, '=', $selected];
             } else {
                 $arr = array_filter(explode(',', $selected));
                 if (count($arr)) {
                     $where[] = [$idField, 'in', $selected];
                 } else {
-                    $where[] = [$idField, 'eq', $selected];
+                    $where[] = [$idField, '=', $selected];
                 }
             }
             $list = $this->dataModel->with($this->selectWith)->where($where)->order($sortOrder)->field($this->selectFields)->select();
@@ -168,7 +168,7 @@ trait HasSelectPage
                     $where[] = [$this->selectSearch, 'like', '%' . $q . '%'];
                 }
                 if (is_numeric($q)) {
-                    $whereOr[] = [$idField, 'eq', $q];
+                    $whereOr[] = [$idField, '=', $q];
                 }
             }
 
