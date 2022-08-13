@@ -73,14 +73,29 @@ trait TreeModel
 
     protected $allTreeData;
 
+    protected $asTreeList = true;
+
     /**
-     * 是否显示为树行
+     * 获取是否显示为树行
      *
      * @return boolean
      */
-    final public function asTreeList()
+    public function asTreeList()
     {
-        return true;
+        return $this->asTreeList;
+    }
+
+    /**
+     * 设置是否显示为树行
+     *
+     * @param boolean $asTreeList
+     * @return $this;
+     */
+    public function setAsTreeList($asTreeList = true)
+    {
+        $this->asTreeList = $asTreeList;
+
+        return $this;
     }
 
     /**
