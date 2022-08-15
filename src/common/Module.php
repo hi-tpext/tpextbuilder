@@ -3,6 +3,7 @@
 namespace tpext\builder\common;
 
 use tpext\common\Module as baseModule;
+use tpext\common\ExtLoader;
 
 class Module extends baseModule
 {
@@ -164,17 +165,14 @@ class Module extends baseModule
      */
     public function getViewsPath()
     {
+        ExtLoader::trigger('tpext_builder_get_views_path');
+
         //如果未设置新的视图路径,则设置为默认路径 root/src/view/
         if (empty($this->viewsPath)) {
             $this->viewsPath = $this->getRoot() . implode(DIRECTORY_SEPARATOR, ['src', 'view', '']);
         }
 
         return $this->viewsPath;
-    }
-
-    protected function getViewInstance()
-    {
-        
     }
 
     /**
@@ -184,6 +182,7 @@ class Module extends baseModule
      */
     public function getUploadUrl()
     {
+        ExtLoader::trigger('tpext_builder_get_upload_url');
         return $this->uploadUrl ?: '/admin/upload/upfiles';
     }
 
@@ -194,6 +193,7 @@ class Module extends baseModule
      */
     public function getImportUrl()
     {
+        ExtLoader::trigger('tpext_builder_get_import_url');
         return $this->importUrl ?: '/admin/import/page';
     }
 
@@ -204,6 +204,7 @@ class Module extends baseModule
      */
     public function getChooseUrl()
     {
+        ExtLoader::trigger('tpext_builder_get_choose_url');
         return $this->chooseUrl ?: '/admin/attachment/index';
     }
 
@@ -214,6 +215,8 @@ class Module extends baseModule
      */
     public function getStorageDrivers()
     {
+        //可以监听此事件，调用addStorageDriver($class, $title)添加驱动
+        ExtLoader::trigger('tpext_builder_find_storage_drivers');
         return $this->storageDrivers;
     }
 
@@ -224,6 +227,8 @@ class Module extends baseModule
      */
     public function getUiDrivers()
     {
+        //可以监听此事件，调用addUiDriver($class, $title)添加驱动
+        ExtLoader::trigger('tpext_builder_find_ui_drivers');
         return $this->uiDrivers;
     }
 }
