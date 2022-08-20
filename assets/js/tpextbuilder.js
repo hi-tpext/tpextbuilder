@@ -585,7 +585,10 @@ window.renderFiles = function (elid) {
                             $file_list.find('li.pic-item-cover').removeClass('hidden');
                         }
                     }
-                })
+                    else {
+                        $file_list.find('li.pic-item-cover').removeClass('hidden');
+                    }
+                }).trigger('change');
             }
 
             var uploader = WebUploader.create({

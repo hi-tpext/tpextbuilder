@@ -7,7 +7,7 @@ use tpext\common\ExtLoader;
 
 class Module extends baseModule
 {
-    protected $version = '1.0.6';
+    protected $version = '1.0.7';
 
     protected $name = 'tpext.builder';
 
