@@ -120,7 +120,13 @@ class Fields extends Field
             !empty($this->name) && isset($data[$this->name]) &&
             (is_array($data[$this->name]) || $data[$this->name] instanceof Model)
         ) {
-            $this->data = array_merge($this->data, $data[$this->name]);
+            $fieldData = $data[$this->name];
+
+            if ($fieldData instanceof Model) {
+                $fieldData = $fieldData->toArray();
+            }
+
+            $this->data = array_merge($this->data, $fieldData);
         } else {
             $this->data = $data;
         }

@@ -3,7 +3,7 @@
     <div class="js-upload-files" data-name="{$id}">
         <ul id="file_list_{$id}" class="pull-left list-inline lyear-uploads-pic show-file-list">
             {volist name="files" id="file"}
-            <li class="pic-item" id="flie{$key}">
+            <li class="pic-item" id="{$id}-file-{$key}">
                 <figure>
                     <div>
                         <img style="display: none;" class="preview-img" data-src="{$file}" />
@@ -20,19 +20,44 @@
                 </figure>
             </li>
             {/volist}
+            {if condition="!$isInTable && $cover && $canUpload"}
+            <li class="pic-item-cover" id="{$id}-file-cover">
+                <figure>
+                    <div>
+                        <img src="{$cover}" class="preview-img" />
+                    </div>
+                    <figcaption>
+                        <a class="btn btn-xs btn-round btn-square btn-primary opt-btn upload-file" data-id="{$id}"
+                            data-name="{$name}"
+                            onclick="$('#picker_'+$(this).data('id')+' .webuploader-element-invisible').trigger('click')"
+                            href="javascript:;"><i class="mdi mdi-folder-open"></i></a>
+                        {if condition="$canUpload"}
+                        <a class="btn btn-xs btn-round btn-square btn-info opt-btn choose-file" data-id="{$id}"
+                            data-name="{$name}" onclick="chooseFile($(this).data('id'),$(this).data('id'))"
+                            href="javascript:;"><i class="mdi mdi mdi-file-find"></i></a>
+                        {/if}
+                    </figcaption>
+                </figure>
+            </li>
+            {/if}
         </ul>
         {if condition="$canUpload"}
         <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <input type="text" class="form-control {$class} file-url-input"
-            placeholder="{$placeholder|default='请上传'.$label}" value="{$value}" name="{$name}" id="{$id}"
-            {$attr|raw}>
-            {if condition="empty($extKey)"}<!--在table，items中，不支持直接上传图片，只可选择-->
-            <span title="点击上传新文件" class="input-group-addon opt-btn upload-file" data-id="{$id}" data-name="{$name}" onclick="$('#picker_'+$(this).data('id')+' .webuploader-element-invisible').trigger('click')"><i class="mdi mdi-folder-open"></i>上传</span>
+            <input type="{$inputType}" class="form-control {$class} file-url-input"
+                placeholder="{$placeholder|default='请上传'.$label}" value="{$value}" name="{$name}" id="{$id}"
+                {$attr|raw}>
+            {if condition="$showUploadBtn && !$isInTable"}
+            <!--在table，items中，不支持直接上传图片，只可选择-->
+            <span title="点击上传新文件" class="input-group-addon opt-btn upload-file" data-id="{$id}" data-name="{$name}"
+                onclick="$('#picker_'+$(this).data('id')+' .webuploader-element-invisible').trigger('click')"><i
+                    class="mdi mdi-folder-open"></i>上传</span>
             {/if}
             {if condition="$showChooseBtn"}
-            <span title="点击选择已经上传的文件" class="input-group-addon opt-btn choose-file" data-id="{$id}" data-name="{$name}" onclick="chooseFile($(this).data('id'),$(this).data('id'))"><i class="mdi mdi mdi-file-find"></i>选择</span>
+            <span title="点击选择已经上传的文件" class="input-group-addon opt-btn choose-file" data-id="{$id}" data-name="{$name}"
+                onclick="chooseFile($(this).data('id'),$(this).data('id'))"><i
+                    class="mdi mdi mdi-file-find"></i>选择</span>
             {/if}
-            {if condition="empty($extKey)"}
+            {if condition="!$isInTable"}
             <div style="display: none;"><a class="upload-picker" id="picker_{$id}"></a></div>
             {/if}
         </div>

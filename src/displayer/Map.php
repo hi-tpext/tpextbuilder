@@ -168,7 +168,11 @@ class Map extends Text
 
         $configs = substr($configs, 1, strlen($configs) - 2);
 
+        $readonly = $this->isReadonly() || $this->isDisabled() ? 1 : 0;
+
         $script = <<<EOT
+
+        var readonly = '{$readonly}' == '1';
 
         window.tcentInit = function(){
             var input = $('#{$inputId}');
@@ -186,34 +190,37 @@ class Map extends Text
                 map: map
             });
 
-            if(!input.val())
+            if(!readonly)
             {
-                var citylocation = new qq.maps.CityService();
-                citylocation.setComplete(function(result) {
-                    map.setCenter(result.detail.latLng);
-                    marker.setPosition(result.detail.latLng);
-                    input.val(result.detail.latLng.getLng() + ',' + result.detail.latLng.getLat());
+                if(!input.val())
+                {
+                    var citylocation = new qq.maps.CityService();
+                    citylocation.setComplete(function(result) {
+                        map.setCenter(result.detail.latLng);
+                        marker.setPosition(result.detail.latLng);
+                        input.val(result.detail.latLng.getLng() + ',' + result.detail.latLng.getLat());
+                    });
+                    citylocation.searchLocalCity();
+                }
+
+                qq.maps.event.addListener(map, 'click', function(event) {
+                    marker.setPosition(event.latLng);
+                    input.val(event.latLng.getLng() + ',' + event.latLng.getLat());
                 });
-                citylocation.searchLocalCity();
+
+                qq.maps.event.addListener(marker, 'dragend', function() {
+                    var pp = marker.getPosition();
+                    input.val(pp.getLng() + ',' + pp.getLat());
+                });
+                var ap = new qq.maps.place.Autocomplete(document.getElementById('search-{$inputId}'));
+                var searchService = new qq.maps.SearchService({
+                    map : map
+                });
+
+                qq.maps.event.addListener(ap, "confirm", function(res){
+                    searchService.search(res.value);
+                });
             }
-
-            qq.maps.event.addListener(map, 'click', function(event) {
-                marker.setPosition(event.latLng);
-                input.val(event.latLng.getLng() + ',' + event.latLng.getLat());
-            });
-
-            qq.maps.event.addListener(marker, 'dragend', function() {
-                var pp = marker.getPosition();
-                input.val(pp.getLng() + ',' + pp.getLat());
-            });
-            var ap = new qq.maps.place.Autocomplete(document.getElementById('search-{$inputId}'));
-            var searchService = new qq.maps.SearchService({
-                map : map
-            });
-
-            qq.maps.event.addListener(ap, "confirm", function(res){
-                searchService.search(res.value);
-            });
         }
 
         var url = '$jsKey&callback=tcentInit';
@@ -250,9 +257,13 @@ EOT;
 
         $configs = substr($configs, 1, strlen($configs) - 2);
 
+        $readonly = $this->isReadonly() || $this->isDisabled() ? 1 : 0;
+
         $script = <<<EOT
 
         var input = $('#{$inputId}');
+
+        var readonly = '{$readonly}' == '1';
 
         ymaps.ready(function(){
             var myMap = new ymaps.Map('map-{$inputId}', {
@@ -265,9 +276,12 @@ EOT;
                 draggable: true
             });
 
-            myPlacemark.events.add(['dragend'], function (e) {
-                input.val(myPlacemark.geometry.getCoordinates()[1] + ',' + myPlacemark.geometry.getCoordinates()[0]);
-            });
+            if(!readonly)
+            {
+                myPlacemark.events.add(['dragend'], function (e) {
+                    input.val(myPlacemark.geometry.getCoordinates()[1] + ',' + myPlacemark.geometry.getCoordinates()[0]);
+                });
+            }
 
             myMap.geoObjects.add(myPlacemark);
         });
@@ -296,7 +310,11 @@ EOT;
 
         $configs = substr($configs, 1, strlen($configs) - 2);
 
+        $readonly = $this->isReadonly() || $this->isDisabled() ? 1 : 0;
+
         $script = <<<EOT
+
+        var readonly = '{$readonly}' == '1';
 
         var input = $('#{$inputId}');
 
@@ -307,52 +325,55 @@ EOT;
         var marker = new BMap.Marker(point);        // 创建标注
         map.addOverlay(marker);
 
-        if(!input.val())
+        if(!readonly)
         {
-            var geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function(r){
-                if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                    marker.setPosition(r.point);
-                    map.panTo(r.point);
-                    input.val(r.point.lng + ',' + r.point.lat);
-                }
-                else {
-                    console.log('failed' + this.getStatus());
-                }
-            });
-        }
-
-        marker.enableDragging();
-        marker.addEventListener("dragend", function(e){
-            input.val(e.point.lng + ',' + e.point.lat);
-        })
-
-        map.addEventListener("click", function(e){
-            marker.setPosition(e.point);
-            input.val(e.point.lng + ',' + e.point.lat);
-        });
-
-        var ac = new BMap.Autocomplete({"input" :  "search-{$inputId}", "location" : map});
-
-        var myValue;
-
-        ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
-            var _value = e.item.value;
-            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-            setPlace();
-        });
-
-        function setPlace(){
-            function myFun(){
-                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
-                map.centerAndZoom(pp, {$zoom});
-                marker.setPosition(pp);
-                input.val(pp.lng + ',' + pp.lat);
+            if(!input.val())
+            {
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function(r){
+                    if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                        marker.setPosition(r.point);
+                        map.panTo(r.point);
+                        input.val(r.point.lng + ',' + r.point.lat);
+                    }
+                    else {
+                        console.log('failed' + this.getStatus());
+                    }
+                });
             }
-            var local = new BMap.LocalSearch(map, { //智能搜索
-                onSearchComplete: myFun
+
+            marker.enableDragging();
+            marker.addEventListener("dragend", function(e){
+                input.val(e.point.lng + ',' + e.point.lat);
+            })
+
+            map.addEventListener("click", function(e){
+                marker.setPosition(e.point);
+                input.val(e.point.lng + ',' + e.point.lat);
             });
-            local.search(myValue);
+
+            var ac = new BMap.Autocomplete({"input" :  "search-{$inputId}", "location" : map});
+
+            var myValue;
+
+            ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+                var _value = e.item.value;
+                myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                setPlace();
+            });
+
+            function setPlace(){
+                function myFun(){
+                    var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                    map.centerAndZoom(pp, {$zoom});
+                    marker.setPosition(pp);
+                    input.val(pp.lng + ',' + pp.lat);
+                }
+                var local = new BMap.LocalSearch(map, { //智能搜索
+                    onSearchComplete: myFun
+                });
+                local.search(myValue);
+            }
         }
 
         map.addControl(new BMap.NavigationControl());
@@ -396,7 +417,11 @@ EOT;
             $jsKey = str_replace($jscode, '', $jsKey); //替换url中的安全密钥
         }
 
+        $readonly = $this->isReadonly() || $this->isDisabled() ? 1 : 0;
+
         $script = <<<EOT
+
+        var readonly = '{$readonly}' == '1';
 
         window._AMapSecurityConfig = {
             securityJsCode : '{$jscode}',
@@ -415,6 +440,11 @@ EOT;
 
             // 将创建的点标记添加到已有的地图实例：
             map.add(marker);
+
+            if(readonly)
+            {
+                return;
+            }
 
             map.on('click', function(e) {
                 marker.setPosition(e.lnglat);

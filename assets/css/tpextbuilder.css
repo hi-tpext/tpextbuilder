@@ -310,6 +310,11 @@ td ul.lyear-uploads-pic li.pic-item {
     padding: 2px;
 }
 
+.lyear-uploads-pic li.pic-item-cover
+{
+    margin-top: 5px;
+}
+
 .lyear-checkbox,
 .lyear-radio {
     margin-top: 7px;

@@ -23,7 +23,7 @@ trait HasView
 
             $builder = $this->builder($this->pageTitle, $this->viewText, 'view');
 
-            $data = $this->dataModel->get($id);
+            $data = $this->dataModel->where($this->getPk(), $id)->find();
             if (!$data) {
                 return $builder->layer()->close(0, '数据不存在');
             }
@@ -76,7 +76,7 @@ trait HasView
             if (
                 $displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
                 || $displayer instanceof displayer\Matche || $displayer instanceof displayer\Matches
-                || $displayer instanceof displayer\Load || $displayer instanceof displayer\Loads
+                || $displayer instanceof displayer\Load || $displayer instanceof displayer\Loads  || $displayer instanceof displayer\Map
             ) {
                 continue;
             } else if ($displayer instanceof displayer\Items) {

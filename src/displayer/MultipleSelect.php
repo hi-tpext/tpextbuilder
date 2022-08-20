@@ -12,6 +12,8 @@ class MultipleSelect extends Select
 
     protected $checked = [];
 
+    protected $isArrayValue = true;
+
     public function created($fieldType = '')
     {
         parent::created($fieldType);

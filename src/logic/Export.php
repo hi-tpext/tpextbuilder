@@ -115,7 +115,9 @@ class Export
     {
         $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
 
-        ob_end_clean();
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
         $lib = '';
 
         $obj = null;

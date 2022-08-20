@@ -555,8 +555,17 @@ window.renderFiles = function (elid) {
             }
         });
 
+        $file_list.find('li.pic-item-cover').find('img.preview-img').css({
+            'display': 'block',
+            'max-width': thumbnailWidth + 'px',
+            'margin': '0 auto'
+        }).parent('div').css({
+            'height': thumbnailHeight + 'px',
+            'width': thumbnailWidth + 'px',
+        });
 
-        if (jsOptions.canUpload || !jsOptions.istable) {
+
+        if (jsOptions.canUpload || !jsOptions.isInTable) {
 
             $file_list_upli.css({
                 'height': thumbnailHeight + 'px',
@@ -564,6 +573,20 @@ window.renderFiles = function (elid) {
                 'padding-left': '10px',
                 'display': 'block',
             });
+
+            if (jsOptions.cover) {
+                $input_file.on('change', function () {
+                    var flieCount = $file_list.find('li.pic-item').size();
+                    if (jsOptions.fileNumLimit <= 1) {
+                        if (flieCount > 0) {
+                            $file_list.find('li.pic-item-cover').addClass('hidden');
+                        }
+                        else {
+                            $file_list.find('li.pic-item-cover').removeClass('hidden');
+                        }
+                    }
+                })
+            }
 
             var uploader = WebUploader.create({
                 auto: true,
@@ -620,10 +643,22 @@ window.renderFiles = function (elid) {
 
                 if (jsOptions.fileNumLimit <= 1) {
                     $file_list.find('li.pic-item').remove();
+                    if (jsOptions.cover) {
+                        $file_list.find('li.pic-item-cover').addClass('hidden');
+                    }
+                    $file_list.append($li);
                 }
-                $file_list.append($li);
+                else {
+                    if (jsOptions.cover) {
+                        $file_list.find('li.pic-item-cover').before($li);
+                    }
+                    else {
+                        $file_list.append($li);
+                    }
+                }
+
                 uploader.makeThumb(file, function (error, src) {
-                    if (!jsOptions.isImage && !/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(file.ext) && error) {
+                    if (!jsOptions.isImage && !/(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico|svg)$/i.test(file.ext) && error) {
                         src = '/index/file/extimg?type=' + file.ext;
                         $img.addClass('cantpreview');
                     }
@@ -699,7 +734,7 @@ window.renderFiles = function (elid) {
                 var that = $(this);
                 $.alert({
                     title: '提示',
-                    content: '确认要删除此文件吗？',
+                    content: '确认要移除此文件吗？',
                     buttons: {
                         confirm: {
                             text: '确认',
@@ -715,9 +750,15 @@ window.renderFiles = function (elid) {
                                             }
                                         }
                                         $input_file.val(ids.join(',')).trigger('change');
+                                        if ($input_file.val() == '' && jsOptions.cover) {
+                                            $file_list.find('li.pic-item-cover').removeClass('hidden');
+                                        }
                                     }
                                 } else {
                                     $input_file.val('').trigger('change');
+                                    if (jsOptions.cover) {
+                                        $file_list.find('li.pic-item-cover').removeClass('hidden');
+                                    }
                                 }
 
                                 that.closest('.pic-item').remove();
@@ -817,7 +858,7 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
 
     for (var i in filesArr) {
         var src = filesArr[i];
-        var $li = $('<li class="pic-item" id="fild' + i + '">' +
+        var $li = $('<li class="pic-item" id="file' + i + (new Date().setMilliseconds()) + '">' +
             '  <figure>' +
             '<div style="width:' + thumbnailWidth + 'px;height:' + thumbnailHeight + 'px">' +
             '    <img class="preview-img" />' +
@@ -831,8 +872,14 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
         var $img = $li.find('img');
         var $btn = $li.find('a.btn-link-pic');
         $li.find('.btn-remove-pic').attr('data-id', i).attr('data-url', src);
-        $file_list.append($li);
-        if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico)$/i.test(src)) {
+        if (jsOptions.cover) {
+            $file_list.find('li.pic-item-cover').before($li);
+        }
+        else {
+            $file_list.append($li);
+        }
+
+        if (!jsOptions.isImage && !/.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico|svg)$/i.test(src)) {
             src = '/index/file/extimg?type=' + src.replace(/.+?\.(\w+)$/, '$1');
             $img.addClass('cantpreview');
             $btn.removeClass('btn-link-pic');
@@ -847,6 +894,15 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
             'height': thumbnailHeight + 'px',
             'width': thumbnailWidth + 'px',
         });
+    }
+
+    if (jsOptions.fileNumLimit <= 1) {
+        if (filesArr.length > 0) {
+            $file_list.find('li.pic-item-cover').addClass('hidden');
+        }
+        else {
+            $file_list.find('li.pic-item-cover').removeClass('hidden');
+        }
     }
 }
 

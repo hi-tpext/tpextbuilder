@@ -61,7 +61,7 @@ trait HasSelectPage
      * 下拉列表关联加载 如 ['level']
      * 设置后`selectTextField`可以为'{id}#{nickname}{level.name}'
      * 若设置了`selectFields`,必须包含关联字段`level_id`，
-     * 如：$this->selectFields＝ 'id,nickname,level_id';
+     * 如：$this->selectFields='id,nickname,level_id';
      * @var array
      */
     protected $selectWith = [];

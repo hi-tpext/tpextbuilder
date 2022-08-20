@@ -4,23 +4,23 @@ namespace tpext\builder\common;
 
 use think\Model;
 use think\Collection;
+use tpext\think\View;
 use tpext\common\ExtLoader;
 use tpext\builder\form\FRow;
 use tpext\builder\form\Step;
+use tpext\builder\form\When;
 use tpext\builder\common\Module;
 use tpext\builder\form\Fillable;
 use tpext\builder\form\FWrapper;
 use tpext\builder\traits\HasDom;
 use tpext\builder\common\Builder;
-use tpext\builder\displayer\Fields;
 use tpext\builder\displayer\Field;
 use tpext\builder\displayer\Items;
+use tpext\builder\displayer\Fields;
 use tpext\builder\form\ItemsContent;
-use tpext\builder\form\When;
 use tpext\builder\inface\Renderable;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\displayer\MultipleFile;
-use tpext\think\View;
 
 /**
  * Form class
@@ -936,7 +936,7 @@ EOT;
             }
 
             if ($this->__items__ && $displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
-                $displayer->jsOptions(['istable' => 1]);
+                $displayer->setIsInTable();
             }
 
             return $displayer;

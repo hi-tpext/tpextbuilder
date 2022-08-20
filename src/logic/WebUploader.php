@@ -40,7 +40,7 @@ class WebUploader
     //允许文件上传的后缀
     protected $allowSuffix = [
         //
-        'jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm',
+        'jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm', 'svg',
         //
         "flv", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
         //
@@ -51,7 +51,7 @@ class WebUploader
         "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf", "txt", "md"
     ];
 
-    public const IMAGE_TYPES = ['jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm'];
+    public const IMAGE_TYPES = ['jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm', 'svg'];
 
     //允许文件上传的 Mime 类型
     protected $allowMime = [
