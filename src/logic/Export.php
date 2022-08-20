@@ -4,6 +4,7 @@ namespace tpext\builder\logic;
 
 use think\Collection;
 use tpext\think\App;
+use tpext\common\ExtLoader;
 
 class Export
 {
@@ -30,6 +31,7 @@ class Export
         }
 
         $fname = '';
+        $fp = null;
         if (request()->isAjax()) {
             $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
 
@@ -42,13 +44,19 @@ class Export
             $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".csv";
             $fp = fopen($fname, 'w');
         } else {
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename=' . $title . "-" . date('Ymd-His')  . ".csv");
-            header('Cache-Control: max-age=0');
+            if (!ExtLoader::isWebman()) {
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename=' . $title . "-" . date('Ymd-His') . mt_rand(100, 999)  . ".csv");
+                header('Cache-Control: max-age=0');
+            } else {
+                ob_start();
+            }
+
             $fp = fopen('php://output', 'a');
         }
 
         $headerData = [];
+        $body = '';
 
         foreach ($displayers as $key => $displayer) {
             $label = $displayer->getLabel();
@@ -68,6 +76,10 @@ class Export
             $num++;
             //刷新一下输出buffer，防止由于数据过多造成问题
             if ($limit == $num) {
+                if (ExtLoader::isWebman()) {
+                    $body .= ob_get_contents();
+                }
+
                 if (ob_get_level() > 0) {
                     ob_flush();
                 }
@@ -90,6 +102,15 @@ class Export
         if ($fname) {
             $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
             return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
+        } else {
+            if (ExtLoader::isWebman()) {
+                $body .= ob_get_clean();
+                return response()->withHeaders([
+                    'Content-Type' => 'application/vnd.ms-excel',
+                    'Content-Disposition' => 'attachment;filename=' . $title . "-" . date('Ymd-His') . ".csv",
+                    'Cache-Control' => 'max-age=0',
+                ])->withBody($body);
+            }
         }
     }
 
@@ -193,10 +214,21 @@ class Export
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
-                header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His')  . '.xls');
-                header('Cache-Control: max-age=0');
-                $objWriter->save('php://output');
+                if (ExtLoader::isWebman()) {
+                    ob_start();
+                    $objWriter->save('php://output');
+
+                    return response()->withHeaders([
+                        'Content-Type' => 'application/vnd.ms-excel',
+                        'Content-Disposition' => 'attachment;filename=' . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls",
+                        'Cache-Control' => 'max-age=0',
+                    ])->withBody(ob_get_clean());
+                } else {
+                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . '.xls');
+                    header('Cache-Control: max-age=0');
+                    $objWriter->save('php://output');
+                }
             }
         } elseif ($type == 'xlsx') {
             if ($lib == 'PhpOffice') {
@@ -221,10 +253,21 @@ class Export
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His')  . '.xlsx');
-                header('Cache-Control: max-age=0');
-                $objWriter->save('php://output');
+                if (ExtLoader::isWebman()) {
+                    ob_start();
+                    $objWriter->save('php://output');
+
+                    return response()->withHeaders([
+                        'Content-Type' => 'application/vnd.ms-excel',
+                        'Content-Disposition' => 'attachment;filename=' . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx",
+                        'Cache-Control' => 'max-age=0',
+                    ])->withBody(ob_get_clean());
+                } else {
+                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . mt_rand(100, 999)  . '.xlsx');
+                    header('Cache-Control: max-age=0');
+                    $objWriter->save('php://output');
+                }
             }
         }
     }
