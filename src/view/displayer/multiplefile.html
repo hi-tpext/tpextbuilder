@@ -21,7 +21,7 @@
             </li>
             {/volist}
             {if condition="!$isInTable && $cover && $canUpload"}
-            <li class="pic-item-cover" id="{$id}-file-cover">
+            <li class="pic-item-cover hidden" id="{$id}-file-cover">
                 <figure>
                     <div>
                         <img src="{$cover}" class="preview-img" />
