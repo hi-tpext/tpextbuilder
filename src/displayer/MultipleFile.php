@@ -38,14 +38,20 @@ class MultipleFile extends Field
 
     protected $showChooseBtn = true;
 
+    protected $showUploadBtn = true;
+
+    protected $isInTable = false;
+
     protected $files = [];
+
+    protected $cover = '/assets/tpextbuilder/images/cover/file.svg';
 
     protected $jsOptions = [
         'resize' => false,
         'duplicate' => true,
         'ext' => [
             //
-            'jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm',
+            'jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm', 'svg',
             //
             "flv", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm",
             //
@@ -65,15 +71,24 @@ class MultipleFile extends Field
         'fileSizeLimit' => 0,
         'thumbnailWidth' => 80,
         'thumbnailHeight' => 80,
-        'isImage' => false
+        'isImage' => false,
+        'istable' => false,
     ];
 
     protected $extTypes = [
-        'image' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm'],
+        'image' => ['jpg', 'jpeg', 'gif', 'wbmp', 'webp', 'png', 'bmp', 'ico', 'swf', 'psd', 'jpc', 'jp2', 'jpx', 'jb2', 'swc', 'iff', 'xbm', 'svg'],
         'office' => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf"],
         'video' => ["flv", "mkv", "avi", "rm", "rmvb", "mpeg", "mpg", "ogv", "mov", "wmv", "mp4", "webm"],
         'audio' => ["ogg", "mp3", "wav", "mid"],
         'pkg' => ["rar", "zip", "tar", "gz", "7z", "bz2", "cab", "iso"],
+    ];
+
+    protected $coverList = [
+        'image' => '/assets/tpextbuilder/images/cover/image.svg',
+        'office' => '/assets/tpextbuilder/images/cover/office.svg',
+        'video' => '/assets/tpextbuilder/images/cover/video.svg',
+        'audio' => '/assets/tpextbuilder/images/cover/audio.svg',
+        'pkg' => '/assets/tpextbuilder/images/cover/pkg.svg',
     ];
 
     /**
@@ -89,7 +104,7 @@ class MultipleFile extends Field
     }
 
     /**
-     * Undocumented function
+     * 可以上传
      *
      * @param boolean $val
      * @return $this
@@ -101,7 +116,7 @@ class MultipleFile extends Field
     }
 
     /**
-     * Undocumented function
+     * 是否显示文件输入框
      *
      * @param boolean $val
      * @return $this
@@ -113,7 +128,7 @@ class MultipleFile extends Field
     }
 
     /**
-     * Undocumented function
+     * 是否显示[选择已上传文件]按钮
      *
      * @param boolean $val
      * @return $this
@@ -125,14 +140,64 @@ class MultipleFile extends Field
     }
 
     /**
-     * Undocumented function
-     * fileNumLimit
+     * 是否显示[上传新文件]按钮
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function showUploadBtn($val)
+    {
+        $this->showUploadBtn = $val;
+        return $this;
+    }
+
+    /**
+     * 同时禁用[上传新文件][选择已上传文件]
+     * 可通过cover图片控制
+     * 
+     * @return $this
+     */
+    public function disableButtons()
+    {
+        $this->showUploadBtn = false;
+        $this->showChooseBtn = false;
+
+        return $this;
+    }
+
+    /**
+     * 累计文件数量限制
+     * 
      * @param int $val
      * @return $this
      */
     public function limit($val)
     {
         $this->jsOptions['fileNumLimit'] = $val;
+        return $this;
+    }
+
+    /**
+     * 占位图片，当为文件列表空时显示
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function cover($val)
+    {
+        $this->cover = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $is
+     * @return $this
+     */
+    public function setIsInTable($val = true)
+    {
+        $this->isInTable = $val;
         return $this;
     }
 
@@ -208,6 +273,7 @@ class MultipleFile extends Field
         $this->canUpload = !$this->readonly && $this->canUpload;
 
         if (!$this->canUpload) {
+            $this->cover = '';
             if (empty($this->default)) {
                 $this->default = '/assets/tpextbuilder/images/ext/0.png';
             }
@@ -232,12 +298,8 @@ class MultipleFile extends Field
             }
         }
 
-        if (!$this->showInput) {
-            $this->readonly();
-        }
-
         if ($this->extKey) { //table 或 items 中
-            $this->addClass('hidden'); //隐藏输入框
+            $this->showInput = false; //隐藏输入框
             $this->getWrapper()->addClass('in-table-in-items');
         }
 
@@ -254,13 +316,22 @@ class MultipleFile extends Field
         $this->files = array_filter($this->files, 'strlen');
 
         $this->jsOptions['canUpload'] = $this->canUpload;
+        $this->jsOptions['showInput'] = $this->showInput;
+        $this->jsOptions['showChooseBtn'] = $this->showChooseBtn;
+        $this->jsOptions['showUploadBtn'] = $this->showUploadBtn;
+        $this->jsOptions['isInTable'] = $this->isInTable;
+        $this->jsOptions['cover'] = $this->cover;
 
         $vars = array_merge($vars, [
             'jsOptions' => $this->jsOptions,
             'canUpload' => $this->canUpload,
             'showInput' => $this->showInput,
             'showChooseBtn' => $this->showChooseBtn,
+            'showUploadBtn' => $this->showUploadBtn,
+            'isInTable' => $this->isInTable,
             'files' => $this->files,
+            'cover' => $this->cover,
+            'inputType' => $this->showInput ? 'text' : 'hidden',
         ]);
 
         $viewshow = $this->getViewInstance();
@@ -284,6 +355,9 @@ class MultipleFile extends Field
     {
         if (isset($this->extTypes[$name])) {
             $this->jsOptions['ext'] = $this->extTypes[$name];
+            if ($this->cover) {
+                $this->cover = $this->coverList[$name];
+            }
             return $this;
         }
 

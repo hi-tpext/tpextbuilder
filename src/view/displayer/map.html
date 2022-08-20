@@ -6,7 +6,7 @@
             value="{$value}" name="{$name}" id="{$id}" {$attr|raw}>
         {$after|raw}
     </div>
-    {if condition="$maptype neq 'yandex'" }
+    {if condition="$maptype neq 'yandex' && !$readonly && !$disabled" }
     <div class="input-group m-t-10 m-b-10 button-div">
         <input type="text" class="form-control input-sm" placeholder="搜索地点" id="search-{$id}">
         <span class="input-group-btn">

@@ -32,6 +32,7 @@ class Field implements Fillable
     protected $view = 'field';
     protected $isInput = true; //是否为可输入元素
     protected $isFieldsGroup = false;
+    protected $isArrayValue = false;
 
     /**
      * @var string|array
@@ -247,9 +248,24 @@ class Field implements Fillable
         return $this->isInput;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
     public function isFieldsGroup()
     {
         return $this->isFieldsGroup;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isArrayValue()
+    {
+        return $this->isArrayValue;
     }
 
     /**

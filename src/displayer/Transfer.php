@@ -28,6 +28,8 @@ class Transfer extends Field
 
     protected $group = false;
 
+    protected $isArrayValue = true;
+
     protected $jsOptions = [
         'nonSelectedListLabel' => '<span class="help-block">未选择的选项</span>',
         'selectedListLabel' => '<span class="help-block">已选择的选项</span>',

@@ -26,6 +26,8 @@ class Checkbox extends Field
 
     protected $blockStyle = false;
 
+    protected $isArrayValue = true;
+
     /**
      * Undocumented function
      *
