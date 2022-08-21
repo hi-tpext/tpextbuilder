@@ -269,6 +269,10 @@ class Form extends FWrapper implements Renderable
      */
     public function getTab()
     {
+        if (empty($this->tab)) {
+            $this->tab = new Tab();
+            $this->rows[] = $this->tab;
+        }
         return $this->tab;
     }
 
@@ -302,6 +306,10 @@ class Form extends FWrapper implements Renderable
      */
     public function getStep()
     {
+        if (empty($this->step)) {
+            $this->step = new Step();
+            $this->rows[] = $this->step;
+        }
         return $this->step;
     }
 

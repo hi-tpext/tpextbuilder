@@ -24,6 +24,8 @@ class Tab extends Widget implements Renderable
 
     protected $partial = false;
 
+    protected $vertical = false;
+
     /**
      * Undocumented variable
      *
@@ -141,6 +143,18 @@ class Tab extends Widget implements Renderable
     public function partial($val = true)
     {
         $this->partial = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function vertical($val = true)
+    {
+        $this->vertical = $val;
         return $this;
     }
 
@@ -276,7 +290,7 @@ class Tab extends Widget implements Renderable
             'rows' => $this->rows,
             'active' => $this->active,
             'id' => $this->getId(),
-            'class' => $this->class,
+            'class' => $this->class . ($this->vertical ? ' tabs-vertical' : ' tabs-horizontal'),
             'attr' => $this->getAttrWithStyle(),
         ];
 
