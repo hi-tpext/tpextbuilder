@@ -310,8 +310,7 @@ td ul.lyear-uploads-pic li.pic-item {
     padding: 2px;
 }
 
-.lyear-uploads-pic li.pic-item-cover
-{
+.lyear-uploads-pic li.pic-item-cover {
     margin-top: 5px;
 }
 
@@ -508,11 +507,44 @@ label.checkbox-block span {
 }
 
 /*tab*/
+.tabs-container {
+    display: block;
+    float: left;
+    width: 100%;
+}
+
 .tabs-container .panel-body {
     border: 1px solid #e7eaec;
     border-radius: 2px;
     padding: 10px 5px;
     position: relative
+}
+
+.tabs-container.tabs-horizontal .panel-body {
+    border-top: none;
+}
+
+.tabs-container.tabs-vertical .nav.nav-tabs {
+    float: left;
+    width: 15%;
+    padding: 0;
+    margin: 0;
+    border-bottom: none;
+}
+
+.tabs-container.tabs-vertical .nav.nav-tabs .nav-item {
+    width: 100%;
+}
+
+.tabs-container.tabs-vertical .nav.nav-tabs .nav-item a {
+    border-radius: 4px 0 0 4px;
+}
+
+.tabs-container.tabs-vertical .tab-content {
+    float: right;
+    width: 85%;
+    padding: 0;
+    margin: 0;
 }
 
 [data-theme="dark"] .tabs-container .panel-body {
@@ -540,6 +572,9 @@ label.checkbox-block span {
 .tabs-container .nav-tabs>li.active>a:focus,
 .tabs-container .nav-tabs>li.active>a:hover {
     border: 1px solid #e7eaec;
+}
+
+.tabs-container.tabs-horizontal .nav-tabs>li.active>a {
     border-bottom-color: transparent
 }
 
@@ -559,8 +594,8 @@ label.checkbox-block span {
     border-bottom: 1px solid #444546;
 }
 
-.tabs-container .tab-pane .panel-body {
-    border-top: none
+.tabs-container.tabs-horizontal .tab-pane .panel-body {
+    border-top: none;
 }
 
 .tabs-container .tabs-left .tab-pane .panel-body,
