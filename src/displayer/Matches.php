@@ -8,9 +8,13 @@ class Matches extends Raw
 {
     use HasOptions;
 
+    protected $view = 'matche';
+
     protected $isInput = false;
-    
+
     protected $separator = ',';
+
+    protected $checked = '';
 
     /**
      * Undocumented function
@@ -26,6 +30,8 @@ class Matches extends Raw
 
     public function renderValue()
     {
+        $this->checked = is_array($this->value) ? implode(',', $this->value) : '' . $this->value;
+
         $values = explode(',', $this->value);
         $texts = [];
 
@@ -38,5 +44,12 @@ class Matches extends Raw
         $this->value = implode($this->separator, $texts);
 
         return parent::renderValue();
+    }
+
+    public function customVars()
+    {
+        return array_merge(parent::customVars(), [
+            'checked' => $this->checked,
+        ]);
     }
 }

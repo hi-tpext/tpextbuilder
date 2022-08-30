@@ -1157,7 +1157,6 @@ EOT;
                     $val = $this->data[$field];
                 }
 
-
                 if ($values instanceof \Closure) {
                     $match = $values($val, $this->data);
                     if ($match) {

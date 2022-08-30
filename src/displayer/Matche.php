@@ -8,10 +8,16 @@ class Matche extends Raw
 {
     use HasOptions;
 
+    protected $view = 'matche';
+
     protected $isInput = false;
+
+    protected $checked = '';
 
     public function renderValue()
     {
+        $this->checked = '' . $this->value;
+
         if (isset($this->options[$this->value])) {
             $this->value = $this->options[$this->value];
         } else if (isset($this->options['__default__'])) {
@@ -19,5 +25,12 @@ class Matche extends Raw
         }
 
         return parent::renderValue();
+    }
+
+    public function customVars()
+    {
+        return array_merge(parent::customVars(), [
+            'checked' => $this->checked,
+        ]);
     }
 }
