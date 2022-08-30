@@ -95,30 +95,37 @@ trait HasView
                 || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea
             ) {
 
-                $row->show($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
+                $row->show($fieldName, $row->getLabel())->default('-空-');
             } else if ($displayer instanceof displayer\Select && $displayer->isAjax()) { // multipleSelect(ajax) / select(ajax)
+
+                $displayer->whenScript(true);
                 $ajax = $displayer->getAjax();
 
                 if ($displayer instanceof displayer\multipleSelect) {
-                    $row->loads($fieldName, $row->getLabel())->dataUrl($ajax['url'], $ajax['text'])->value($displayer->renderValue());
+                    $row->loads($fieldName, $row->getLabel())->dataUrl($ajax['url'], $ajax['text']);
                 } else {
-                    $row->load($fieldName, $row->getLabel())->dataUrl($ajax['url'], $ajax['text'])->value($displayer->renderValue());
+                    $row->load($fieldName, $row->getLabel())->dataUrl($ajax['url'], $ajax['text']);
                 }
-            } else if ($displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect) { // checkbox / multipleSelect(非ajax)
+            } else if (
+                $displayer instanceof displayer\Checkbox || $displayer instanceof displayer\MultipleSelect
+                || $displayer instanceof displayer\Transfer
+            ) { // checkbox / multipleSelect(非ajax) / Transfer
 
-                $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
+                $displayer->whenScript(true);
+                $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions());
             } else if ($displayer instanceof displayer\Radio || $displayer instanceof displayer\Select) { // radio / select(非ajax)
 
-                $row->match($fieldName, $row->getLabel())->options($displayer->getOptions())->value($displayer->renderValue());
+                $displayer->whenScript(true);
+                $row->match($fieldName, $row->getLabel())->options($displayer->getOptions());
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
                 $options = [$pair[0] => '是', $pair[1] => '否'];
-                $row->match($fieldName, $row->getLabel())->options($options)->value($displayer->renderValue());
+                $row->match($fieldName, $row->getLabel())->options($options);
             } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 
-                $row->raw($fieldName, $row->getLabel())->value($displayer->renderValue())->default('-空-');
+                $row->raw($fieldName, $row->getLabel())->default('-空-');
             }
 
             $size = $displayer->getSize();

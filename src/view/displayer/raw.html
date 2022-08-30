@@ -1,9 +1,9 @@
 {if condition="$inline"}
-<span class="the-field {$class}" {$attr|raw}>{$value|raw}</span>
+<span id="{$id}" class="the-field {$class}" {$attr|raw}>{$value|raw}</span>
 {else/}
 {include file="$labeltempl" /}
 <div class="col-md-{$size[1]} field-raw">
-    <span class="the-field {$class}" {$attr|raw}>{$value|raw}</span>
+    <span id="{$id}" class="the-field {$class}" {$attr|raw}>{$value|raw}</span>
     {include file="$helptempl" /}
 </div>
 {/if}

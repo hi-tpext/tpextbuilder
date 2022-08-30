@@ -5,6 +5,7 @@ namespace tpext\builder\traits;
 use tpext\builder\common\Form;
 use tpext\builder\common\Search;
 use tpext\builder\form\When;
+use tpext\builder\common\Builder;
 
 trait HasWhen
 {
@@ -56,6 +57,16 @@ trait HasWhen
         }
 
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function emptyWhens()
+    {
+        return empty($this->whens);
     }
 
     /**
@@ -113,10 +124,10 @@ trait HasWhen
 
     /**
      * Undocumented function
-     *
+     * @param boolean $viewModel 是否为view模式
      * @return string
      */
-    public function whenScript()
+    public function whenScript($viewModel = false)
     {
         if (count($this->whens) == 0) {
             return '';
@@ -137,6 +148,7 @@ trait HasWhen
             $i += 1;
         }
 
+        $viewModel = $viewModel ? 1 : 0;
         $script = '';
 
         $casesOptions = json_encode($casesOptions);
@@ -144,37 +156,59 @@ trait HasWhen
         $fieldType = class_basename($this);
 
         $box = '';
-
-        if ($fieldType == 'Checkbox') {
-            $box = ' input:checkbox';
-        } else if ($fieldType == 'Radio') {
-            $box = ' input:radio';
+        if ($viewModel) {
+            $box = '__when__';
+        } else {
+            if ($fieldType == 'Checkbox') {
+                $box = ' input:checkbox';
+            } else if ($fieldType == 'Radio') {
+                $box = ' input:radio';
+            }
         }
 
         $script = <<<EOT
 
-        var casesOptions{$key} =  {$casesOptions};
-        var fieldType{$key} =  '{$fieldType}';
+        var casesOptions{$key} = {$casesOptions};
+        var fieldType{$key} = '{$fieldType}';
+        var viewModel{$key} = '{$viewModel}' == '1';
+
+        if(viewModel{$key})
+        {
+            var __field__ = document.createElement("input");
+            __field__.type = "hidden";
+            __field__.id = '{$watchFor}{$box}';
+            __field__.value = $("#{$watchFor}").data('selected');
+    
+            $('.form-wrapper form').append(__field__);
+        }
 
         $("#{$watchFor}{$box}").on('change', function(){
             $('#help-block .error-label').html('');
             $('.{$key}.match-case').removeClass('match-case');
-            if(fieldType{$key} == 'Checkbox' || fieldType{$key} == 'DualListbox' || fieldType{$key} == 'MultipleSelect')
+            if(fieldType{$key} == 'Checkbox' || fieldType{$key} == 'Transfer' || fieldType{$key} == 'MultipleSelect')
             {
                 var val = [];
-                if(fieldType{$key} == 'Checkbox')
+                if(viewModel{$key})
                 {
-                    var checkboxes = $("#{$watchFor} input:checkbox");
-                    checkboxes.each(function (i, e) {
-                        if ($(e).is(':checked')) {
-                            val.push($(e).val());
-                        }
-                    });
+                    val = $(this).val().split(',');
                 }
                 else
                 {
-                    var val = $(this).val() || [];
+                    if(fieldType{$key} == 'Checkbox')
+                    {
+                        var checkboxes = $("#{$watchFor} input:checkbox");
+                        checkboxes.each(function (i, e) {
+                            if ($(e).is(':checked')) {
+                                val.push($(e).val());
+                            }
+                        });
+                    }
+                    else
+                    {
+                        val = $(this).val() || [];
+                    }
                 }
+                
                 var cases = [];
                 var m = 0;
                 for(var c in casesOptions{$key})
@@ -209,14 +243,22 @@ trait HasWhen
             else // Radio / Select
             {
                 var val = '';
-                if(fieldType{$key} == 'Radio')
-                {
-                    val = $("#{$watchFor} input:checked").val();
-                }
-                else
+                if(viewModel{$key})
                 {
                     val = $(this).val();
                 }
+                else
+                {
+                    if(fieldType{$key} == 'Radio')
+                    {
+                        val = $("#{$watchFor} input:checked").val();
+                    }
+                    else
+                    {
+                        val = $(this).val();
+                    }
+                }
+                
                 for(var c in casesOptions{$key})
                 {
                     for(var i in casesOptions{$key}[c])
@@ -258,6 +300,10 @@ trait HasWhen
 
 EOT;
         $this->script[] = $script;
+
+        if ($viewModel) {
+            Builder::getInstance()->addScript($script);
+        }
 
         return $script;
     }
