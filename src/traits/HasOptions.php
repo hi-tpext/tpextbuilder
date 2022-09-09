@@ -74,15 +74,44 @@ trait HasOptions
         }
 
         $options = [];
-        foreach ($optionsData as $data) {
+        $keys = [];
+        $replace = [];
+        $arr = [];
+
+        preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
+
+        foreach ($optionsData as $li) {
             if (empty($idField)) {
-                $idField = $data->getPk();
+                $idField = $li->getPk();
             }
             if (empty($textField)) {
-                $textField = isset($data['opt_text']) ? 'opt_text' : 'name'; //模型需要实现[getOptTextAttr]，否则看是否刚好有name这个字段;
+                $textField = isset($li['opt_text']) ? 'opt_text' : 'name'; //模型需要实现[getOptTextAttr]，否则看是否刚好有name这个字段;
             }
 
-            $options[$data[$idField]] = $data[$textField];
+            $li = $li->toArray();
+            $keys = [];
+            $replace = [];
+
+            if (isset($matches[1]) && count($matches[1]) > 0) {
+                foreach ($matches[1] as $match) {
+                    $arr = explode('.', $match);
+                    if (count($arr) == 1) {
+
+                        $keys[] = '{' . $arr[0] . '}';
+                        $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '';
+                    } else if (count($arr) == 2) {
+
+                        $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                        $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
+                    } else {
+                        //最多支持两层 xx 或 xx.yy
+                    }
+                }
+
+                $options[$li[$idField]] = str_replace($keys, $replace, $textField);
+            } else {
+                $options[$li[$idField]] = $li[$textField] ?? '-';
+            }
         }
         $this->options = $options;
 

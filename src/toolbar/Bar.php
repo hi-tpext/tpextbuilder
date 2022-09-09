@@ -271,7 +271,7 @@ class Bar implements Renderable
             $this->layerSize = $config['layer_size'];
         }
 
-        if (strpos($this->attr, 'data-layer-size=') === false) {
+        if (($this->__href__ || $this->href) && strpos($this->attr, 'data-layer-size=') === false) {
             $this->addAttr('data-layer-size="' . $this->layerSize . '"');
         }
 
