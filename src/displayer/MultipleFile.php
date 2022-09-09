@@ -109,7 +109,7 @@ class MultipleFile extends Field
      * @param boolean $val
      * @return $this
      */
-    public function canUpload($val)
+    public function canUpload($val = true)
     {
         $this->canUpload = $val;
         return $this;
@@ -121,7 +121,7 @@ class MultipleFile extends Field
      * @param boolean $val
      * @return $this
      */
-    public function showInput($val)
+    public function showInput($val = true)
     {
         $this->showInput = $val;
         return $this;
@@ -133,7 +133,7 @@ class MultipleFile extends Field
      * @param boolean $val
      * @return $this
      */
-    public function showChooseBtn($val)
+    public function showChooseBtn($val = true)
     {
         $this->showChooseBtn = $val;
         return $this;
@@ -145,7 +145,7 @@ class MultipleFile extends Field
      * @param boolean $val
      * @return $this
      */
-    public function showUploadBtn($val)
+    public function showUploadBtn($val = true)
     {
         $this->showUploadBtn = $val;
         return $this;
@@ -155,12 +155,13 @@ class MultipleFile extends Field
      * 同时禁用[上传新文件][选择已上传文件]
      * 可通过cover图片控制
      * 
+     * @param boolean $val
      * @return $this
      */
-    public function disableButtons()
+    public function disableButtons($val = true)
     {
-        $this->showUploadBtn = false;
-        $this->showChooseBtn = false;
+        $this->showUploadBtn = !$val;
+        $this->showChooseBtn = !$val;
 
         return $this;
     }

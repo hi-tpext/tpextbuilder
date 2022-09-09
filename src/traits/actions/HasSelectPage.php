@@ -78,7 +78,7 @@ trait HasSelectPage
         }
 
         $selected = input('selected', '');
-        
+
         if (is_array($selected)) {
             $selected = implode(',', $selected);
         }
@@ -133,10 +133,6 @@ trait HasSelectPage
             $textField = $this->selectTextField;
         }
 
-        if ($textField && (strpos($textField, '{') === false || strpos($textField, '}') === false)) {
-            $textField = '{' . $textField . '}';
-        }
-
         $sortOrder = $this->selectOrder ?: ($this->sortOrder ?: $idField . ' desc');
         $pagesize = $this->selectPagesize ?: ($this->pagesize ?: 20);
 
@@ -181,34 +177,33 @@ trait HasSelectPage
         if ($textField && $textField != 'text') {
             $keys = [];
             $replace = [];
-            $arr = null;
-            $matches = null;
+            $arr = [];
+            preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
             foreach ($list as $li) {
                 $li = $li->toArray();
                 $keys = [];
                 $replace = [];
+                if (isset($matches[1]) && count($matches[1]) > 0) {
+                    foreach ($matches[1] as $match) {
+                        $arr = explode('.', $match);
+                        if (count($arr) == 1) {
 
-                preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
+                            $keys[] = '{' . $arr[0] . '}';
+                            $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '';
+                        } else if (count($arr) == 2) {
 
-                foreach ($matches[1] as $match) {
-                    $arr = explode('.', $match);
-
-                    if (count($arr) == 1) {
-
-                        $keys[] = '{' . $arr[0] . '}';
-                        $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '';
-                    } else if (count($arr) == 2) {
-
-                        $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
-                        $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
-                    } else {
-                        //最多支持两层 xx 或 xx.yy
+                            $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                            $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
+                        } else {
+                            //最多支持两层 xx 或 xx.yy
+                        }
                     }
+                    $li['__text__'] = str_replace($keys, $replace, $textField);
+                } else {
+                    $li['__text__'] = $li[$textField] ?? '-';
                 }
 
                 $li['__id__'] = $li[$idField];
-                $li['__text__'] = str_replace($keys, $replace, $textField);
-
                 $data[] = $li;
             }
         } else {

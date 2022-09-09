@@ -29,33 +29,45 @@ class ActionBtn extends Bar
      * @param array|Model $data
      * @return $this
      */
-    public function parseUrl($data)
+    public function parseUrl($data = [])
     {
-        $this->data = $data;
+        if ($data) {
+            $this->data = $data;
+        } else {
+            $data = $this->data;
+        }
+
+        if (empty($this->href) || empty($data)) {
+            return $this;
+        }
 
         preg_match_all('/__data\.([\w\.]+)__/', $this->href, $matches);
 
         $keys = ['__data.pk__'];
         $replace = [$this->dataId];
-        $arr = null;
+        $arr = [];
 
-        foreach ($matches[1] as $match) {
-            $arr = explode('.', $match);
+        if (isset($matches[1]) && count($matches[1]) > 0) {
+            foreach ($matches[1] as $match) {
+                $arr = explode('.', $match);
 
-            if (count($arr) == 1) {
+                if (count($arr) == 1) {
 
-                $keys[] = '__data.' . $arr[0] . '__';
-                $replace[] = isset($data[$arr[0]]) ? $data[$arr[0]] : '';
-            } else if (count($arr) == 2) {
+                    $keys[] = '__data.' . $arr[0] . '__';
+                    $replace[] = isset($data[$arr[0]]) ? $data[$arr[0]] : '';
+                } else if (count($arr) == 2) {
 
-                $keys[] = '__data.' . $arr[0] . '.' . $arr[1] . '__';
-                $replace[] = isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]]) ? $data[$arr[0]][$arr[1]] : '';
-            } else {
-                //最多支持两层 xx 或 xx.yy
+                    $keys[] = '__data.' . $arr[0] . '.' . $arr[1] . '__';
+                    $replace[] = isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]]) ? $data[$arr[0]][$arr[1]] : '';
+                } else {
+                    //最多支持两层 xx 或 xx.yy
+                }
             }
-        }
 
-        $this->__href__ = str_replace($keys, $replace, $this->href);
+            $this->__href__ = str_replace($keys, $replace, $this->href);
+        } else {
+            $this->__href__ = $this->href;
+        }
 
         return $this;
     }
@@ -70,29 +82,40 @@ class ActionBtn extends Bar
             return $label($data);
         }
 
+        if (empty($label)) {
+            return '';
+        }
+        if (empty($data)) {
+            return $label;
+        }
+
         preg_match_all('/\{([\w\.]+)\}/', $label, $matches);
 
         $keys = [];
         $replace = [];
-        $arr = null;
+        $arr = [];
 
-        foreach ($matches[1] as $match) {
-            $arr = explode('.', $match);
+        if (isset($matches[1]) && count($matches[1]) > 0) {
+            foreach ($matches[1] as $match) {
+                $arr = explode('.', $match);
 
-            if (count($arr) == 1) {
+                if (count($arr) == 1) {
 
-                $keys[] = '{' . $arr[0] . '}';
-                $replace[] = isset($data[$arr[0]]) ? $data[$arr[0]] : '';
-            } else if (count($arr) == 2) {
+                    $keys[] = '{' . $arr[0] . '}';
+                    $replace[] = isset($data[$arr[0]]) ? $data[$arr[0]] : '';
+                } else if (count($arr) == 2) {
 
-                $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
-                $replace[] = isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]]) ? $data[$arr[0]][$arr[1]] : '-';
-            } else {
-                //最多支持两层 xx 或 xx.yy
+                    $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                    $replace[] = isset($data[$arr[0]]) && isset($data[$arr[0]][$arr[1]]) ? $data[$arr[0]][$arr[1]] : '-';
+                } else {
+                    //最多支持两层 xx 或 xx.yy
+                }
             }
-        }
 
-        $val = str_replace($keys, $replace, $label);
+            $val = str_replace($keys, $replace, $label);
+        } else {
+            $val = $label;
+        }
 
         return $val;
     }
