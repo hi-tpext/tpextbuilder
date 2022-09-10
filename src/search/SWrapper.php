@@ -29,7 +29,6 @@ use tpext\builder\common\Wrapper as Base;
  * @method \tpext\builder\displayer\SwitchBtn      switchBtn($name, $label = '', $colSize = 2, $filter = '')
  * @method \tpext\builder\displayer\Rate           rate($name, $label = '', $colSize = 2, $filter = '')
  * @method \tpext\builder\displayer\Divider        divider($text, $label = '', $colSize = 2, $filter = '')
- * @method \tpext\builder\displayer\Decimal        decimal($name, $label = '', $colSize = 2, $filter = '')
  * @method \tpext\builder\displayer\Html           html($html, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Raw            raw($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Show           show($name, $label = '', $colSize = 12)
