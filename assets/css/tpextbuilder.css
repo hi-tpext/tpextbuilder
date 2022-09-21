@@ -183,6 +183,10 @@ span.select2-container {
     max-width: 100%;
 }
 
+.select2-container--default .selection .select2-selection--single .select2-selection__arrow {
+    height: 33px;
+}
+
 .has-error .select2 span.select2-selection {
     border-color: #f96868 !important;
 }
@@ -192,6 +196,10 @@ span.select2-container {
 }
 
 .table .select2-container .select2-selection .select2-selection__rendered {
+    line-height: 30px;
+}
+
+.table .select2-container--default .select2-selection--single .select2-selection__arrow {
     line-height: 30px;
 }
 
