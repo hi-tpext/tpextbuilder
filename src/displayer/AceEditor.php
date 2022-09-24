@@ -26,13 +26,13 @@ class AceEditor extends Field
         '/assets/tpextbuilder/js/ace/mode-html.js',
         '/assets/tpextbuilder/js/ace/mode-javascript.js',
         //theme
-        '/assets/tpextbuilder/js/ace/theme-vibrant_ink.js', //dark
+        '/assets/tpextbuilder/js/ace/theme-one_dark.js', //dark
         '/assets/tpextbuilder/js/ace/theme-textmate.js', //bright
     ];
 
     protected $jsOptions = [
         'mode' => 'text',
-        'dark' => false,
+        'dark' => true,
         'fontSize' => 14,
         'height' => '1000px',
         'width' => '100%',
@@ -62,7 +62,7 @@ class AceEditor extends Field
         });
 
         var aceeditor = ace.edit("{$inputId}-editor");
-        aceeditor.setTheme("ace/theme/"+ (configs.dark ? 'vibrant_ink' : 'textmate'));
+        aceeditor.setTheme("ace/theme/"+ (configs.dark ? 'one_dark' : 'textmate'));
         aceeditor.session.setMode("ace/mode/" + configs.mode);
         aceeditor.setFontSize(configs.fontSize);
         
@@ -76,8 +76,8 @@ class AceEditor extends Field
         aceeditor.setReadOnly(readonly);
         aceeditor.getSession().setUseWrapMode(true);
         aceeditor.setShowPrintMargin(false);
-
         aceeditor.setValue($('#{$inputId}').val());
+        aceeditor.moveCursorTo(0, 0);
         aceeditor.session.on('change', function(e) {
             $('#{$inputId}').val(aceeditor.getValue());
         });
@@ -115,9 +115,7 @@ EOT;
 
     public function beforRender()
     {
-        if (!$this->readonly) {
-            $this->editorScript();
-        }
+        $this->editorScript();
 
         return parent::beforRender();
     }
