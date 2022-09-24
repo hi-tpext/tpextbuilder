@@ -134,6 +134,14 @@ form.search-form .control-label+div {
     line-height: 30px;
 }
 
+.fip-bootstrap.icons-selector .selector-popup .selector-search input[type="text"] {
+    padding: 6px 2.5%;
+}
+
+.icons-selector .selector-popup .selector-search i {
+    top: 5px;
+}
+
 .table .field-raw,
 .table .field-show {
     min-height: 31px;
