@@ -58,6 +58,7 @@ class Wrapper
         'items' => \tpext\builder\displayer\Items::class,
         'load' => \tpext\builder\displayer\Load::class,
         'loads' => \tpext\builder\displayer\Loads::class,
+        'aceEditor' => \tpext\builder\displayer\AceEditor::class,
     ];
 
     protected static $defaultFieldClass = [
