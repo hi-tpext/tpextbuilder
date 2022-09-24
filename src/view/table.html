@@ -18,7 +18,7 @@
                 <tr>
                     {if condition="$useCheckbox"}
                     <th class="table-checkbox">
-                        <label class="lyear-checkbox checkbox-primary">
+                        <label class="lyear-checkbox checkbox-default">
                             <input type="checkbox" id="checkall-{$name}" data-check="check-{$name}" class="checkall
                                 table-row-checkall"><span></span>
                         </label>
@@ -51,7 +51,7 @@
                 <tr class="table-row-id" data-id="{$ids[$key]}">
                     {if condition="$useCheckbox"}
                     <td class="table-checkbox {$tdClass}">
-                        <label class="lyear-checkbox checkbox-primary">
+                        <label class="lyear-checkbox checkbox-default">
                             <input type="checkbox" id="{$name}-{$key}" value="{$ids[$key]}" {in name="$ids[$key]"
                                 value="$checked" }checked{/in} class="check-{$name} table-row"><span></span>
                         </label>
