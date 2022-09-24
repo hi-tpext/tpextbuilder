@@ -58,9 +58,10 @@ use tpext\builder\common\Wrapper as Base;
  * @method \tpext\builder\displayer\Items          items($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\load           load($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\loads          loads($name, $label = '', $colSize = 12)
+ * @method \tpext\builder\displayer\AceEditor      aceEditor($name, $label = '', $colSize = 12)
  */
 
 class FWrapper extends Base
 {
-
+    
 }

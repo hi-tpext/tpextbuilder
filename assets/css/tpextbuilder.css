@@ -122,6 +122,18 @@ form.search-form .control-label+div {
     padding-top: 0;
 }
 
+.fip-bootstrap.icons-selector .selector {
+    height: 33px;
+}
+
+.fip-bootstrap.icons-selector .selected-icon i {
+    line-height: 33px;
+}
+
+.fip-bootstrap.icons-selector .selector-button i {
+    line-height: 30px;
+}
+
 .table .field-raw,
 .table .field-show {
     min-height: 31px;
