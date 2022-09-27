@@ -55,7 +55,7 @@ trait HasOptions
     /**
      * Undocumented function
      *
-     * @param Collection $optionsData
+     * @param Collection|array $optionsData
      * @param string $textField
      * @param string $idField
      * @return $this
@@ -88,7 +88,6 @@ trait HasOptions
                 $textField = isset($li['opt_text']) ? 'opt_text' : 'name'; //模型需要实现[getOptTextAttr]，否则看是否刚好有name这个字段;
             }
 
-            $li = $li->toArray();
             $keys = [];
             $replace = [];
 
