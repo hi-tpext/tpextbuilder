@@ -190,7 +190,7 @@ trait HasIndex
      */
     protected function asTreeList()
     {
-        return $this->dataModel && method_exists($this->dataModel, 'asTreeList');
+        return $this->dataModel && method_exists($this->dataModel, 'asTreeList') && $this->dataModel->asTreeList();
     }
 
     /**

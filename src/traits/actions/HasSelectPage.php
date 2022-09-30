@@ -66,6 +66,16 @@ trait HasSelectPage
      */
     protected $selectWith = [];
 
+    /**
+     * 模型是否使用了`tpext\builder\traits\TreeModel`,显示为树形结构
+     *
+     * @return boolean
+     */
+    protected function asTreeSelectList()
+    {
+        return $this->dataModel && method_exists($this->dataModel, 'asTreeList') && $this->dataModel->asTreeList();
+    }
+
     public function selectPage()
     {
         if (!$this->dataModel) {
@@ -83,7 +93,7 @@ trait HasSelectPage
             $selected = implode(',', $selected);
         }
 
-        if (method_exists($this->dataModel, 'asTreeList')) {
+        if ($this->asTreeSelectList()) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
 
             $list = $this->dataModel->getOptionsData();
             $data = [];
