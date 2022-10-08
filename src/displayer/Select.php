@@ -219,9 +219,19 @@ class Select extends Field
 
         if(selected{$key} !== '')
         {
+            var params = {
+                q: '',
+                page: 1,
+                selected : selected{$key},
+                ele_id : '{$selectId}',
+                prev_ele_id : '{$prev_id}',
+                idField : '{$id}' == '_' ? null : '{$id}',
+                textField : '{$text}' == '_' ? null : '{$text}'
+            };
+
             $.ajax({
                 url: '{$url}',
-                data: {selected : selected{$key}},
+                data: params,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
