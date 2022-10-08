@@ -90,7 +90,7 @@ class Load extends Field
 
             $.ajax({
                 url: '{$url}',
-                data: {selected : selected{$key}},
+                data: params,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
