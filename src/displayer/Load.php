@@ -77,6 +77,17 @@ class Load extends Field
 
         if(selected{$key} !== '')
         {
+            var params = {
+                q: '',
+                page: 1,
+                selected : selected{$key},
+                ele_id : '{$selectId}',
+                prev_ele_id : '',
+                idField : '',
+                textField : '{$text}' == '_' ? null : '{$text}',
+                load : 1,
+            };
+
             $.ajax({
                 url: '{$url}',
                 data: {selected : selected{$key}},
