@@ -232,7 +232,7 @@ class WebUploader
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
 
-        @set_time_limit(5 * 60);
+        // @set_time_limit(5 * 60);
 
         // Get a file name
         if (request()->post("name")) {
