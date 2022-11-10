@@ -43,7 +43,7 @@ class Layer extends Widget
         return $this->viewShow;
     }
 
-    public function closeGo($success = true, $msg = '操作成功', $url)
+    public function closeGo($success = true, $msg = '操作成功', $url = '')
     {
         if (request()->isAjax()) {
             return json([
