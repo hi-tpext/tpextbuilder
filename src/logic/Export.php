@@ -283,7 +283,7 @@ class Export
      * @param bool $requireLib 是否需要再引入`phpqrcode`库，如果在调用此方法前已经[require_once]引入了相关库，则设置为`false`
      * @return void
      */
-    public function toQrcode($title = '二维码', $data, $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true)
+    public function toQrcode($title = '二维码', $data = [], $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true)
     {
         if ($requireLib) {
             require_once App::getRootPath() . 'extend/phpqrcode/phpqrcode.php';

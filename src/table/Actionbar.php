@@ -252,7 +252,7 @@ class Actionbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnLink($name = '', $url, $label = '', $class = 'btn-secondary', $icon = '', $attr = '')
+    public function btnLink($name = '', $url = '', $label = '', $class = 'btn-secondary', $icon = '', $attr = '')
     {
         if (!$name) {
             $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
@@ -280,7 +280,7 @@ class Actionbar extends Toolbar
      * @return $this
      *
      */
-    public function btnPostRowid($name = '', $postUrl, $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
+    public function btnPostRowid($name = '', $postUrl = '', $label = '', $class = 'btn-secondary', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         if (!$name) {
             $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $postUrl, -1, $count);
