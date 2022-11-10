@@ -276,18 +276,21 @@ class Field implements Fillable
      */
     public function value($val)
     {
+        if ($this->lockValue) {
+            return $this;
+        }
+
         if (is_array($val)) {
             $val = implode(',', $val);
         }
         $this->value = $val;
-        $this->lockValue = true;//自动锁定
         return $this;
     }
 
     /**
-     * 锁定$value，不会被后续fill()方法覆盖值
+     * 锁定$value，不会被后续value()/fill()方法覆盖值
      * 
-     * $form->text('field_a', 'A')->value('hello');//调用value()自动锁定
+     * $form->text('field_a', 'A')->value('hello')->lockValue();
      * $form->fill(['field_a' => 'world']);//field_a不会覆被盖
      *
      * @param boolean $val
