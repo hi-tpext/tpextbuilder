@@ -331,9 +331,14 @@ class Upload
             return false;
         }
         /* 对图像文件进行严格检测 */
-        if (in_array($this->suffix, self::IMAGE_TYPES) && !in_array($this->getImageType($this->tmpName), [1, 2, 3, 4, 6, 13])) {
-            $this->setOption('errorNumber', -5);
-            return false;
+        if (in_array($this->suffix, self::IMAGE_TYPES)) {
+
+            $imageType = $this->getImageType($this->tmpName);
+            
+            if ($imageType < 1 || $imageType > 18) {
+                $this->setOption('errorNumber', -5);
+                return false;
+            }
         }
 
         return true;
@@ -348,9 +353,9 @@ class Upload
 
         try {
             $info = getimagesize($image);
-            return $info ? $info[2] : false;
+            return $info ? $info[2] : 0;
         } catch (\Exception $e) {
-            return false;
+            return 0;
         }
     }
 
