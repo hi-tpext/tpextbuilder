@@ -835,7 +835,7 @@ class Field implements Fillable
                         $hasVal = true;
                     }
                 } else {
-                    // $data = [];
+                    // $data = ['name' => 'str1'];
                     // 输出：''
                 }
             } else if (isset($data[$this->name])) {
