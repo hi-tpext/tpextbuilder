@@ -215,7 +215,7 @@ class Toolbar extends BWrapper implements Renderable
     public function barName($val)
     {
         if ($this->__elm__) {
-            $this->__elm__->href($val);
+            $this->__elm__->name($val);
         }
 
         return $this;
