@@ -816,18 +816,27 @@ class Field implements Fillable
 
                 $arr = explode('.', $this->name);
 
+                // $form->field('b.name')
+                // $form->fill($data);
+
                 if (isset($data[$arr[0]])) {
 
+                    // $data = ['name' => 'str1', 'b' => ['name' => 'str2']];
+                    // 输出：'str2'
                     if (isset($data[$arr[0]][$arr[1]])) {
                         $value = $data[$arr[0]][$arr[1]];
                         $hasVal = true;
                     }
-                } else { //尝试读取上一层级的值
-
-                    if (isset($data[$arr[1]])) {
+                    // 
+                    //$data = ['name' => 'str1', 'b' => []];
+                    // 输出：'str1'
+                    else if (isset($data[$arr[1]])) {//尝试读取上一层级的值
                         $value = $data[$arr[1]];
                         $hasVal = true;
                     }
+                } else {
+                    // $data = [];
+                    // 输出：''
                 }
             } else if (isset($data[$this->name])) {
 
