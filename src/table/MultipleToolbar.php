@@ -21,6 +21,8 @@ class MultipleToolbar extends Toolbar
 
     protected $tableCols = [];
 
+    protected $actions = [];
+
     /**
      * Undocumented function
      * 
@@ -197,6 +199,7 @@ class MultipleToolbar extends Toolbar
         if (empty($url)) {
             $url = url('add');
         }
+        $this->actions['add'] = 'add';
         $this->linkBtn('add', $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
         return $this;
     }
@@ -217,6 +220,7 @@ class MultipleToolbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('delete');
         }
+        $this->actions['delete'] = 'delete';
         $this->linkBtn('delete', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
     }
@@ -237,6 +241,7 @@ class MultipleToolbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('enable', ['state' => 0]);
         }
+        $this->actions['disable'] = 'disable';
         $this->linkBtn('disable', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
     }
@@ -257,6 +262,7 @@ class MultipleToolbar extends Toolbar
         if (empty($postUrl)) {
             $postUrl = url('enable', ['state' => 1]);
         }
+        $this->actions['enable'] = 'enable';
         $this->linkBtn('enable', $label)->postChecked($postUrl, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
     }
@@ -287,6 +293,7 @@ class MultipleToolbar extends Toolbar
      */
     public function btnRefresh($label = '', $class = 'btn-cyan', $icon = 'mdi-refresh', $attr = 'title="刷新"')
     {
+        $this->actions['refresh'] = 'refresh';
         $this->linkBtn('refresh', $label)->addClass($class)->icon($icon)->addAttr($attr);
         return $this;
     }
@@ -302,6 +309,7 @@ class MultipleToolbar extends Toolbar
      */
     public function btnToggleSearch($label = '', $class = 'btn-secondary', $icon = 'mdi-magnify', $attr = 'title="搜索"')
     {
+        $this->actions['search'] = 'search';
         $this->linkBtn('search', $label)->addClass($class)->icon($icon)->addClass('hidden')->addAttr($attr);
 
         $this->btnSearch = true;
@@ -346,6 +354,7 @@ class MultipleToolbar extends Toolbar
 
         $url = url(Module::getInstance()->getImportUrl()) . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken . '&driver=' . $driver;
 
+        $this->actions['import'] = 'import';
         $this->linkBtn('import', $label)->useLayer(true, $layerSize)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
 
         return $this;
@@ -373,6 +382,7 @@ class MultipleToolbar extends Toolbar
             return $this;
         }
 
+        $this->actions['export'] = 'export';
         $this->linkBtn('export', $label)->addClass($class)->icon($icon)->addAttr($attr . ' data-export-url="' . $postUrl . '"');
         return $this;
     }
@@ -400,6 +410,7 @@ class MultipleToolbar extends Toolbar
             return $this;
         }
 
+        $this->actions['exports'] = 'exports';
         $this->dropdownBtns('exports', $label)->items($items)->groupClass('drp-exports')->addClass($class)->icon($icon)
             ->addAttr($attr . ' data-export-url="' . $postUrl . '"')->pullRight();
         return $this;
@@ -437,8 +448,14 @@ class MultipleToolbar extends Toolbar
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
         if (!$count) {
-            $action = mt_rand(10, 99);
+            $action = preg_replace('/\W/', '_', $url);
         }
+
+        if (isset($this->actions[$action])) {
+            $action .= mt_rand(100, 999);
+        }
+
+        $this->actions[$action] = $action;
 
         $this->linkBtn($action, $label)->href($url)->icon($icon)->addClass($class)->addAttr($attr);
 
@@ -462,8 +479,14 @@ class MultipleToolbar extends Toolbar
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
         if (!$count) {
-            $action = mt_rand(10, 99);
+            $action = preg_replace('/\W/', '_', $url);
         }
+
+        if (isset($this->actions[$action])) {
+            $action .= mt_rand(100, 999);
+        }
+
+        $this->actions[$action] = $action;
 
         $this->linkBtn($action, $label)->postChecked($url, $confirm)->addClass($class)->icon($icon)->addAttr($attr);
 
@@ -487,8 +510,14 @@ class MultipleToolbar extends Toolbar
         $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
         if (!$count) {
-            $action = mt_rand(10, 99);
+            $action = preg_replace('/\W/', '_', $url);
         }
+
+        if (isset($this->actions[$action])) {
+            $action .= mt_rand(100, 999);
+        }
+
+        $this->actions[$action] = $action;
 
         $this->linkBtn($action, $label)->openChecked($url)->addClass($class)->icon($icon)->addAttr($attr);
 

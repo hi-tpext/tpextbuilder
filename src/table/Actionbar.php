@@ -258,7 +258,7 @@ class Actionbar extends Toolbar
             $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
 
             if (!$count) {
-                $name = mt_rand(10, 99);
+                $name = preg_replace('/\W/', '_', $url);
             }
         }
 
@@ -286,7 +286,7 @@ class Actionbar extends Toolbar
             $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $postUrl, -1, $count);
 
             if (!$count) {
-                $name = mt_rand(10, 99);
+                $name = preg_replace('/\W/', '_', $postUrl);
             }
         }
 
