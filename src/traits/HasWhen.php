@@ -289,7 +289,7 @@ trait HasWhen
 
             $('.{$key}.match-case').find('input,textarea,select').each(function(i, e){
                 $(e).removeClass('ignore');//验证
-                if($(e).data('name'))
+                if($(e).data('name') && !$(e).hasClass('switch-box'))
                 {
                     $(e).attr('name', $(e).data('name'));
                 }
