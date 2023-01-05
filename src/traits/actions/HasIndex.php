@@ -50,6 +50,12 @@ trait HasIndex
     protected $indexWith = [];
 
     /**
+     * 列表页排除的字段，过长的文本字段影响查询速度，而列表页又不显示此字段时可以把它排除
+     * @var array|string
+     */
+    protected $indexFieldsExcept = '';
+
+    /**
      * 允许行内编辑的字段，留空则不限制
      *
      * @var array
@@ -148,7 +154,7 @@ trait HasIndex
         $data = [];
 
         $this->isExporting = false;
-        
+
         if ($this->asTreeList()) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
             $table->sortable([]);
             $data = $this->dataModel->getLineData();
@@ -205,7 +211,7 @@ trait HasIndex
         //可重写此方法，比如用户点击除了create_time以外的任何个字段排序，都再加一个`create_time`倒序。
 
         // if (!strstr($sortOrder, 'create_time')) {
-        //     return $sortOrder .' create_time desc';
+        //     return $sortOrder .',create_time desc';
         // }
 
         return $sortOrder;
@@ -233,11 +239,13 @@ trait HasIndex
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)
                 ->order($sortOrder)
+                ->field($this->indexFieldsExcept ?: true, $this->indexFieldsExcept ? true : false)
                 ->cursor(); //select和cursor均可，最好是返回cursor
         } else {
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)->order($sortOrder)
                 ->limit(($page - 1) * $this->pagesize, $this->pagesize)
+                ->field($this->indexFieldsExcept ?: true, $this->indexFieldsExcept ? true : false)
                 ->select();
         }
 
