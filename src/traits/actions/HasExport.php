@@ -37,17 +37,6 @@ trait HasExport
 
     public function export()
     {
-        if (is_null($this->exportOnlyChoosedColumns)) { //null 时读全局配置
-            $this->exportOnlyChoosedColumns = Module::config('export_only_choosed_columns', 1) == 1;
-        }
-
-        if ($this->exportOnlyChoosedColumns) {
-            $__columns__ = input('get.__columns__', '*');
-            if ($__columns__) {
-                $this->exportOnly  = explode(',', $__columns__);
-            }
-        }
-
         ini_set('max_execution_time', 0);
 
         if ($path = input('get.path')) { //文件下载
@@ -65,6 +54,17 @@ trait HasExport
             $name = preg_replace('/\d+\/(.+?\.\w+)$/', '$1', $path);
 
             return download($filePath, $name);
+        }
+
+        if (is_null($this->exportOnlyChoosedColumns)) { //null 时读全局配置
+            $this->exportOnlyChoosedColumns = Module::config('export_only_choosed_columns', 1) == 1;
+        }
+
+        if ($this->exportOnlyChoosedColumns) {
+            $__columns__ = input('get.__columns__', '*');
+            if ($__columns__) {
+                $this->exportOnly  = explode(',', $__columns__);
+            }
         }
 
         request()->withPost(request()->get()); //兼容以post方式获取参数
