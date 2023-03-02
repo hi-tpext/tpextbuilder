@@ -111,7 +111,7 @@ class Upload
      * $key 就是你 input 框中的 name 属性值
      *
      * @param string $key
-     * @return boolean
+     * @return boolean|string
      */
     public function uploadFile($key)
     {
@@ -321,7 +321,7 @@ class Upload
         if (in_array($this->suffix, self::IMAGE_TYPES)) {
 
             $imageType = $this->getImageType($this->tmpName);
-            
+
             if ($imageType < 1 || $imageType > 18) {
                 $this->setOption('errorNumber', -5);
                 return false;

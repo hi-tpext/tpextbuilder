@@ -43,13 +43,12 @@ class Upload extends Controller
             return json(
                 ['info' => 'token error', 'picurl' => '']
             );
-            return;
         }
 
         if ($utype == 'ueditor') { //ueditor
             $action = request()->get('action');
             if (!in_array($action, ['uploadimage', 'uploadscrawl', 'uploadvideo', 'uploadfile'])) { //不是上传文件动作
-                return $this->ueditor($token, $driver, $is_rand_name, $image_driver, $image_commonds);
+                return $this->ueditor();
             }
         }
 
@@ -145,7 +144,7 @@ class Upload extends Controller
         if ($newPath === false) {
             //var_dump($up->errorNumber);
             return json(
-                ['status' => 500, 'info' => '上传失败-' . $up->errorInfo, 'class' => 'error']
+                ['status' => 500, 'success' => 0, 'uploaded' => 0, 'state' => 'ERROE', 'message' => '上传失败-' . $up->errorInfo, 'title' => '上传失败-' . $up->errorInfo, 'info' => '上传失败-' . $up->errorInfo, 'class' => 'error']
             );
             // 失败跟成功同样的方式返回
         } else {
@@ -154,7 +153,6 @@ class Upload extends Controller
                     return json(
                         ['url' => $newPath]
                     );
-                    break;
                 case 'editormd':
                     return json(
                         [
@@ -163,24 +161,20 @@ class Upload extends Controller
                             "url" => $newPath,
                         ]
                     );
-                    break;
                 case 'dropzone':
                     return json(
                         ['status' => 200, 'info' => '上传成功', 'picurl' => $newPath]
                     );
-                    break;
                 case 'webuploader':
                     return json(
                         ['status' => 200, 'info' => '上传成功', 'class' => 'success', 'id' => rand(1, 9999), 'picurl' => $newPath]
                     );
-                    break;
                 case 'tinymce':
                     return json(
                         [
                             "location" => $newPath,
                         ]
                     );
-                    break;
                 case 'ckeditor':
                     return json(
                         [
@@ -189,7 +183,6 @@ class Upload extends Controller
                             "url" => $newPath,
                         ]
                     );
-                    break;
                 case 'ueditor':
                     return json([
                         "state" => "SUCCESS", // 上传状态，上传成功时必须返回"SUCCESS"
@@ -228,12 +221,10 @@ class Upload extends Controller
                 /* 列出图片 */
             case 'listimage':
                 return json($this->showFile('listimage', $config));
-                break;
 
                 /* 列出附件 */
             case 'listfile':
                 return json($this->showFile('listfile', $config));
-                break;
 
                 /* 抓取远程附件 */
             case 'catchimage':
