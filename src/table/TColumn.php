@@ -34,8 +34,6 @@ class TColumn extends TWrapper implements Renderable
 
         $this->label = $label;
         $this->cloSize = $colSize;
-
-        return $this;
     }
 
     /**

@@ -32,8 +32,6 @@ class SRow extends SWrapper implements Renderable
         $this->label = $label;
         $this->cloSize = $colSize;
         $this->filter = $filter;
-
-        return $this;
     }
 
     /**
