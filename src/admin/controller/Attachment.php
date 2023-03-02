@@ -98,7 +98,7 @@ class Attachment extends Controller
      *
      * @return void
      */
-    protected function buildTable(&$data = [])
+    protected function buildTable(&$data = [], $isExporting = false)
     {
         $table = $this->table;
 

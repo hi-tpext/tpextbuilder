@@ -2,11 +2,11 @@
 
 namespace tpext\builder\traits\actions;
 
+use tpext\think\App;
 use tpext\builder\displayer;
 use tpext\builder\logic\Export;
-use tpext\builder\table\TColumn;
-use tpext\think\App;
 use tpext\builder\common\Module;
+use tpext\builder\table\TColumn;
 
 /**
  * 导出
