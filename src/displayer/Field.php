@@ -166,6 +166,16 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
+     * @return string
+     */
+    public function getOriginName()
+    {
+        return $this->getWrapper()->getName();
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array $val
      * @return $this
      */

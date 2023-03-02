@@ -20,9 +20,10 @@ class Export
      * @param string $title
      * @param array|Collection|\Generator $data
      * @param array $displayers
-     * @return void
+     * @param \Closure|null $buildTable
+     * @return mixed
      */
-    public function toCsv($title, $data, $displayers)
+    public function toCsv($title, $data, $displayers, $buildTable = null)
     {
         $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
 
@@ -73,6 +74,10 @@ class Export
         $row = null;
         $text = null;
         foreach ($data as $d) {
+            if ($buildTable) {
+                $buildTable([$d]);
+            }
+
             $num++;
             //刷新一下输出buffer，防止由于数据过多造成问题
             if ($limit == $num) {
@@ -130,9 +135,10 @@ class Export
      * @param array|Collection|\Generator $data
      * @param array $displayers
      * @param string $type
-     * @return void
+     * @param \Closure|null $buildTable
+     * @return mixed
      */
-    public function toExcel($title, $data, $displayers, $type = 'xls')
+    public function toExcel($title, $data, $displayers, $type, $buildTable = null)
     {
         $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
 
@@ -173,6 +179,10 @@ class Export
         $text = null;
         $c = 0;
         foreach ($data as $d) {
+            if ($buildTable) {
+                $buildTable([$d]);
+            }
+
             $c = 0;
             foreach ($displayers as $key => $displayer) {
                 $text = $displayer->fill($d)->renderValue();
@@ -230,7 +240,7 @@ class Export
                     $objWriter->save('php://output');
                 }
             }
-        } elseif ($type == 'xlsx') {
+        } else {
             if ($lib == 'PhpOffice') {
                 $objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($obj);
                 $objWriter->setPreCalculateFormulas(false);
@@ -281,9 +291,10 @@ class Export
      * @param integer $QR_ECLEVEL QR_ECLEVEL_L=0,QR_ECLEVEL_M=1,QR_ECLEVEL_Q=2,QR_ECLEVEL_H=3;
      * @param integer $size 二维码大小
      * @param bool $requireLib 是否需要再引入`phpqrcode`库，如果在调用此方法前已经[require_once]引入了相关库，则设置为`false`
-     * @return void
+     * @param \Closure $buildTable
+     * @return mixed
      */
-    public function toQrcode($title = '二维码', $data = [], $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true)
+    public function toQrcode($title = '二维码', $data = [], $codeField = 'code', $QR_ECLEVEL = 3, $size = 5, $requireLib = true, $buildTable = null)
     {
         if ($requireLib) {
             require_once App::getRootPath() . 'extend/phpqrcode/phpqrcode.php';
@@ -302,6 +313,10 @@ class Export
 
         $files = [];
         foreach ($data as $d) {
+            if ($buildTable) {
+                $buildTable([$d]);
+            }
+
             $fillename = $dir2 . $d[$codeField] . '.png';
             \QRcode::png($d[$codeField], $fillename, $QR_ECLEVEL, $size);
             $files[] = $fillename;
@@ -334,6 +349,12 @@ class Export
         }
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $path
+     * @return mixed
+     */
     public function deleteDir($path)
     {
         if (is_dir($path)) {
@@ -346,7 +367,7 @@ class Export
 
                     $sonDir = $path . DIRECTORY_SEPARATOR . $file;
                     if (is_dir($sonDir)) {
-                        static::deleteDir($sonDir);
+                        $this->deleteDir($sonDir);
                     } else {
                         unlink($sonDir);
                     }

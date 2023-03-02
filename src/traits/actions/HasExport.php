@@ -6,6 +6,7 @@ use tpext\builder\displayer;
 use tpext\builder\logic\Export;
 use tpext\builder\table\TColumn;
 use tpext\think\App;
+use tpext\builder\common\Module;
 
 /**
  * 导出
@@ -14,7 +15,7 @@ use tpext\think\App;
 trait HasExport
 {
     /**
-     * 导出时在这里面的是允许的，其余都不允许
+     * 导出时在这里面的是默认的，其余都不允许
      *
      * @var array
      */
@@ -27,8 +28,26 @@ trait HasExport
      */
     protected $exportExcept = [];
 
+    /**
+     * 只导出用户前端页面选择的列
+     *
+     * @var bool|null
+     */
+    protected $exportOnlyChoosedColumns = null;
+
     public function export()
     {
+        if (is_null($this->exportOnlyChoosedColumns)) { //null 时读全局配置
+            $this->exportOnlyChoosedColumns = Module::config('export_only_choosed_columns', 1) == 1;
+        }
+
+        if ($this->exportOnlyChoosedColumns) {
+            $__columns__ = input('get.__columns__', '*');
+            if ($__columns__) {
+                $this->exportOnly  = explode(',', $__columns__);
+            }
+        }
+
         ini_set('max_execution_time', 0);
 
         if ($path = input('get.path')) { //文件下载
@@ -55,11 +74,19 @@ trait HasExport
         $data = [];
         $__ids__ = input('get.__ids__');
 
-        $buildTable = false;
-
         if ($this->asTreeList()) { //如果此模型使用了`tpext\builder\traits\TreeModel`,显示为树形结构
             $data = $this->dataModel->getLineData();
-            $buildTable = true;
+
+            if (!empty($__ids__)) {
+                $ids = explode(',', $__ids__);
+                $newd = [];
+                foreach ($data as $d) {
+                    if (in_array($d[$this->getPk()], $ids)) {
+                        $newd[] = $d;
+                    }
+                }
+                $data = $newd;
+            }
         } else {
 
             if (!empty($__ids__)) {
@@ -71,41 +98,11 @@ trait HasExport
             $this->pagesize = 99999999;
 
             $total = -1;
-            $BuildData = $this->buildDataList($where, $sortOrder, 1, $total);
-
-            if ($BuildData instanceof \Iterator) {
-                $data = [];
-                foreach ($BuildData as $d) {
-                    $data[] = $d;
-                }
-            }
-
-            if ($total == -1) {
-                $buildTable = false;
-                //兼容旧的程序，
-                //旧的`buildDataList`方法不传任何参数，所以不会改变$total的值。
-                //如果是旧的`buildDataList`，会做更多事情，比如`buildTable`,`fill`,`paginator`,`sortOrder`等，
-                //在此判断避免重复，
-                //往后的代码中，`buildDataList`只处理数据，不涉及其他。
-            } else {
-                $buildTable = true;
-            }
+            $data = $this->buildDataList($where, $sortOrder, 1, $total);
         }
 
-        if (!empty($__ids__)) {
-            $ids = explode(',', $__ids__);
-            $newd = [];
-            foreach ($data as $d) {
-                if (in_array($d[$this->getPk()], $ids)) {
-                    $newd[] = $d;
-                }
-            }
-            $data = $newd;
-        }
-
-        if ($buildTable) {
-            $this->buildTable($data, true);
-        }
+        $empty = [];
+        $this->buildTable($empty, true);
 
         $cols = $this->table->getCols();
 
@@ -115,27 +112,41 @@ trait HasExport
 
         $logic = new Export;
 
+        $buildTable = function ($data) {
+            $this->buildTable($data, true);
+        };
+
         if ($__file_type__ == 'xls' || $__file_type__ == 'xlsx') {
-            return $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__);
+            return $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__, $buildTable);
         } else if ($__file_type__ == 'csv') {
-            return $logic->toCsv($this->pageTitle, $data, $displayers);
+            return $logic->toCsv($this->pageTitle, $data, $displayers, $buildTable);
         } else {
-            return $this->exportTo($data, $displayers, $__file_type__);
+            return $this->exportTo($data, $displayers, $__file_type__, $buildTable);
         }
     }
 
     /**
      * Undocumented function
      *
-     * @param string $fileType 其他类型的导出
+     * @param array|\Iterator $data
+     * @param array $displayers
+     * @param string $__file_type__
+     * @param \Closure $buildTable
      * @return mixed
      */
-    protected function exportTo($data, $displayers, $__file_type__)
+    protected function exportTo($data, $displayers, $__file_type__, $buildTable)
     {
         $logic = new Export;
-        return $logic->toCsv($this->pageTitle, $data, $displayers);
+        return $logic->toCsv($this->pageTitle, $data, $displayers, $buildTable);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $cols
+     * @param array $displayers
+     * @return array
+     */
     private function getDisplayers($cols, $displayers = [])
     {
         $displayer = null;
@@ -146,9 +157,9 @@ trait HasExport
 
             $displayer = $col->getDisplayer();
 
-            $fieldName = $displayer->getName();
+            $fieldName = $displayer->getOriginName();
 
-            if (!empty($this->exportOnly) && !in_array($fieldName, $this->exportOnly)) {
+            if (!empty($this->exportOnly) && $this->exportOnly[0] != '*' && !in_array($fieldName, $this->exportOnly)) {
                 continue;
             }
 

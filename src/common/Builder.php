@@ -353,7 +353,7 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @param array $val
+     * @param array|string $val
      * @return $this
      */
     public function addStyleSheet($val)
@@ -424,6 +424,8 @@ class Builder implements Renderable
     {
         $this->rows = [];
         $this->__row__ = null;
+        
+        return $this;
     }
 
     /**
