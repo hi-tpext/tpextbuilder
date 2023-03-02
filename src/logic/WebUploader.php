@@ -4,6 +4,7 @@ namespace tpext\builder\logic;
 
 use tpext\builder\common\model\Attachment;
 use tpext\builder\inface\Storage;
+use tpext\builder\inface\Image;
 use tpext\think\App;
 
 class WebUploader
@@ -330,7 +331,7 @@ class WebUploader
      * $key 就是你 input 框中的 name 属性值
      *
      * @param string $key
-     * @return boolean
+     * @return boolean|string
      */
     public function uploadFile($key)
     {

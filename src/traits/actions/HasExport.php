@@ -11,7 +11,6 @@ use tpext\builder\table\TColumn;
 /**
  * 导出
  */
-
 trait HasExport
 {
     /**
@@ -145,9 +144,10 @@ trait HasExport
      *
      * @param array $cols
      * @param array $displayers
+     * @param boolean $isInFields
      * @return array
      */
-    private function getDisplayers($cols, $displayers = [])
+    private function getDisplayers($cols, $displayers = [], $isInFields = false)
     {
         $displayer = null;
 
@@ -159,7 +159,7 @@ trait HasExport
 
             $fieldName = $displayer->getOriginName();
 
-            if (!empty($this->exportOnly) && $this->exportOnly[0] != '*' && !in_array($fieldName, $this->exportOnly)) {
+            if (!$isInFields && !empty($this->exportOnly) && $this->exportOnly[0] != '*' && !in_array($fieldName, $this->exportOnly)) {
                 continue;
             }
 
@@ -169,11 +169,11 @@ trait HasExport
 
             if ($displayer instanceof displayer\Fields) {
                 $content = $displayer->getContent();
-                $displayers = $this->getDisplayers($content->getCols(), $displayers);
+                $displayers = $this->getDisplayers($content->getCols(), $displayers, true);
                 continue;
             }
 
-            if (!$col instanceof TColumn) {
+            if (!($col instanceof TColumn)) {
                 continue;
             }
 

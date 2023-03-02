@@ -190,7 +190,7 @@ class Export
                 if ($lib == 'PhpOffice') {
                     $this->worksheet->setCellValueExplicit($list[$c] . ($num + 2), $text, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                 } else {
-                    $this->worksheet->setCellValue($list[$c] . ($num + 2), $text, \PHPExcel_Cell_DataType::TYPE_STRING); //将其设置为文本格式
+                    $this->worksheet->setCellValueExplicit($list[$c] . ($num + 2), $text, \PHPExcel_Cell_DataType::TYPE_STRING); //将其设置为文本格式
                 }
 
                 $c++;
