@@ -93,7 +93,7 @@ class Export
             }
             $row = [];
             foreach ($displayers as $key => $displayer) {
-                $text = $displayer->fill($d)->renderValue();
+                $text = $displayer->lockValue(false)->value('')->fill($d)->renderValue();
                 $text = $this->replace($text);
                 if (is_numeric($text) && !strstr($text, '.')) {
                     $text .= "\t";
@@ -185,7 +185,7 @@ class Export
 
             $c = 0;
             foreach ($displayers as $key => $displayer) {
-                $text = $displayer->fill($d)->renderValue();
+                $text = $displayer->lockValue(false)->value('')->fill($d)->renderValue();
                 $text = $this->replace($text);
                 if ($lib == 'PhpOffice') {
                     $this->worksheet->setCellValueExplicit($list[$c] . ($num + 2), $text, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
@@ -324,7 +324,7 @@ class Export
 
         $zip = new \ZipArchive();
 
-        $zfile = $dir . $title . '_共' . count($data) . '个' . date('Ymd-His') . mt_rand(100, 999) . '.zip';
+        $zfile = $dir . $title . '_共' . count($files) . '个' . date('Ymd-His') . mt_rand(100, 999) . '.zip';
 
         $zip->open($zfile, \ZipArchive::CREATE);  //打开压缩包
 

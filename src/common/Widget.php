@@ -120,7 +120,7 @@ class Widget
      * Undocumented function
      *
      * @param string $name
-     * @param array $arguments
+     * @param array|mixed $arguments
      * 
      * @return mixed
      */

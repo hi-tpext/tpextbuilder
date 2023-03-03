@@ -60,6 +60,7 @@ class MultipleToolbar extends Toolbar
      */
     public function created($barType = '')
     {
+        parent::created();
         return $this;
     }
 

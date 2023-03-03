@@ -204,7 +204,7 @@ class Search extends SWrapper implements Renderable
      * Undocumented function
      *
      * @param boolean $val
-     * @return void
+     * @return $this
      */
     public function open($val = true)
     {
@@ -646,7 +646,6 @@ EOT;
 
     public function __toString()
     {
-        $this->partial = false;
         return $this->render();
     }
 

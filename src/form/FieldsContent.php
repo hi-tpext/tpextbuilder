@@ -5,6 +5,7 @@ namespace tpext\builder\form;
 use think\Model;
 use tpext\builder\common\Form;
 use tpext\builder\common\Search;
+use tpext\builder\search\SRow;
 use tpext\builder\common\Module;
 use tpext\builder\displayer\Field;
 use tpext\builder\inface\Renderable;
@@ -53,7 +54,7 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param FRow|Field|Fillable $row
+     * @param FRow|SRow|Field|Fillable $row
      * @return $this
      */
     public function addRow($row)

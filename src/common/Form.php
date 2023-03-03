@@ -78,7 +78,7 @@ class Form extends FWrapper implements Renderable
      *
      * @var FieldsContent
      */
-    protected $__tabs_content__ = null;
+    protected $__tabs__ = null;
 
     /**
      * Undocumented variable
@@ -294,9 +294,9 @@ class Form extends FWrapper implements Renderable
             $this->rows[] = $this->tab;
         }
 
-        $this->__tabs_content__ = $this->tab->addFieldsContent($label, $active, $name);
-        $this->__tabs_content__->setForm($this);
-        return $this->__tabs_content__;
+        $this->__tabs__ = $this->tab->addFieldsContent($label, $active, $name);
+        $this->__tabs__->setForm($this);
+        return $this->__tabs__;
     }
 
     /**
@@ -332,9 +332,9 @@ class Form extends FWrapper implements Renderable
             $this->rows[] = $this->step;
         }
 
-        $this->__tabs_content__ = $this->step->addFieldsContent($label, $description, $active, $name);
-        $this->__tabs_content__->setForm($this);
-        return $this->__tabs_content__;
+        $this->__tabs__ = $this->step->addFieldsContent($label, $description, $active, $name);
+        $this->__tabs__->setForm($this);
+        return $this->__tabs__;
     }
 
     /**
@@ -419,7 +419,7 @@ class Form extends FWrapper implements Renderable
      */
     public function tabEnd()
     {
-        $this->__tabs_content__ = null;
+        $this->__tabs__ = null;
 
         return $this;
     }
@@ -431,7 +431,7 @@ class Form extends FWrapper implements Renderable
      */
     public function stepEnd()
     {
-        $this->__tabs_content__ = null;
+        $this->__tabs__ = null;
 
         return $this;
     }
@@ -444,8 +444,8 @@ class Form extends FWrapper implements Renderable
     public function allContentsEnd()
     {
         $this->__fields__ = null;
-        $this->__tabs_content__ = null;
-        $this->__items__content = null;
+        $this->__tabs__ = null;
+        $this->__items__ = null;
         $this->__when__ = null;
         return $this;
     }
@@ -457,7 +457,7 @@ class Form extends FWrapper implements Renderable
      */
     public function getTabsContent()
     {
-        return $this->__tabs_content__;
+        return $this->__tabs__;
     }
 
     /**
@@ -919,9 +919,9 @@ EOT;
 
                 $row->class('text-center');
                 $this->__items__->addCol($arguments[0], $row);
-            } else if ($this->__tabs_content__) {
+            } else if ($this->__tabs__) {
 
-                $this->__tabs_content__->addRow($row);
+                $this->__tabs__->addRow($row);
             } else {
 
                 $this->rows[] = $row;

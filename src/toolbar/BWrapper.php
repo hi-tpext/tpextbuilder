@@ -17,7 +17,7 @@ use tpext\common\ExtLoader;
 
 class BWrapper
 {
-    protected static $bars = [];
+    protected static $barTypes = [];
 
     protected static $barsMap = [
         'linkBtn' => \tpext\builder\toolbar\LinkBtn::class,
@@ -44,11 +44,11 @@ class BWrapper
      */
     public static function isBar($name)
     {
-        if (empty(self::$bars)) {
-            self::$bars = array_keys(self::$barsMap);
+        if (empty(self::$barTypes)) {
+            self::$barTypes = array_keys(self::$barsMap);
         }
 
-        return in_array($name, self::$bars);
+        return in_array($name, self::$barTypes);
     }
 
     /**
