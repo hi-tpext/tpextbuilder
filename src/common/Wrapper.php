@@ -4,7 +4,7 @@ namespace tpext\builder\common;
 
 class Wrapper
 {
-    protected static $displayers = [];
+    protected static $displayerTypes = [];
 
     protected static $displayersMap = [
         'field' => \tpext\builder\displayer\Field::class,
@@ -89,11 +89,11 @@ class Wrapper
      */
     public static function isDisplayer($name)
     {
-        if (empty(static::$displayers)) {
-            static::$displayers = array_keys(static::$displayersMap);
+        if (empty(static::$displayerTypes)) {
+            static::$displayerTypes = array_keys(static::$displayersMap);
         }
 
-        return in_array($name, static::$displayers);
+        return in_array($name, static::$displayerTypes);
     }
 
     /**

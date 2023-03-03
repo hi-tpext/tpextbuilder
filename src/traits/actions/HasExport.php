@@ -100,8 +100,17 @@ trait HasExport
             $data = $this->buildDataList($where, $sortOrder, 1, $total);
         }
 
-        $empty = [];
-        $this->buildTable($empty, true);
+        $buildTable = null;
+        if ($data instanceof \Generator) { //生成器模式
+            $empty = [];
+            $this->buildTable($empty, true);
+            $this->table->lockForExporting();
+            $buildTable = function ($dataRow) {
+                $this->buildTable($dataRow, true);
+            };
+        } else { //普通数组模式
+            $this->buildTable($data, true);
+        }
 
         $cols = $this->table->getCols();
 
@@ -110,10 +119,6 @@ trait HasExport
         $__file_type__ = input('get.__file_type__', '');
 
         $logic = new Export;
-
-        $buildTable = function ($data) {
-            $this->buildTable($data, true);
-        };
 
         if ($__file_type__ == 'xls' || $__file_type__ == 'xlsx') {
             return $logic->toExcel($this->pageTitle, $data, $displayers, $__file_type__, $buildTable);
@@ -154,6 +159,9 @@ trait HasExport
         $fieldName = '';
 
         foreach ($cols as $col) {
+            if (!($col instanceof TColumn)) {
+                continue;
+            }
 
             $displayer = $col->getDisplayer();
 
@@ -170,10 +178,6 @@ trait HasExport
             if ($displayer instanceof displayer\Fields) {
                 $content = $displayer->getContent();
                 $displayers = $this->getDisplayers($content->getCols(), $displayers, true);
-                continue;
-            }
-
-            if (!($col instanceof TColumn)) {
                 continue;
             }
 

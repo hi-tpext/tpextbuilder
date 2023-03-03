@@ -45,7 +45,7 @@ class Field implements Fillable
     protected $autoPostRefresh = false;
     protected $showLabel = true;
     protected $labelClass = '';
-    protected $labelArrt = '';
+    protected $labelAttr = '';
     protected $errorClass = '';
     protected $error = '';
     protected $size = [2, 8];
@@ -309,6 +309,8 @@ class Field implements Fillable
     public function lockValue($val = true)
     {
         $this->lockValue = $val;
+
+        return $this;
     }
 
     /**
@@ -705,7 +707,7 @@ class Field implements Fillable
      */
     public function getLabelAttr()
     {
-        return $this->labelArrt;
+        return $this->labelAttr;
     }
 
     /**
@@ -840,7 +842,7 @@ class Field implements Fillable
                     // 
                     //$data = ['name' => 'str1', 'b' => []];
                     // 输出：'str1'
-                    else if (isset($data[$arr[1]])) {//尝试读取上一层级的值
+                    else if (isset($data[$arr[1]])) { //尝试读取上一层级的值
                         $value = $data[$arr[1]];
                         $hasVal = true;
                     }
@@ -861,6 +863,8 @@ class Field implements Fillable
             if ($hasVal) {
 
                 $this->value($value);
+            } else {
+                $this->value('');
             }
         }
 

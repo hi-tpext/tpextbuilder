@@ -38,6 +38,7 @@ class Actionbar extends Toolbar
      */
     public function created($barType = '')
     {
+        parent::created();
         return $this;
     }
 

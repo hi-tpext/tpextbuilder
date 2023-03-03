@@ -2,11 +2,12 @@
 
 namespace tpext\builder\common;
 
-use tpext\builder\inface\Renderable;
-use tpext\builder\toolbar\Bar;
-use tpext\builder\toolbar\BWrapper;
-use tpext\builder\traits\HasDom;
 use tpext\think\View;
+use tpext\builder\toolbar\Bar;
+use tpext\builder\table\TEmpty;
+use tpext\builder\traits\HasDom;
+use tpext\builder\toolbar\BWrapper;
+use tpext\builder\inface\Renderable;
 
 class Toolbar extends BWrapper implements Renderable
 {
@@ -29,6 +30,28 @@ class Toolbar extends BWrapper implements Renderable
 
     protected $elmsLeft = [];
 
+    protected $lockForExporting = false;
+
+    /**
+     * Undocumented variable
+     *
+     * @var TEmpty
+     */
+    protected $tEmpty = null;
+
+    /**
+     * Undocumented function
+     *
+     * @param bool $val
+     * @return $this
+     */
+    public function lockForExporting($val = true)
+    {
+        $this->lockForExporting = $val;
+
+        return $this;
+    }
+
     /**
      * Undocumented function
      *
@@ -36,6 +59,8 @@ class Toolbar extends BWrapper implements Renderable
      */
     public function created()
     {
+        $this->tEmpty = new TEmpty;
+
         return $this;
     }
 
@@ -382,6 +407,10 @@ class Toolbar extends BWrapper implements Renderable
 
     public function __call($name, $arguments)
     {
+        if ($this->lockForExporting) {
+            return $this->tEmpty;
+        }
+
         $count = count($arguments);
 
         if ($count > 0 && self::isBar($name)) {

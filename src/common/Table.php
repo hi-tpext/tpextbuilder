@@ -3,7 +3,9 @@
 namespace tpext\builder\common;
 
 use think\Collection;
+use tpext\think\View;
 use tpext\common\ExtLoader;
+use tpext\builder\table\TEmpty;
 use tpext\builder\table\TColumn;
 use tpext\builder\traits\HasDom;
 use tpext\builder\table\TWrapper;
@@ -14,7 +16,6 @@ use tpext\builder\table\FieldsContent;
 use tpext\builder\toolbar\DropdownBtns;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\displayer\MultipleFile;
-use tpext\think\View;
 
 /**
  * Table class
@@ -40,6 +41,8 @@ class Table extends TWrapper implements Renderable
     protected $list = [];
 
     protected $cols = [];
+
+    protected $displayers = [];
 
     protected $data = [];
 
@@ -72,6 +75,8 @@ class Table extends TWrapper implements Renderable
     protected $toolbar = null;
 
     protected $useToolbar = true;
+
+    protected $lockForExporting = false;
 
     /**
      * Undocumented variable
@@ -130,6 +135,13 @@ class Table extends TWrapper implements Renderable
     protected $usePagesizeDropdown = true;
 
     /**
+     * Undocumented variable
+     *
+     * @var TEmpty
+     */
+    protected $tEmpty = null;
+
+    /**
      * Undocumented function
      *
      * @return $this
@@ -140,6 +152,8 @@ class Table extends TWrapper implements Renderable
         $this->id = input('get.__table__', 'the-table');
 
         $this->emptyText = Module::config('table_empty_text');
+
+        $this->tEmpty = new TEmpty;
 
         return $this;
     }
@@ -245,6 +259,16 @@ class Table extends TWrapper implements Renderable
 
     /**
      * Undocumented function
+     *
+     * @return array
+     */
+    public function getDisplayers()
+    {
+        return $this->displayers;
+    }
+
+    /**
+     * Undocumented function
      * vertical-middle | vertical-mtop | vertical-bottom
      * @param string $val
      * @return $this
@@ -335,6 +359,26 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param bool $val
+     * @return $this
+     */
+    public function lockForExporting($val = true)
+    {
+        $this->lockForExporting = $val;
+
+        if ($this->toolbar) {
+            $this->toolbar->lockForExporting($val);
+        }
+        if ($this->actionbar) {
+            $this->actionbar->lockForExporting($val);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param array $val
      * @return $this
      */
@@ -356,7 +400,7 @@ class Table extends TWrapper implements Renderable
         if (empty($data)) {
             return $this;
         }
-        
+
         $this->data = $data;
         if (count($data) > 0 && empty($this->cols)) {
             $cols = [];
@@ -534,6 +578,16 @@ class Table extends TWrapper implements Renderable
         $this->getToolbar()->useExport($val);
 
         return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return bool
+     */
+    public function isLockForExporting()
+    {
+        return $this->lockForExporting;
     }
 
     /**
@@ -895,7 +949,8 @@ EOT;
 
     /**
      * Undocumented function
-     *
+     * @param string $name
+     * 
      * @return FieldsContent
      */
     public function createFields()
@@ -945,6 +1000,10 @@ EOT;
      */
     public function render()
     {
+        if ($this->lockForExporting) {
+            return 'lockForExporting';
+        }
+
         if (!$this->isInitData) {
             $this->initData();
         }
@@ -1040,6 +1099,10 @@ EOT;
 
     public function __call($name, $arguments)
     {
+        if ($this->lockForExporting) {
+            return  $this->tEmpty;
+        }
+
         $count = count($arguments);
 
         if ($count > 0 && static::isDisplayer($name)) {
@@ -1064,6 +1127,8 @@ EOT;
                 $displayer->canUpload(false);
                 $displayer->jsOptions(['istable' => 1]);
             }
+
+            $this->displayers[$name . $arguments[0]] = $displayer;
 
             return $displayer;
         }
