@@ -863,8 +863,6 @@ class Field implements Fillable
             if ($hasVal) {
 
                 $this->value($value);
-            } else {
-                $this->value('');
             }
         }
 
