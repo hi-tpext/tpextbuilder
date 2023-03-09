@@ -14,6 +14,10 @@
 
 #### 已内置 wangEditor 资源，其余编辑器资源较占空间未内置，需额外安装资源包
 
+其他的按需要安装
+
+comnpser：
+
 `composer require ichynul/builder-ckeditor`
 
 `composer require ichynul/builder-mdeditor`
@@ -22,6 +26,8 @@
 
 `composer require ichynul/builder-ueditor`
 
+或到后台-[扩展管理]-页面下载插件安装
+
 #### 图片压缩／水印
 
-使用`intervention/image 2.x`库，支出`Gd`和`Imagic`(推荐)两种php图片处理库
+使用`intervention/image 2.x`库，支持`Gd`和`Imagic`(推荐)两种php图片处理库
