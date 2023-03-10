@@ -50,7 +50,14 @@ trait HasIndex
     protected $indexWith = [];
 
     /**
-     * 列表页排除的字段，过长的文本字段影响查询速度，而列表页又不显示此字段时可以把它排除
+     * 列表页允许的字段
+     * @var array|string|true
+     */
+    protected $indexFieldsOnly = '*';
+
+    /**
+     * 列表页排除的字段，过长的文本字段影响查询速度，而列表页又不显示此字段时可以把它排除。
+     * [indexFieldsOnly]和[indexFieldsExcept]只能用其中一种
      * @var array|string
      */
     protected $indexFieldsExcept = '';
@@ -239,14 +246,14 @@ trait HasIndex
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)
                 ->order($sortOrder)
-                ->field(empty($this->indexFieldsExcept))
+                ->field(in_array($this->indexFieldsOnly, ['*', '']) ? true : $this->indexFieldsOnly)
                 ->withoutField($this->indexFieldsExcept)
                 ->cursor(); //select和cursor均可，最好是返回cursor
         } else {
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)->order($sortOrder)
                 ->limit(($page - 1) * $this->pagesize, $this->pagesize)
-                ->field(empty($this->indexFieldsExcept))
+                ->field(in_array($this->indexFieldsOnly, ['*', '']) ? true : $this->indexFieldsOnly)
                 ->withoutField($this->indexFieldsExcept)
                 ->select();
         }
