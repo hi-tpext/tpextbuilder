@@ -786,6 +786,16 @@ class Form extends FWrapper implements Renderable
 
         window.focus();
 
+        $(document).bind('keyup', '#{$form} form', function(event) {
+            if (event.keyCode === 13) {
+                if($('#{$form} form textarea').size())
+                {
+                    return event.target.tagName.toLowerCase() == "textarea";
+                }
+                return false;
+            }
+        });
+
         $(document).bind('keyup', function(event) {
             if (event.keyCode === 0x1B) {
                 var index = layer.msg('关闭当前弹窗？', {
