@@ -424,6 +424,14 @@ class Search extends SWrapper implements Renderable
 
         $(document).bind('keyup', function(event) {
             if (event.keyCode === 13) {
+                if($('#{$form} form').hasClass('form-empty'))
+                {
+                    return false;
+                }
+                if($('form').size() > 1)
+                {
+                    return false;
+                }
                 window.__forms__['{$form}'].formSubmit();
                 return false;
             }

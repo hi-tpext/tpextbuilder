@@ -792,21 +792,30 @@ class Form extends FWrapper implements Renderable
                 {
                     return event.target.tagName.toLowerCase() == "textarea";
                 }
+                if($('form').size() > 1)
+                {
+                    return false;
+                }
+                return window.__forms__['{$form}'].formSubmit();
                 return false;
             }
         });
 
         $(document).bind('keyup', function(event) {
-            if (event.keyCode === 0x1B) {
-                var index = layer.msg('关闭当前弹窗？', {
-                    time: 2000,
-                    btn: ['确定', '取消'],
-                    yes: function (params) {
-                        layer.close(index);
-                        var index2 = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(index2);
-                    }
-                });
+            if (parent && parent.layer && event.keyCode === 0x1B) {
+                var index1 = parent.layer.getFrameIndex(window.name);
+                if(index1)
+                {
+                    var index2 = layer.msg('关闭当前弹窗？', {
+                        time: 2000,
+                        btn: ['确定', '取消'],
+                        yes: function (params) {
+                            layer.close(index2);
+                            
+                            parent.layer.close(index1);
+                        }
+                    });
+                }
                 return false; //阻止系统默认esc事件
             }
         });
