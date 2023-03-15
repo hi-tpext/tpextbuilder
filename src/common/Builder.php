@@ -424,7 +424,7 @@ class Builder implements Renderable
     {
         $this->rows = [];
         $this->__row__ = null;
-        
+
         return $this;
     }
 
@@ -696,6 +696,11 @@ class Builder implements Renderable
      */
     public static function checkUrl($url)
     {
+        //如果不是完整的[moudle/controller/action]格式
+        if (preg_match('/^\w+$/', $url) || preg_match('/^\w+(\.\w+)?\/\w+$/', $url)) {
+            $url = url($url);
+        }
+
         if (!empty(static::$auth)) {
 
             return static::$auth::checkUrl($url);
