@@ -416,7 +416,7 @@ EOT;
 
         if (preg_match('/jscode=([^&]+)/i', $jsKey, $mch)) {
             $jscode = $mch[1]; //得到安全密钥
-            $jsKey = str_replace($jscode, '', $jsKey); //替换url中的安全密钥
+            $jsKey = str_replace(['&jscode=', $jscode], '', $jsKey); //替换url中的安全密钥
         }
 
         $readonly = $this->isReadonly() || $this->isDisabled() ? 1 : 0;
