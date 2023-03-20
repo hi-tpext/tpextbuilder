@@ -150,8 +150,9 @@ class Map extends Text
 
         $value = $this->renderValue();
 
-        $position = explode(',', $value);
-        if (count($position) != 2) {
+        $position = array_filter(explode(',', $value), 'strlen');
+        if ($value == ',' || count($position) != 2) {
+            $position = [24.847463, 102.709629];
             $value = '24.847463,102.709629';
         } else {
             $value = $position[1] . ',' . $position[0];
@@ -239,8 +240,8 @@ EOT;
         $inputId = $this->getId();
         $value = $this->renderValue();
 
-        $position = explode(',', $value);
-        if (count($position) != 2) {
+        $position = array_filter(explode(',', $value), 'strlen');
+        if ($value == ',' || count($position) != 2) {
             $position = [24.847463, 102.709629];
             $value = '24.847463,102.709629';
         } else {
@@ -295,8 +296,9 @@ EOT;
 
         $value = $this->renderValue();
 
-        $position = explode(',', $value);
-        if (count($position) != 2) {
+        $position = array_filter(explode(',', $value), 'strlen');
+        if ($value == ',' || count($position) != 2) {
+            $position = [102.709629, 24.847463];
             $value = '102.709629,24.847463';
         }
 
@@ -393,8 +395,8 @@ EOT;
 
         $value = $this->renderValue();
 
-        $position = explode(',', $value);
-        if (count($position) != 2) {
+        $position = array_filter(explode(',', $value), 'strlen');
+        if ($value == ',' || count($position) != 2) {
             $position = [102.709629, 24.847463];
             $value = '102.709629,24.847463';
         }
