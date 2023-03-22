@@ -19,7 +19,7 @@ class Items extends Field
     /**
      * Undocumented variable
      *
-     * @var Form|Search
+     * @var \tpext\builder\common\Form|\tpext\builder\common\Search
      */
     protected $form;
 

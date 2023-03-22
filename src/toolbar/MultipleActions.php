@@ -6,20 +6,6 @@ use tpext\builder\common\Builder;
 
 class MultipleActions extends DropdownBtns
 {
-    /**
-     * Undocumented function
-     *
-     * @param array $confirms
-     * @return $this
-     */
-    public function postChecked($confirms)
-    {
-        $this->postChecked = true;
-        $this->confirms = $confirms;
-
-        return $this;
-    }
-
     protected function postCheckedScript()
     {
         $confirms = [];

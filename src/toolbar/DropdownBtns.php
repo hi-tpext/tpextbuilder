@@ -184,7 +184,7 @@ class DropdownBtns extends Bar
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|\think\Model $data
      * @return $this
      */
     public function parseUrl($data)

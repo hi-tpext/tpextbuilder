@@ -106,10 +106,10 @@ class FieldsContent extends TWrapper implements Renderable
     public function with(...$fields)
     {
         if (count($fields) && $fields[0] instanceof \Closure) {
-            $fields[0]($this->form);
+            $fields[0]($this->table);
         }
 
-        $this->form->fieldsEnd();
+        $this->table->fieldsEnd();
         return $this;
     }
 

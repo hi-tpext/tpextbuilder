@@ -60,12 +60,12 @@ class Step implements Renderable
             $name = (count($this->labels) + 1);
         }
 
-        if (count($this->labels) == 0) {
+        if (empty($this->active) && count($this->labels) == 0) {
             $this->active = $name;
         }
 
         if ($isActive) {
-            $this->actives[$name] = $name;
+            $this->active = $name;
         }
 
         $content = new FieldsContent();

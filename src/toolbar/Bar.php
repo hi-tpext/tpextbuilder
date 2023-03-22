@@ -207,14 +207,6 @@ class Bar implements Renderable
 
     public function beforRender()
     {
-        if (!empty($this->js)) {
-            Builder::getInstance()->addJs($this->js);
-        }
-
-        if (!empty($this->css)) {
-            Builder::getInstance()->addCss($this->css);
-        }
-
         if (!empty($this->script)) {
             Builder::getInstance()->addScript($this->script);
         }

@@ -43,18 +43,6 @@ class MDEditor extends Field
         'imageUpload' => true,
     ];
 
-    /**
-     * Undocumented function
-     *
-     * @param boolean $val
-     * @return $this
-     */
-    public function readonly($val = true)
-    {
-        $this->readonly = $this->canUpload = !$val;
-        return $this;
-    }
-
     protected function editorScript()
     {
         if (!class_exists('\\tpext\\builder\\mdeditor\\common\\Resource')) {
