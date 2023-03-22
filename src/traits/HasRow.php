@@ -4,6 +4,7 @@ namespace tpext\builder\traits;
 
 use tpext\builder\common\Widget;
 use tpext\common\ExtLoader;
+use tpext\builder\displayer\Field;
 
 trait HasRow
 {
@@ -123,7 +124,7 @@ trait HasRow
     /**
      * Undocumented function
      *
-     * @return \tpext\builder\displayer\Field
+     * @return Field
      */
     public function getDisplayer()
     {
@@ -150,7 +151,7 @@ trait HasRow
      *
      * @param string $class
      * @param array $arguments
-     * @return void
+     * @return \tpext\builder\displayer\Field
      */
     public function createDisplayer($class, $arguments)
     {

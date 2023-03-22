@@ -82,7 +82,7 @@ class JSTree extends Widget implements Renderable
     /**
      * Undocumented function
      *
-     * @param Collection $optionsData
+     * @param \think\Collection|array $optionsData
      * @param string $textField
      * @param string $idField
      * @param string $pidField

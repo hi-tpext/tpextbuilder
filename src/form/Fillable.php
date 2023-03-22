@@ -9,7 +9,7 @@ interface Fillable extends Renderable
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|\think\Model $data
      * @return $this
      */
     public function fill($data = []);

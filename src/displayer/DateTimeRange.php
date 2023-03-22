@@ -37,7 +37,7 @@ class DateTimeRange extends Text
      * Undocumented function
      *
      * @param string $val
-     * @return void
+     * @return $this
      */
     public function startDate($val)
     {
@@ -49,7 +49,7 @@ class DateTimeRange extends Text
      * Undocumented function
      *
      * @param string $val
-     * @return void
+     * @return $this
      */
     public function endDate($val)
     {

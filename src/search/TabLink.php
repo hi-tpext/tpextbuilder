@@ -39,6 +39,8 @@ class TabLink implements Renderable
     public function searchId($id)
     {
         $this->searchId = $id;
+
+        return $this;
     }
 
     /**

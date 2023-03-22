@@ -56,7 +56,7 @@ class Row extends Widget
      */
     public function toolbar($size = 12)
     {
-        return $this->column($size)->table();
+        return $this->column($size)->toolbar();
     }
 
     /**
