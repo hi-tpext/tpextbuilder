@@ -81,6 +81,7 @@ trait HasSelectPage
         if (!$this->dataModel) {
             return json(
                 [
+                    'code' => 1,
                     'data' => $this->buildDataList(),
                     'has_more' => 0,
                 ]
@@ -116,6 +117,7 @@ trait HasSelectPage
             }
             return json(
                 [
+                    'code' => 1,
                     'data' => $data,
                     'has_more' => 0,
                 ]
@@ -227,6 +229,7 @@ trait HasSelectPage
         }
         return json(
             [
+                'code' => 1,
                 'data' => $data,
                 'has_more' => $hasMore,
                 'textField' => $textField,
