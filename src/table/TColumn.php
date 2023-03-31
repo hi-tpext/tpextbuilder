@@ -133,4 +133,11 @@ class TColumn extends TWrapper implements Renderable
 
         throw new \UnexpectedValueException('未知调用:' . $name);
     }
+
+    public function destroy()
+    {
+        $this->table = null;
+        $this->displayer->destroy();
+        $this->displayer = null;
+    }
 }

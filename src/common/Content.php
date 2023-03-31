@@ -82,4 +82,9 @@ class Content extends Widget implements Renderable
         $this->partial = false;
         return $this->render();
     }
+
+    public function destroy()
+    {
+        $this->content = null;
+    }
 }

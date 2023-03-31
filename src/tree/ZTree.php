@@ -285,4 +285,9 @@ EOT;
 
         return $viewshow->assign($vars)->getContent();
     }
+
+    public function destroy()
+    {
+        $this->data = null;
+    }
 }

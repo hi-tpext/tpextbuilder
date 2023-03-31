@@ -12,6 +12,9 @@ use tpext\think\View;
 use tpext\builder\traits\HasDom;
 use tpext\common\ExtLoader;
 use think\facade\Lang;
+use tpext\builder\form\FRow;
+use tpext\builder\search\SRow;
+use tpext\builder\table\TColumn;
 
 /**
  * Field class
@@ -52,6 +55,11 @@ class Field implements Fillable
     protected $help = '';
     protected $readonly = false;
     protected $disabled = false;
+    /**
+     * Undocumented variable
+     *
+     * @var FRow|SRow|TColumn
+     */
     protected $wrapper = null;
     protected static $helptempl;
     protected static $labeltempl;
@@ -170,7 +178,7 @@ class Field implements Fillable
      */
     public function getOriginName()
     {
-        return $this->getWrapper()->getName();
+        return $this->wrapper->getName();
     }
 
     /**
@@ -408,7 +416,7 @@ class Field implements Fillable
      */
     public function cloSize($val)
     {
-        $this->getWrapper()->cloSize($val);
+        $this->wrapper->cloSize($val);
         return $this;
     }
 
@@ -671,7 +679,7 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
-     * @param \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn $wrapper
+     * @param FRow|SRow|TColumn $wrapper
      * @return $this
      */
     public function setWrapper($wrapper)
@@ -683,7 +691,7 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
-     * @return \tpext\builder\form\FRow|\tpext\builder\search\SRow|\tpext\builder\table\TColumn
+     * @return FRow|SRow|TColumn
      */
     public function getWrapper()
     {
@@ -1315,7 +1323,7 @@ EOT;
      */
     public function colSortable($val = true)
     {
-        $this->getWrapper()->sortable($val);
+        $this->wrapper->sortable($val);
         return $this;
     }
 
@@ -1327,7 +1335,13 @@ EOT;
      */
     public function colHidden($val = true)
     {
-        $this->getWrapper()->hidden($val);
+        $this->wrapper->hidden($val);
         return $this;
+    }
+
+    public function destroy()
+    {
+        $this->data = null;
+        $this->wrapper = null;
     }
 }

@@ -31,7 +31,7 @@ class Tab extends Widget implements Renderable
      *
      * @var array
      */
-    protected $__fields_contents__ = [];
+    protected $__fields__ = [];
 
     protected $content;
 
@@ -181,7 +181,7 @@ class Tab extends Widget implements Renderable
         }
 
         $content = new FieldsContent();
-        $this->__fields_contents__[] = $content;
+        $this->__fields__[] = $content;
 
         $this->rows[$name] = ['content' => $content, 'active' => ''];
         $this->labels[$name] = ['content' => $label, 'active' => '', 'href' => '#' . $this->getId() . '-' . $name, 'attr' => 'data-toggle="tab"'];
@@ -197,7 +197,7 @@ class Tab extends Widget implements Renderable
      */
     public function fill($data = [])
     {
-        foreach ($this->__fields_contents__ as $content) {
+        foreach ($this->__fields__ as $content) {
             $content->fill($data);
         }
         return $this;
@@ -211,7 +211,7 @@ class Tab extends Widget implements Renderable
      */
     public function readonly($val = true)
     {
-        foreach ($this->__fields_contents__ as $content) {
+        foreach ($this->__fields__ as $content) {
             $content->readonly($val);
         }
         return $this;
@@ -313,5 +313,10 @@ class Tab extends Widget implements Renderable
     {
         $this->partial = false;
         return $this->render();
+    }
+
+    public function destroy()
+    {
+        $this->rows = null;
     }
 }

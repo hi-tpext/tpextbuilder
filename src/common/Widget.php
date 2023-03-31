@@ -3,7 +3,6 @@
 namespace tpext\builder\common;
 
 use tpext\common\ExtLoader;
-use \tpext\builder\common\SizeAdapter;
 
 class Widget
 {
@@ -84,7 +83,7 @@ class Widget
      * Undocumented function
      *
      * @param mixed ...$arguments
-     * @return SizeAdapter
+     * @return \tpext\builder\common\SizeAdapter
      */
     public static function getSizeAdapter(...$arguments)
     {

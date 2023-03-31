@@ -11,6 +11,11 @@ class Row extends Widget
 {
     use HasDom;
 
+    /**
+     * Undocumented variable
+     *
+     * @var Column[] 
+     */
     protected $cols = [];
 
     /**
@@ -172,5 +177,14 @@ class Row extends Widget
     public function __toString()
     {
         return $this->render();
+    }
+
+    public function destroy()
+    {
+        foreach ($this->cols as $col) {
+            $col->destroy();
+        }
+
+        $this->cols = null;
     }
 }

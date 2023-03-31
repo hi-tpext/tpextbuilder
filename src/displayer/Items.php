@@ -4,6 +4,8 @@ namespace tpext\builder\displayer;
 
 use think\Model;
 use think\Collection;
+use tpext\builder\common\Form;
+use tpext\builder\common\Search;
 use tpext\builder\form\ItemsContent;
 
 class Items extends Field
@@ -19,7 +21,7 @@ class Items extends Field
     /**
      * Undocumented variable
      *
-     * @var \tpext\builder\common\Form|\tpext\builder\common\Search
+     * @var Form|Search
      */
     protected $form;
 
@@ -28,21 +30,21 @@ class Items extends Field
      *
      * @var ItemsContent
      */
-    protected $__items_content__;
+    protected $__items__;
 
     public function created($fieldType = '')
     {
         parent::created($fieldType);
 
         $this->form = $this->getWrapper()->getForm();
-        $this->__items_content__ = $this->form->createItems();
+        $this->__items__ = $this->form->createItems();
 
         if (empty($this->name)) {
             $this->name = 'items' . mt_rand(100, 999);
             $this->getWrapper()->setName($this->name);
         }
 
-        $this->__items_content__->name($this->name);
+        $this->__items__->name($this->name);
 
         return $this;
     }
@@ -81,7 +83,7 @@ class Items extends Field
      */
     public function getContent()
     {
-        return $this->__items_content__;
+        return $this->__items__;
     }
 
     /**
@@ -92,7 +94,7 @@ class Items extends Field
      */
     public function actionRowText($val)
     {
-        $this->__items_content__->actionRowText($val);
+        $this->__items__->actionRowText($val);
         return $this;
     }
 
@@ -104,7 +106,7 @@ class Items extends Field
      */
     public function canDelete($val)
     {
-        $this->__items_content__->cnaDelete($val);
+        $this->__items__->cnaDelete($val);
         return $this;
     }
 
@@ -116,7 +118,7 @@ class Items extends Field
      */
     public function cnaDelete($val)
     {
-        $this->__items_content__->cnaDelete($val);
+        $this->__items__->cnaDelete($val);
         return $this;
     }
 
@@ -128,7 +130,7 @@ class Items extends Field
      */
     public function canAdd($val)
     {
-        $this->__items_content__->canAdd($val);
+        $this->__items__->canAdd($val);
         return $this;
     }
 
@@ -139,8 +141,8 @@ class Items extends Field
      */
     public function canNotAddOrDelete()
     {
-        $this->__items_content__->cnaDelete(false);
-        $this->__items_content__->canAdd(false);
+        $this->__items__->cnaDelete(false);
+        $this->__items__->canAdd(false);
         return $this;
     }
 
@@ -173,7 +175,7 @@ class Items extends Field
             $this->data = $data;
         }
 
-        $this->__items_content__->fill($this->data);
+        $this->__items__->fill($this->data);
 
         return $this;
     }
@@ -188,14 +190,14 @@ class Items extends Field
     {
         $this->canDelete(false);
         $this->canAdd(false);
-        $this->__items_content__->readonly($val);
+        $this->__items__->readonly($val);
         return $this;
     }
 
     /**
      * Undocumented function
      *
-     * @param Collection $data
+     * @param array|Collection $data
      * @param string $idField
      * @param boolean $overWrite
      * @return $this
@@ -216,7 +218,7 @@ class Items extends Field
         }
         $this->data = $list;
 
-        $this->__items_content__->fill($this->data);
+        $this->__items__->fill($this->data);
 
         return $this;
     }
@@ -374,11 +376,11 @@ EOT;
     {
         $this->getWrapper()->addClass('items-wrapper');
 
-        if ($this->__items_content__->hasAction()) {
+        if ($this->__items__->hasAction()) {
             $this->actionScript();
         }
 
-        $this->__items_content__->beforRender();
+        $this->__items__->beforRender();
 
         parent::beforRender();
 
@@ -388,7 +390,7 @@ EOT;
     public function customVars()
     {
         return [
-            'items_content' => $this->__items_content__,
+            'items_content' => $this->__items__,
         ];
     }
 
@@ -400,7 +402,7 @@ EOT;
      */
     public function templateFieldCall($callback)
     {
-        $this->__items_content__->templateFieldCall($callback);
+        $this->__items__->templateFieldCall($callback);
         return $this;
     }
 }
