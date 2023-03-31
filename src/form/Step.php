@@ -35,7 +35,7 @@ class Step implements Renderable
      *
      * @var array
      */
-    protected $__fields_contents__ = [];
+    protected $__fields__ = [];
 
     public function getId()
     {
@@ -69,7 +69,7 @@ class Step implements Renderable
         }
 
         $content = new FieldsContent();
-        $this->__fields_contents__[] = $content;
+        $this->__fields__[] = $content;
 
         $this->rows[$name] = ['content' => $content, 'description' => $description, 'active' => ''];
         $this->labels[$name] = ['content' => $label, 'active' => ''];
@@ -85,7 +85,7 @@ class Step implements Renderable
      */
     public function fill($data = [])
     {
-        foreach ($this->__fields_contents__ as $content) {
+        foreach ($this->__fields__ as $content) {
             $content->fill($data);
         }
         return $this;
@@ -99,7 +99,7 @@ class Step implements Renderable
      */
     public function readonly($val = true)
     {
-        foreach ($this->__fields_contents__ as $content) {
+        foreach ($this->__fields__ as $content) {
             $content->readonly($val);
         }
         return $this;

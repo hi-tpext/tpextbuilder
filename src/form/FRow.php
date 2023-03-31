@@ -76,4 +76,11 @@ class FRow extends FWrapper implements Renderable
 
         throw new \UnexpectedValueException('未知调用:' . $name);
     }
+
+    public function destroy()
+    {
+        $this->form = null;
+        $this->displayer->destroy();
+        $this->displayer = null;
+    }
 }

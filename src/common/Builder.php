@@ -23,7 +23,7 @@ class Builder implements Renderable
     /**
      * Undocumented variable
      *
-     * @var array
+     * @var Row[]
      */
     protected $rows = [];
 
@@ -123,7 +123,10 @@ class Builder implements Renderable
      */
     public static function destroyInstance()
     {
-        self::$instance = null;
+        if (self::$instance) {
+            self::$instance->destroy();
+            self::$instance = null;
+        }
     }
 
     /**
@@ -797,5 +800,14 @@ class Builder implements Renderable
     public function __toString()
     {
         return $this->render()->getContent();
+    }
+
+    public function destroy()
+    {
+        foreach ($this->rows as $row) {
+            $row->destroy();
+        }
+
+        $this->rows = null;
     }
 }

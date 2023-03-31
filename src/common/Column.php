@@ -14,7 +14,7 @@ class Column extends Widget
     use HasDom;
 
     public $size = 12;
-    
+
     protected $elms = [];
 
     public function __construct($size = 12)
@@ -30,7 +30,7 @@ class Column extends Widget
      * 
      * @return mixed
      */
-    protected function createWidget($name, $arguments = [])
+    protected function createWidget($name, ...$arguments)
     {
         $widget = Widget::makeWidget($name, $arguments);
         $this->elms[] = $widget;
@@ -187,5 +187,16 @@ class Column extends Widget
         }
 
         throw new \UnexpectedValueException('未知调用:' . $name);
+    }
+
+    public function destroy()
+    {
+        foreach ($this->elms as $elm) {
+            if (method_exists($elm, 'destroy')) {
+                $elm->destroy();
+            }
+        }
+
+        $this->elms = null;
     }
 }

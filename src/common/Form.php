@@ -37,6 +37,11 @@ class Form extends FWrapper implements Renderable
 
     protected $method = 'post';
 
+    /**
+     * Undocumented variable
+     *
+     * @var Field[] 
+     */
     protected $rows = [];
 
     protected $data = [];
@@ -981,5 +986,15 @@ EOT;
     public static function make(...$arguments)
     {
         return Widget::makeWidget('Form', $arguments);
+    }
+
+    public function destroy()
+    {
+        $this->allContentsEnd();
+        foreach ($this->rows as $row) {
+            $row->destroy();
+        }
+        $this->rows = null;
+        $this->data = null;
     }
 }

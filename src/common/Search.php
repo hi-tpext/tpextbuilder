@@ -2,20 +2,20 @@
 
 namespace tpext\builder\common;
 
-use tpext\builder\common\Builder;
-use tpext\builder\common\Module;
-use tpext\builder\displayer\Button;
-use tpext\builder\displayer\Text;
-use tpext\builder\displayer\Field;
-use tpext\builder\form\FieldsContent;
-use tpext\builder\form\When;
-use tpext\builder\form\Fillable;
-use tpext\builder\inface\Renderable;
-use tpext\builder\search\SRow;
-use tpext\builder\search\SWrapper;
-use tpext\builder\search\TabLink;
-use tpext\builder\traits\HasDom;
 use tpext\think\View;
+use tpext\builder\form\When;
+use tpext\builder\search\SRow;
+use tpext\builder\common\Module;
+use tpext\builder\form\Fillable;
+use tpext\builder\traits\HasDom;
+use tpext\builder\common\Builder;
+use tpext\builder\displayer\Text;
+use tpext\builder\search\TabLink;
+use tpext\builder\displayer\Field;
+use tpext\builder\search\SWrapper;
+use tpext\builder\displayer\Button;
+use tpext\builder\inface\Renderable;
+use tpext\builder\form\FieldsContent;
 
 /**
  * Search class
@@ -30,6 +30,11 @@ class Search extends SWrapper implements Renderable
 
     protected $method = 'get';
 
+    /**
+     * Undocumented variable
+     *
+     * @var Field[] 
+     */
     protected $rows = [];
 
     protected $searchButtonsCalled = false;
@@ -707,5 +712,19 @@ EOT;
     public static function make(...$arguments)
     {
         return Widget::makeWidget('Search', $arguments);
+    }
+
+    public function destroy()
+    {
+        $this->__fields__ = null;
+        $this->__when__ = null;
+        $this->addTop = null;
+        $this->addBottom = null;
+        $this->tablink = null;
+        foreach ($this->rows as $row) {
+            $row->destroy();
+        }
+        $this->rows = null;
+        $this->table = null;
     }
 }

@@ -9,6 +9,7 @@ use tpext\builder\table\TEmpty;
 use tpext\builder\table\TColumn;
 use tpext\builder\traits\HasDom;
 use tpext\builder\table\TWrapper;
+use tpext\builder\displayer\Field;
 use tpext\builder\table\Actionbar;
 use tpext\builder\table\Paginator;
 use tpext\builder\inface\Renderable;
@@ -40,6 +41,11 @@ class Table extends TWrapper implements Renderable
 
     protected $list = [];
 
+    /**
+     * Undocumented variable
+     *
+     * @var Field[] 
+     */
     protected $cols = [];
 
     protected $displayers = [];
@@ -121,7 +127,7 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented variable
      *
-     * @var Form
+     * @var Search
      */
     protected $searchForm = null;
 
@@ -1145,5 +1151,31 @@ EOT;
     public static function make(...$arguments)
     {
         return Widget::makeWidget('Table', $arguments);
+    }
+
+    public function destroy()
+    {
+        $this->__fields__ = null;
+        $this->toolbar = null;
+        $this->actionbar = null;
+        $this->pagesizeDropdown = null;
+        foreach ($this->cols as $col) {
+            $col->destroy();
+        }
+        $this->cols = null;
+        $this->data = null;
+        $this->tEmpty = null;
+        if ($this->searchForm) {
+            $this->searchForm->destroy();
+            $this->searchForm = null;
+        }
+        if ($this->addTop) {
+            $this->addTop->destroy();
+            $this->addTop = null;
+        }
+        if ($this->addBottom) {
+            $this->addBottom->destroy();
+            $this->addBottom = null;
+        }
     }
 }

@@ -427,4 +427,9 @@ class Toolbar extends BWrapper implements Renderable
     {
         return $this->render();
     }
+
+    public function destroy()
+    {
+        $this->elms = null;
+    }
 }

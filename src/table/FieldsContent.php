@@ -61,7 +61,7 @@ class FieldsContent extends TWrapper implements Renderable
      */
     public function addCol($col)
     {
-        $this->cols[] = $col;
+        $this->cols[$col->getLabel()] = $col;
         return $this;
     }
 
@@ -229,7 +229,7 @@ class FieldsContent extends TWrapper implements Renderable
 
             $col = TColumn::make($arguments[0], $count > 1 ? $arguments[1] : '', $count > 2 ? $arguments[2] : 0);
 
-            $this->col[$arguments[0]] = $col;
+            $this->cols[$arguments[0]] = $col;
 
             return $col->$name($arguments[0], $col->getLabel());
         }
