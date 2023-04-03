@@ -344,7 +344,7 @@ class ItemsContent extends FWrapper
 
             $displayer->required(false);
 
-            if ($this->templateFieldCall && $this->templateFieldCall) {
+            if ($this->templateFieldCall) {
                 $this->templateFieldCall->call($this, $displayer);
             }
 
