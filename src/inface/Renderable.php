@@ -14,7 +14,7 @@ interface Renderable
     /**
      * Undocumented function
      *
-     * @return Renderable
+     * @return void
      */
     public function beforRender();
 }
