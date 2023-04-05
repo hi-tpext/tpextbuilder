@@ -11,7 +11,7 @@ class DateTimeRange extends Text
     ];
 
     protected $css = [
-        '/assets/tpextbuilder/js/bootstrap-daterangepicker/daterangepicker.css',
+        '/assets/tpextbuilder/js/bootstrap-daterangepicker/daterangepicker.min.css',
     ];
 
     protected $size = [2, 4];
@@ -20,17 +20,21 @@ class DateTimeRange extends Text
 
     protected $befor = '';
 
-    protected $timePicker = true;
-
     protected $separator = ',';
 
     protected $timespan = 'Y-m-d H:i:s';
 
     protected $jsOptions = [
-        'opens' => 'right',
-        'showDropdowns' => true,
+        'opens' => 'right', //(left/right/center) 选择器是否显示为左侧，右侧，或者它所附加的HTML元素下方居中。
+        'drops' => 'down', //(down/up) 选择器是出现在下面（默认）还是高于它所附加的HTML元素。
+        'showDropdowns' => true, //(true/false) 显示年份和月份选择日历上方的框以跳转到特定的月份和年份
+        'timePicker' => true, //(true/false)添加选择框以选择时间
+        'timePickerSeconds' => true, //在timePicker中显示秒数
+        'linkedCalendars' => false, //(true/false) 启用后，显示的两个日历将始终为两个连续月份（即1月和2月），当点击日历上方的左箭头或右箭头时，两个日历都会提前。禁用时，两个日历可以单独进行，并显示任何月份/年份
+        'showCustomRangeLabel' => true,
         'timePicker24Hour' => true, //设置小时为24小时制
-        'locale' => [],
+        'locale' => [], //(object) 允许您为按钮和标签提供本地化字符串，自定义日期格式，以及更改日历的第一天。locale在配置生成器中检查以查看如何自定义这些选项
+        'parentEl' => '', //将添加日期范围选择器的父元素的jQuery选择器，如果没有提供，这将是body
     ];
 
     /**
@@ -60,8 +64,6 @@ class DateTimeRange extends Text
     protected function dateTimeRangeScript()
     {
         $inputId = $this->getId();
-
-        $this->jsOptions['timePicker'] = $this->timePicker;
 
         $this->jsOptions['locale'] = array_merge(
             $this->jsOptions['locale'],

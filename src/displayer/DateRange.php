@@ -27,7 +27,7 @@ class DateRange extends Text
 
     protected $jsOptions = [
         'weekStart' => 1,
-        'autoclose' => true,
+        'autoclose' => false,
         'language' => 'zh-CN'
     ];
 
@@ -49,7 +49,7 @@ class DateRange extends Text
 
         $script = <<<EOT
 
-        $('#{$inputId}-piker').datepicker({
+        $('#{$inputId}').parent('.input-group').datepicker({
             {$configs},
             inputs : [$('#{$inputId}-start'), $('#{$inputId}-end')]
         });
@@ -63,7 +63,7 @@ class DateRange extends Text
 
         $('#{$inputId}-start,#{$inputId}-end').on('change', function(){
             $('#{$inputId}').val([$('#{$inputId}-start').val().trim(),$('#{$inputId}-end').val().trim()].join('{$this->separator}'));
-            if($('#{$inputId}').val()==',')
+            if($('#{$inputId}').val()==',' || $('#{$inputId}').val()=='{$this->separator}')
             {
                 $('#{$inputId}').val('');
             }
