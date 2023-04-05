@@ -31,6 +31,17 @@ class DateTime extends Text
         'showClose' => true,
         'sideBySide' => true,
         'inline' => false,
+        'icons' => [
+            'time' => 'mdi mdi-clock',
+            'date' => 'mdi mdi-calendar',
+            'up' => 'mdi mdi-chevron-up',
+            'down' => 'mdi mdi-chevron-down',
+            'previous' => 'mdi mdi-chevron-left',
+            'next' => 'mdi mdi-chevron-right',
+            'today' => 'mdi mdi-crosshairs-gps',
+            'clear' => 'mdi mdi-delete',
+            'close' => 'mdi mdi-close'
+        ],
     ];
 
     protected function dateTimeScript()
@@ -55,6 +66,18 @@ class DateTime extends Text
         $('#{$inputId}').datetimepicker({
             "locale" : locale{$str},
             {$configs}
+        }).on('dp.show', function(e){
+            if($('#{$inputId}').hasClass('item-field'))//在items中，修复定位问题
+            {
+                var offset = $('#{$inputId}').offset();
+
+                $('#{$inputId}').parent('.input-group')
+                    .find('.bootstrap-datetimepicker-widget')
+                    .css('position', 'fixed')
+                    .css('z-index', 999)
+                    .css('left', offset.left + 'px')
+                    .css('top', offset.top + $('#{$inputId}').height() + 15  + 'px')
+            }
         });
 
 EOT;

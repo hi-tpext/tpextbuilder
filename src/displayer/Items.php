@@ -283,7 +283,7 @@ class Items extends Field
 
         if(!window.reset)
         {
-            window.reset=function(obj)
+            window.reset = function(obj)
             {
                 if($(obj).hasClass('checkbox-label') || $(obj).hasClass('radio-label'))
                 {
@@ -303,17 +303,23 @@ class Items extends Field
                     reset(input);
                     return;
                 }
-                var oldName = $(obj).data('name');
+                
                 var oldId = $(obj).attr('id');
                 var oldOldId = oldId;
                 if(!oldId)
                 {
                     return;
                 }
+                var newid = oldId.replace('-no-init-script','__new__' + i);
                 oldId = oldId.replace('-no-init-script', '');
-                var newid = oldId + '__new__' + i;
                 script = script.replace(new RegExp('#' + oldId, "gm"), '#' + newid);
                 $(obj).attr('id', newid);
+                
+                var oldName = $(obj).data('name');
+                if(!oldName)
+                {
+                    return;
+                }
                 var newName = oldName.replace(/(.+?)\[__new__\](.+?)/, '$1' + '[__new__' + i + ']$2');
     
                 //console.log('oldId:'+oldId);
