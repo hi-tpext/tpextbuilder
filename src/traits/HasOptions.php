@@ -12,12 +12,12 @@ trait HasOptions
     /**
      * Undocumented function
      *
-     * @param array|Collection $options
+     * @param array|Collection|\IteratorAggregate $options
      * @return $this
      */
     public function options($options)
     {
-        if ($options instanceof Collection) {
+        if ($options instanceof Collection || $options instanceof \IteratorAggregate) {
             return $this->optionsData($options);
         }
         $this->options = $options;
@@ -55,7 +55,7 @@ trait HasOptions
     /**
      * Undocumented function
      *
-     * @param Collection|array $optionsData
+     * @param array|Collection|\IteratorAggregate $optionsData
      * @param string $textField
      * @param string $idField
      * @return $this

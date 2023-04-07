@@ -13,7 +13,7 @@ trait HasLeftTree
      *
      * @var array
      */
-    protected $treeScope = [];//如 [['enable', 'eq', 1]]
+    protected $treeScope = []; //如 [['enable', 'eq', 1]]
 
     /**
      * 根一级的id
@@ -27,7 +27,7 @@ trait HasLeftTree
      *
      * @var integer
      */
-    protected $treeRootText = '全部';
+    protected $treeRootText = ''; //全部
 
     /**
      * js树类型，ztree/jstree
@@ -76,5 +76,5 @@ trait HasLeftTree
      *
      * @var \think\Model
      */
-    protected $treeModel;
+    protected $treeModel = null;
 }

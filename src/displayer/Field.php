@@ -818,7 +818,7 @@ class Field implements Fillable
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|Model|\ArrayAccess $data
      * @return $this
      */
     public function fill($data = [])

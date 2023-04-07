@@ -21,11 +21,11 @@ trait HasView
 
         if (request()->isGet()) {
 
-            $builder = $this->builder($this->pageTitle, $this->viewText, 'view');
+            $builder = $this->builder($this->pageTitle, $this->viewText ?: __blang('bilder_page_view_text'), 'view');
 
             $data = $this->dataModel->field(true)->where($this->getPk(), $id)->find();
             if (!$data) {
-                return $builder->layer()->close(0, '数据不存在');
+                return $builder->layer()->close(0, __blang('bilder_data_not_found'));
             }
 
             $form = $builder->form();
@@ -41,7 +41,7 @@ trait HasView
             return $builder->render();
         }
 
-        $this->error('不允许的操作');
+        $this->error(__blang('bilder_not_allowed'));
     }
 
     private function turn($rows)
@@ -120,12 +120,12 @@ trait HasView
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
-                $options = [$pair[0] => '是', $pair[1] => '否'];
+                $options = [$pair[0] => __blang('bilder_option_off'), $pair[1] => __blang('bilder_option_on')];
                 $row->match($fieldName, $row->getLabel())->options($options);
             } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 
-                $row->raw($fieldName, $row->getLabel())->default('-空-');
+                $row->raw($fieldName, $row->getLabel())->default(__blang('bilder_value_is_empty'));
             }
 
             $size = $displayer->getSize();

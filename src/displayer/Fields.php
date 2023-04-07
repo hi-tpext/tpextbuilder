@@ -83,7 +83,7 @@ class Fields extends Field
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|Model|\ArrayAccess $data
      * @return $this
      */
     public function value($val)
@@ -106,7 +106,7 @@ class Fields extends Field
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|Model|\ArrayAccess $data
      * @param boolean $overWrite
      * @return $this
      */
@@ -118,11 +118,11 @@ class Fields extends Field
 
         if (
             !empty($this->name) && isset($data[$this->name]) &&
-            (is_array($data[$this->name]) || $data[$this->name] instanceof Model)
+            (is_array($data[$this->name]) || $data[$this->name] instanceof \ArrayAccess)
         ) {
             $fieldData = $data[$this->name];
 
-            if ($fieldData instanceof Model) {
+            if (is_object($fieldData) && method_exists($fieldData, 'toArray')) {
                 $fieldData = $fieldData->toArray();
             }
 

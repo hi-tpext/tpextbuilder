@@ -18,7 +18,7 @@ class Export
     /**
      * Undocumented function
      * @param string $title
-     * @param array|Collection|\Generator $data
+     * @param array|Collection|\IteratorAggregate|\Generator $data
      * @param array $displayers
      * @param \Closure|null $buildTable
      * @return mixed
@@ -132,7 +132,7 @@ class Export
     /**
      * Undocumented function
      * @param string $title
-     * @param array|Collection|\Generator $data
+     * @param array|Collection|\IteratorAggregate|\Generator $data
      * @param array $displayers
      * @param string $type
      * @param \Closure|null $buildTable
@@ -286,7 +286,7 @@ class Export
      * Undocumented function
      *
      * @param string $title
-     * @param array|Collection|\Generator $data
+     * @param array|Collection|\IteratorAggregate|\Generator $data
      * @param string $codeField 数据中要编码的字段名
      * @param integer $QR_ECLEVEL QR_ECLEVEL_L=0,QR_ECLEVEL_M=1,QR_ECLEVEL_Q=2,QR_ECLEVEL_H=3;
      * @param integer $size 二维码大小

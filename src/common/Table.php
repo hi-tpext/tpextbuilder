@@ -93,7 +93,7 @@ class Table extends TWrapper implements Renderable
 
     protected $useActionbar = true;
 
-    protected $actionRowText = '操作';
+    protected $actionRowText = '';
 
     protected $isInitData = false;
 
@@ -158,6 +158,7 @@ class Table extends TWrapper implements Renderable
         $this->id = input('get.__table__', 'the-table');
 
         $this->emptyText = Module::config('table_empty_text');
+        $this->actionRowText = __blang('bilder_action_operation');
 
         $this->tEmpty = new TEmpty;
 
@@ -352,7 +353,7 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array|Collection $data
+     * @param array|Collection|\IteratorAggregate $data
      * @return $this
      */
     public function data($data = [])
@@ -398,7 +399,7 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array|Collection $data
+     * @param array|Collection|\IteratorAggregate $data
      * @return $this
      */
     public function fill($data = [])
@@ -410,11 +411,7 @@ class Table extends TWrapper implements Renderable
         if (count($data) > 0 && empty($this->cols)) {
             $cols = [];
 
-            if ($data && $data instanceof Collection) {
-                $cols = array_keys($data->toArray()[0]);
-            } else {
-                $cols = array_keys($data[0]);
-            }
+            $cols = array_keys($data[0]);
 
             foreach ($cols as $col) {
                 $this->show($col, ucfirst($col));
@@ -438,7 +435,7 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return array|Collection
+     * @return array|Collection|\IteratorAggregate
      */
     public function getData()
     {
@@ -1138,7 +1135,7 @@ EOT;
             return $displayer;
         }
 
-        throw new \UnexpectedValueException('未知调用:' . $name);
+        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
     }
 
     /**

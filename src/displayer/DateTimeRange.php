@@ -24,6 +24,8 @@ class DateTimeRange extends Text
 
     protected $timespan = 'Y-m-d H:i:s';
 
+    protected $language = 'zh-CN';
+
     protected $jsOptions = [
         'opens' => 'right', //(left/right/center) 选择器是否显示为左侧，右侧，或者它所附加的HTML元素下方居中。
         'drops' => 'down', //(down/up) 选择器是出现在下面（默认）还是高于它所附加的HTML元素。
@@ -33,7 +35,18 @@ class DateTimeRange extends Text
         'linkedCalendars' => false, //(true/false) 启用后，显示的两个日历将始终为两个连续月份（即1月和2月），当点击日历上方的左箭头或右箭头时，两个日历都会提前。禁用时，两个日历可以单独进行，并显示任何月份/年份
         'showCustomRangeLabel' => true,
         'timePicker24Hour' => true, //设置小时为24小时制
-        'locale' => [], //(object) 允许您为按钮和标签提供本地化字符串，自定义日期格式，以及更改日历的第一天。locale在配置生成器中检查以查看如何自定义这些选项
+        'locale' => [
+            'direction' => 'ltr',
+            'format' => '', //$this->format
+            'separator' => '', //$this->separator
+            'applyLabel' => '',//确定
+            'cancelLabel' => '',//取消
+            'weekLabel' => 'W',
+            'customRangeLabel' => '',//自定义范围
+            // 'daysOfWeek' => '',
+            // 'monthNames' => '',
+            // 'firstDay' => '',
+        ], //(object) 允许您为按钮和标签提供本地化字符串，自定义日期格式，以及更改日历的第一天。locale在配置生成器中检查以查看如何自定义这些选项
         'parentEl' => '', //将添加日期范围选择器的父元素的jQuery选择器，如果没有提供，这将是body
     ];
 
@@ -65,19 +78,29 @@ class DateTimeRange extends Text
     {
         $inputId = $this->getId();
 
-        $this->jsOptions['locale'] = array_merge(
-            $this->jsOptions['locale'],
-            [
-                'format' => $this->format,
-                'separator' => $this->separator,
-            ]
-        );
+        if (empty($this->jsOptions['locale']['format'])) {
+            $this->jsOptions['locale']['format'] = $this->format;
+        }
+        if (empty($this->jsOptions['locale']['separator'])) {
+            $this->jsOptions['locale']['separator'] = $this->separator;
+        }
+        if (empty($this->jsOptions['locale']['applyLabel'])) {
+            $this->jsOptions['locale']['applyLabel'] = __blang('bilder_button_ok');
+        }
+        if (empty($this->jsOptions['locale']['cancelLabel'])) {
+            $this->jsOptions['locale']['cancelLabel'] = __blang('bilder_button_cancel');
+        }
+        if (empty($this->jsOptions['locale']['customRangeLabel'])) {
+            $this->jsOptions['locale']['customRangeLabel'] = __blang('bilder_custom_range_label');
+        }
 
         $configs = json_encode($this->jsOptions);
 
         $configs = substr($configs, 1, strlen($configs) - 2);
 
         $script = <<<EOT
+
+        moment.locale('{$this->language}');
 
         $('#{$inputId}').daterangepicker({
             {$configs}

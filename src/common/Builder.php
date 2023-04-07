@@ -9,6 +9,7 @@ use tpext\builder\tree\ZTree;
 use tpext\builder\inface\Auth;
 use tpext\builder\tree\JSTree;
 use tpext\builder\inface\Renderable;
+use think\facade\Lang;
 
 class Builder implements Renderable
 {
@@ -52,7 +53,7 @@ class Builder implements Renderable
 
     protected $commonJs = [
         '/assets/tpextbuilder/js/jquery-validate/jquery.validate.min.js',
-        '/assets/tpextbuilder/js/jquery-validate/messages_zh.min.js',
+        '/assets/tpextbuilder/js/jquery-validate/messages.min.js',
         '/assets/tpextbuilder/js/layer/layer.js',
         '/assets/tpextbuilder/js/tpextbuilder.js',
     ];
@@ -778,6 +779,7 @@ class Builder implements Renderable
             'css' => array_unique($this->css),
             'stylesheet' => implode('', array_unique($this->styleSheet)),
             'script' => implode('', array_unique($this->script)),
+            '__blang' => json_encode(Lang::get() ?: [], JSON_UNESCAPED_UNICODE),
         ];
 
         View::share([

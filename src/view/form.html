@@ -52,40 +52,40 @@
                             }, 500);
                             if (data.status || data.code) {
                                 if (data.layer_close) {
-                                    that.closeLayer(data.msg || data.message || '操作成功！', 'success');
+                                    that.closeLayer(data.msg || data.message || "{:__blang('bilder_save_succeeded')}", 'success');
                                 } else if (data.layer_close_refresh) {
-                                    that.closeLayerRefresh(data.msg || data.message || '操作成功！', 'success');
+                                    that.closeLayerRefresh(data.msg || data.message || "{:__blang('bilder_save_succeeded')}", 'success');
                                 } else if (data.layer_close_go) {
-                                    that.closeLayerGo(data.msg || data.message || '操作成功！', data
+                                    that.closeLayerGo(data.msg || data.message || "{:__blang('bilder_save_succeeded')}", data
                                         .layer_close_go, 'success');
                                 }
                                 else if (data.url) {
-                                    lightyear.notify(data.msg || data.message || '操作成功！', 'success');
+                                    lightyear.notify(data.msg || data.message || "{:__blang('bilder_save_succeeded')}", 'success');
                                     setTimeout(function () {
                                         location.replace(data.url);
                                     }, data.wait * 1000 || 2000);
                                 }
                                 else {
-                                    lightyear.notify(data.msg || data.message || '操作成功！',
+                                    lightyear.notify(data.msg || data.message || "{:__blang('bilder_save_succeeded')}",
                                         'success');
                                 }
                             } else {
                                 if (data.layer_close) {
-                                    that.closeLayer(data.msg || data.message || '操作失败！', 'danger');
+                                    that.closeLayer(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
                                 } else if (data.layer_close_refresh) {
-                                    that.closeLayerRefresh(data.msg || data.message || '操作失败！', 'danger');
+                                    that.closeLayerRefresh(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
                                 } else if (data.layer_close_go) {
-                                    that.closeLayerGo(data.msg || data.message || '操作失败！', data
+                                    that.closeLayerGo(data.msg || data.message || "{:__blang('bilder_save_failed')}", data
                                         .layer_close_go, 'danger');
                                 }
                                 else if (data.url) {
-                                    lightyear.notify(data.msg || data.message || '操作失败', 'danger');
+                                    lightyear.notify(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
                                     setTimeout(function () {
                                         location.replace(data.url);
                                     }, data.wait * 1000 || 2000);
                                 }
                                 else {
-                                    lightyear.notify(data.msg || data.message || '操作失败', 'danger');
+                                    lightyear.notify(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
                                 }
                             }
                             if (data.script || (data.data && data.data.script)) {
@@ -100,7 +100,7 @@
                         },
                         error: function () {
                             lightyear.loading('hide');
-                            lightyear.notify('网络错误', 'danger');
+                            lightyear.notify("{:__blang('bilder_network_error')}", 'danger');
                         }
                     });
 

@@ -15,7 +15,7 @@ trait HasDelete
         $ids = input('post.ids', '');
         $ids = array_filter(explode(',', $ids), 'strlen');
         if (empty($ids)) {
-            $this->error('参数有误');
+            $this->error(__blang('bilder_parameter_error'));
         }
         $res = 0;
         foreach ($ids as $id) {
@@ -29,9 +29,9 @@ trait HasDelete
         }
 
         if ($res) {
-            $this->success('成功删除' . $res . '条数据');
+            $this->success(__blang('bilder_delete_{:num}_records_succeeded', ['num' => $res]));
         } else {
-            $this->error('删除失败');
+            $this->error(__blang('bilder_delete_failed'));
         }
     }
 

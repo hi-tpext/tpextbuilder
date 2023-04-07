@@ -2,12 +2,13 @@
 
 namespace tpext\builder\tree;
 
-use tpext\builder\common\Builder;
+use think\Collection;
+use tpext\think\View;
 use tpext\builder\common\Module;
 use tpext\builder\common\Widget;
-use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
-use tpext\think\View;
+use tpext\builder\common\Builder;
+use tpext\builder\inface\Renderable;
 
 class JSTree extends Widget implements Renderable
 {
@@ -15,7 +16,7 @@ class JSTree extends Widget implements Renderable
 
     protected $data;
 
-    protected $onClick = 'alert("未绑定`onClick`事件。点击了"+data.instance.get_node(data.selected[0]).text);';
+    protected $onClick = 'alert("`onClick` event was not binded, clicked : "+data.instance.get_node(data.selected[0]).text);';
 
     protected $trigger = '';
 
@@ -82,7 +83,7 @@ class JSTree extends Widget implements Renderable
     /**
      * Undocumented function
      *
-     * @param \think\Collection|array $optionsData
+     * @param array|Collection|\IteratorAggregate $optionsData
      * @param string $textField
      * @param string $idField
      * @param string $pidField
@@ -91,6 +92,10 @@ class JSTree extends Widget implements Renderable
     public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id', $rootText = '全部')
     {
         $tree = [];
+
+        if ($rootText = '全部') {
+            $rootText = __blang('bilder_left_tree_text_all');
+        }
 
         if ($rootText) {
             $tree[] = [
@@ -244,9 +249,6 @@ EOT;
             });
         });
 
-        var leftw = $('.tree-div').parent('div').outerWidth();
-        var rightw = $('.tree-div').parent('div').next('div').outerWidth();
-
         $('.left-tree').on('click', '.hide-left',function(){
             var leftTree = $(this).parent('.tree-div').parent('div.left-tree');
             leftTree.addClass('hidden');
@@ -256,7 +258,7 @@ EOT;
 
             if(!rightTree.find('.show-left').length)
             {
-                rightTree.append('<a href="#" title="打开左侧" class="show-left"><i class="mdi mdi-format-horizontal-align-right"></i></a>');
+                rightTree.append('<a href="#" title="' + __blang.bilder_action_open_left_tree + '" class="show-left"><i class="mdi mdi-format-horizontal-align-right"></i></a>');
             }
             else
             {

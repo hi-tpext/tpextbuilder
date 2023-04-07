@@ -32,9 +32,9 @@ trait HasBase
      * @var string
      */
     protected $pageTitle = 'Page';
-    protected $addText = '添加';
-    protected $editText = '编辑';
-    protected $viewText = '查看';
+    protected $addText = ''; //添加
+    protected $editText = ''; //编辑
+    protected $viewText = ''; //查看
     protected $enableField = 'enable';
     protected $pk = 'id';
 
@@ -114,10 +114,10 @@ trait HasBase
         }
 
         if (!$res) {
-            $this->error('保存失败');
+            $this->error(__blang('bilder_save_failed'));
         }
 
-        return $this->builder()->layer()->closeRefresh(1, '保存成功');
+        return $this->builder()->layer()->closeRefresh(1, __blang('bilder_save_succeeded'));
     }
 
     /**
@@ -181,9 +181,9 @@ trait HasBase
     {
         $this->form = null;
         $this->dataModel = null;
-        $this->addText = '添加';
-        $this->editText = '编辑';
-        $this->viewText = '查看';
+        $this->addText = '';
+        $this->editText = '';
+        $this->viewText = '';
         $this->enableField = 'enable';
         $this->pk = 'id';
         $this->isEdit = false;
@@ -195,7 +195,7 @@ trait HasBase
             $this->search = null;
         }
         if (isset($this->indexText)) {
-            $this->indexText = '列表';
+            $this->indexText = '';
             $this->pagesize = 14;
             $this->sortOrder = 'id desc';
             $this->useSearch = true;
@@ -209,14 +209,14 @@ trait HasBase
         if (isset($this->treeModel) && isset($this->treeIdField)) {
             $this->treeScope = [];
             $this->treeRootid = 0;
-            $this->treeRootText = '全部';
+            $this->treeRootText = '';
             $this->treeType = 'ztree';
             $this->treeTextField = '';
             $this->treeIdField = 'id';
             $this->treeParentIdField = 'parent_id';
             $this->treeKey = '';
             $this->treeExpandAll = true;
-            $this->treeModel;
+            $this->treeModel = null;
         }
         if (isset($this->selectIdField) && isset($this->selectTextField)) {
             $this->selectScope = [];

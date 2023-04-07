@@ -109,7 +109,7 @@
 
             if (values.length == 0) {
 
-                lightyear.notify('未选中任何数据', 'warning');
+                lightyear.notify(__blang.bilder_no_data_was_selected, 'warning');
 
                 return false;
             }
@@ -119,15 +119,15 @@
             if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
                     var text = $('#' + id).text().trim() || $(this).attr('title');
-                    confirm = '确定要执行批量<strong>' + text + '</strong>操作吗？';
+                    confirm = __blang.bilder_confirm_to_do_batch_operation + ' <strong>' + text + '</strong> ' + __blang.bilder_action_operation + ' ?';
                 }
                 $.alert({
-                    title: '操作提示',
+                    title: __blang.bilder_operation_tips,
                     content: confirm,
                     type: 'orange',
                     buttons: {
                         confirm: {
-                            text: '确认',
+                            text: __blang.bilder_button_ok,
                             btnClass: 'btn-primary',
                             action: function () {
                                 tpextbuilder.autoSendData({
@@ -136,7 +136,7 @@
                             }
                         },
                         cancel: {
-                            text: '取消',
+                            text: __blang.bilder_button_cancel,
                             action: function () {
 
                             }
@@ -189,7 +189,7 @@
 
             if (values.length == 0) {
 
-                lightyear.notify('未选中任何数据', 'warning');
+                lightyear.notify(__blang.bilder_no_data_was_selected, 'warning');
 
                 return false;
             }
@@ -246,7 +246,7 @@
 
             if (values.length == 0) {
 
-                lightyear.notify('未选中任何数据', 'warning');
+                lightyear.notify(__blang.bilder_no_data_was_selected, 'warning');
 
                 return false;
             }
@@ -256,15 +256,15 @@
             if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
                     var text = $(this).text().trim();
-                    confirm = '确定要执行批量<strong>' + text + '</strong>操作吗？';
+                    confirm = __blang.bilder_confirm_to_do_batch_operation + ' <strong>' + text + '</strong> ' + __blang.bilder_action_operation + ' ?';
                 }
                 $.alert({
-                    title: '操作提示',
+                    title: __blang.bilder_operation_tips,
                     content: confirm,
                     type: 'orange',
                     buttons: {
                         confirm: {
-                            text: '确认',
+                            text: __blang.bilder_button_ok,
                             btnClass: 'btn-primary',
                             action: function () {
                                 tpextbuilder.autoSendData({
@@ -273,7 +273,7 @@
                             }
                         },
                         cancel: {
-                            text: '取消',
+                            text: __blang.bilder_button_cancel,
                             action: function () {
 
                             }
@@ -315,16 +315,16 @@
             var val = $(this).data('id');
             if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
-                    var text = $(this).text().trim() || $(this).attr('title') || '此';
-                    confirm = '确定要执行<strong>' + text + '</strong>操作吗？';
+                    var text = $(this).text().trim() || $(this).attr('title') || __blang.bilder_this;
+                    confirm = __blang.bilder_confirm_to_do_operation + ' <strong>' + text + '</strong> ' + __blang.bilder_action_operation + ' ?';
                 }
                 $.alert({
-                    title: '操作提示',
+                    title: __blang.bilder_operation_tips,
                     content: confirm,
                     type: 'orange',
                     buttons: {
                         confirm: {
-                            text: '确认',
+                            text: __blang.bilder_button_ok,
                             btnClass: 'btn-primary',
                             action: function () {
                                 tpextbuilder.autoSendData({
@@ -333,7 +333,7 @@
                             }
                         },
                         cancel: {
-                            text: '取消',
+                            text: __blang.bilder_button_cancel,
                             action: function () {
 
                             }
@@ -357,8 +357,8 @@
             var val = $('.row-__action__ .' + classname).data('id');
             if (confirm && confirm != '0' && confirm != 'false') {
                 if (confirm == '1') {
-                    var text = $(this).text().trim() || $(this).attr('title') || '此';
-                    confirm = '确定要执行<strong>' + text + '</strong>操作吗？';
+                    var text = $(this).text().trim() || $(this).attr('title') || __blang.bilder_this;
+                    confirm = __blang.bilder_confirm_to_do_operation + ' <strong>' + text + '</strong> ' + __blang.bilder_action_operation + ' ?';
                 }
                 else if (confirm == '2') {
                     var size = $('.' + classname).find('.btn-actions').data('layer-size');
@@ -367,12 +367,12 @@
                     return false;
                 }
                 $.alert({
-                    title: '操作提示',
+                    title: __blang.bilder_operation_tips,
                     content: confirm,
                     type: 'orange',
                     buttons: {
                         confirm: {
-                            text: '确认',
+                            text: __blang.bilder_button_ok,
                             btnClass: 'btn-primary',
                             action: function () {
                                 tpextbuilder.autoSendData({
@@ -381,7 +381,7 @@
                             }
                         },
                         cancel: {
-                            text: '取消',
+                            text: __blang.bilder_button_cancel,
                             action: function () {
 
                             }
@@ -411,12 +411,12 @@
                     w.__token__ = data.__token__;
                 }
                 if (data.status || data.code) {
-                    lightyear.notify(data.msg || data.message || '操作成功！', 'success');
+                    lightyear.notify(data.msg || data.message || __blang.bilder_operation_succeeded, 'success');
                     if (refresh) {
                         $('.search-refresh').trigger('click');
                     }
                 } else {
-                    lightyear.notify(data.msg || data.message || '操作失败', 'warning');
+                    lightyear.notify(data.msg || data.message || __blang.bilder_operation_failed, 'warning');
                 }
                 if (data.script || (data.data && data.data.script)) {
                     var script = data.script || data.data.script;
@@ -430,7 +430,7 @@
             },
             error: function () {
                 lightyear.loading('hide');
-                lightyear.notify('网络错误', 'danger');
+                lightyear.notify(__blang.bilder_network_error, 'danger');
             }
         });
     };
@@ -479,9 +479,9 @@
                         return false; //阻止系统默认回车事件
                     }
                     if (event.keyCode === 0x1B) {
-                        var index2 = layer.msg('关闭当前弹窗？', {
+                        var index2 = layer.msg(__blang.bilder_confirm_close_this_window, {
                             time: 2000,
-                            btn: ['确定', '取消'],
+                            btn: [__blang.bilder_button_ok, __blang.bilder_button_cancel],
                             yes: function (params) {
                                 layer.close(index);
                                 layer.close(index2);
@@ -607,7 +607,7 @@ window.renderFiles = function (elid) {
                 fileNumLimit: 99,
                 fileSizeLimit: jsOptions.fileSizeLimit,
                 accept: {
-                    title: '文件',
+                    title: __blang.bilder_file,
                     extensions: $ext,
                     mimeTypes: jsOptions.mimeTypes || '*/*'
                 },
@@ -626,7 +626,7 @@ window.renderFiles = function (elid) {
 
             uploader.on('beforeFileQueued', function (file) {
                 if (jsOptions.fileNumLimit > 1 && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
-                    lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
+                    lightyear.notify(__blang.bilder_maximum_upload_files_num_is + jsOptions.fileNumLimit, 'danger');
                     return false;
                 }
             });
@@ -711,7 +711,7 @@ window.renderFiles = function (elid) {
             });
             uploader.on('uploadError', function (file) {
                 var $li = $('#' + file.id);
-                $('<div class="error upload-result">上传失败</div>').appendTo($li).find('figure');
+                $('<div class="error upload-result">' + __blang.bilder_file_uploading_failed + '</div>').appendTo($li).find('figure');
                 setTimeout(function () {
                     $li.remove();
                 }, 3000);
@@ -719,10 +719,10 @@ window.renderFiles = function (elid) {
             uploader.on('error', function (type) {
                 switch (type) {
                     case 'Q_TYPE_DENIED':
-                        lightyear.notify('文件类型不正确，只允许上传后缀名为：' + $ext + '，请重新上传！', 'danger');
+                        lightyear.notify(__blang.bilder_file_type_suffix_allowed_is + $ext + __blang.bilder_please_upload_again, 'danger');
                         break;
                     case 'F_EXCEED_SIZE':
-                        lightyear.notify('文件不得超过' + ($size / 1024) + 'kb，请重新上传！', 'danger');
+                        lightyear.notify(__blang.bilder_file_size_cannot_exceed + ($size / 1024) + 'kb' + __blang.bilder_please_upload_again, 'danger');
                         break;
                 }
             });
@@ -736,11 +736,11 @@ window.renderFiles = function (elid) {
                 var url = $(this).data('url');
                 var that = $(this);
                 $.alert({
-                    title: '提示',
-                    content: '确认要移除此文件吗？',
+                    title: __blang.bilder_operation_tips,
+                    content: __blang.bilder_confirm_to_remove_file,
                     buttons: {
                         confirm: {
-                            text: '确认',
+                            text: __blang.bilder_button_ok,
                             btnClass: 'btn-primary',
                             action: function () {
                                 if (jsOptions.fileNumLimit > 1) {
@@ -768,7 +768,7 @@ window.renderFiles = function (elid) {
                             }
                         },
                         cancel: {
-                            text: '取消',
+                            text: __blang.bilder_button_cancel,
                             action: function () {
 
                             }
@@ -797,7 +797,7 @@ window.chooseFile = function (id, $input_file_name) {
     var chooseUrl = jsOptions.chooseUrl || '/admin/attachment/index?';
 
     if (jsOptions.fileNumLimit > 1 && $file_list.find('li.pic-item').size() >= jsOptions.fileNumLimit) {
-        lightyear.notify('最多允许上传' + jsOptions.fileNumLimit + '个文件', 'danger');
+        lightyear.notify(__blang.bilder_maximum_upload_files_num_is + jsOptions.fileNumLimit, 'danger');
         return false;
     }
 
@@ -825,9 +825,9 @@ window.chooseFile = function (id, $input_file_name) {
                     return false; //阻止系统默认回车事件
                 }
                 if (event.keyCode === 0x1B) {
-                    var index2 = layer.msg('关闭当前弹窗？', {
+                    var index2 = layer.msg(__blang.bilder_confirm_close_this_window, {
                         time: 2000,
-                        btn: ['确定', '取消'],
+                        btn: [__blang.bilder_button_ok, __blang.bilder_button_cancel],
                         yes: function (params) {
                             layer.close(index);
                             layer.close(index2);

@@ -3,7 +3,7 @@
     {if condition="$readonly"}
     <div class="field-show editor-readonly">{$value|raw}</div>
     {else/}
-    <textarea class="form-control hidden {$class}" placeholder="请输入{$label}" name="{$name}" id="{$id}"
+    <textarea class="form-control hidden {$class}" placeholder="{:__blang('bilder_please_enter')}{$label}" name="{$name}" id="{$id}"
         {$attr|raw}>{$value|raw}</textarea>
     {/if}
 
