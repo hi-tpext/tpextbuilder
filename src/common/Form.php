@@ -493,7 +493,7 @@ class Form extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|Model|\ArrayAccess $data
      * @return $this
      */
     public function fill($data = [])
@@ -587,6 +587,9 @@ class Form extends FWrapper implements Renderable
      */
     public function btnSubmit($label = '提&nbsp;&nbsp;交', $size = '6 col-lg-6 col-sm-6 col-xs-6', $class = 'btn-info')
     {
+        if ($label == '提&nbsp;&nbsp;交') {
+            $label = __blang('bilder_button_submit');
+        }
         $this->bottomOffset();
         $this->button('submit', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
@@ -603,6 +606,9 @@ class Form extends FWrapper implements Renderable
      */
     public function btnReset($label = '重&nbsp;&nbsp;置', $size = '6 col-lg-6 col-sm-6 col-xs-6', $class = 'btn-warning')
     {
+        if ($label == '重&nbsp;&nbsp;置') {
+            $label = __blang('bilder_button_reset');
+        }
         $this->bottomOffset();
         $this->button('reset', $label, $size)->class($class . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
@@ -620,6 +626,9 @@ class Form extends FWrapper implements Renderable
      */
     public function btnBack($label = '返&nbsp;&nbsp;回', $size = '6 col-lg-6 col-sm-6 col-xs-6', $class = 'btn-default btn-go-back', $attr = 'onclick="history.go(-1);')
     {
+        if ($label == '返&nbsp;&nbsp;回') {
+            $label = __blang('bilder_button_go_back');
+        }
         $this->bottomOffset();
         $this->button('button', $label, $size)->class($class . ' ' . $this->butonsSizeClass)->addAttr($attr);
         $this->botttomButtonsCalled = true;
@@ -636,6 +645,9 @@ class Form extends FWrapper implements Renderable
      */
     public function btnLayerClose($label = '返&nbsp;&nbsp;回', $size = '12 col-lg-12 col-sm-12 col-xs-12', $class = 'btn-default')
     {
+        if ($label == '返&nbsp;&nbsp;回') {
+            $label = __blang('bilder_button_go_back');
+        }
         $this->bottomOffset();
         $this->button('button', $label, $size)->class($class . ' btn-close-layer' . ' ' . $this->butonsSizeClass);
         $this->botttomButtonsCalled = true;
@@ -656,7 +668,7 @@ class Form extends FWrapper implements Renderable
 
         if ($fieldsCall) {
             if (!($fieldsCall instanceof \Closure)) {
-                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(若为null，请后续再使用->with(...$fields))');
+                throw new \InvalidArgumentException('Argument fieldsCall must be  `Closure` or `null` , if set to `null`, call `->with(...$fields) follow on .');
             }
             $fieldsCall($this);
             $this->fieldsEnd();
@@ -681,7 +693,7 @@ class Form extends FWrapper implements Renderable
 
         if ($fieldsCall) {
             if (!($fieldsCall instanceof \Closure)) {
-                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(若为null，请后续再使用->with(...$fields))');
+                throw new \InvalidArgumentException('Argument fieldsCall must be  `Closure` or `null` , if set to `null`, call `->with(...$fields) follow on .');
             }
             $fieldsCall($this);
             $this->fieldsEnd();
@@ -704,7 +716,7 @@ class Form extends FWrapper implements Renderable
 
         if ($fieldsCall) {
             if (!($fieldsCall instanceof \Closure)) {
-                throw new \UnexpectedValueException('fieldsCall参数只能是\\Closure或null(若为null，请后续再使用->with(...$fields))');
+                throw new \InvalidArgumentException('fArgument fieldsCall must be  `Closure` or `null` , if set to `null`, call `->with(...$fields) follow on .');
             }
             $fieldsCall($this);
             $this->fieldsEnd();
@@ -717,7 +729,7 @@ class Form extends FWrapper implements Renderable
      * Undocumented function
      *
      * @param string $label
-     * @param array|Collection dataList
+     * @param array|Collection|\IteratorAggregate dataList
      * @param Closure|null $itemsCall
      * @param array displayerSize 大小 [12, 12] 为上下结构，[2, 10]为左右结构
      * @return Items
@@ -729,12 +741,12 @@ class Form extends FWrapper implements Renderable
 
         if (is_array($dataList)) {
             $displayer->fill($dataList);
-        } else if ($dataList instanceof Collection) {
+        } else if ($dataList instanceof Collection || $dataList instanceof \IteratorAggregate) {
             $displayer->dataWithId($dataList);
         }
         if ($itemsCall) {
             if (!($itemsCall instanceof \Closure)) {
-                throw new \UnexpectedValueException('itemsCall参数只能是\\Closure或null(后续再使用->with(...$fields))');
+                throw new \InvalidArgumentException('Argument fieldsCall must be  `Closure` or `null` , if set to `null`, call `->with(...$fields) follow on .');
             }
             $itemsCall($this);
             $this->fieldsEnd();
@@ -797,7 +809,7 @@ class Form extends FWrapper implements Renderable
                 {
                     return event.target.tagName.toLowerCase() == "textarea";
                 }
-                if($('form').size() > 1)
+                if($('form').size() > 1 || $('#{$form} form .input-tags').size())
                 {
                     return false;
                 }
@@ -811,9 +823,9 @@ class Form extends FWrapper implements Renderable
                 var index1 = parent.layer.getFrameIndex(window.name);
                 if(index1)
                 {
-                    var index2 = layer.msg('关闭当前弹窗？', {
+                    var index2 = layer.msg(__blang.bilder_confirm_close_this_window, {
                         time: 2000,
-                        btn: ['确定', '取消'],
+                        btn: [__blang.bilder_button_ok, __blang.bilder_button_cancel],
                         yes: function (params) {
                             layer.close(index2);
                             
@@ -833,7 +845,7 @@ class Form extends FWrapper implements Renderable
                 var parent = $(element).closest('div.form-group');
                 if($(element).hasClass('item-field'))
                 {
-                    $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + $(element).data('label') + '* 这是必填字段');
+                    $('#help-block .error-label').html(parent.find('.control-label,.full-label').text() + $(element).data('label') + '* ' + __blang.bilder_this_field_is_required);
                     $(element).closest('td').addClass('has-error');
                     return;
                 }
@@ -974,7 +986,7 @@ EOT;
             return $displayer;
         }
 
-        throw new \UnexpectedValueException('未知调用:' . $name);
+        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
     }
 
     /**

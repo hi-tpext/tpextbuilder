@@ -186,7 +186,7 @@ class Column extends Widget
             return $widget;
         }
 
-        throw new \UnexpectedValueException('未知调用:' . $name);
+        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
     }
 
     public function destroy()

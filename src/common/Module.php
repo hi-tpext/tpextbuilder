@@ -2,12 +2,14 @@
 
 namespace tpext\builder\common;
 
-use tpext\common\Module as baseModule;
+use tpext\think\App;
+use think\facade\Lang;
 use tpext\common\ExtLoader;
+use tpext\common\Module as baseModule;
 
 class Module extends baseModule
 {
-    protected $version = '1.0.8';
+    protected $version = '1.0.9';
 
     protected $name = 'tpext.builder';
 
@@ -230,5 +232,10 @@ class Module extends baseModule
         //可以监听此事件，调用addUiDriver($class, $title)添加驱动
         ExtLoader::trigger('tpext_builder_find_ui_drivers');
         return $this->uiDrivers;
+    }
+
+    public function loaded()
+    {
+        Lang::load(Module::getInstance()->getRoot() . 'src' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . App::getDefaultLang() . '.php');
     }
 }

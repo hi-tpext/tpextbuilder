@@ -114,7 +114,7 @@ class FieldsContent extends FWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|Model|\ArrayAccess $data
      * @return $this
      */
     public function fill($data = [])
@@ -225,6 +225,6 @@ class FieldsContent extends FWrapper implements Renderable
             return $row->$name($arguments[0], $row->getLabel());
         }
 
-        throw new \UnexpectedValueException('未知调用:' . $name);
+        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
     }
 }

@@ -31,11 +31,11 @@ class ItemsContent extends FWrapper
 
     protected $ids = [];
 
-    protected $emptyText = "<span>暂无相关数据~</span>";
+    protected $emptyText = '';
 
     protected $isInitData = false;
 
-    protected $actionRowText = '操作';
+    protected $actionRowText = '';
 
     protected $cnaDelete = true;
 
@@ -69,6 +69,9 @@ class ItemsContent extends FWrapper
     public function __construct()
     {
         $this->class = 'table-striped table-hover table-bordered table-condensed table-responsive';
+
+        $this->actionRowText = __blang('bilder_action_operation');
+        $this->emptyText = '<span>' . __blang('bilder_no_relevant_data') . '</span>';
     }
 
     /**
@@ -217,7 +220,7 @@ class ItemsContent extends FWrapper
     /**
      * Undocumented function
      *
-     * @return array
+     * @return array|Collection
      */
     public function getData()
     {
@@ -430,6 +433,6 @@ class ItemsContent extends FWrapper
             return $col->$name($arguments[0], $col->getLabel());
         }
 
-        throw new \UnexpectedValueException('未知调用:' . $name);
+        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
     }
 }

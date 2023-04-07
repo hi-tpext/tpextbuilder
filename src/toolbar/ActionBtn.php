@@ -26,7 +26,7 @@ class ActionBtn extends Bar
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|Model|\ArrayAccess $data
      * @return $this
      */
     public function parseUrl($data = [])

@@ -68,7 +68,7 @@ class Items extends Field
     /**
      * Undocumented function
      *
-     * @param array|Collection $data
+     * @param array|Model|Collection|\IteratorAggregate $data
      * @return $this
      */
     public function value($val)
@@ -149,14 +149,14 @@ class Items extends Field
     /**
      * Undocumented function
      *
-     * @param array|Model|Collection $data
+     * @param array|Model|\ArrayAccess|Collection|\IteratorAggregate $data
      * @param boolean $overWrite
      * @return $this
      */
     public function fill($data = [], $overWrite = false)
     {
-        if ($data instanceof Collection) {
-            return $this->dataWithId($data, 'id', $overWrite);
+        if ($data instanceof Collection || $data instanceof \IteratorAggregate) {
+            return $this->dataWithId($data, '', $overWrite);
         }
 
         if (!$overWrite && !empty($this->data)) {
@@ -166,8 +166,8 @@ class Items extends Field
         if (!empty($this->name) && isset($data[$this->name])) {
             if (is_array($data[$this->name])) {
                 $this->data = $data[$this->name];
-            } else if ($data[$this->name] instanceof Collection) {
-                return $this->dataWithId($data[$this->name], 'id', $overWrite);
+            } else if ($data[$this->name] instanceof Collection || $data instanceof \IteratorAggregate) {
+                return $this->dataWithId($data[$this->name], '', $overWrite);
             } else {
                 //
             }
@@ -197,7 +197,7 @@ class Items extends Field
     /**
      * Undocumented function
      *
-     * @param array|Collection $data
+     * @param array|Collection|\IteratorAggregate $data
      * @param string $idField
      * @param boolean $overWrite
      * @return $this
@@ -209,12 +209,12 @@ class Items extends Field
         }
 
         $list = [];
-        foreach ($data as $d) {
+        foreach ($data as $k => $d) {
             if (empty($idField)) {
-                $idField = $d->getPk();
+                $idField = $this->getPk($d);
             }
 
-            $list[$d[$idField]] = $d;
+            $list[$d[$idField == '_' ? $k : $idField]] = $d;
         }
         $this->data = $list;
 
@@ -226,7 +226,21 @@ class Items extends Field
     /**
      * Undocumented function
      *
-     * @return array|Collection
+     * @param mixed $d
+     * @return string
+     */
+    protected function getPk($d)
+    {
+        $pk = is_object($d) && method_exists($d, 'getPk') ? $d->getPk() : '';
+        $pk = !empty($pk) && is_string($pk) ? $pk : '_';
+
+        return $pk;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array|Collection|\IteratorAggregate
      */
     public function getData()
     {
@@ -242,13 +256,13 @@ class Items extends Field
            var del = $(this).prev('input').val();
            if(del === '0') {
                 $(this).prev('input').val(1);
-                $(this).removeClass('btn-danger').addClass('btn-success').attr('title', '恢复');
+                $(this).removeClass('btn-danger').addClass('btn-success').attr('title', __blang.bilder_remove);
                 $(this).children('i').removeClass('mdi-delete').addClass('mdi-restart');
                 $(this).parents('td').prevAll('td').find('.item-field-required').addClass('ignore').removeClass('has-error');
            }
            else if(del === '1') {
                 $(this).prev('input').val(0);
-                $(this).removeClass('btn-success').addClass('btn-danger').attr('title', '删除');
+                $(this).removeClass('btn-success').addClass('btn-danger').attr('title', __blang.bilder_recover);
                 $(this).children('i').removeClass('mdi-restart').addClass('mdi-delete');
                 $(this).parents('td').prevAll('td').find('.item-field-required').removeClass('ignore');
            }

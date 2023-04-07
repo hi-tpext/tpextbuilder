@@ -116,7 +116,7 @@ class FieldsContent extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param array|Model $data
+     * @param array|Model|\ArrayAccess $data
      * @return $this
      */
     public function fill($data = [])
@@ -222,7 +222,7 @@ class FieldsContent extends TWrapper implements Renderable
         $count = count($arguments);
 
         if ($name == 'fields') {
-            throw new \UnexpectedValueException('[fields]不能再包含[fields]');
+            throw new \InvalidArgumentException('[fields] could not include sub-fields');
         }
 
         if ($count > 0 && static::isDisplayer($name)) {
@@ -234,6 +234,6 @@ class FieldsContent extends TWrapper implements Renderable
             return $col->$name($arguments[0], $col->getLabel());
         }
 
-        throw new \UnexpectedValueException('未知调用:' . $name);
+        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
     }
 }

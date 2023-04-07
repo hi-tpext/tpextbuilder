@@ -26,11 +26,11 @@
         <td class="row-__action__ vertical-middle text-center">
           <input type="hidden" name="{$name}[{$ids[$key]}][__del__]" value="0" />
           {if condition="$col.__can_delete__"}
-          <span class="btn btn-xs btn-danger action-delete" id="bar-delete-{$key}" data-id="{$ids[$key]}" title="删除">
+          <span class="btn btn-xs btn-danger action-delete" id="bar-delete-{$key}" data-id="{$ids[$key]}" title="{:__blang('bilder_remove')}">
             <i class="mdi mdi-delete"></i>
           </span>
           {else/}
-          <span class="btn btn-xs btn-danger disabled" title="不允许删除"><i class="mdi mdi-delete"></i></span>
+          <span class="btn btn-xs btn-danger disabled" title="{:__blang('bilder_not_allowed')}{:__blang('bilder_remove')}"><i class="mdi mdi-delete"></i></span>
           {/if}
         </td>
         {/if}
@@ -42,7 +42,7 @@
         <td><input type="text" class="form-control" style="visibility: hidden;" /></td>
         {/volist}
         <td class="row-__action__ vertical-middle text-center">
-          <span id="items-{$name}-add" class="btn btn-xs btn-success" title="新加一条"><i
+          <span id="items-{$name}-add" class="btn btn-xs btn-success" title="{:__blang('bilder_new_one_item')}"><i
               class="mdi mdi-plus-circle-outline"></i></span>
         </td>
       </tr>
@@ -60,7 +60,7 @@
         {/volist}
         <td class="row-__action__ vertical-middle text-center">
           <input type="hidden" value="-1" />
-          <span class="btn btn-xs btn-danger action-delete" id="bar-delete-0" data-id="new-0" title="删除">
+          <span class="btn btn-xs btn-danger action-delete" id="bar-delete-0" data-id="new-0" title="{:__blang('bilder_remove')}">
             <i class="mdi mdi-delete"></i></span>
         </td>
       </tr>

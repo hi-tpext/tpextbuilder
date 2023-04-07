@@ -3,9 +3,9 @@
     <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
         {$befor|raw}
         <input type="hidden" class="timeange {$class}" value="{$value}" name="{$name}" id="{$id}" {$attr|raw}>
-        <input class="form-control timeange-start {$class}" type="text" id="{$id}-start" placeholder="从" {$attr|raw}>
+        <input class="form-control timeange-start {$class}" type="text" id="{$id}-start" placeholder="{:__blang('bilder_date_range_from')}" {$attr|raw}>
         <span class="input-group-addon"><i class="mdi mdi-minus"></i></span>
-        <input class="form-control timeange-end {$class}" type="text" id="{$id}-end" placeholder="至" {$attr|raw}>
+        <input class="form-control timeange-end {$class}" type="text" id="{$id}-end" placeholder="{:__blang('bilder_date_range_to')}" {$attr|raw}>
         {$after|raw}
     </div>
     {include file="$helptempl" /}

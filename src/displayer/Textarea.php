@@ -63,7 +63,7 @@ class Textarea extends Field
         $vars = $this->commonVars();
 
         $vars = array_merge($vars, [
-            'placeholder' => $this->placeholder,
+            'placeholder' => $this->placeholder ?: __blang('bilder_please_enter') . $this->label
         ]);
 
         $viewshow = $this->getViewInstance();

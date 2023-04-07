@@ -52,7 +52,7 @@
                         },
                         error: function () {
                             lightyear.loading('hide');
-                            lightyear.notify('网络错误', 'danger');
+                            lightyear.notify("{:__blang('bilder_network_error')}", 'danger');
                         }
                     });
 
@@ -92,7 +92,7 @@
                         closeBtn: 0, //不显示关闭按钮
                         anim: 2,
                         shadeClose: false, //开启遮罩关闭
-                        content: '<p style="padding:10px 20px;color:green;"><img src="/assets/tpextbuilder/js/layer/theme/default/loading-1.gif">生成数据中...</p>'
+                        content: '<p style="padding:10px 20px;color:green;"><img src="/assets/tpextbuilder/js/layer/theme/default/loading-1.gif">' + "{:__blang('bilder_network_error')}" + '</p>'
                     });
 
                     var postdata = $('#{$id} form').serialize();
@@ -109,7 +109,7 @@
                                 {
                                     layer.open({
                                         type: 2,
-                                        title: '生成数据中...',
+                                        title: "{:__blang('bilder_network_error')}",
                                         scrollbar: false,
                                         area: ['400px','150px'],
                                         content: url + '?' + postdata
@@ -120,21 +120,21 @@
                                     var filename = data.data.replace(/.+?([^\/]+)$/, '$1');
                                     layer.open({
                                         type: 1,
-                                        title: '文件下载',
+                                        title: "{:__blang('bilder_download_file')}",
                                         shadeClose: false,
                                         area: ['400px','150px'],
-                                        content: '<div class="alert alert-success " role="alert" style="widht:94%;margin:2%;"><p>文件已生成，点击下载：</p><a onclick="layer.closeAll();" target="_blank" href="' + data.data + '">' + filename + '</a></div>',
+                                        content: '<div class="alert alert-success " role="alert" style="widht:94%;margin:2%;"><p>' + "{:__blang('bilder_file_has_been_generated')}" + '</p><a onclick="layer.closeAll();" target="_blank" href="' + data.data + '">' + filename + '</a></div>',
                                     });
                                 }
                             }
                             else
                             {
-                                layer.alert('错误-' + data.msg);
+                                layer.alert("{:__blang('bilder_operation_failed')}-" + data.msg);
                             }
                         },
                         error:function(){
                             layer.close(loading);
-                            lightyear.notify('网络错误', 'danger');
+                            lightyear.notify("{:__blang('bilder_network_error')}", 'danger');
                         }
                     });
                 }

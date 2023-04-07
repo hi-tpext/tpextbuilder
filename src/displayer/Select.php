@@ -162,7 +162,7 @@ class Select extends Field
 
             $script = <<<EOT
 
-        var withParams{$key} = JSON.parse('{$withParams}');
+        var withParams{$key} = {$withParams};
 
         var init{$key} = function()
         {
