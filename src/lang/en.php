@@ -1,8 +1,6 @@
 <?php
 
-// 
 return [
-    //
     //displayers
     'bilder_save_succeeded'                  => 'Save succeeded !',
     'bilder_save_failed'                     => 'Save failed !',
