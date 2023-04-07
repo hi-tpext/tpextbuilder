@@ -1,6 +1,5 @@
 <?php
 
-// 
 return [
     //displayers
     'bilder_save_succeeded'                  => '保存成功！',
