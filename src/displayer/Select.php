@@ -14,7 +14,6 @@ class Select extends Field
 
     protected $js = [
         '/assets/tpextbuilder/js/select2/select2.min.js',
-        '/assets/tpextbuilder/js/select2/i18n/zh-CN.js',
     ];
 
     protected $css = [
@@ -399,6 +398,7 @@ EOT;
             if ($this->prevSelect) {
                 $this->withPrevScript();
             }
+            $this->customJs('/assets/tpextbuilder/js/select2/i18n/' . (empty($this->jsOptions['locale']) ?  'zh-CN' : $this->jsOptions['locale']) . '.js');
             $this->select2Script();
         }
 

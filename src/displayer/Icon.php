@@ -50,7 +50,7 @@ class Icon extends Text
 
             icon{$str}.setIcons(fontello_json_icons);
         }).fail(function() {
-            console.error('字体图标配置加载失败');
+            console.error('Icon font config loadig failed');
         });
 
         $('#{$inputId}').on('change',function(){

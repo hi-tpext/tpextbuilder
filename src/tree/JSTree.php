@@ -93,7 +93,7 @@ class JSTree extends Widget implements Renderable
     {
         $tree = [];
 
-        if ($rootText = '全部') {
+        if ($rootText == '全部') {
             $rootText = __blang('bilder_left_tree_text_all');
         }
 

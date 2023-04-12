@@ -17,6 +17,7 @@ class Wrapper
         'radio' => \tpext\builder\displayer\Radio::class,
         'button' => \tpext\builder\displayer\Button::class,
         'select' => \tpext\builder\displayer\Select::class,
+        'selectTree' => \tpext\builder\displayer\SelectTree::class,
         'multipleSelect' => \tpext\builder\displayer\MultipleSelect::class,
         'dualListbox' => \tpext\builder\displayer\Transfer::class,
         'transfer' => \tpext\builder\displayer\Transfer::class,
@@ -59,6 +60,7 @@ class Wrapper
         'load' => \tpext\builder\displayer\Load::class,
         'loads' => \tpext\builder\displayer\Loads::class,
         'aceEditor' => \tpext\builder\displayer\AceEditor::class,
+        'tree' => \tpext\builder\displayer\Tree::class,
     ];
 
     protected static $defaultFieldClass = [

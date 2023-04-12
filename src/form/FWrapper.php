@@ -13,6 +13,7 @@ use tpext\builder\common\Wrapper as Base;
  * @method \tpext\builder\displayer\Radio          radio($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Button         button($type, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Select         select($name, $label = '', $colSize = 12)
+ * @method \tpext\builder\displayer\selectTree     selectTree($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\MultipleSelect multipleSelect($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Transfer       dualListbox($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\Transfer       transfer($name, $label = '', $colSize = 12)
@@ -59,6 +60,8 @@ use tpext\builder\common\Wrapper as Base;
  * @method \tpext\builder\displayer\load           load($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\loads          loads($name, $label = '', $colSize = 12)
  * @method \tpext\builder\displayer\AceEditor      aceEditor($name, $label = '', $colSize = 12)
+ * @method \tpext\builder\displayer\Tree           tree($name, $label = '', $colSize = 12)
+ * 
  */
 
 class FWrapper extends Base

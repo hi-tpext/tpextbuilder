@@ -1,7 +1,6 @@
 <?php
 
 return [
-    //displayers
     'bilder_save_succeeded'                  => 'Save succeeded !',
     'bilder_save_failed'                     => 'Save failed !',
     'bilder_network_error'                   => 'Network error !',
@@ -86,6 +85,8 @@ return [
     'bilder_this'                            => ' this ',
     'bilder_operation_succeeded'             => 'Operation succeeded',
     'bilder_operation_failed'                => 'Operation failed',
+    'bilder_loading'                         => 'Loading...',
+    'bilder_loading_error'                   => '-Loading error-',
     //file upload
     'bilder_file'                            => 'File',
     'bilder_maximum_upload_files_num_is'     => 'Maximum upload files num is',
@@ -117,8 +118,14 @@ return [
     'bilder_jquery_validate_step'            => 'Please enter an integer multiple of {0}',
     'bilder_jquery_validate_max'             => 'Please enter a value not greater than 4 {0}',
     'bilder_jquery_validate_min'             => 'Please enter a value not less than {0}',
-    //DateTimeRange
+    //dateTimeRange
     'bilder_date_range_from'                 => 'From',
     'bilder_date_range_to'                   => 'To',
     'bilder_custom_range_label'              => 'Custom scope',
+    //flieUpload
+    'bilder_upload_nwe_file'                 => 'Upload nwe file',
+    'bilder_choose_uploaded_file'            => 'Choose uploaded file',
+    //select
+    'bilder_option_was_disabled'             => 'Disabled',
+    'bilder_option_was_readonly'             => 'Readonly',
 ];

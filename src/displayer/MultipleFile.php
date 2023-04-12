@@ -32,6 +32,8 @@ class MultipleFile extends Field
         '/assets/tpextbuilder/css/uploadfiles.css',
     ];
 
+    protected $placeholder = '';
+
     protected $canUpload = true;
 
     protected $showInput = true;
@@ -90,6 +92,18 @@ class MultipleFile extends Field
         'audio' => '/assets/tpextbuilder/images/cover/audio.svg',
         'pkg' => '/assets/tpextbuilder/images/cover/pkg.svg',
     ];
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function placeholder($val)
+    {
+        $this->placeholder = $val;
+        return $this;
+    }
 
     /**
      * Undocumented function
@@ -333,6 +347,7 @@ class MultipleFile extends Field
             'files' => $this->files,
             'cover' => $this->cover,
             'inputType' => $this->showInput ? 'text' : 'hidden',
+            'placeholder' => $this->placeholder ?: __blang('bilder_please_enter') . $this->label
         ]);
 
         $viewshow = $this->getViewInstance();

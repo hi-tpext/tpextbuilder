@@ -6,7 +6,6 @@ class DateTimeRange extends Text
 {
     protected $js = [
         '/assets/tpextbuilder/js/moment/moment.min.js',
-        '/assets/tpextbuilder/js/moment/locale/zh-cn.js',
         '/assets/tpextbuilder/js/bootstrap-daterangepicker/daterangepicker.min.js',
     ];
 
@@ -24,9 +23,9 @@ class DateTimeRange extends Text
 
     protected $timespan = 'Y-m-d H:i:s';
 
-    protected $language = 'zh-CN';
-
     protected $jsOptions = [
+        'language' => 'zh-cn',
+        //
         'opens' => 'right', //(left/right/center) 选择器是否显示为左侧，右侧，或者它所附加的HTML元素下方居中。
         'drops' => 'down', //(down/up) 选择器是出现在下面（默认）还是高于它所附加的HTML元素。
         'showDropdowns' => true, //(true/false) 显示年份和月份选择日历上方的框以跳转到特定的月份和年份
@@ -39,10 +38,10 @@ class DateTimeRange extends Text
             'direction' => 'ltr',
             'format' => '', //$this->format
             'separator' => '', //$this->separator
-            'applyLabel' => '',//确定
-            'cancelLabel' => '',//取消
+            'applyLabel' => '', //确定
+            'cancelLabel' => '', //取消
             'weekLabel' => 'W',
-            'customRangeLabel' => '',//自定义范围
+            'customRangeLabel' => '', //自定义范围
             // 'daysOfWeek' => '',
             // 'monthNames' => '',
             // 'firstDay' => '',
@@ -94,13 +93,17 @@ class DateTimeRange extends Text
             $this->jsOptions['locale']['customRangeLabel'] = __blang('bilder_custom_range_label');
         }
 
+        $language = empty($this->jsOptions['language']) ?  'zh-cn' : $this->jsOptions['language'];
+
+        unset($this->jsOptions['language']);
+
         $configs = json_encode($this->jsOptions);
 
         $configs = substr($configs, 1, strlen($configs) - 2);
 
         $script = <<<EOT
 
-        moment.locale('{$this->language}');
+        moment.locale('{$language}');
 
         $('#{$inputId}').daterangepicker({
             {$configs}
@@ -187,8 +190,8 @@ EOT;
 
     public function beforRender()
     {
+        $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['language']) ?  'zh-cn' : $this->jsOptions['language']) . '.js');
         $this->dateTimeRangeScript();
-
         return parent::beforRender();
     }
 }

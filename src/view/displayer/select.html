@@ -6,7 +6,8 @@
         <optgroup label="{$group.label}">
             {volist name="group.options" id="option"}
             <option value="{$key}" {if condition="'-'.$key eq $checked" }selected{/if} {in name="'-'.$key"
-                value="$disabledOptions" }style="color:#ccc;cursor:not-allowed" title="选项禁用" disabled{/in}>{$option}
+                value="$disabledOptions" }style="color:#ccc;cursor:not-allowed"
+                title="{:__blang('bilder_option_was_disabled')}" disabled{/in}>{$option}
             </option>
             {/volist}
         </optgroup>
@@ -14,7 +15,8 @@
         {else/}
         {volist name="options" id="option"}
         <option value="{$key}" {if condition="'-'.$key eq $checked" }selected{/if} {in name="'-'.$key"
-            value="$disabledOptions" }style="color:#ccc;cursor:not-allowed" title="选项禁用" disabled{/in}>{$option}
+            value="$disabledOptions" }style="color:#ccc;cursor:not-allowed"
+            title="{:__blang('bilder_option_was_disabled')}" disabled{/in}>{$option}
         </option>
         {/volist}
         {/if}

@@ -29,6 +29,8 @@ class Field implements Fillable
     protected $innerName = '';
     protected $label = '';
     protected $js = [];
+    protected $customJs = [];
+    protected $customCss = [];
     protected $css = [];
     protected $stylesheet = '';
     protected $script = [];
@@ -662,6 +664,30 @@ class Field implements Fillable
     }
 
     /**
+     * 添加自定义js，不会被minify
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function customJs($val)
+    {
+        Builder::getInstance()->customJs($val);
+        return $this;
+    }
+
+    /**
+     * 添加自定义css，不会被minify
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function customCss($val)
+    {
+        Builder::getInstance()->customCss($val);
+        return $this;
+    }
+
+    /**
      * Undocumented function
      *
      * @param array|string $val
@@ -1050,20 +1076,18 @@ EOT;
 
     public function beforRender()
     {
-        if (!empty($this->js)) {
-            if ($this->minify) {
-                Builder::getInstance()->addJs($this->js);
-            } else {
-                Builder::getInstance()->customJs($this->js);
-            }
+        if ($this->minify) {
+            Builder::getInstance()->addJs($this->js);
+            Builder::getInstance()->addCss($this->css);
+        } else {
+            Builder::getInstance()->customJs($this->js);
+            Builder::getInstance()->customCss($this->css);
         }
 
-        if (!empty($this->css)) {
-            Builder::getInstance()->addCss($this->css);
-        }
+        Builder::getInstance()->customJs($this->customJs);
+        Builder::getInstance()->customCss($this->customCss);
 
         if ($this->autoPost) {
-
             if (Builder::checkUrl($this->autoPost)) {
                 $this->autoPostScript();
             } else {

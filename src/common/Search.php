@@ -724,8 +724,14 @@ EOT;
     {
         $this->__fields__ = null;
         $this->__when__ = null;
-        $this->addTop = null;
-        $this->addBottom = null;
+        if ($this->addTop) {
+            $this->addTop->destroy();
+            $this->addTop = null;
+        }
+        if ($this->addBottom) {
+            $this->addBottom->destroy();
+            $this->addBottom = null;
+        }
         $this->tablink = null;
         foreach ($this->rows as $row) {
             $row->destroy();

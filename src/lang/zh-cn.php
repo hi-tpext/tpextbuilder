@@ -1,7 +1,6 @@
 <?php
 
 return [
-    //displayers
     'bilder_save_succeeded'                  => '保存成功！',
     'bilder_save_failed'                     => '保存失败！',
     'bilder_network_error'                   => '网络错误！',
@@ -86,6 +85,8 @@ return [
     'bilder_this'                            => '此',
     'bilder_operation_succeeded'             => '操作成功',
     'bilder_operation_failed'                => '操作失败',
+    'bilder_loading'                         => '加载中...',
+    'bilder_loading_error'                   => '-加载出错-',
     //file upload
     'bilder_file'                            => '文件',
     'bilder_maximum_upload_files_num_is'     => '最多允许上传文件数量是',
@@ -117,8 +118,14 @@ return [
     'bilder_jquery_validate_step'            => '请输入 {0} 的整数倍值',
     'bilder_jquery_validate_max'             => '请输入不大于 {0} 的数值',
     'bilder_jquery_validate_min'             => '请输入不小于 {0} 的数值',
-    //DateTimeRange
+    //dateTimeRange
     'bilder_date_range_from'                 => '从',
     'bilder_date_range_to'                   => '至',
     'bilder_custom_range_label'              => '自定义范围',
+    //flieUpload
+    'bilder_upload_nwe_file'                 => '点击上传新文件',
+    'bilder_choose_uploaded_file'            => '点击上传新文件',
+    //select
+    'bilder_option_was_disabled'             => '选项禁用',
+    'bilder_option_was_readonly'             => '选项只读',
 ];

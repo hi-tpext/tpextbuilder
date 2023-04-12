@@ -814,7 +814,6 @@ class Form extends FWrapper implements Renderable
                     return false;
                 }
                 return window.__forms__['{$form}'].formSubmit();
-                return false;
             }
         });
 

@@ -8,8 +8,9 @@
     {/if}
     {volist name="options" id="option"}
     <label class="{$inline} {$blockStyle} {$class} checkbox-label" {in name="'-'.$key" value="$disabledOptions"
-        }style="color:#ccc;cursor:not-allowed" title="选项禁用" {/in} {in name="'-'.$key" value="$readonlyOptions" }style="color:#ccc;cursor:not-allowed"
-        title="选项只读" {/in}>
+        }style="color:#ccc;cursor:not-allowed" title="{:__blang('bilder_option_was_disabled')}" {/in} {in
+        name="'-'.$key" value="$readonlyOptions" }style="color:#ccc;cursor:not-allowed"
+        title="{:__blang('bilder_option_was_readonly')}" {/in}>
         <input type="checkbox" value="{$key}" class="check-{$id}" {in name="'-'.$key" value="$checked" }checked{/in} {in
             name="'-'.$key" value="$disabledOptions" }disabled{/in} {in name="'-'.$key" value="$readonlyOptions"
             }readonly onclick="return false;" {/in} id="{$id}-{$key}" name="{$name}[]"
