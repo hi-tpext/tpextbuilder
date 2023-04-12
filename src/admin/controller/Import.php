@@ -28,7 +28,7 @@ class Import extends Controller
         $driver = input('driver', '');
 
         if ($fileSize == '' || empty($pageToken) || empty($successUrl)) {
-            $this->error('参数有误');
+            $this->error(__blang('bilder_parameter_error'));
         }
 
         $importpagetoken = Session::get('importpagetoken');
@@ -36,7 +36,7 @@ class Import extends Controller
         $_pageToken = md5($importpagetoken . $acceptedExts . $fileSize);
 
         if ($_pageToken != $pageToken) {
-            $this->error('验证失败');
+            $this->error(__blang('bilder_validate_failed'));
         }
 
         $config = Module::getInstance()->getConfig();
@@ -55,17 +55,60 @@ class Import extends Controller
 
         $successUrl = urldecode($successUrl);
 
-        $token = Builder::getInstance()->getCsrfToken();
+        $builder = Builder::getInstance();
+
+        $token = $builder->getCsrfToken();
 
         $uploadUrl = url(Module::getInstance()->getUploadUrl(), ['utype' => 'dropzone', 'token' => $token, 'driver' => $driver])->__toString();
 
-        $this->assign('admin_copyright', '');
-        $this->assign('uploadUrl', $uploadUrl);
-        $this->assign('acceptedExts', $acceptedExts);
-        $this->assign('fileSize', $fileSize);
-        $this->assign('successUrl', $successUrl);
+        $builder->display('<div id="dropzone-elm" style="width: 220px; margin: 0 auto;" class="dropzone"></div>');
 
-        return $this->fetch();
+        $builder->addCss(['/assets/tpextbuilder/js/dropzone/min/basic.min.css', '/assets/tpextbuilder/js/dropzone/min/dropzone.min.css']);
+        $builder->addJs(['/assets/tpextbuilder/js/dropzone/min/dropzone.min.js']);
+
+        $script = <<<EOT
+
+        $("#dropzone-elm").dropzone({
+            url: "{$uploadUrl}",
+            method: "post",  // 也可用put
+            paramName: "file", // 默认为file
+            maxFiles: 1,// 一次性上传的文件数量上限
+            maxFilesize: '{$fileSize}', // 文件大小，单位：MB
+            acceptedFiles: "{$acceptedExts}", // 上传的类型
+            addRemoveLinks: false,
+            parallelUploads: 1,// 一次上传的文件数量
+            dictDefaultMessage: __blang.bilder_dropzone_default_message,
+            dictMaxFilesExceeded: __blang.bilder_dropzone_max_files_exceeded.replace('{num}',1),
+            dictResponseError: __blang.bilder_file_uploading_failed,
+            dictInvalidFileType: __blang.bilder_dropzone_invalid_file_type,
+            dictFallbackMessage: __blang.bilder_dropzone_fallback_message,
+            dictFileTooBig: __blang.bilder_dropzone_file_too_big,
+            dictRemoveLinks: __blang.bilder_dropzone_remove_links,
+            dictCancelUpload: __blang.bilder_dropzone_cancel_upload,
+            init: function () {
+                this.on("addedfile", function (file) {
+                    // 上传文件时触发的事件
+                });
+                this.on("success", function (file, data) {
+                    if (data.status == '200') {
+                        location.href = '{$successUrl}?fileurl=' + encodeURI(data.picurl.split('?')[0]);
+                    }
+                    else {
+                        parent.lightyear.notify(__blang.bilder_file_uploading_failed + data.info, 'danger');
+                    }
+                    // 上传成功触发的事件
+                });
+                this.on("error", function (file, data) {
+                    // 上传失败触发的事件
+                    parent.lightyear.notify(__blang.bilder_operation_succeeded + '-' + data, 'danger');
+                });
+            }
+        });
+        Dropzone.autoDiscover = false;
+
+EOT;
+        $builder->addScript($script);
+        return $builder;
     }
 
     /**
@@ -76,7 +119,7 @@ class Import extends Controller
      */
     public function afterSuccess()
     {
-        $builder = Builder::getInstance('提示');
+        $builder = Builder::getInstance(__blang('bilder_operation_tips'));
 
         $fileurl = input('fileurl');
 

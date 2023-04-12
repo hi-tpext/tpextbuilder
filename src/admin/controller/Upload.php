@@ -144,7 +144,16 @@ class Upload extends Controller
         if ($newPath === false) {
             //var_dump($up->errorNumber);
             return json(
-                ['status' => 500, 'success' => 0, 'uploaded' => 0, 'state' => 'ERROE', 'message' => '上传失败-' . $up->errorInfo, 'title' => '上传失败-' . $up->errorInfo, 'info' => '上传失败-' . $up->errorInfo, 'class' => 'error']
+                [
+                    'status' => 500,
+                    'success' => 0,
+                    'uploaded' => 0,
+                    'state' => 'ERROE',
+                    'message' => __blang('bilder_file_uploading_failed') . '-' . $up->errorInfo,
+                    'title' => __blang('bilder_file_uploading_failed') . '-' . $up->errorInfo,
+                    'info' => __blang('bilder_file_uploading_failed') . '-' . $up->errorInfo,
+                    'class' => 'error'
+                ]
             );
             // 失败跟成功同样的方式返回
         } else {
@@ -157,17 +166,17 @@ class Upload extends Controller
                     return json(
                         [
                             "success" => 1,
-                            "message" => '上传成功',
+                            "message" => __blang('bilder_file_uploading_succeeded'),
                             "url" => $newPath,
                         ]
                     );
                 case 'dropzone':
                     return json(
-                        ['status' => 200, 'info' => '上传成功', 'picurl' => $newPath]
+                        ['status' => 200, 'info' => __blang('bilder_file_uploading_succeeded'), 'picurl' => $newPath]
                     );
                 case 'webuploader':
                     return json(
-                        ['status' => 200, 'info' => '上传成功', 'class' => 'success', 'id' => rand(1, 9999), 'picurl' => $newPath]
+                        ['status' => 200, 'info' => __blang('bilder_file_uploading_succeeded'), 'class' => 'success', 'id' => rand(1, 9999), 'picurl' => $newPath]
                     );
                 case 'tinymce':
                     return json(
@@ -194,7 +203,7 @@ class Upload extends Controller
                     return json(
                         [
                             "status" => 1,
-                            "info" => '上传成功',
+                            "info" => __blang('bilder_file_uploading_succeeded'),
                             "url" => $newPath,
                         ]
                     );
@@ -232,7 +241,7 @@ class Upload extends Controller
                 break;
 
             default:
-                $result = ['state' => '请求地址出错'];
+                $result = ['state' => 'invalid action'];
                 break;
         }
 
@@ -241,7 +250,7 @@ class Upload extends Controller
             if (preg_match("/^[\w_]+$/", $callback)) {
                 echo htmlspecialchars($callback) . '(' . $result . ')';
             } else {
-                return json(['state' => 'callback参数不合法']);
+                return json(['state' => 'invalid callback']);
             }
         } else {
             return json($result);
@@ -259,7 +268,7 @@ class Upload extends Controller
         $picdata =  request()->post('picdata');
 
         if (empty($picdata)) {
-            return json(['state' => 400, 'message' => '上传数据为空']);
+            return json(['state' => 400, 'message' => 'empty data']);
         }
 
         $picurl = $this->base64_image_content($picdata, 'images');
@@ -267,7 +276,7 @@ class Upload extends Controller
         if ($picurl) {
             return json(['state' => 200, 'picurl' => $picurl]);
         } else {
-            return json(['state' => 500, 'message' => '上传失败']);
+            return json(['state' => 500, 'message' => __blang('bilder_file_uploading_failed')]);
         }
     }
 

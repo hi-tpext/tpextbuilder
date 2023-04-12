@@ -1,9 +1,10 @@
 <?php
 
 return [
-    'bilder_save_succeeded'                  => 'Save succeeded !',
-    'bilder_save_failed'                     => 'Save failed !',
+    'bilder_save_succeeded'                  => 'Saving succeeded !',
+    'bilder_save_failed'                     => 'Saving failed !',
     'bilder_network_error'                   => 'Network error !',
+    'bilder_validate_failed'                 => 'validating error !',
     'bilder_remove'                          => 'Remove',
     'bilder_recover'                         => 'Recover',
     'bilder_not_allowed'                     => 'Not allowed',
@@ -90,11 +91,16 @@ return [
     //file upload
     'bilder_file'                            => 'File',
     'bilder_maximum_upload_files_num_is'     => 'Maximum upload files num is',
-    'bilder_file_uploading_failed'           => 'File uploading failed',
+    'bilder_file_uploading_failed'           => 'File uploading failed !',
+    'bilder_file_uploading_succeeded'        => 'File uploading succeeded !',
     'bilder_file_type_suffix_allowed_is'     => 'File type suffix allowed is :',
     'bilder_please_upload_again'             => ', please upload again !',
     'bilder_file_size_cannot_exceed'         => 'File size cannot exceed :',
     'bilder_confirm_to_remove_file'          => 'Are you sure to remove this file ?',
+    'bilder_upload_nwe_file'                 => 'Upload nwe file',
+    'bilder_choose_uploaded_file'            => 'Choose uploaded file',
+    'bilder_upload_file_button'              => 'Upload',
+    'bilder_choose_file_button'              => 'Choose',
     //export
     'bilder_generating_data'                 => 'Generating data ...',
     'bilder_download_file'                   => 'Download file',
@@ -122,10 +128,25 @@ return [
     'bilder_date_range_from'                 => 'From',
     'bilder_date_range_to'                   => 'To',
     'bilder_custom_range_label'              => 'Custom scope',
-    //flieUpload
-    'bilder_upload_nwe_file'                 => 'Upload nwe file',
-    'bilder_choose_uploaded_file'            => 'Choose uploaded file',
     //select
     'bilder_option_was_disabled'             => 'Disabled',
     'bilder_option_was_readonly'             => 'Readonly',
+    //attachment
+    'bilder_attachment_manage'               => 'Attachment manage',
+    'bilder_attachment_name'                 => 'Name',
+    'bilder_attachment_url'                  => 'url',
+    'bilder_attachment_file'                 => 'File',
+    'bilder_attachment_mime'                 => 'Mime',
+    'bilder_attachment_size'                 => 'Size',
+    'bilder_attachment_suffix'               => 'Suffix',
+    'bilder_attachment_storage'              => 'Storage',
+    'bilder_attachment_create_time'          => 'Create time',
+    //dropzone
+    'bilder_dropzone_default_message'        => 'Drag the file here or click upload',
+    'bilder_dropzone_max_files_exceeded'     => 'You can only upload a maximum of {num} files!',
+    'bilder_dropzone_invalid_file_type'      => 'The file type is incorrect!',
+    'bilder_dropzone_fallback_message'       => 'Browser not supported',
+    'bilder_dropzone_file_too_big'           => 'The file size is too large, and the maximum supported upload file size is {fileSize} MB',
+    'bilder_dropzone_remove_links'           => 'Remove',
+    'bilder_dropzone_cancel_upload'          => 'Cancel',
 ];
