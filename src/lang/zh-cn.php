@@ -123,8 +123,8 @@ return [
     'bilder_date_range_to'                   => '至',
     'bilder_custom_range_label'              => '自定义范围',
     //flieUpload
-    'bilder_upload_nwe_file'                 => '点击上传新文件',
-    'bilder_choose_uploaded_file'            => '点击上传新文件',
+    'bilder_upload_nwe_file'                 => '上传新文件',
+    'bilder_choose_uploaded_file'            => '选择已上传文件',
     //select
     'bilder_option_was_disabled'             => '选项禁用',
     'bilder_option_was_readonly'             => '选项只读',
