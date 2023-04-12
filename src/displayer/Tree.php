@@ -167,7 +167,7 @@ class Tree extends Field
      * 
      * @return $this
      */
-    public function optionsData($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id', $rootText = '全部', $rootId = 0)
+    public function optionsData($treeData, $textField = '', $idField = 'id', $pidField = 'parent_id', $rootText = '全部', $rootId = 0)
     {
         $tree = [];
 
@@ -183,12 +183,50 @@ class Tree extends Field
             ];
         }
 
-        foreach ($treeData as $d) {
-            $tree[] = [
-                'id' => $d[$idField],
-                'pId' => $d[$pidField] ?? $d['pid'],
-                'name' => $d[$textField] ?? $d['title'],
-            ];
+        preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
+
+        $needReplace = isset($matches[1]) && count($matches[1]) > 0;
+
+        foreach ($treeData as $li) {
+
+            if (empty($idField)) {
+                $idField = $li->getPk();
+            }
+            if (empty($textField)) {
+                $textField = isset($li['name']) ? 'name' : 'title';
+            }
+
+            $keys = [];
+            $replace = [];
+
+            if ($needReplace) {
+                foreach ($matches[1] as $match) {
+                    $arr = explode('.', $match);
+                    if (count($arr) == 1) {
+
+                        $keys[] = '{' . $arr[0] . '}';
+                        $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '-';
+                    } else if (count($arr) == 2) {
+
+                        $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                        $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
+                    } else {
+                        //最多支持两层 xx 或 xx.yy
+                    }
+                }
+
+                $tree[] = [
+                    'id' => $li[$idField],
+                    'pId' => $li[$pidField] ?? $li['pid'],
+                    'name' => str_replace($keys, $replace, $textField),
+                ];
+            } else {
+                $tree[] = [
+                    'id' => $li[$idField],
+                    'pId' => $li[$pidField] ?? $li['pid'],
+                    'name' => $li[$textField] ?? '-',
+                ];
+            }
         }
 
         $this->options = $tree;
