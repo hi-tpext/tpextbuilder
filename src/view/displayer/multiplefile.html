@@ -50,12 +50,12 @@
             <!--在table，items中，不支持直接上传图片，只可选择-->
             <span title="{:__blang('bilder_upload_nwe_file')}" class="input-group-addon opt-btn upload-file" data-id="{$id}" data-name="{$name}"
                 onclick="$('#picker_'+$(this).data('id')+' .webuploader-element-invisible').trigger('click')"><i
-                    class="mdi mdi-folder-open"></i>上传</span>
+                    class="mdi mdi-folder-open"></i>{:__blang('bilder_upload_file_button')}</span>
             {/if}
             {if condition="$showChooseBtn"}
             <span title="{:__blang('bilder_choose_uploaded_file')}" class="input-group-addon opt-btn choose-file" data-id="{$id}" data-name="{$name}"
                 onclick="chooseFile($(this).data('id'),$(this).data('id'))"><i
-                    class="mdi mdi mdi-file-find"></i>选择</span>
+                    class="mdi mdi mdi-file-find"></i>{:__blang('bilder_choose_file_button')}</span>
             {/if}
             {if condition="!$isInTable"}
             <div style="display: none;"><a class="upload-picker" id="picker_{$id}"></a></div>
