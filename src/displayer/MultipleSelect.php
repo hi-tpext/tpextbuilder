@@ -8,8 +8,18 @@ class MultipleSelect extends Select
 
     protected $attr = 'size="1"';
 
+    /**
+     * Undocumented variable
+     *
+     * @var array|string
+     */
     protected $default = [];
 
+    /**
+     * Undocumented variable
+     *
+     * @var array|string
+     */
     protected $checked = [];
 
     protected $isArrayValue = true;

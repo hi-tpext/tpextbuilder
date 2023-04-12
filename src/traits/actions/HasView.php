@@ -117,6 +117,8 @@ trait HasView
 
                 $displayer->whenScript(true);
                 $row->match($fieldName, $row->getLabel())->options($displayer->getOptions());
+            } else if ($displayer instanceof displayer\Tree) {
+                $row->matches($fieldName, $row->getLabel())->optionsData($displayer->getOptions(), 'name');
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();

@@ -1,0 +1,11 @@
+{include file="$labeltempl" /}
+<div class="col-md-{$size[1]}">
+    {if condition="$multiple"}
+    <select class="form-control {$class}" name="{$name}[]" id="{$id}" multiple="multiple" {$attr|raw}>
+    </select>
+    {else/}
+    <select class="form-control {$class}" name="{$name}" id="{$id}" {$attr|raw}>
+    </select>
+    {/if}
+    {include file="$helptempl" /}
+</div>

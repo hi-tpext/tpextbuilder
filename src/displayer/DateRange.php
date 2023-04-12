@@ -8,7 +8,6 @@ class DateRange extends Text
 
     protected $js = [
         '/assets/tpextbuilder/js/bootstrap-datepicker/bootstrap-datepicker.min.js',
-        '/assets/tpextbuilder/js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js',
     ];
 
     protected $css = [
@@ -150,8 +149,8 @@ EOT;
 
     public function beforRender()
     {
+        $this->customJs('/assets/tpextbuilder/js/bootstrap-datepicker/locales/bootstrap-datepicker.' . (empty($this->jsOptions['language']) ?  'zh-CN' : $this->jsOptions['language'])  . '.min.js');
         $this->dateRangeScript();
-
         return parent::beforRender();
     }
 }

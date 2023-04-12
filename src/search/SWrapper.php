@@ -12,6 +12,7 @@ use tpext\builder\common\Wrapper as Base;
  * @method \tpext\builder\displayer\Radio          radio($name, $label = '', $colSize = 2, $filter = '')
  * @method \tpext\builder\displayer\Button         button($type, $label = '', $colSize = 2, $filter = '')
  * @method \tpext\builder\displayer\Select         select($name, $label = '', $colSize = 2, $filter = '')
+ * @method \tpext\builder\displayer\selectTree     selectTree($name, $label = '', $colSize = 12, $filter = '')
  * @method \tpext\builder\displayer\MultipleSelect multipleSelect($name, $label = '', $colSize = 2, $filter = '')
  * @method \tpext\builder\displayer\Textarea       textarea($name, $label = '', $colSize = 2, $filter = '')
  * @method \tpext\builder\displayer\Hidden         hidden($name)

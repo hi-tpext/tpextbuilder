@@ -6,9 +6,7 @@ class DateTime extends Text
 {
     protected $js = [
         '/assets/tpextbuilder/js/moment/moment.min.js',
-        '/assets/tpextbuilder/js/moment/locale/zh-cn.js',
         '/assets/tpextbuilder/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js',
-        '/assets/tpextbuilder/js/bootstrap-datetimepicker/locale/zh-cn.js',
     ];
 
     protected $css = [
@@ -52,7 +50,7 @@ class DateTime extends Text
 
         $this->jsOptions['format'] = $this->format;
 
-        $locale = isset($this->jsOptions['locale']) ? $this->jsOptions['locale'] : 'zh-cn';
+        $locale = empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale'];
 
         unset($this->jsOptions['locale']);
 
@@ -111,8 +109,9 @@ EOT;
 
     public function beforRender()
     {
+        $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
+        $this->customJs('/assets/tpextbuilder/js/bootstrap-datetimepicker/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
         $this->dateTimeScript();
-
         return parent::beforRender();
     }
 

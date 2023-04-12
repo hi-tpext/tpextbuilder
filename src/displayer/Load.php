@@ -18,6 +18,13 @@ class Load extends Field
         ]
     ];
 
+    public function created($fieldType = '')
+    {
+        $this->loadingText = __blang('bilder_loading');
+        parent::created($fieldType);
+        return $this;
+    }
+
     /**
      * Undocumented function
      *
@@ -102,11 +109,11 @@ class Load extends Field
                         d = list[i];
                         texts.push(d.__text__ || d['{$text}'] || d.text);
                     }
-                    $('#{$selectId}').text(texts.length ? texts.join('{$separator}') : '-空-');
+                    $('#{$selectId}').text(texts.length ? texts.join('{$separator}') : __blang.bilder_value_is_empty);
                 },
                 error:function(){
                     $('#{$selectId}').data('selected', '');
-                    $('#{$selectId}').text('-加载出错-');
+                    $('#{$selectId}').text(__blang.bilder_loading_error);
                 }
             });
         }

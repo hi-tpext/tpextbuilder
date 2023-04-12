@@ -1,0 +1,312 @@
+<?php
+
+namespace tpext\builder\displayer;
+
+use think\Collection;
+
+class Tree extends Field
+{
+    protected $view = 'tree';
+
+    protected $minify = false;
+
+    protected $options = [];
+
+    protected $js = [
+        '/assets/tpextbuilder/js/zTree_v3/js/jquery.ztree.all.min.js',
+        '/assets/tpextbuilder/js/zTree_v3/js/jquery.ztree.exhide.min.js',
+    ];
+
+    protected $css = [
+        '/assets/tpextbuilder/js/zTree_v3/css/lyearStyle/lyearStyle.css'
+    ];
+
+    protected $expandAll = true;
+
+    protected $multiple = true;
+
+    protected $maxHeight = 800;
+
+    /**
+     * Undocumented variable
+     *
+     * @var array|string
+     */
+    protected $checked = [];
+
+    protected $disabledOptions = [];
+
+    protected $jsOptions =  [
+        'view' => [
+            'dblClickExpand' => false,
+            'addHoverDom' => false,
+            'removeHoverDom' => false,
+            'selectedMulti' => true,
+        ]
+    ];
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function default($val = [])
+    {
+        $this->default = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|string $val
+     * @return $this
+     */
+    public function data($val)
+    {
+        $this->data = $val;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param bool $val
+     * @return $this
+     */
+    public function multiple($val = true)
+    {
+        $this->multiple = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer $val
+     * @return $this
+     */
+    public function maxHeight($val = 800)
+    {
+        $this->maxHeight = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function expandAll($val = true)
+    {
+        $this->expandAll = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string|array $val
+     * @return $this
+     */
+    public function disabledOptions($val)
+    {
+        $this->disabledOptions = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $val
+     * @return $this
+     */
+    public function placeholder($val)
+    {
+        $this->jsOptions['placeholder'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param array|Collection|\IteratorAggregate $options [[id,name,pId],...]
+     * @return $this
+     */
+    public function options($options)
+    {
+        if ($options instanceof Collection || $options instanceof \IteratorAggregate) {
+            return $this->optionsData($options);
+        }
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param array|Collection|\IteratorAggregate $treeData
+     * @param string $textField
+     * @param string $idField
+     * @param string $pidField
+     * @param string $rootText
+     * @param int $rootId
+     * 
+     * @return $this
+     */
+    public function optionsData($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id', $rootText = '全部', $rootId = 0)
+    {
+        $tree = [];
+
+        if ($rootText == '全部') {
+            $rootText = __blang('bilder_left_tree_text_all') . $this->getlabel();
+        }
+
+        if ($rootText) {
+            $tree[] = [
+                'id' => $rootId,
+                'pId' => -1,
+                'name' => $rootText,
+            ];
+        }
+
+        foreach ($treeData as $d) {
+            $tree[] = [
+                'id' => $d[$idField],
+                'pId' => $d[$pidField] ?? $d['pid'],
+                'name' => $d[$textField] ?? $d['title'],
+            ];
+        }
+
+        $this->options = $tree;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    protected function ztreeScript()
+    {
+        if (!($this->value === '' || $this->value === null || $this->value === [])) {
+            $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
+        } else if (!($this->default === '' || $this->default === null || $this->default === [])) {
+            $this->checked = is_array($this->default) ? $this->default : explode(',', $this->default);
+        }
+
+        if ($this->disabledOptions && !is_array($this->disabledOptions)) {
+            $this->disabledOptions = explode(',', $this->disabledOptions);
+        }
+
+        foreach ($this->options as &$d) {
+            $d['chkDisabled'] = in_array($d['id'], $this->disabledOptions) || $this->isReadonly() || $this->isDisabled();
+            $d['checked'] = in_array($d['id'], $this->checked);
+            $d['open'] = $this->expandAll;
+        }
+
+        $selectId = $this->getId();
+
+        if (empty($this->jsOptions['placeholder'])) {
+            $this->jsOptions['placeholder'] = '请选择' . $this->getlabel();
+        }
+
+        $key = preg_replace('/\W/', '', $selectId);
+
+        $configs = json_encode($this->jsOptions);
+        $configs = substr($configs, 1, strlen($configs) - 2);
+
+        $zNodes = json_encode($this->options);
+        $multiple = $this->multiple ? 1 : 0;
+
+        $script = <<<EOT
+
+        var treeObj{$key} = null;
+
+        var setting{$key} = {
+            {$configs},
+            check: {
+              enable: true,
+              autoCheckTrigger: true,
+              chkStyle: '{$multiple}' == 1 ? 'checkbox' : 'radio',
+              radioType: 'all',
+            },
+            data: {
+              simpleData: {
+                enable: true
+              }
+            },
+            edit: {
+              enable: false
+            },
+            callback: {
+                beforeClick: function(treeId, treeNode, clickFlag){
+                    if (treeNode.isParent) {
+                        treeObj{$key}.expandNode(treeNode);
+                        return true;
+                    }
+                },
+                onCheck: function(event, treeId, treeNode) {
+                    if(treeNode.checked)
+                    {
+                        if(!$('#' + treeId + '-'  + treeNode.id).size())
+                        {
+                            $('<option id="' + treeId + '-'  + treeNode.id + '" value="' + treeNode.id + '" selected="selected">' + treeNode.name + '</option>').appendTo("#{$selectId}");
+                        }
+                    }
+                    else
+                    {
+                        $('#' + treeId + '-'  + treeNode.id).remove();
+                    }
+                }
+            }
+        };
+
+        treeObj{$key} = $.fn.zTree.init($("#{$selectId}-tree"), setting{$key}, {$zNodes});
+
+EOT;
+        $this->script[] = $script;
+
+        return $script;
+    }
+
+    public function beforRender()
+    {
+        $this->ztreeScript();
+
+        if ($this->maxHeight > 0) {
+            $this->addStyle('max-height:' . $this->maxHeight . 'px;overflow:scroll;');
+        }
+
+        return parent::beforRender();
+    }
+
+    public function render()
+    {
+        $vars = $this->commonVars();
+
+        $vars = array_merge($vars, [
+            'checked' => $this->checked,
+            'options' => $this->options,
+            'disabledOptions' => $this->disabledOptions,
+            'multiple' => $this->multiple,
+        ]);
+
+        $viewshow = $this->getViewInstance();
+
+        return $viewshow->assign($vars)->getContent();
+    }
+}
