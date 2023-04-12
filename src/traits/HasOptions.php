@@ -80,18 +80,20 @@ trait HasOptions
 
         preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
 
+        $needReplace = isset($matches[1]) && count($matches[1]) > 0;
+
         foreach ($optionsData as $li) {
             if (empty($idField)) {
                 $idField = $li->getPk();
             }
             if (empty($textField)) {
-                $textField = isset($li['opt_text']) ? 'opt_text' : 'name'; //模型需要实现[getOptTextAttr]，否则看是否刚好有name这个字段;
+                $textField = isset($li['name']) ? 'name' : 'title';
             }
 
             $keys = [];
             $replace = [];
 
-            if (isset($matches[1]) && count($matches[1]) > 0) {
+            if ($needReplace) {
                 foreach ($matches[1] as $match) {
                     $arr = explode('.', $match);
                     if (count($arr) == 1) {
