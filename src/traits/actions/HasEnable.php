@@ -26,7 +26,7 @@ trait HasEnable
             }
         }
         if ($res) {
-            $this->error(__blang('bilder_update_{:num}_records_succeeded', ['num' => $res]));
+            $this->success(__blang('bilder_update_{:num}_records_succeeded', ['num' => $res]));
         } else {
             $this->error(__blang('bilder_update_failed'));
         }
