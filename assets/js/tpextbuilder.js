@@ -396,7 +396,7 @@
         });
     };
 
-    tpextbuilder.autoSendData = function (data, url, refresh, del) {
+    tpextbuilder.autoSendData = function (data, url, refresh) {
         data.__token__ = w.__token__;
         data._method = /.+?\/(?:destroy|delete|remove|del)(?:\.\w+)?$/.test(url) ? "delete" : "patch";
         lightyear.loading('show');
