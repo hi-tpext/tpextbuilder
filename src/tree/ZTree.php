@@ -105,12 +105,51 @@ class ZTree extends Widget implements Renderable
             ];
         }
 
-        foreach ($treeData as $d) {
-            $tree[] = [
-                'id' => $d[$idField],
-                'pId' => $d[$pidField],
-                'name' => $d[$textField],
-            ];
+        preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
+
+        $needReplace = isset($matches[1]) && count($matches[1]) > 0;
+
+        foreach ($treeData as $li) {
+
+            if (empty($idField)) {
+                $idField = $li->getPk();
+            }
+            if (empty($textField)) {
+                $textField = isset($li['name']) ? 'name' : 'title';
+            }
+
+            if ($needReplace) {
+
+                $keys = [];
+                $replace = [];
+
+                foreach ($matches[1] as $match) {
+                    $arr = explode('.', $match);
+                    if (count($arr) == 1) {
+
+                        $keys[] = '{' . $arr[0] . '}';
+                        $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '-';
+                    } else if (count($arr) == 2) {
+
+                        $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                        $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
+                    } else {
+                        //最多支持两层 xx 或 xx.yy
+                    }
+                }
+
+                $tree[] = [
+                    'id' => $li[$idField],
+                    'pId' => $li[$pidField] ?? $li['pid'],
+                    'name' => str_replace($keys, $replace, $textField),
+                ];
+            } else {
+                $tree[] = [
+                    'id' => $li[$idField],
+                    'pId' => $li[$pidField],
+                    'name' => $li[$textField],
+                ];
+            }
         }
 
         $this->data = $tree;

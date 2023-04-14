@@ -108,22 +108,56 @@ class JSTree extends Widget implements Renderable
             ];
         }
 
-        foreach ($treeData as $k => $d) {
+        preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
 
-            if ($d[$pidField] !== 0 && $d[$pidField] !== '') {
+        $needReplace = isset($matches[1]) && count($matches[1]) > 0;
+
+        foreach ($treeData as $k => $li) {
+
+            if ($li[$pidField] !== 0 && $li[$pidField] !== '') {
                 continue;
             }
 
             unset($treeData[$k]);
 
-            $tree[] = [
-                'id' => $d[$idField],
-                'text' => $d[$textField],
-                'state' => [
-                    'opened' => true,
-                ],
-                'children' => isset($d['children']) ? $d['children'] : $this->getChildren($treeData, $d[$idField], $textField, $idField, $pidField),
-            ];
+            if ($needReplace) {
+
+                $keys = [];
+                $replace = [];
+
+                foreach ($matches[1] as $match) {
+                    $arr = explode('.', $match);
+                    if (count($arr) == 1) {
+
+                        $keys[] = '{' . $arr[0] . '}';
+                        $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '-';
+                    } else if (count($arr) == 2) {
+
+                        $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                        $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
+                    } else {
+                        //最多支持两层 xx 或 xx.yy
+                    }
+                }
+                $tree[] = [
+                    'id' => $li[$idField],
+                    'text' => str_replace($keys, $replace, $textField),
+                    'state' => [
+                        'opened' => true,
+                    ],
+                    'children' => isset($li['children']) ? $li['children'] : $this->getChildren($treeData, $li[$idField], $textField, $idField, $pidField),
+                ];
+            } else {
+
+                $tree[] = [
+                    'id' => $li[$idField],
+                    'text' => $li[$textField],
+                    'state' => [
+                        'opened' => true,
+                    ],
+                    'children' => isset($li['children']) ? $li['children'] : $this->getChildren($treeData, $li[$idField], $textField, $idField, $pidField),
+                ];
+            }
         }
 
         $this->data = $tree;
@@ -135,20 +169,55 @@ class JSTree extends Widget implements Renderable
     {
         $children = [];
 
-        foreach ($treeData as $k => $d) {
+        preg_match_all('/\{([\w\.]+)\}/', $textField, $matches);
 
-            if ('' . $d[$pidField] === '' . $pid) {
+        $needReplace = isset($matches[1]) && count($matches[1]) > 0;
+
+        foreach ($treeData as $k => $li) {
+
+            if ('' . $li[$pidField] === '' . $pid) {
 
                 unset($treeData[$k]);
 
-                $children[] = [
-                    'id' => $d[$idField],
-                    'text' => $d[$textField],
-                    'state' => [
-                        'opened' => true,
-                    ],
-                    'children' => isset($d['children']) ? $d['children'] : $this->getChildren($treeData, $d[$idField], $textField, $idField, $pidField),
-                ];
+                if ($needReplace) {
+
+                    $keys = [];
+                    $replace = [];
+
+                    foreach ($matches[1] as $match) {
+                        $arr = explode('.', $match);
+                        if (count($arr) == 1) {
+
+                            $keys[] = '{' . $arr[0] . '}';
+                            $replace[] = isset($li[$arr[0]]) ? $li[$arr[0]] : '-';
+                        } else if (count($arr) == 2) {
+
+                            $keys[] = '{' . $arr[0] . '.' . $arr[1] . '}';
+                            $replace[] = isset($li[$arr[0]]) && isset($li[$arr[0]][$arr[1]]) ? $li[$arr[0]][$arr[1]] : '-';
+                        } else {
+                            //最多支持两层 xx 或 xx.yy
+                        }
+                    }
+
+                    $children[] = [
+                        'id' => $li[$idField],
+                        'text' => str_replace($keys, $replace, $textField),
+                        'state' => [
+                            'opened' => true,
+                        ],
+                        'children' => isset($li['children']) ? $li['children'] : $this->getChildren($treeData, $li[$idField], $textField, $idField, $pidField),
+                    ];
+                } else {
+
+                    $children[] = [
+                        'id' => $li[$idField],
+                        'text' => $li[$textField],
+                        'state' => [
+                            'opened' => true,
+                        ],
+                        'children' => isset($li['children']) ? $li['children'] : $this->getChildren($treeData, $li[$idField], $textField, $idField, $pidField),
+                    ];
+                }
             }
         }
 
