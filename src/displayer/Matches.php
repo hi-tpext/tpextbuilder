@@ -12,7 +12,7 @@ class Matches extends Raw
 
     protected $isInput = false;
 
-    protected $separator = ',';
+    protected $separator = '、';
 
     protected $checked = '';
 
@@ -22,9 +22,22 @@ class Matches extends Raw
      * @param string $val
      * @return $this
      */
-    public function separator($val = ',')
+    public function separator($val = '、')
     {
         $this->separator = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $fieldType
+     * @return $this
+     */
+    public function created($fieldType = '')
+    {
+        parent::created($fieldType);
+        $this->separator = __blang('bilder_default_separator');
         return $this;
     }
 

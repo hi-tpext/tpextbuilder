@@ -27,6 +27,8 @@ class Tree extends Field
 
     protected $maxHeight = 800;
 
+    protected $enableCheck = true;
+
     /**
      * Undocumented variable
      *
@@ -54,6 +56,18 @@ class Tree extends Field
     public function default($val = [])
     {
         $this->default = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function enableCheck($val = true)
+    {
+        $this->enableCheck = $val;
         return $this;
     }
 
@@ -196,10 +210,11 @@ class Tree extends Field
                 $textField = isset($li['name']) ? 'name' : 'title';
             }
 
-            $keys = [];
-            $replace = [];
-
             if ($needReplace) {
+
+                $keys = [];
+                $replace = [];
+                
                 foreach ($matches[1] as $match) {
                     $arr = explode('.', $match);
                     if (count($arr) == 1) {
@@ -269,6 +284,7 @@ class Tree extends Field
 
         $zNodes = json_encode($this->options);
         $multiple = $this->multiple ? 1 : 0;
+        $enableCheck = $this->enableCheck ? 1 : 0;
 
         $script = <<<EOT
 
@@ -277,9 +293,9 @@ class Tree extends Field
         var setting{$key} = {
             {$configs},
             check: {
-              enable: true,
+              enable: '{$enableCheck}' == '1',
               autoCheckTrigger: true,
-              chkStyle: '{$multiple}' == 1 ? 'checkbox' : 'radio',
+              chkStyle: '{$multiple}' == '1' ? 'checkbox' : 'radio',
               radioType: 'all',
             },
             data: {

@@ -90,10 +90,11 @@ trait HasOptions
                 $textField = isset($li['name']) ? 'name' : 'title';
             }
 
-            $keys = [];
-            $replace = [];
-
             if ($needReplace) {
+
+                $keys = [];
+                $replace = [];
+
                 foreach ($matches[1] as $match) {
                     $arr = explode('.', $match);
                     if (count($arr) == 1) {

@@ -88,6 +88,7 @@ return [
     'bilder_operation_failed'                => '操作失败',
     'bilder_loading'                         => '加载中...',
     'bilder_loading_error'                   => '-加载出错-',
+    'bilder_default_separator'               => '、',
     //file upload
     'bilder_file'                            => '文件',
     'bilder_maximum_upload_files_num_is'     => '最多允许上传文件数量是',

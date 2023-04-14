@@ -88,6 +88,7 @@ return [
     'bilder_operation_failed'                => 'Operation failed',
     'bilder_loading'                         => 'Loading...',
     'bilder_loading_error'                   => '-Loading error-',
+    'bilder_default_separator'               => ' , ',
     //file upload
     'bilder_file'                            => 'File',
     'bilder_maximum_upload_files_num_is'     => 'Maximum upload files num is',
