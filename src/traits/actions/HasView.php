@@ -95,7 +95,7 @@ trait HasView
                 || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea
             ) {
 
-                $row->show($fieldName, $row->getLabel())->default('-空-');
+                $row->show($fieldName, $row->getLabel())->default(__blang('bilder_value_is_empty'));
             } else if ($displayer instanceof displayer\Select && $displayer->isAjax()) { // multipleSelect(ajax) / select(ajax)
 
                 $displayer->whenScript(true);
