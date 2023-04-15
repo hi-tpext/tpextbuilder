@@ -46,7 +46,7 @@ class Content extends Widget implements Renderable
     /**
      * Undocumented function
      *
-     * @param string $template
+     * @param string $content
      * @param array $vars
      * @return $this
      */

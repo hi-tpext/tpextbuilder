@@ -583,7 +583,7 @@ class Builder implements Renderable
     public function layer(...$arguments)
     {
         if (!$this->layer) {
-            $this->layer = Column::makeWidget('Layer', ...$arguments);
+            $this->layer = Column::makeWidget('Layer', $arguments);
         }
 
         return $this->layer;
@@ -607,7 +607,7 @@ class Builder implements Renderable
     /**
      * Undocumented function
      *
-     * @param string $template
+     * @param string $content
      * @param array $vars
      * @param integer|string $size col大小
      * @return $this
@@ -768,9 +768,7 @@ class Builder implements Renderable
         }
 
         unset($j);
-
-        $this->getCsrfToken();
-
+        
         $vars = [
             'title' => $this->title ? $this->title : '',
             'desc' => $this->desc,
