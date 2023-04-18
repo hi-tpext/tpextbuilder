@@ -120,7 +120,7 @@ trait HasView
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
-                $options = [$pair[0] => __blang('bilder_option_off'), $pair[1] => __blang('bilder_option_on')];
+                $options = [$pair['on'] => __blang('bilder_option_on'), $pair['off'] => __blang('bilder_option_off')];
                 $row->match($fieldName, $row->getLabel())->options($options);
             } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
