@@ -133,6 +133,7 @@ trait HasView
             $size = $displayer->getSize();
 
             $row->getDisplayer()
+                ->required(false)
                 ->showLabel($displayer->isShowLabel())
                 ->size($size[0], $size[1])
                 ->help($displayer->getHelp());
