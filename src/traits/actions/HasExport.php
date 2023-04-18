@@ -190,7 +190,7 @@ trait HasExport
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
-                $options = [$pair[0] => __blang('bilder_option_off'), $pair[1] => __blang('bilder_option_on')];
+                $options = [$pair['on'] => __blang('bilder_option_on'), $pair['off'] => __blang('bilder_option_off')];
                 $displayer = (new displayer\Matche($fieldName, $col->getLabel()))->options($options);
             }
             $displayers[] = $displayer;

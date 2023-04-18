@@ -8,7 +8,7 @@ class SwitchBtn extends Field
 
     protected $checked = '';
 
-    protected $pair = [1, 0];
+    protected $pair = ['on' => 1, 'off' => 0];
 
     protected $required = false;
 
@@ -20,7 +20,7 @@ class SwitchBtn extends Field
      */
     public function pair($on = 1, $off = 0)
     {
-        $this->pair = [$on, $off];
+        $this->pair = ['on' => $on, 'off' => $off];;
 
         return $this;
     }
@@ -54,10 +54,10 @@ class SwitchBtn extends Field
         $script = <<<EOT
 
         $('#{$inputId}').next('label').find('input').on('change', function(){
-            $('#{$inputId}').val($(this).is(':checked') ? '{$this->pair[0]}' : '{$this->pair[1]}');
+            $('#{$inputId}').val($(this).is(':checked') ? "{$this->pair['on']}" : "{$this->pair['off']}");
         });
 
-        $('#{$inputId}').val($('#{$inputId}').next('label').find('input').is(':checked') ? '{$this->pair[0]}' : '{$this->pair[1]}');
+        $('#{$inputId}').val($('#{$inputId}').next('label').find('input').is(':checked') ? "{$this->pair['on']}" : "{$this->pair['off']}");
 
 EOT;
         $this->script[] = $script;
