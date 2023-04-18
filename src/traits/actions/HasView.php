@@ -80,11 +80,9 @@ trait HasView
             ) {
                 continue;
             } else if ($displayer instanceof displayer\Items) {
-
                 $content = $displayer->getContent();
                 $this->turn($content->getCols());
             } else if ($displayer instanceof displayer\Fields) {
-
                 $content = $displayer->getContent();
                 $this->turn($content->getRows());
             } else if ($displayer instanceof displayer\Password) {
@@ -133,6 +131,7 @@ trait HasView
             $size = $displayer->getSize();
 
             $row->getDisplayer()
+                ->required(false)
                 ->showLabel($displayer->isShowLabel())
                 ->size($size[0], $size[1])
                 ->help($displayer->getHelp());
