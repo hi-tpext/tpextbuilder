@@ -455,7 +455,7 @@
             shade: 0.3,
             maxHeight: winheight,
             area: size || ['90%', '400'],
-            offset: '7px',
+            offset: size.length > 0 & size[0] == '100%' ? 0 : '7px',
             content: href,
             success: function (layero, index) {
                 if (!size || size[1] == 'auto' || size[1] == '' || size[1] == '0') {
