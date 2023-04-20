@@ -38,6 +38,13 @@ class Tree extends Field
 
     protected $disabledOptions = [];
 
+    /**
+     * 点击父节点自动展开/收起子节点
+     *
+     * @var bool 
+     */
+    protected $expandNodeOnclick = false;
+
     protected $jsOptions =  [
         'view' => [
             'dblClickExpand' => false,
@@ -68,6 +75,18 @@ class Tree extends Field
     public function enableCheck($val = true)
     {
         $this->enableCheck = $val;
+        return $this;
+    }
+
+     /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function expandNodeOnclick($val = true)
+    {
+        $this->expandNodeOnclick = $val;
         return $this;
     }
 
@@ -286,6 +305,8 @@ class Tree extends Field
         $multiple = $this->multiple ? 1 : 0;
         $enableCheck = $this->enableCheck ? 1 : 0;
 
+        $expandNodeOnclick = $this->expandNodeOnclick ? 'true' : 'false';
+
         $script = <<<EOT
 
         var treeObj{$key} = null;
@@ -308,7 +329,7 @@ class Tree extends Field
             },
             callback: {
                 beforeClick: function(treeId, treeNode, clickFlag){
-                    if (treeNode.isParent) {
+                    if ({$expandNodeOnclick} && treeNode.isParent) {
                         treeObj{$key}.expandNode(treeNode);
                         return true;
                     }
