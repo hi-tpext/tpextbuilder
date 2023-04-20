@@ -126,7 +126,7 @@ class Fields extends Field
                 $fieldData = $fieldData->toArray();
             }
 
-            if ($fieldData &&  is_array($fieldData) || $fieldData instanceof \ArrayAccess) {
+            if ($fieldData &&  (is_array($fieldData) || $fieldData instanceof \ArrayAccess)) {
                 if (!$this->data) {
                     $this->data = [];
                 }
