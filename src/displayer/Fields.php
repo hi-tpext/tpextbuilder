@@ -126,7 +126,9 @@ class Fields extends Field
                 $fieldData = $fieldData->toArray();
             }
 
-            $this->data = array_merge($this->data, $fieldData);
+            if ($fieldData &&  is_array($fieldData)) {
+                $this->data = array_merge($this->data, $fieldData);
+            }
         } else {
             $this->data = $data;
         }
