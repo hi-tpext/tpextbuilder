@@ -26,6 +26,13 @@ class ZTree extends Widget implements Renderable
 
     protected $expandAll = false;
 
+    /**
+     * 点击父节点自动展开/收起子节点
+     *
+     * @var bool 
+     */
+    protected $expandNodeOnclick = false;
+
     public function __construct()
     {
         $this->addStyle('float:left;');
@@ -52,6 +59,18 @@ class ZTree extends Widget implements Renderable
     public function expandAll($val = true)
     {
         $this->expandAll = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function expandNodeOnclick($val = true)
+    {
+        $this->expandNodeOnclick = $val;
         return $this;
     }
 
@@ -219,6 +238,8 @@ EOT;
 
         $expandAll = $this->expandAll ? 'true' : 'false';
 
+        $expandNodeOnclick = $this->expandNodeOnclick ? 'true' : 'false';
+
         $script = <<<EOT
 
         var treeObj = null;
@@ -242,7 +263,7 @@ EOT;
             },
             callback: {
                 beforeClick: function(treeId, treeNode, clickFlag){
-                    if (treeNode.isParent) {
+                    if ({$expandNodeOnclick} && treeNode.isParent) {
                         treeObj.expandNode(treeNode);
                         return true;
                     }
