@@ -811,7 +811,7 @@ window.chooseFile = function (id, $input_file_name) {
 
     layer.open({
         type: 2,
-        title: '文件选择',
+        title: __blang.bilder_choose_uploaded_file,
         shadeClose: false,
         scrollbar: false,
         shade: 0.3,
