@@ -9,10 +9,10 @@
                         <img style="display: none;" class="preview-img" data-src="{$file}" />
                     </div>
                     <figcaption>
-                        <a class="btn btn-xs btn-round btn-square btn-primary
+                        <a title="{:__blang('bilder_action_view')}" class="btn btn-xs btn-round btn-square btn-primary
                             btn-link-pic" data-id="{$key}" href="{$file}"><i class="mdi mdi-eye"></i></a>
                         {if condition="$canUpload"}
-                        <a class="btn btn-xs btn-round btn-square btn-danger
+                        <a title="{:__blang('bilder_action_delete')}" class="btn btn-xs btn-round btn-square btn-danger
                             btn-remove-pic" data-id="{$key}" data-url="{$file}" href="javascript:;"><i class="mdi
                                 mdi-delete"></i></a>
                         {/if}
@@ -27,12 +27,12 @@
                         <img src="{$cover}" class="preview-img" />
                     </div>
                     <figcaption>
-                        <a class="btn btn-xs btn-round btn-square btn-primary opt-btn upload-file" data-id="{$id}"
+                        <a title="{:__blang('bilder_upload_nwe_file')}" class="btn btn-xs btn-round btn-square btn-primary opt-btn upload-file" data-id="{$id}"
                             data-name="{$name}"
                             onclick="$('#picker_'+$(this).data('id')+' .webuploader-element-invisible').trigger('click')"
                             href="javascript:;"><i class="mdi mdi-folder-open"></i></a>
                         {if condition="$canUpload"}
-                        <a class="btn btn-xs btn-round btn-square btn-info opt-btn choose-file" data-id="{$id}"
+                        <a title="{:__blang('bilder_choose_uploaded_file')}" class="btn btn-xs btn-round btn-square btn-info opt-btn choose-file" data-id="{$id}"
                             data-name="{$name}" onclick="chooseFile($(this).data('id'),$(this).data('id'))"
                             href="javascript:;"><i class="mdi mdi mdi-file-find"></i></a>
                         {/if}
