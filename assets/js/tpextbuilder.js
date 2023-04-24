@@ -637,8 +637,8 @@ window.renderFiles = function (elid) {
                     '    <img>' +
                     '</div>' +
                     '    <figcaption>' +
-                    '      <a class="btn btn-xs btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
-                    '      <a class="btn btn-xs btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
+                    '      <a title="' + __blang.bilder_action_view + '" class="btn btn-xs btn-round btn-square btn-primary btn-link-pic" href="javascript:;"><i class="mdi mdi-eye"></i></a>' +
+                    '      <a title="' + __blang.bilder_action_delete + '" class="btn btn-xs btn-round btn-square btn-danger btn-remove-pic" href="javascript:;"><i class="mdi mdi-delete"></i></a>' +
                     '    </figcaption>' +
                     '  </figure>' +
                     '</li>'),
