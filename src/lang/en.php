@@ -10,6 +10,7 @@ return [
     'bilder_not_allowed'                     => 'Not allowed',
     'bilder_new_one_item'                    => 'New one item',
     'bilder_please_enter'                    => 'Please enter ',
+    'bilder_please_select'                   => 'Please select ',
     'bilder_map_search'                      => 'Search',
     'bilder_map_search_place'                => 'Search place',
     'bilder_tags_enter_to_split'             => ', press [enter] or [,] to split',

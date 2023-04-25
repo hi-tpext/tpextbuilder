@@ -10,6 +10,7 @@ return [
     'bilder_not_allowed'                     => '不允许',
     'bilder_new_one_item'                    => '新加一条',
     'bilder_please_enter'                    => '请输入',
+    'bilder_please_select'                   => '请选择',
     'bilder_map_search'                      => '搜索',
     'bilder_map_search_place'                => '搜索地点',
     'bilder_tags_enter_to_split'             => '，[回车]或[,]分割',

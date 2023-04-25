@@ -137,7 +137,7 @@ class Select extends Field
         $selectId = $this->getId();
 
         if (empty($this->jsOptions['placeholder'])) {
-            $this->jsOptions['placeholder'] = '请选择' . $this->getlabel();
+            $this->jsOptions['placeholder'] = __blang('bilder_please_select') . $this->label;
         }
 
         if (isset($this->jsOptions['ajax'])) {
