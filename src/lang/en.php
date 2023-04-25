@@ -28,6 +28,8 @@ return [
     'bilder_data_not_found'                  => 'Data not found !',
     'bilder_option_on'                       => 'On',
     'bilder_option_off'                      => 'Off',
+    'bilder_option_yes'                      => 'Yes',
+    'bilder_option_no'                       => 'No',
     'bilder_value_is_empty'                  => '-Empty-',
     'bilder_no_relevant_data'                => 'No relevant data ~',
     //export
