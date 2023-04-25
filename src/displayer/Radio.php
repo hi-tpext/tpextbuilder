@@ -70,6 +70,17 @@ class Radio extends Field
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return $this
+     */
+    public function yesOrNo()
+    {
+        $this->options = [1 => __blang('bilder_option_yes'), 0 => __blang('bilder_option_no')];
+        return $this;
+    }
+
     public function render()
     {
         $vars = $this->commonVars();

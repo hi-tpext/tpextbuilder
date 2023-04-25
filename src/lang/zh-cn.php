@@ -28,6 +28,8 @@ return [
     'bilder_data_not_found'                  => '数据不存在！',
     'bilder_option_on'                       => '是',
     'bilder_option_off'                      => '否',
+    'bilder_option_yes'                      => '是',
+    'bilder_option_no'                       => '否',
     'bilder_value_is_empty'                  => '-空-',
     'bilder_no_relevant_data'                => '暂无相关数据~',
     //export
