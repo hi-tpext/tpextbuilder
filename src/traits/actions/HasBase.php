@@ -173,7 +173,7 @@ trait HasBase
         $token = Session::get('_csrf_token_');
 
         if (empty($token) || $token != input('__token__')) {
-            $this->error('token错误');
+            $this->error('token error');
         }
     }
 
