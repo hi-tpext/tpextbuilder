@@ -17,14 +17,7 @@ class Init implements MiddlewareInterface
     public function process(Request $request, callable $next): Response
     {
         Builder::destroyInstance();
-
         $response = $next($request);
-
-        Module::getInstance()->setUploadUrl('');
-        Module::getInstance()->setImportUrl('');
-        Module::getInstance()->setChooseUrl('');
-        Module::getInstance()->setViewsPath('');
-
         Builder::destroyInstance();
 
         return $response;
