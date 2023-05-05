@@ -32,10 +32,6 @@ return [
     'bilder_option_no'                       => '否',
     'bilder_value_is_empty'                  => '-空-',
     'bilder_no_relevant_data'                => '暂无相关数据~',
-    //export
-    'bilder_file_not_found'                  => '文件不存在',
-    'bilder_file_expired'                    => '文件已过期',
-    'bilder_term_of_validity_is_{:num}_day'  => '有效期为{:num}天',
     //left tree
     'bilder_left_tree_text_all'              => '全部',
     //page sub-titles
@@ -109,6 +105,12 @@ return [
     'bilder_generating_data'                 => '生成数据中...',
     'bilder_download_file'                   => '下载文件',
     'bilder_file_has_been_generated'         => '文件已生成，点击下载：',
+    'bilder_make_dir_failed'                 => '创建目录失败',
+    'bilder_file_not_found'                  => '文件不存在',
+    'bilder_file_expired'                    => '文件已过期',
+    'bilder_term_of_validity_is_{:num}_day'  => '有效期为{:num}天',
+    'bilder_column_id_replace'               => '编号',
+    'bilder_export_encoding'                 => 'GBK',
     //jquery-validate message
     'bilder_jquery_validate_required'        => '这是必填字段',
     'bilder_jquery_validate_remote'          => '请修正此字段',

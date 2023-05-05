@@ -25,7 +25,7 @@ class Export
      */
     public function toCsv($title, $data, $displayers, $buildTable = null)
     {
-        $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
+        $title = str_replace([' ', '.', '!', '@', '#', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
 
         if (ob_get_contents()) {
             ob_end_clean();
@@ -38,31 +38,29 @@ class Export
 
             if (!is_dir($dir)) {
                 if (!mkdir($dir, 0755, true)) {
-                    return json(['code' => 0, 'msg' => '创建目录失败']);
+                    return json(['code' => 0, 'msg' => __blang('bilder_make_dir_failed')]);
                 }
             }
 
             $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".csv";
             $fp = fopen($fname, 'w');
         } else {
-            if (!ExtLoader::isWebman()) {
-                header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename=' . $title . "-" . date('Ymd-His') . mt_rand(100, 999)  . ".csv");
-                header('Cache-Control: max-age=0');
-            } else {
-                ob_start();
-            }
-
+            ob_start();
             $fp = fopen('php://output', 'a');
         }
 
         $headerData = [];
         $body = '';
+        $encoding = __blang('bilder_export_encoding');
 
         foreach ($displayers as $key => $displayer) {
             $label = $displayer->getLabel();
-            $label = preg_replace('/id/i', '编号', $label);
-            $headerData[$key] = mb_convert_encoding($label, "GBK", "UTF-8");
+            $label = preg_replace('/id/i', __blang('bilder_column_id_replace'), $label);
+            if ($encoding) {
+                $headerData[$key] = mb_convert_encoding($label, __blang('bilder_export_encoding'), "UTF-8");
+            } else {
+                $headerData[$key] = $label;
+            }
         }
 
         fputcsv($fp, $headerData);
@@ -98,7 +96,12 @@ class Export
                 if (is_numeric($text) && !strstr($text, '.')) {
                     $text .= "\t";
                 }
-                $row[$key] = mb_convert_encoding($text, "GBK", "UTF-8");
+
+                if ($encoding) {
+                    $row[$key] = mb_convert_encoding($text, $encoding, "UTF-8");
+                } else {
+                    $row[$key] = $text;
+                }
             }
             fputcsv($fp, $row);
         }
@@ -106,15 +109,19 @@ class Export
         fclose($fp);
         if ($fname) {
             $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
-            return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
+            return json(['code' => 1, 'msg' => __blang('bilder_file_has_been_generated'), 'data' => url('export') . '?path=' . $file]);
         } else {
             if (ExtLoader::isWebman()) {
-                $body .= ob_get_clean();
-                return response()->withHeaders([
-                    'Content-Type' => 'application/vnd.ms-excel',
-                    'Content-Disposition' => 'attachment;filename=' . $title . "-" . date('Ymd-His') . ".csv",
+                $header = [
+                    'Content-Type' => 'text/csv',
+                    'Content-Disposition' => 'attachment;filename=' . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".csv",
                     'Cache-Control' => 'max-age=0',
-                ])->withBody($body);
+                ];
+                $body .= ob_get_clean();
+                return response()->withHeaders($header)->withBody($body);
+            } else {
+                $body .= ob_get_clean();
+                return download($body, $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".csv", true, 0);
             }
         }
     }
@@ -140,7 +147,7 @@ class Export
      */
     public function toExcel($title, $data, $displayers, $type, $buildTable = null)
     {
-        $title = str_replace([' ', '.', '!', '@', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
+        $title = str_replace([' ', '.', '!', '@', '#', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
 
         if (ob_get_contents()) {
             ob_end_clean();
@@ -157,7 +164,7 @@ class Export
             $this->worksheet = $obj->getActiveSheet();
             $lib = 'PHPExcel';
         } else {
-            return json(['code' => 0, 'msg' => '未安装PHPExcel或PhpOffice', 'data' => '']);
+            return json(['code' => 0, 'msg' => 'PHPExcel or PhpSpreadsheet required', 'data' => '']);
         }
 
         $this->worksheet->setTitle($title);
@@ -172,7 +179,7 @@ class Export
 
         foreach ($displayers as $k => $displayer) {
             $label = $displayer->getLabel();
-            $label = preg_replace('/id/i', '编号', $label);
+            $label = preg_replace('/id/i', __blang('bilder_column_id_replace'), $label);
             $this->worksheet->setCellValue($list[$k] . '1', $label);
         }
         $num = 0;
@@ -214,7 +221,7 @@ class Export
 
                 if (!is_dir($dir)) {
                     if (!mkdir($dir, 0755, true)) {
-                        return json(['code' => 0, 'msg' => '创建目录失败']);
+                        return json(['code' => 0, 'msg' => __blang('bilder_make_dir_failed')]);
                     }
                 }
 
@@ -222,7 +229,7 @@ class Export
                 $objWriter->save($fname);
 
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
-                return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
+                return json(['code' => 1, 'msg' => __blang('bilder_file_has_been_generated'), 'data' => url('export') . '?path=' . $file]);
             } else {
                 if (ExtLoader::isWebman()) {
                     ob_start();
@@ -253,7 +260,7 @@ class Export
                 $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
                 if (!is_dir($dir)) {
                     if (!mkdir($dir, 0755, true)) {
-                        return json(['code' => 0, 'msg' => '创建目录失败']);
+                        return json(['code' => 0, 'msg' => __blang('bilder_make_dir_failed')]);
                     }
                 }
 
@@ -261,7 +268,7 @@ class Export
                 $objWriter->save($fname);
 
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
-                return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
+                return json(['code' => 1, 'msg' => __blang('bilder_file_has_been_generated'), 'data' => url('export') . '?path=' . $file]);
             } else {
                 if (ExtLoader::isWebman()) {
                     ob_start();
@@ -307,7 +314,7 @@ class Export
 
         if (!is_dir($dir2)) {
             if (!mkdir($dir2, 0755, true)) {
-                return json(['code' => 0, 'msg' => '创建目录失败']);
+                return json(['code' => 0, 'msg' => __blang('bilder_make_dir_failed')]);
             }
         }
 
@@ -343,7 +350,7 @@ class Export
         $file = str_replace(App::getRuntimePath() . 'export/', '', $zfile);
 
         if (request()->isAjax()) {
-            return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
+            return json(['code' => 1, 'msg' => __blang('bilder_file_has_been_generated'), 'data' => url('export') . '?path=' . $file]);
         } else {
             return redirect(url('export') . '?path=' . $file);
         }
