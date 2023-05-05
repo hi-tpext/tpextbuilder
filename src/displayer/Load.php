@@ -117,6 +117,10 @@ class Load extends Field
                 }
             });
         }
+        else
+        {
+            $('#{$selectId}').text(__blang.bilder_value_is_empty);
+        }
 
 EOT;
 

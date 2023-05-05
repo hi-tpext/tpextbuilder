@@ -256,13 +256,13 @@ class Items extends Field
            var del = $(this).prev('input').val();
            if(del === '0') {
                 $(this).prev('input').val(1);
-                $(this).removeClass('btn-danger').addClass('btn-success').attr('title', __blang.bilder_remove);
+                $(this).removeClass('btn-danger').addClass('btn-success').attr('title', __blang.bilder_recover);
                 $(this).children('i').removeClass('mdi-delete').addClass('mdi-restart');
                 $(this).parents('td').prevAll('td').find('.item-field-required').addClass('ignore').removeClass('has-error');
            }
            else if(del === '1') {
                 $(this).prev('input').val(0);
-                $(this).removeClass('btn-success').addClass('btn-danger').attr('title', __blang.bilder_recover);
+                $(this).removeClass('btn-success').addClass('btn-danger').attr('title', __blang.bilder_remove);
                 $(this).children('i').removeClass('mdi-restart').addClass('mdi-delete');
                 $(this).parents('td').prevAll('td').find('.item-field-required').removeClass('ignore');
            }

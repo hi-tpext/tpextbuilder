@@ -1,6 +1,6 @@
 {if condition="$showLabel"}
 <label class="col-md-{$size[0]} {$labelClass}" {$labelAttr|raw} for="{$id}">
-    <strong title="必填" class="field-required" {$requiredStyle|raw}> *</strong>
+    <strong title="{:__blang('bilder_this_field_is_required')}" class="field-required" {$requiredStyle|raw}> *</strong>
     {$label|raw}
 </label>
 {/if}

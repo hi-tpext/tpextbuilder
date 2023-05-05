@@ -342,7 +342,7 @@ class ItemsContent extends FWrapper
             $isRequired = $displayer->isRequired();
 
             if ($isRequired) {
-                $this->headers[$key] = $displayer->getLabel() . '<strong title="必填" class="field-required">*</strong>';
+                $this->headers[$key] = $displayer->getLabel() . '<strong title="' . __blang('bilder_this_field_is_required') . '" class="field-required">*</strong>';
             }
 
             $displayer->required(false);

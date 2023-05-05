@@ -398,7 +398,7 @@ EOT;
             if ($this->prevSelect) {
                 $this->withPrevScript();
             }
-            $this->customJs('/assets/tpextbuilder/js/select2/i18n/' . (empty($this->jsOptions['locale']) ?  'zh-CN' : $this->jsOptions['locale']) . '.js');
+            $this->customJs('/assets/tpextbuilder/js/select2/i18n/' . (empty($this->jsOptions['language']) ?  'zh-CN' : $this->jsOptions['language']) . '.js');
             $this->select2Script();
         }
 
