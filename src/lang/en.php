@@ -32,10 +32,6 @@ return [
     'bilder_option_no'                       => 'No',
     'bilder_value_is_empty'                  => '-Empty-',
     'bilder_no_relevant_data'                => 'No relevant data ~',
-    //export
-    'bilder_file_not_found'                  => 'File not found',
-    'bilder_file_expired'                    => 'File expired',
-    'bilder_term_of_validity_is_{:num}_day'  => 'Term of validity is {:num} day',
     //left tree
     'bilder_left_tree_text_all'              => 'All',
     //page sub-titles
@@ -109,6 +105,12 @@ return [
     'bilder_generating_data'                 => 'Generating data ...',
     'bilder_download_file'                   => 'Download file',
     'bilder_file_has_been_generated'         => 'The file has been generated, click to download :',
+    'bilder_make_dir_failed'                 => 'Making directory failed !',
+    'bilder_file_not_found'                  => 'File not found',
+    'bilder_file_expired'                    => 'File expired',
+    'bilder_term_of_validity_is_{:num}_day'  => 'Term of validity is {:num} day',
+    'bilder_column_id_replace'               => 'ID',
+    'bilder_export_encoding'                 => '',
     //jquery-validate message
     'bilder_jquery_validate_required'        => 'This field is required',
     'bilder_jquery_validate_remote'          => 'Please correct this field',

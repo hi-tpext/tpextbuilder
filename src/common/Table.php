@@ -411,9 +411,11 @@ class Table extends TWrapper implements Renderable
         $this->data = $data;
         if (count($data) > 0 && empty($this->cols)) {
             $cols = [];
-
-            $cols = array_keys($data[0]);
-
+            $first = $data[0];
+            if (is_object($first) && method_exists($first, 'toArray')) {
+                $first = $first->toArray();
+            }
+            $cols = array_keys($first);
             foreach ($cols as $col) {
                 $this->show($col, ucfirst($col));
             }
