@@ -551,30 +551,32 @@ class Search extends SWrapper implements Renderable
         $('body').on('click', '#dropdown-choose_columns{$extKey}-div .dropdown-menu', function(event){
             event.stopPropagation();
         });
-
+        var columnsTimer = null;
         $('body').on('click', '#dropdown-choose_columns{$extKey}-div .dropdown-menu li a', function(event){
             var columns = [];
-            if($(this).hasClass('checked'))
-            {
+            if($(this).hasClass('checked')) {
                 $(this).removeClass('checked');
                 $(this).find('i').removeClass('mdi-checkbox-marked-outline').addClass('mdi-checkbox-blank-outline');
-            }
-            else
-            {
+            } else {
                 $(this).addClass('checked');
                 $(this).find('i').removeClass('mdi-checkbox-blank-outline').addClass('mdi-checkbox-marked-outline');
             }
             $('#dropdown-choose_columns{$extKey}-div .dropdown-menu li a.checked').each(function(i, e){
                 columns.push($(e).data('key'));
             });
-            if(!columns.length)
-            {
+            if(!columns.length) {
                 lightyear.notify(__blang.bilder_show_at_least_one_field, 'warning');
                 event.stopPropagation();
                 return false;
             }
-            $('#$form form input[name="__columns__"]').val(columns.join(','));
-            window.__forms__['{$form}'].formSubmit();
+            if (columnsTimer) {
+                clearTimeout(columnsTimer);
+            }
+            columnsTimer = setTimeout(function(){
+                $('#$form form input[name="__columns__"]').val(columns.join(','));
+                window.__forms__['{$form}'].formSubmit();
+                columnsTimer = null;
+            }, 1000);
             event.stopPropagation();
             return false;
         });
