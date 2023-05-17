@@ -227,24 +227,24 @@ class Export
 
                 $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls";
                 $objWriter->save($fname);
-
+                $obj->disconnectWorksheets();
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => __blang('bilder_file_has_been_generated'), 'data' => url('export') . '?path=' . $file]);
             } else {
                 if (ExtLoader::isWebman()) {
                     ob_start();
                     $objWriter->save('php://output');
-
+                    $obj->disconnectWorksheets();
                     return response()->withHeaders([
                         'Content-Type' => 'application/vnd.ms-excel',
                         'Content-Disposition' => 'attachment;filename=' . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls",
                         'Cache-Control' => 'max-age=0',
                     ])->withBody(ob_get_clean());
                 } else {
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . '.xls');
-                    header('Cache-Control: max-age=0');
+                    ob_start();
                     $objWriter->save('php://output');
+                    $obj->disconnectWorksheets();
+                    return download(ob_get_clean(), $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls", true, 0);
                 }
             }
         } else {
@@ -266,6 +266,7 @@ class Export
 
                 $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx";
                 $objWriter->save($fname);
+                $obj->disconnectWorksheets();
 
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => __blang('bilder_file_has_been_generated'), 'data' => url('export') . '?path=' . $file]);
@@ -273,6 +274,7 @@ class Export
                 if (ExtLoader::isWebman()) {
                     ob_start();
                     $objWriter->save('php://output');
+                    $obj->disconnectWorksheets();
 
                     return response()->withHeaders([
                         'Content-Type' => 'application/vnd.ms-excel',
@@ -280,10 +282,10 @@ class Export
                         'Cache-Control' => 'max-age=0',
                     ])->withBody(ob_get_clean());
                 } else {
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . mt_rand(100, 999)  . '.xlsx');
-                    header('Cache-Control: max-age=0');
+                    ob_start();
                     $objWriter->save('php://output');
+                    $obj->disconnectWorksheets();
+                    return download(ob_get_clean(), $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx", true, 0);
                 }
             }
         }
