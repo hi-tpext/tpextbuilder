@@ -189,7 +189,6 @@ class Export
             }
             $num++;
         }
-
         unset($text);
         $objWriter = null;
         if ($type == 'xls') {
@@ -212,14 +211,14 @@ class Export
 
                 $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls";
                 $objWriter->save($fname);
-
+                $obj->disconnectWorksheets();
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => __blang('bilder_file_has_been_generated'), 'data' => url('export') . '?path=' . $file]);
             } else {
-                header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His')  . '.xls');
-                header('Cache-Control: max-age=0');
+                ob_start();
                 $objWriter->save('php://output');
+                $obj->disconnectWorksheets();
+                return download(ob_get_clean(), $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xls", true, 0);
             }
         } else {
             if ($lib == 'PhpOffice') {
@@ -240,14 +239,14 @@ class Export
 
                 $fname = $dir . $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx";
                 $objWriter->save($fname);
-
+                $obj->disconnectWorksheets();
                 $file = str_replace(App::getRuntimePath() . 'export/', '', $fname);
                 return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
             } else {
-                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                header('Content-Disposition: attachment;filename="' . $title . "-" . date('Ymd-His') . mt_rand(100, 999)  . '.xlsx');
-                header('Cache-Control: max-age=0');
+                ob_start();
                 $objWriter->save('php://output');
+                $obj->disconnectWorksheets();
+                return download(ob_get_clean(), $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx", true, 0);
             }
         }
     }
