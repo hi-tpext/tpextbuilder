@@ -53,7 +53,7 @@ class Export
 
         foreach ($displayers as $key => $displayer) {
             $label = $displayer->getLabel();
-            $label = preg_replace('/id/i', __blang('bilder_column_id_replace'), $label);
+            $label = preg_replace('/_?id$/i', __blang('bilder_column_id_replace'), $label);
             if ($encoding) {
                 $headerData[$key] = mb_convert_encoding($label, __blang('bilder_export_encoding'), "UTF-8");
             } else {
@@ -164,7 +164,7 @@ class Export
 
         foreach ($displayers as $k => $displayer) {
             $label = $displayer->getLabel();
-            $label = preg_replace('/id/i', __blang('bilder_column_id_replace'), $label);
+            $label = preg_replace('/_?id$/i', __blang('bilder_column_id_replace'), $label);
             $this->worksheet->setCellValue($list[$k] . '1', $label);
         }
         $num = 0;
