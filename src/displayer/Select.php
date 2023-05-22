@@ -146,6 +146,7 @@ class Select extends Field
             $url = $ajax['url'];
             $id = $ajax['id'] ?: '_';
             $text = $ajax['text'] ?: '_';
+            $separator = $this->jsOptions['language'] == 'zh-CN' ? '、' : ',';
             $delay = !empty($ajax['delay']) ? $ajax['delay'] : 250;
             $loadmore = $ajax['loadmore'];
 
@@ -247,7 +248,7 @@ class Select extends Field
                             texts.push(d.__text__ || d['{$text}'] || d.text);
                         }
 
-                        $('#{$selectId}-text').text(texts.length ? texts.join('、') : '-空-');
+                        $('#{$selectId}-text').text(texts.length ? texts.join('{$separator}') : __blang.bilder_value_is_empty);
                     }
                     else
                     {
@@ -266,7 +267,7 @@ class Select extends Field
                     {
                         $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text"></span>');
                         $('#{$selectId}-text').parent('div').addClass('field-show');
-                        $('#{$selectId}-text').text('-加载出错-');
+                        $('#{$selectId}-text').text(__blang.bilder_loading_error);
                         
                     }
                     else
@@ -280,7 +281,7 @@ class Select extends Field
         {
             if(readonly{$key})
             {
-                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">加载中...</span>');
+                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">' + __blang.bilder_loading + '</span>');
                 $('#{$selectId}-text').parent('div').addClass('field-show');
             }
             else
