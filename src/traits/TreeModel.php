@@ -75,6 +75,10 @@ trait TreeModel
 
     protected $asTreeList = true;
 
+    protected $cacheKey = '';
+
+    protected $chacheTime = 300;
+
     /**
      * 获取是否显示为树行
      *
@@ -83,6 +87,11 @@ trait TreeModel
     public function asTreeList()
     {
         return $this->asTreeList;
+    }
+
+    public function getCacheKey()
+    {
+        return $this->cacheKey ?: 'tree_data_' . static::getName();
     }
 
     /**
@@ -222,7 +231,7 @@ trait TreeModel
 
     protected function builderData()
     {
-        $this->allTreeData = static::where($this->treeScope)->select();
+        $this->allTreeData = static::where($this->treeScope)->cache($this->getCacheKey(), $this->chacheTime)->select();
 
         $roots = [];
 
