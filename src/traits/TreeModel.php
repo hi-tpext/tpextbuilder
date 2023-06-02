@@ -91,7 +91,7 @@ trait TreeModel
 
     public function getCacheKey()
     {
-        return $this->cacheKey ?: 'tree_data_' . static::getName();
+        return $this->cacheKey ?: 'tree_data_' . $this->getName();
     }
 
     /**
@@ -231,7 +231,7 @@ trait TreeModel
 
     protected function builderData()
     {
-        $this->allTreeData = static::where($this->treeScope)->cache($this->getCacheKey(), $this->chacheTime)->select();
+        $this->allTreeData = $this->where($this->treeScope)->cache($this->getCacheKey(), $this->chacheTime)->select();
 
         $roots = [];
 
