@@ -109,10 +109,15 @@ EOT;
 
     public function beforRender()
     {
-        $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
-        $this->customJs('/assets/tpextbuilder/js/bootstrap-datetimepicker/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
+        $this->loadLocale();
         $this->dateTimeScript();
         return parent::beforRender();
+    }
+
+    protected function loadLang()
+    {
+        $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
+        $this->customJs('/assets/tpextbuilder/js/bootstrap-datetimepicker/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
     }
 
     /**
