@@ -399,13 +399,19 @@ EOT;
             if ($this->prevSelect) {
                 $this->withPrevScript();
             }
-            $this->customJs('/assets/tpextbuilder/js/select2/i18n/' . (empty($this->jsOptions['language']) ?  'zh-CN' : $this->jsOptions['language']) . '.js');
+
+            $this->loadLocale();
             $this->select2Script();
         }
 
         $this->whenScript();
 
         return parent::beforRender();
+    }
+
+    protected function loadLocale()
+    {
+        $this->customJs('/assets/tpextbuilder/js/select2/i18n/' . (empty($this->jsOptions['language']) ?  'zh-CN' : $this->jsOptions['language']) . '.js');
     }
 
     public function render()

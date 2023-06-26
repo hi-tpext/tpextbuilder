@@ -190,8 +190,13 @@ EOT;
 
     public function beforRender()
     {
-        $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['language']) ?  'zh-cn' : $this->jsOptions['language']) . '.js');
+        $this->loadLocale();
         $this->dateTimeRangeScript();
         return parent::beforRender();
+    }
+
+    protected function loadLang()
+    {
+        $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['language']) ?  'zh-cn' : $this->jsOptions['language']) . '.js');
     }
 }

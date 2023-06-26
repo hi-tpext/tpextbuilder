@@ -149,8 +149,13 @@ EOT;
 
     public function beforRender()
     {
-        $this->customJs('/assets/tpextbuilder/js/bootstrap-datepicker/locales/bootstrap-datepicker.' . (empty($this->jsOptions['language']) ?  'zh-CN' : $this->jsOptions['language'])  . '.min.js');
+        $this->loadLocale();
         $this->dateRangeScript();
         return parent::beforRender();
+    }
+
+    protected function loadLocale()
+    {
+        $this->customJs('/assets/tpextbuilder/js/bootstrap-datepicker/locales/bootstrap-datepicker.' . (empty($this->jsOptions['language']) ?  'zh-CN' : $this->jsOptions['language'])  . '.min.js');
     }
 }

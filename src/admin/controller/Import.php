@@ -63,8 +63,8 @@ class Import extends Controller
 
         $builder->display('<div id="dropzone-elm" style="width: 220px; margin: 0 auto;" class="dropzone"></div>');
 
-        $builder->addCss(['/assets/tpextbuilder/js/dropzone/min/basic.min.css', '/assets/tpextbuilder/js/dropzone/min/dropzone.min.css']);
-        $builder->addJs(['/assets/tpextbuilder/js/dropzone/min/dropzone.min.js']);
+        $builder->customCss(['/assets/tpextbuilder/js/dropzone/min/basic.min.css', '/assets/tpextbuilder/js/dropzone/min/dropzone.min.css']);
+        $builder->customJs(['/assets/tpextbuilder/js/dropzone/min/dropzone.min.js']);
 
         $script = <<<EOT
 

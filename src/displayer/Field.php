@@ -1368,4 +1368,13 @@ EOT;
         $this->data = null;
         $this->wrapper = null;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    protected function loadLocale()
+    {
+    }
 }
