@@ -27,6 +27,12 @@ class Matche extends Raw
         return parent::renderValue();
     }
 
+    public function yesOrNo()
+    {
+        $this->options = [1 => __blang('bilder_option_yes'), 0 => __blang('bilder_option_no')];
+        return $this;
+    }
+
     public function customVars()
     {
         return array_merge(parent::customVars(), [
