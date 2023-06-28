@@ -195,7 +195,7 @@ EOT;
         return parent::beforRender();
     }
 
-    protected function loadLang()
+    protected function loadLocale()
     {
         $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['language']) ?  'zh-cn' : $this->jsOptions['language']) . '.js');
     }

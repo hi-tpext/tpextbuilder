@@ -671,7 +671,10 @@ class Field implements Fillable
      */
     public function customJs($val)
     {
-        Builder::getInstance()->customJs($val);
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+        $this->customJs = array_merge($this->customCss, $val);
         return $this;
     }
 
@@ -683,7 +686,10 @@ class Field implements Fillable
      */
     public function customCss($val)
     {
-        Builder::getInstance()->customCss($val);
+        if (!is_array($val)) {
+            $val = [$val];
+        }
+        $this->customCss = array_merge($this->customCss, $val);
         return $this;
     }
 

@@ -114,7 +114,7 @@ EOT;
         return parent::beforRender();
     }
 
-    protected function loadLang()
+    protected function loadLocale()
     {
         $this->customJs('/assets/tpextbuilder/js/moment/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
         $this->customJs('/assets/tpextbuilder/js/bootstrap-datetimepicker/locale/' . (empty($this->jsOptions['locale']) ?  'zh-cn' : $this->jsOptions['locale']) . '.js');
