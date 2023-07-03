@@ -254,8 +254,8 @@ class Actionbar extends Toolbar
         if ($enableTitle == '启用') {
             $enableTitle = __blang('bilder_action_enable');
         }
-        if ($enableTitle == '禁用') {
-            $enableTitle = __blang('bilder_action_disable');
+        if ($disableTitle == '禁用') {
+            $disableTitle = __blang('bilder_action_disable');
         }
         $this->btnEnable()->getCurrent()->attr('title="' . $enableTitle . '"');
         $this->btnDisable()->getCurrent()->attr('title="' . $disableTitle . '"');
