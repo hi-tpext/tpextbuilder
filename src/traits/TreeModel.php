@@ -77,7 +77,7 @@ trait TreeModel
 
     protected $cacheKey = '';
 
-    protected $chacheTime = 300;
+    protected $chacheTime = 3; //按需调整时间，并自行处理修改后清除缓存
 
     /**
      * 获取是否显示为树行
