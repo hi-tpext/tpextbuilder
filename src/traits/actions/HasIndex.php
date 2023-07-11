@@ -242,6 +242,16 @@ trait HasIndex
             return $data;
         }
 
+        $total = $this->dataModel->where($where)->count();
+
+        if ($page > $total / $this->pagesize) {
+            if ($total % $this->pagesize == 0) {
+                $page = intval($total / $this->pagesize);
+            } else {
+                $page = intval($total / $this->pagesize) + 1;
+            }
+        }
+
         if ($this->isExporting) { //如果是导出
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)
@@ -257,8 +267,6 @@ trait HasIndex
                 ->withoutField($this->indexFieldsExcept)
                 ->select();
         }
-
-        $total = $this->dataModel->where($where)->count();
 
         return $data;
     }
