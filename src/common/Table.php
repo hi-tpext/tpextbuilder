@@ -634,7 +634,7 @@ class Table extends TWrapper implements Renderable
         }
 
         if (empty($this->pagesizeDropdown)) {
-            $this->pagesizeDropdown = new DropdownBtns('pagesize', '每页显示<b class="pagesize-text">' . $this->pageSize . '</b>条');
+            $this->pagesizeDropdown = new DropdownBtns('pagesize', __blang('bilder_paginator_num_per_page', ['num' => $this->pageSize]));
         }
 
         $this->pagesizeDropdown->items($items)->class('btn-xs btn-default')->addGroupClass('dropup pull-right m-r-10');
@@ -1042,7 +1042,7 @@ EOT;
 
         if ($this->usePagesizeDropdown && $this->pageSize && empty($this->pagesizeDropdown)) {
             $items = [
-                0 => '默认', 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30', 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120', 200 => '200', 350 => '350',
+                0 => __blang('bilder_pagesize_default'), 6 => '6', 10 => '10', 14 => '14', 20 => '20', 30 => '30', 40 => '40', 50 => '50', 60 => '60', 90 => '90', 120 => '120', 200 => '200', 350 => '350',
             ];
 
             ksort($items);

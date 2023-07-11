@@ -102,6 +102,14 @@ class Paginator extends Bootstrap
         return $this->class;
     }
 
+    public function isEmpty()
+    {
+        if ($this->currentPage > 1) {
+            return false;
+        }
+        return parent::isEmpty();
+    }
+
     /**
      * Undocumented function
      *
@@ -123,13 +131,13 @@ class Paginator extends Bootstrap
             $a = ($this->currentPage - 1) * $this->listRows + 1;
             $b = $a - 1 + $this->items->count();
             if ($this->total != $this->items->count()) {
-                $html = "<span class='pagination-summary'>共{$this->total}条记录，当前显示{$a}~{$b}条记录</span>" . $html;
+                $html = "<span class='pagination-summary'>" . __blang('bilder_paginator_summary', ['total' => $this->total, 'from' => $a, 'to' => $b]) . "</span>" . $html;
                 if ($this->lastPage > 10) {
-                    $gotoPage = "<li><a data-last='{$this->lastPage}' class='goto-page'>&nbsp;&nbsp;输入&nbsp;&nbsp;</a></li>";
+                    $gotoPage = "<li><a data-last='{$this->lastPage}' class='goto-page'>&nbsp;&nbsp;" . __blang('bilder_paginator_goto') . "&nbsp;&nbsp;</a></li>";
                     $html = preg_replace('/^(.+)<\/ul>$/', '$1' . $gotoPage . '</ul>', $html);
                 }
             } else {
-                $html = "<span class='pagination-summary'>共{$this->total}条记录</span>" . $html;
+                $html = "<span class='pagination-summary'>" . __blang('bilder_paginator_total', ['total' => $this->total]) . "</span>" . $html;
             }
         }
 

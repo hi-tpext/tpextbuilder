@@ -60,6 +60,11 @@ return [
     'bilder_action_batch_operation'          => 'Batch operation',
     'bilder_action_open_left_tree'           => 'Open left tree',
     'bilder_action_close_left_tree'          => 'Close left tree',
+    'bilder_pagesize_default'                => 'Default',
+    'bilder_paginator_summary'               => 'Total:{:total}, currently displaying {:from}~{:to} records',
+    'bilder_paginator_total'                 => 'Total:{:total} records',
+    'bilder_paginator_goto'                  => 'Goto',
+    'bilder_paginator_num_per_page'          => '{:num} per page',
     //error
     'bilder_invalid_argument_exception'      => 'Invalid argument exception',
     //buttons

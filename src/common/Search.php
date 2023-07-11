@@ -475,20 +475,21 @@ class Search extends SWrapper implements Renderable
             layer.prompt({
                 formType: 0,
                 value: '',
+                btn: [__blang.bilder_button_ok, __blang.bilder_button_cancel],
                 title: __blang.bilder_please_enter_the_page_number + '(1~' + last + ')'
             }, function(value, index, elem){
                 var page = parseInt(value);
                 if(!page || page <1)
                 {
                     layer.msg(__blang.bilder_page_number_input_error, {
-                        time: 500
+                        time: 1500
                     });
                     return false;
                 }
                 else if(page > last)
                 {
                     layer.msg(__blang.bilder_page_number_cannot_exceed + ' :' + last, {
-                        time: 500
+                        time: 1500
                     });
                     return false;
                 }

@@ -59,7 +59,12 @@ return [
     'bilder_action_choose_columns'           => '选择要显示的列',
     'bilder_action_batch_operation'          => '批量操作',
     'bilder_action_open_left_tree'           => '打开左侧',
-    'bilder_action_close_left_tree'           => '关闭左侧',
+    'bilder_action_close_left_tree'          => '关闭左侧',
+    'bilder_pagesize_default'                => '默认',
+    'bilder_paginator_summary'               => '共{:total}条记录，当前显示{:from}~{:to}条记录',
+    'bilder_paginator_total'                 => '共{:total}条记录',
+    'bilder_paginator_goto'                  => '输入',
+    'bilder_paginator_num_per_page'          => '每页显示{:num}条',
     //error
     'bilder_invalid_argument_exception'      => '未知调用',
     //buttons
