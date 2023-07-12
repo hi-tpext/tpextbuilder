@@ -244,7 +244,7 @@ trait HasIndex
 
         $total = $this->dataModel->where($where)->count();
         if ($total == 0) {
-            return [];
+            return $data;
         }
 
         if ($page > 1 && $page > $total / $this->pagesize) {
