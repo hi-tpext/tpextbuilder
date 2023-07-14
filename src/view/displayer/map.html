@@ -7,11 +7,8 @@
         {$after|raw}
     </div>
     {if condition="$maptype neq 'yandex' && !$readonly && !$disabled" }
-    <div class="input-group m-t-10 m-b-10 button-div">
+    <div class="input-group input-group col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-10 m-b-10 button-div">
         <input type="text" class="form-control input-sm" placeholder="{:__blang('bilder_map_search_place')}" id="search-{$id}">
-        <span class="input-group-btn">
-            <button class="btn btn-default btn-sm" type="button"><i class="mdi mdi-search"></i>{:__blang('bilder_map_search')}</button>
-        </span>
     </div>
     {/if}
     <div id="map-{$id}" {$mapStyle|raw}></div>
