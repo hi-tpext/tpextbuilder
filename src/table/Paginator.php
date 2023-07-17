@@ -102,7 +102,7 @@ class Paginator extends Bootstrap
         return $this->class;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         if ($this->currentPage > 1) {
             return false;
