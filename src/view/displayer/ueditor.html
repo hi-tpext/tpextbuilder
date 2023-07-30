@@ -5,7 +5,7 @@
     {else/}
     <script name="{$name}" id="{$id}" type="text/plain">{$value|raw}</script>
     <script type="text/javascript">
-        window.uploadUrl = '{$uploadUrl}'
+        window.uploadUrl = '{$uploadUrl|raw}'
     </script>
     {/if}
     {include file="$helptempl" /}
