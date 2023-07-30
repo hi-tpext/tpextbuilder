@@ -110,8 +110,23 @@ trait HasIndex
                 $tree = $builder->jsTree('1 left-tree');
             }
 
+            if (method_exists($this->treeModel, 'getOption')) { //读取树模型里面参数
+                if (empty($this->treeTextField)) {
+                    $this->treeTextField = $this->treeModel->getOption('treeTextField');
+                }
+                if (empty($this->treeIdField)) {
+                    $this->treeIdField = $this->treeModel->getOption('treeIdField');
+                }
+                if (empty($this->treeParentIdField)) {
+                    $this->treeParentIdField = $this->treeModel->getOption('treeParentIdField');
+                }
+                if (empty($this->treeSortField) && $this->treeSortField !== false) {
+                    $this->treeSortField = $this->treeModel->getOption('treeSortField');
+                }
+            }
+
             $tree->fill(
-                $this->treeModel->where($this->treeScope)->select(),
+                $this->treeModel->where($this->treeScope)->order($this->treeSortField)->select(),
                 $this->treeTextField,
                 $this->treeIdField,
                 $this->treeParentIdField,

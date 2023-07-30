@@ -20,13 +20,6 @@ trait HasLeftTree
      *
      * @var integer
      */
-    protected $treeRootid = 0;
-
-    /**
-     * 根一级的id
-     *
-     * @var integer
-     */
     protected $treeRootText = ''; //全部
 
     /**
@@ -48,14 +41,21 @@ trait HasLeftTree
      *
      * @var string
      */
-    protected $treeIdField = 'id';
+    protected $treeIdField = '';
 
     /**
      * 树 上级id字段 如 parend_id pid
      *
      * @var string
      */
-    protected $treeParentIdField = 'parent_id';
+    protected $treeParentIdField = '';
+
+    /**
+     * 排序字段　如 sort
+     *
+     * @var string
+     */
+    protected $treeSortField = '';
 
     /**
      * 树字段

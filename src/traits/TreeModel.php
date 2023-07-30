@@ -157,6 +157,17 @@ trait TreeModel
     }
 
     /**
+     * Undocumented function
+     *
+     * @param string $key
+     * @return array|string
+     */
+    public function getOption($key = '')
+    {
+        return $this->$key ?? '';
+    }
+
+    /**
      * 获取1维结构数据 text当&nbsp;(适合放列表页面)
      *
      * @param array $except
@@ -231,7 +242,7 @@ trait TreeModel
 
     protected function builderData()
     {
-        $this->allTreeData = $this->where($this->treeScope)->cache($this->getCacheKey(), $this->chacheTime)->select();
+        $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->cache($this->getCacheKey(), $this->chacheTime)->select();
 
         $roots = [];
 
@@ -251,14 +262,6 @@ trait TreeModel
         }
 
         unset($d);
-
-        if ($this->treeSortField) {
-            $volume = [];
-            foreach ($roots as $key => $row) {
-                $volume[$key] = $row[$this->treeSortField];
-            }
-            array_multisort($volume, SORT_ASC, $roots); //升序排列
-        }
 
         foreach ($roots as $d) {
 
@@ -297,15 +300,6 @@ trait TreeModel
 
                 unset($this->allTreeData[$k]);
             }
-        }
-
-        if ($this->treeSortField) {
-            $volume = [];
-
-            foreach ($data as $key => $row) {
-                $volume[$key] = $row[$this->treeSortField];
-            }
-            array_multisort($volume, SORT_ASC, $data); //升序排列
         }
 
         $children = [];

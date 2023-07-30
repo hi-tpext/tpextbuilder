@@ -204,12 +204,11 @@ trait HasBase
         }
         if (isset($this->treeModel) && isset($this->treeIdField)) {
             $this->treeScope = [];
-            $this->treeRootid = 0;
             $this->treeRootText = '';
             $this->treeType = 'ztree';
             $this->treeTextField = '';
-            $this->treeIdField = 'id';
-            $this->treeParentIdField = 'parent_id';
+            $this->treeIdField = '';
+            $this->treeParentIdField = '';
             $this->treeKey = '';
             $this->treeExpandAll = true;
             $this->treeModel = null;
