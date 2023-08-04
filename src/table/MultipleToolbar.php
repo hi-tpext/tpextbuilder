@@ -152,16 +152,7 @@ class MultipleToolbar extends Toolbar
         }
 
         if ($this->useExport && !$this->btnExport) {
-            $items = ['csv' => __blang('bilder_action_export_csv')];
-
-            if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet') || class_exists('\\PHPExcel')) {
-                $items = array_merge($items, [
-                    'xls' => __blang('bilder_action_export_xls'),
-                    'xlsx' => __blang('bilder_action_export_xlsx'),
-                ]);
-            }
-
-            $this->btnExports($items);
+            $this->btnExports();
         }
 
         if ($this->useSearch && !$this->btnSearch) {
@@ -407,8 +398,6 @@ class MultipleToolbar extends Toolbar
             $postUrl = url('export');
         }
 
-        $this->btnExport = true;
-
         if (!Builder::checkUrl($postUrl)) {
             return $this;
         }
@@ -426,7 +415,7 @@ class MultipleToolbar extends Toolbar
     /**
      * Undocumented function
      *
-     * @param array $items ['csv' => 'CSV文件']
+     * @param array $items ['csv' => '导出csv', 'xls' => '导出xls', 'xlsx' => '导出xlsx']
      * @param string $postUrl
      * @param string $label
      * @param string $class
@@ -434,10 +423,21 @@ class MultipleToolbar extends Toolbar
      * @param string $attr
      * @return $this
      */
-    public function btnExports($items, $postUrl = '', $label = '导出', $class = 'btn-secondary', $icon = 'mdi-export', $attr = 'title="导出"')
+    public function btnExports($items = [], $postUrl = '', $label = '导出', $class = 'btn-secondary', $icon = 'mdi-export', $attr = 'title="导出"')
     {
         if (empty($postUrl)) {
             $postUrl = url('export');
+        }
+
+        if (empty($items)) {
+            $items = ['csv' => __blang('bilder_action_export_csv')];
+
+            if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet') || class_exists('\\PHPExcel')) {
+                $items = array_merge($items, [
+                    'xls' => __blang('bilder_action_export_xls'),
+                    'xlsx' => __blang('bilder_action_export_xlsx'),
+                ]);
+            }
         }
 
         $this->btnExport = true;
