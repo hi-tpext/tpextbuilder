@@ -77,7 +77,12 @@ trait TreeModel
 
     protected $cacheKey = '';
 
-    protected $chacheTime = 3; //按需调整时间，并自行处理修改后清除缓存
+    /**
+     * Undocumented variable
+     *
+     * @var int|boolean
+     */
+    protected $chacheTime = false; //按需调整时间，并自行处理修改后清除缓存
 
     /**
      * 获取是否显示为树行
@@ -242,7 +247,11 @@ trait TreeModel
 
     protected function builderData()
     {
-        $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->cache($this->getCacheKey(), $this->chacheTime)->select();
+        if ($this->chacheTime !== false) {
+            $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->cache($this->getCacheKey(), $this->chacheTime)->select();
+        } else {
+            $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->select();
+        }
 
         $roots = [];
 
