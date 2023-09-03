@@ -15,6 +15,11 @@ class Toolbar extends BWrapper implements Renderable
 
     protected $view = '';
 
+    /**
+     * Undocumented variable
+     *
+     * @var Bar[] 
+     */
     protected $elms = [];
 
     /**

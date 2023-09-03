@@ -3,6 +3,7 @@
 namespace tpext\builder\table;
 
 use tpext\builder\common\Toolbar;
+use tpext\builder\toolbar\ActionBtn;
 
 class Actionbar extends Toolbar
 {
@@ -57,6 +58,11 @@ class Actionbar extends Toolbar
 
             if ($this->extKey) {
                 $elm->extKey($this->extKey);
+            }
+
+            if(!($elm instanceof ActionBtn))
+            {
+                continue;
             }
 
             if ($this->rowId) {
