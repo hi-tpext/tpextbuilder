@@ -60,8 +60,7 @@ class Actionbar extends Toolbar
                 $elm->extKey($this->extKey);
             }
 
-            if(!($elm instanceof ActionBtn))
-            {
+            if (!($elm instanceof ActionBtn)) {
                 continue;
             }
 
