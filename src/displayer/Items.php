@@ -106,7 +106,7 @@ class Items extends Field
      */
     public function canDelete($val)
     {
-        $this->__items__->cnaDelete($val);
+        $this->__items__->canDelete($val);
         return $this;
     }
 
@@ -118,7 +118,7 @@ class Items extends Field
      */
     public function cnaDelete($val)
     {
-        $this->__items__->cnaDelete($val);
+        $this->__items__->canDelete($val);
         return $this;
     }
 

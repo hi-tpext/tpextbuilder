@@ -37,7 +37,7 @@ class ItemsContent extends FWrapper
 
     protected $actionRowText = '';
 
-    protected $cnaDelete = true;
+    protected $canDelete = true;
 
     protected $canAdd = true;
 
@@ -165,9 +165,9 @@ class ItemsContent extends FWrapper
      * @param boolean $val
      * @return $this
      */
-    public function cnaDelete($val)
+    public function canDelete($val)
     {
-        $this->cnaDelete = $val;
+        $this->canDelete = $val;
         return $this;
     }
 
@@ -178,7 +178,7 @@ class ItemsContent extends FWrapper
      */
     public function hasAction()
     {
-        return $this->cnaDelete || $this->canAdd;
+        return $this->canDelete || $this->canAdd;
     }
 
     /**
@@ -403,7 +403,7 @@ class ItemsContent extends FWrapper
             'data' => $this->data,
             'emptyText' => $this->emptyText,
             'ids' => $this->ids,
-            'cnaDelete' => $this->cnaDelete,
+            'canDelete' => $this->canDelete,
             'actionRowText' => $this->actionRowText,
             'canAdd' => $this->canAdd,
             'script' => implode('', array_unique($this->script)),

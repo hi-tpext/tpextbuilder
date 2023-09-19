@@ -8,7 +8,7 @@
           {$header|raw}
         </th>
         {/volist}
-        {if condition="$cnaDelete || $canAdd"}
+        {if condition="$canDelete || $canAdd"}
         <th style="min-width: 50px;" class="text-center vertical-middle">{$actionRowText|raw}</th>
         {/if}
       </tr>
@@ -22,7 +22,7 @@
           {$col.value|raw}
         </td>
         {/foreach}
-        {if condition="$cnaDelete"}
+        {if condition="$canDelete"}
         <td class="row-__action__ vertical-middle text-center">
           <input type="hidden" name="{$name}[{$ids[$key]}][__del__]" value="0" />
           {if condition="$col.__can_delete__"}
