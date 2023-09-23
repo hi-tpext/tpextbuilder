@@ -245,13 +245,22 @@ trait TreeModel
         return $this->treeData;
     }
 
-    protected function builderData()
+    public function getAllData()
     {
+        $this->treeInit();
+
         if ($this->chacheTime !== false) {
             $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->cache($this->getCacheKey(), $this->chacheTime)->select();
         } else {
             $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->select();
         }
+
+        return $this->allTreeData;
+    }
+
+    protected function builderData()
+    {
+        $this->getAllData();
 
         $roots = [];
 
