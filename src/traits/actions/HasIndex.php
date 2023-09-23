@@ -103,6 +103,8 @@ trait HasIndex
     {
         if ($this->treeModel && $this->treeKey) { //左侧树模型
 
+            $data = $this->treeModel->getAllData();
+
             $tree = null;
             if ($this->treeType == 'ztree') {
                 $tree = $builder->zTree('1 left-tree');
@@ -126,7 +128,7 @@ trait HasIndex
             }
 
             $tree->fill(
-                $this->treeModel->where($this->treeScope)->order($this->treeSortField)->select(),
+                $data,
                 $this->treeTextField,
                 $this->treeIdField,
                 $this->treeParentIdField,
