@@ -85,20 +85,6 @@ trait HasLeftTree
      */
     protected function initLeftTree()
     {
-        if (method_exists($this->treeModel, 'getOption')) { //读取树模型里面参数(是\tpext\builder\traits\TreeModel实例)
-            if (empty($this->treeTextField)) {
-                $this->treeTextField = $this->treeModel->getOption('treeTextField');
-            }
-            if (empty($this->treeIdField)) {
-                $this->treeIdField = $this->treeModel->getOption('treeIdField');
-            }
-            if (empty($this->treeParentIdField)) {
-                $this->treeParentIdField = $this->treeModel->getOption('treeParentIdField');
-            }
-            if (empty($this->treeSortField) && $this->treeSortField !== false) {
-                $this->treeSortField = $this->treeModel->getOption('treeSortField');
-            }
-        }
         $data = [];
         if (method_exists($this->treeModel, 'getAllData')) {//(是\tpext\builder\traits\TreeModel实例)
             $options = [];
@@ -113,6 +99,21 @@ trait HasLeftTree
             $data = $this->treeModel->getAllData();
         } else {
             $data = $this->treeModel->where($this->treeScope)->order($this->treeSortField)->select();
+        }
+
+        if (method_exists($this->treeModel, 'getOption')) { //读取树模型里面参数(是\tpext\builder\traits\TreeModel实例)
+            if (empty($this->treeTextField)) {
+                $this->treeTextField = $this->treeModel->getOption('treeTextField');
+            }
+            if (empty($this->treeIdField)) {
+                $this->treeIdField = $this->treeModel->getOption('treeIdField');
+            }
+            if (empty($this->treeParentIdField)) {
+                $this->treeParentIdField = $this->treeModel->getOption('treeParentIdField');
+            }
+            if (empty($this->treeSortField) && $this->treeSortField !== false) {
+                $this->treeSortField = $this->treeModel->getOption('treeSortField');
+            }
         }
 
         return $data;
