@@ -4,8 +4,8 @@ namespace tpext\builder\traits\actions;
 
 /**
  * 左侧树形结构
+ * 已适配 \tpext\builder\traits\TreeModel;
  */
-
 trait HasLeftTree
 {
     /**
@@ -14,20 +14,6 @@ trait HasLeftTree
      * @var array
      */
     protected $treeScope = []; //如 [['enable', 'eq', 1]]
-
-    /**
-     * 根一级的id
-     *
-     * @var integer
-     */
-    protected $treeRootText = ''; //全部
-
-    /**
-     * js树类型，ztree/jstree
-     *
-     * @var string
-     */
-    protected $treeType = 'ztree';
 
     /**
      * 树 Text 字段 如 'name'
@@ -65,6 +51,20 @@ trait HasLeftTree
     protected $treeKey = '';
 
     /**
+     * "全部"文字
+     *
+     * @var integer
+     */
+    protected $treeRootText = ''; //全部
+
+    /**
+     * js树类型，ztree/jstree
+     *
+     * @var string
+     */
+    protected $treeType = 'ztree';
+
+    /**
      * 展开所有节点
      *
      * @var boolean
@@ -72,9 +72,49 @@ trait HasLeftTree
     protected $treeExpandAll = true;
 
     /**
-     * 树数据模型
-     *
+     * 树数据模型，如果$treeModel是\tpext\builder\traits\TreeModel实例，上面的大多数参数可以不用配置
+     * 
      * @var \think\Model
      */
     protected $treeModel = null;
+
+    /**
+     * 初始化树，返回树数据
+     *
+     * @return array|mixed
+     */
+    protected function initLeftTree()
+    {
+        if (method_exists($this->treeModel, 'getOption')) { //读取树模型里面参数(是\tpext\builder\traits\TreeModel实例)
+            if (empty($this->treeTextField)) {
+                $this->treeTextField = $this->treeModel->getOption('treeTextField');
+            }
+            if (empty($this->treeIdField)) {
+                $this->treeIdField = $this->treeModel->getOption('treeIdField');
+            }
+            if (empty($this->treeParentIdField)) {
+                $this->treeParentIdField = $this->treeModel->getOption('treeParentIdField');
+            }
+            if (empty($this->treeSortField) && $this->treeSortField !== false) {
+                $this->treeSortField = $this->treeModel->getOption('treeSortField');
+            }
+        }
+        $data = [];
+        if (method_exists($this->treeModel, 'getAllData')) {//(是\tpext\builder\traits\TreeModel实例)
+            $options = [];
+            if ($this->treeScope) {
+                $options['treeScope'] = $this->treeScope;
+            }
+            if ($this->treeSortField) {
+                $options['treeSortField'] = $this->treeSortField;
+            }
+            $this->treeModel->reInit($options);
+
+            $data = $this->treeModel->getAllData();
+        } else {
+            $data = $this->treeModel->where($this->treeScope)->order($this->treeSortField)->select();
+        }
+
+        return $data;
+    }
 }
