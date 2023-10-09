@@ -2,6 +2,7 @@
 
 namespace tpext\builder\common;
 
+use tpext\think\App;
 use tpext\think\View;
 use think\facade\Session;
 use tpext\common\ExtLoader;
@@ -9,7 +10,6 @@ use tpext\builder\tree\ZTree;
 use tpext\builder\inface\Auth;
 use tpext\builder\tree\JSTree;
 use tpext\builder\inface\Renderable;
-use think\facade\Lang;
 
 class Builder implements Renderable
 {
@@ -768,6 +768,8 @@ class Builder implements Renderable
         }
 
         unset($j);
+
+        $__blang = include Module::getInstance()->getRoot() . 'src' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . App::getDefaultLang() . '.php';
         
         $vars = [
             'title' => $this->title ? $this->title : '',
@@ -777,7 +779,7 @@ class Builder implements Renderable
             'css' => array_unique($this->css),
             'stylesheet' => implode('', array_unique($this->styleSheet)),
             'script' => implode('', array_unique($this->script)),
-            '__blang' => json_encode(Lang::get() ?: [], JSON_UNESCAPED_UNICODE),
+            '__blang' => json_encode($__blang, JSON_UNESCAPED_UNICODE),
         ];
 
         View::share([
