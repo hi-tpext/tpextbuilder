@@ -141,7 +141,7 @@ class Items extends Field
      */
     public function canNotAddOrDelete()
     {
-        $this->__items__->cnaDelete(false);
+        $this->__items__->canDelete(false);
         $this->__items__->canAdd(false);
         return $this;
     }
