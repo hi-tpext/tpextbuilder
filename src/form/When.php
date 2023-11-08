@@ -100,7 +100,7 @@ class When
             $matchCase = in_array($watchForValue, $this->cases);
         }
 
-        $field->extKey('-' . $key) //防止id重复
+        $field->extKey('-watch-' . $key) //防止id重复
             ->addAttr('data-name="' . $field->getName() . ($field->isArrayValue() ? '[]' : '') . '"')
             ->extNameKey('_' . $key) //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
             ->getWrapper()->addClass($matchCase ? '' : 'hidden');

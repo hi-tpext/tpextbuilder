@@ -8,7 +8,7 @@ class Image extends File
     {
         $this->image();
 
-        $this->canUpload = !$this->readonly && $this->canUpload;
+        $this->canUpload = !$this->readonly && $this->canUpload && (empty($this->extKey) || stripos($this->extKey, '-watch-') !== false);
 
         if (!$this->canUpload) {
             if (empty($this->default)) {

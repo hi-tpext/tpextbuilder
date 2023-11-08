@@ -8,7 +8,7 @@ class MultipleImage extends MultipleFile
     {
         $this->image();
 
-        $this->canUpload = !$this->readonly && $this->canUpload && empty($this->extKey);
+        $this->canUpload = !$this->readonly && $this->canUpload && (empty($this->extKey) || stripos($this->extKey, '-watch-') !== false);
 
         if (!$this->canUpload) {
             if (empty($this->default)) {
