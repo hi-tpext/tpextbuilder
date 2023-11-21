@@ -63,7 +63,7 @@ class When
     public function toggle($field)
     {
         //防止不同case中有重复字段的一些问题，因为trigger('change')调用时机，js处理重name/id有局限。
-        $key = $this->watchFor->getName() . md5(json_encode($this->cases));
+        $key = preg_replace('/[^\w\-]/', '-', $this->watchFor->getName()) . md5(json_encode($this->cases));
 
         $watchForValue = $this->watchFor->renderValue();
 

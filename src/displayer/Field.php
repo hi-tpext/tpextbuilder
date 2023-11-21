@@ -151,7 +151,7 @@ class Field implements Fillable
      */
     public function getId()
     {
-        return 'form-' . preg_replace('/\W/', '', $this->name) . $this->extKey;
+        return 'form-' . preg_replace('/[^\w\-]/', '-', $this->name . $this->extKey);
     }
 
     /**
