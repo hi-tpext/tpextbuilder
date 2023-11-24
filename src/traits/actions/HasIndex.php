@@ -101,8 +101,10 @@ trait HasIndex
 
     protected function createTable($builder)
     {
-        if ($this->treeModel && $this->treeKey) { //左侧树模型
-
+        if (
+            $this->treeModel && $this->treeKey //存在左侧树模型
+            && !request()->isAjax() //非ajax请求时不再加载树数据，只是刷新表格数据
+        ) {
             $tree = null;
             if ($this->treeType == 'ztree') {
                 $tree = $builder->zTree('1 left-tree');

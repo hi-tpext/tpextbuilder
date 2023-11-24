@@ -86,7 +86,7 @@ trait HasLeftTree
     protected function initLeftTree()
     {
         $data = [];
-        if (method_exists($this->treeModel, 'getAllData')) {//(是\tpext\builder\traits\TreeModel实例)
+        if (method_exists($this->treeModel, 'getAllData')) { //(是\tpext\builder\traits\TreeModel实例)
             $options = [];
             if ($this->treeScope) {
                 $options['treeScope'] = $this->treeScope;
