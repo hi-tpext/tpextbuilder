@@ -31,7 +31,7 @@
                             data-name="{$name}"
                             onclick="$('#picker_'+$(this).data('id')+' .webuploader-element-invisible').trigger('click')"
                             href="javascript:;"><i class="mdi mdi-folder-open"></i></a>
-                        {if condition="$canUpload"}
+                        {if condition="$showChooseBtn"}
                         <a title="{:__blang('bilder_choose_uploaded_file')}" class="btn btn-xs btn-round btn-square btn-info opt-btn choose-file" data-id="{$id}"
                             data-name="{$name}" onclick="chooseFile($(this).data('id'),$(this).data('id'))"
                             href="javascript:;"><i class="mdi mdi mdi-file-find"></i></a>
