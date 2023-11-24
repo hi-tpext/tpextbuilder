@@ -708,15 +708,15 @@ class Table extends TWrapper implements Renderable
         $script = <<<EOT
 
         $('body').on('dblclick', '#{$table} tbody tr', function(){
-            if($(this).find('td a.dbl-click').not('.hidden').length)
+            if($(this).find('td a.dbl-click').not('.hidden,.disabled').length)
             {
                 $(this).find('td a.dbl-click').trigger('click');
             }
-            else if($(this).find('td a.action-edit').not('.hidden').length)
+            else if($(this).find('td a.action-edit').not('.hidden,.disabled').length)
             {
                 $(this).find('td a.action-edit').trigger('click');
             }
-            else if($(this).find('td a.action-view').not('.hidden').length)
+            else if($(this).find('td a.action-view').not('.hidden,.disabled').length)
             {
                 $(this).find('td a.action-view').trigger('click');
             }
