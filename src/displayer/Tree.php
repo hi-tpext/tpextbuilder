@@ -335,16 +335,17 @@ class Tree extends Field
                     }
                 },
                 onCheck: function(event, treeId, treeNode) {
+                    var optionId = (treeId + '-' + treeNode.id).replace(/\W/g, '-');
                     if(treeNode.checked)
                     {
-                        if(!$('#' + treeId + '-'  + treeNode.id).size())
+                        if(!$('#' + optionId).size())
                         {
-                            $('<option id="' + treeId + '-'  + treeNode.id + '" value="' + treeNode.id + '" selected="selected">' + treeNode.name + '</option>').appendTo("#{$selectId}");
+                            $('<option id="' + optionId + '" value="' + treeNode.id + '" selected="selected">' + treeNode.name + '</option>').appendTo("#{$selectId}");
                         }
                     }
                     else
                     {
-                        $('#' + treeId + '-'  + treeNode.id).remove();
+                        $('#' + optionId).remove();
                     }
                 }
             }
