@@ -25,7 +25,7 @@ class Tree extends Field
 
     protected $multiple = true;
 
-    protected $maxHeight = 800;
+    protected $maxHeight = 400;
 
     protected $enableCheck = true;
 
@@ -78,7 +78,7 @@ class Tree extends Field
         return $this;
     }
 
-     /**
+    /**
      * Undocumented function
      *
      * @param boolean $val
@@ -233,7 +233,7 @@ class Tree extends Field
 
                 $keys = [];
                 $replace = [];
-                
+
                 foreach ($matches[1] as $match) {
                     $arr = explode('.', $match);
                     if (count($arr) == 1) {
@@ -363,7 +363,7 @@ EOT;
     {
         $this->ztreeScript();
 
-        if ($this->maxHeight > 0) {
+        if (!$this->readonly && $this->maxHeight > 0) {
             $this->addStyle('max-height:' . $this->maxHeight . 'px;overflow:scroll;');
         }
 
