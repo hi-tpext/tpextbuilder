@@ -5,11 +5,8 @@ namespace tpext\builder\index\controller;
 use think\Controller;
 use tpext\builder\common\Module;
 
-/* 参照 Light-Year-Example 相关上传处理方式*/
-
 /**
- * Undocumented class
- * @title 上传
+ * @title 文件缩略图
  */
 class File extends Controller
 {
@@ -21,7 +18,7 @@ class File extends Controller
      */
     public function extimg()
     {
-        $type = input('type');
+        $type = strtolower(input('type'));
 
         $file = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'images', 'ext', $type . '.png']);
         if (!file_exists($file)) {
@@ -48,7 +45,7 @@ class File extends Controller
             header("Content-type: image/png");
             header("Cache-Control: private, max-age=10800, pre-check=10800");
             header("Pragma: private");
-            header("Expires: " . date(DATE_RFC822, strtotime("+2day")));
+            header("Expires: " . date(DATE_RFC822, strtotime("+30day")));
             readfile($file);
             exit;
         }
