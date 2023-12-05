@@ -52,7 +52,7 @@ class Map extends Text
      * Undocumented function
      *
      * @param int $val
-     * @return void
+     * @return $this
      */
     public function zoom($val)
     {
