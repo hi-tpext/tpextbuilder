@@ -68,7 +68,7 @@ class MultipleFile extends Field
         'multiple' => true,
         'mimeTypes' => '*/*',
         'swf_url' => '/assets/tpextbuilder/js/webuploader/Uploader.swf',
-        'fileSingleSizeLimit' => 5 * 1024 * 1024,
+        'fileSingleSizeLimit' => 250 * 1024 * 1024,
         'fileNumLimit' => 5,
         'fileSizeLimit' => 0,
         'thumbnailWidth' => 80,
