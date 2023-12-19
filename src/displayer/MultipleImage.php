@@ -4,6 +4,12 @@ namespace tpext\builder\displayer;
 
 class MultipleImage extends MultipleFile
 {
+    public function created($fieldType = '')
+    {
+        parent::created($fieldType);
+        $this->jsOptions['fileSingleSizeLimit'] = 2 * 1024 * 1024;
+    }
+
     public function render()
     {
         $this->image();
