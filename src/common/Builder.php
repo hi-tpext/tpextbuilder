@@ -91,17 +91,7 @@ class Builder implements Renderable
     public static function getInstance($title = '', $desc = '')
     {
         if (self::$instance == null) {
-
-            $config = Module::getInstance()->getConfig();
-
-            $uiDriver = $config['ui_driver'] ?? '';
-
-            if ($uiDriver && class_exists($uiDriver)) {
-                self::$instance = new $uiDriver($title, $desc);
-            } else {
-                self::$instance = new static($title, $desc);
-            }
-
+            self::$instance = new static($title, $desc);
             self::$instance->created();
 
             ExtLoader::trigger('tpext_create_builder', self::$instance);

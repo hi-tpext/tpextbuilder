@@ -33,7 +33,6 @@ return [
     'google_map_js_key' => '//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&key=您申请的key值',
     'tcent_map_js_key' => '//map.qq.com/api/js?v=2.exp&libraries=place&key=您申请的key值',
     'yandex_map_js_key' => '//api-maps.yandex.ru/2.1/?lang=ru_RU',
-    'ui_driver' => \tpext\builder\common\Builder::class,
     //
     '__config__' => function (Form $form) {
 
@@ -49,7 +48,6 @@ return [
             $form->image('image_water', '图片水印')->help('若设置则所有上传图片(jpg/jpeg/png/webp/gif)都加此水印');
             $form->select('image_water_position', '图片水印位置')->options(['top-left' => '左上', 'top' => '中上', 'top-right' => '右上', 'left' => '左中', 'center' => '居中', 'right' => '右中', 'bottom-left' => '左下', 'bottom' => '中下', 'bottom-right' => '右下']);
             $form->text('image_size_limit', '上传图片大小限制')->help('宽高以英文,号分割，如1024,1024，0值不限制，如果上传图片宽或高超过限制，则缩放此边到限制大小，另一边等比例缩放');
-            $form->select('ui_driver', 'UI驱动')->options(Module::getInstance()->getUiDrivers());
         });
 
         $form->right(8)->with(function () use ($form) {
