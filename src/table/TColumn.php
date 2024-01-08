@@ -6,7 +6,6 @@ use tpext\builder\common\Table;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
-use think\facade\Lang;
 
 class TColumn extends TWrapper implements Renderable
 {
@@ -28,10 +27,6 @@ class TColumn extends TWrapper implements Renderable
     public function __construct($name, $label = '', $colSize = 12)
     {
         $this->name = trim($name);
-        if (empty($label) && !empty($this->name)) {
-            $label = Lang::get(ucfirst($this->name));
-        }
-
         $this->label = $label;
         $this->cloSize = $colSize;
     }

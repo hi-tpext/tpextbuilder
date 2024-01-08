@@ -6,7 +6,6 @@ use tpext\builder\common\Search;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
-use think\facade\Lang;
 
 class SRow extends SWrapper implements Renderable
 {
@@ -25,10 +24,6 @@ class SRow extends SWrapper implements Renderable
     public function __construct($name, $label = '', $colSize = 2, $filter = '')
     {
         $this->name = trim($name);
-        if (empty($label) && !empty($this->name)) {
-            $label = Lang::get(ucfirst($this->name));
-        }
-
         $this->label = $label;
         $this->cloSize = $colSize;
         $this->filter = $filter;

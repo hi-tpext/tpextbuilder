@@ -10,22 +10,19 @@ class Html extends Field
 
     protected $isInput = false;
 
-    /**
-     * Undocumented variable
-     *
-     * @var View
-     */
-    protected $content;
+    protected $content = null;
+
+    public function __construct($html, $label = '')
+    {
+        $this->label = $label;
+        $this->default = $html;
+        $this->name = 'html' . mt_rand(100, 999);
+    }
 
     public function created($fieldType = '')
     {
-        parent::created($fieldType);
-
-        $this->value = $this->label ? $this->label : $this->name;
-
-        $this->name = 'html' . mt_rand(100, 999);
-
-        return $this;
+        $this->getWrapper()->setName($this->name);
+        return parent::created($fieldType);
     }
 
     /**
@@ -42,7 +39,6 @@ class Html extends Field
         $value = $this->renderValue();
 
         $vars = array_merge($vars, [
-            $this->name => $value,
             '__val__' => $value
         ]);
 
@@ -64,7 +60,6 @@ class Html extends Field
         $value = $this->renderValue();
 
         $vars = array_merge($vars, [
-            $this->name => $value,
             '__val__' => $value
         ]);
 

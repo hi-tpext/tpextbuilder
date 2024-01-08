@@ -687,7 +687,9 @@ EOT;
 
             $row->setForm($this);
 
-            $displayer = $row->$name($arguments[0], $row->getLabel());
+            $displayer = $row->$name($arguments[0], $count > 1 ? $arguments[1] : '');
+            
+            $row->setLabel($displayer->getLabel());
 
             if ($this->__when__) {
                 $this->__when__->toggle($displayer);
