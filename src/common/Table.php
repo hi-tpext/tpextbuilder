@@ -1116,17 +1116,15 @@ EOT;
 
             $col->setTable($this);
 
-            $displayer = null;
+            $displayer = $col->$name($arguments[0], $count > 1 ? $arguments[1] : '');
+            $col->setLabel($displayer->getLabel());
 
             if ($this->__fields__) {
                 $this->__fields__->addCol($col);
             } else {
                 $this->cols[$arguments[0]] = $col;
                 $this->headers[$arguments[0]] = $col->getLabel();
-                $displayer = $col->$name($arguments[0], $col->getLabel());
             }
-
-            $displayer = $col->$name($arguments[0], $col->getLabel());
 
             if ($displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
                 $displayer->canUpload(false);
