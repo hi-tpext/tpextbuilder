@@ -407,6 +407,7 @@ class Table extends TWrapper implements Renderable
         if (empty($data)) {
             return $this;
         }
+
         $this->data = $data;
         if (count($data) > 0 && empty($this->cols)) {
             $cols = [];
@@ -1115,15 +1116,15 @@ EOT;
 
             $col->setTable($this);
 
-            $displayer = $col->$name($arguments[0], $count > 1 ? $arguments[1] : '');
-            $col->setLabel($displayer->getLabel());
-
             if ($this->__fields__) {
                 $this->__fields__->addCol($col);
             } else {
                 $this->cols[$arguments[0]] = $col;
                 $this->headers[$arguments[0]] = $col->getLabel();
             }
+
+            $displayer = $col->$name($arguments[0], $count > 1 ? $arguments[1] : '');
+            $col->setLabel($displayer->getLabel());
 
             if ($displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
                 $displayer->canUpload(false);
