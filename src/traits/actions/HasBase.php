@@ -202,7 +202,8 @@ trait HasBase
             $this->isExporting = false;
 
             $this->indexWith = [];
-            $this->indexFieldsExcept = [];
+            $this->indexFieldsOnly = '*';
+            $this->indexFieldsExcept = '';
             $this->postAllowFields = [];
             $this->delNotAllowed = [];
         }

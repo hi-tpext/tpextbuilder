@@ -259,18 +259,26 @@ trait HasIndex
             }
         }
 
+        if ($this->indexFieldsExcept) {
+            $this->indexFieldsOnly = '';
+        } else {
+            if (in_array($this->indexFieldsOnly, ['*', ''])) {
+                $this->indexFieldsOnly = true;
+            }
+        }
+
         if ($this->isExporting) { //如果是导出
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)
                 ->order($sortOrder)
-                ->field(in_array($this->indexFieldsOnly, ['*', '']) ? true : $this->indexFieldsOnly)
+                ->field($this->indexFieldsOnly)
                 ->withoutField($this->indexFieldsExcept)
                 ->cursor(); //select和cursor均可，最好是返回cursor
         } else {
             $data = $this->dataModel->with($this->indexWith)
                 ->where($where)->order($sortOrder)
                 ->limit(($page - 1) * $this->pagesize, $this->pagesize)
-                ->field(in_array($this->indexFieldsOnly, ['*', '']) ? true : $this->indexFieldsOnly)
+                ->field($this->indexFieldsOnly)
                 ->withoutField($this->indexFieldsExcept)
                 ->select();
         }
