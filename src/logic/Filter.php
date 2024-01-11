@@ -2,7 +2,7 @@
 
 namespace tpext\builder\logic;
 
-use \tpext\builder\common\Search;
+use tpext\builder\common\Search;
 
 class Filter
 {
@@ -27,7 +27,7 @@ class Filter
 
             if (isset($searchData[$comumn]) && $searchData[$comumn] !== '' && $searchData[$comumn] !== []) {
 
-                $filter = $row->getFilter() ?: 'eq';
+                $filter = $row->getFilter() ?: '=';
 
                 if (is_array($searchData[$comumn])) {
                     $filter = 'in';

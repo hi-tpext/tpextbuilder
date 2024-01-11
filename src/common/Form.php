@@ -895,7 +895,7 @@ EOT;
      *
      * @return string
      */
-    public function getViewemplate()
+    public function getViewTemplate()
     {
         $template = Module::getInstance()->getViewsPath() . 'form.html';
 
@@ -909,7 +909,7 @@ EOT;
      */
     public function render()
     {
-        $viewshow = new View($this->getViewemplate());
+        $viewshow = new View($this->getViewTemplate());
 
         $vars = [
             'rows' => $this->rows,

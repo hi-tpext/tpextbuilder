@@ -51,12 +51,7 @@ class Search extends SWrapper implements Renderable
 
     protected $tableId = '';
 
-    /**
-     * Undocumented variable
-     *
-     * @var Table
-     */
-    protected $table;
+    protected $chooseColumns = ['*'];
 
     /**
      * Undocumented variable
@@ -181,15 +176,13 @@ class Search extends SWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param Table $table
+     * @param string $tableId
      * @return $this
      */
-    public function search($table)
+    public function setTableId($tableId)
     {
-        $this->table = $table;
-        $this->tableId = $table->getTableId();
+        $this->tableId = $tableId;
         $this->id = 'search-' . $this->tableId;
-        $this->ajax = true;
         return $this;
     }
 
@@ -314,6 +307,18 @@ class Search extends SWrapper implements Renderable
     /**
      * Undocumented function
      *
+     * @param array $val 默认显示的字段
+     * @return $this
+     */
+    public function chooseColumns($val)
+    {
+        $this->chooseColumns = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function searchButtons($create = true)
@@ -395,10 +400,10 @@ class Search extends SWrapper implements Renderable
         $this->hidden('__search__')->value($this->id);
         $this->hidden('__table__')->value($this->tableId);
         $this->hidden('__sort__');
-        $this->hidden('__columns__')->value(implode(',', $this->table->getChooseColumns()));
+        $this->hidden('__columns__')->value(implode(',', $this->chooseColumns));
 
         $this->addClass('search-form');
-        $this->button('refresh', 'refresh', '1 hidden')->addClass('search-refresh');
+        $this->button('refresh', 'refresh', '1')->addClass('search-refresh')->getWrapper()->addClass('hidden');
         $this->searchScript();
 
         foreach ($this->rows as $row) {
@@ -627,7 +632,7 @@ EOT;
      *
      * @return string
      */
-    public function getViewemplate()
+    public function getViewTemplate()
     {
         $template = Module::getInstance()->getViewsPath() . 'table' . DIRECTORY_SEPARATOR . 'search.html';
 
@@ -641,7 +646,7 @@ EOT;
      */
     public function render()
     {
-        $viewshow = new View($this->getViewemplate());
+        $viewshow = new View($this->getViewTemplate());
 
         $vars = [
             'rows' => $this->rows,
@@ -688,7 +693,7 @@ EOT;
             $row->setForm($this);
 
             $displayer = $row->$name($arguments[0], $count > 1 ? $arguments[1] : '');
-            
+
             $row->setLabel($displayer->getLabel());
 
             if ($this->__when__) {
@@ -742,6 +747,5 @@ EOT;
             $row->destroy();
         }
         $this->rows = null;
-        $this->table = null;
     }
 }
