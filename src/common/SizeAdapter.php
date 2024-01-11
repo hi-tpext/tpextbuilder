@@ -28,7 +28,7 @@ class SizeAdapter extends Widget
      */
     public function adjustColSize($cloSize = '')
     {
-        if (is_int($cloSize)) {
+        if (is_numeric($cloSize)) {
             $col = $cloSize;
             if ($col == 0) {
                 //
@@ -47,9 +47,19 @@ class SizeAdapter extends Widget
                 if ($col == 0) {
                     //
                 } else if ($col == 12) {
-                    $cloSize .= " col-lg-12 col-sm-12 col-xs-12";
+                    if (!strstr($cloSize, 'col-lg-')) {
+                        $cloSize .= ' col-lg-12';
+                    }
+                    if (!strstr($cloSize, 'col-sm-')) {
+                        $cloSize .= ' col-sm-12';
+                    }
+                    if (!strstr($cloSize, 'col-xs-')) {
+                        $cloSize .= ' col-xs-12';
+                    }
                 } else if ($col <= 3) {
-                    $cloSize .= " col-lg-{$col}";
+                    if (!strstr($cloSize, 'col-lg-')) {
+                        $cloSize .= ' col-lg-' . $col;
+                    }
                     if (!strstr($cloSize, 'col-sm-')) {
                         $cloSize .= ' col-sm-4';
                     }
@@ -57,7 +67,9 @@ class SizeAdapter extends Widget
                         $cloSize .= ' col-xs-12';
                     }
                 } else if ($col <= 4) {
-                    $cloSize .= " col-lg-{$col}";
+                    if (!strstr($cloSize, 'col-lg-')) {
+                        $cloSize .= ' col-lg-' . $col;
+                    }
                     if (!strstr($cloSize, 'col-sm-')) {
                         $cloSize .= ' col-sm-6';
                     }
@@ -65,7 +77,9 @@ class SizeAdapter extends Widget
                         $cloSize .= ' col-xs-12';
                     }
                 } else {
-                    $cloSize .= " col-lg-{$col}";
+                    if (!strstr($cloSize, 'col-lg-')) {
+                        $cloSize .= ' col-lg-' . $col;
+                    }
                     if (!strstr($cloSize, 'col-sm-')) {
                         $cloSize .= ' col-sm-12';
                     }
@@ -99,7 +113,7 @@ class SizeAdapter extends Widget
     {
         $label = $element = '';
 
-        if (is_int($size[0])) {
+        if (is_numeric($size[0])) {
             $label = $size[0];
             if ($size[0] == 0) {
                 //
@@ -137,7 +151,7 @@ class SizeAdapter extends Widget
             }
         }
 
-        if (is_int($size[1])) {
+        if (is_numeric($size[1])) {
             $element = $size[1];
 
             if ($element == 0) {
@@ -145,7 +159,7 @@ class SizeAdapter extends Widget
             } else if ($element == 12) {
                 $size[1] .= " col-lg-12 col-sm-12 col-xs-12";
             } else {
-                if (is_int($label)) {
+                if (is_numeric($label)) {
                     if ($label == 0) {
                         $size[1] .= " col-lg-{$size[1]} col-sm-12 col-xs-12";
                     } else if ($label <= 3) {

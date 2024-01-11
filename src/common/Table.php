@@ -652,7 +652,6 @@ class Table extends TWrapper implements Renderable
     {
         if (empty($this->searchForm)) {
             $this->searchForm = Widget::makeWidget('Search');
-            $this->searchForm->search($this);
         }
         return $this->searchForm;
     }
@@ -686,6 +685,8 @@ class Table extends TWrapper implements Renderable
                 $this->searchForm->addClass('form-empty');
             }
 
+            $this->searchForm->setTableId($this->getTableId());
+            $this->searchForm->chooseColumns($this->getChooseColumns());
             $this->searchForm->beforRender();
 
             $this->tableScript();
@@ -991,7 +992,7 @@ EOT;
      *
      * @return string
      */
-    public function getViewemplate()
+    public function getViewTemplate()
     {
         $template = Module::getInstance()->getViewsPath() . 'table.html';
 
@@ -1013,7 +1014,7 @@ EOT;
             $this->initData();
         }
 
-        $viewshow = new View($this->getViewemplate());
+        $viewshow = new View($this->getViewTemplate());
 
         $count = count($this->data);
         if (!$this->paginator) {
