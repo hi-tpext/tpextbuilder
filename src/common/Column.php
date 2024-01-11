@@ -163,6 +163,34 @@ class Column extends Widget
     /**
      * Undocumented function
      *
+     * @param string $template
+     * @param array $vars
+     * @return $this
+     */
+    public function fetch($template = '', $vars = [])
+    {
+        $this->content()->fetch($template, $vars);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $content
+     * @param array $vars
+     * @return $this
+     */
+    public function display($content = '', $vars = [])
+    {
+        $this->content()->display($content, $vars);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @return $this
      */
     public function beforRender()

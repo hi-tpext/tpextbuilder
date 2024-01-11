@@ -111,6 +111,36 @@ class Row extends Widget
     /**
      * Undocumented function
      *
+     * @param string $template
+     * @param array $vars
+     * @param integer|string $size col大小
+     * @return $this
+     */
+    public function fetch($template = '', $vars = [], $size = 12)
+    {
+        $this->content($size)->fetch($template, $vars);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $content
+     * @param array $vars
+     * @param integer|string $size col大小
+     * @return $this
+     */
+    public function display($content = '', $vars = [], $size = 12)
+    {
+        $this->content($size)->display($content, $vars);
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param integer|string $size
      * @return Tab
      */
