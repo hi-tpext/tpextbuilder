@@ -1120,11 +1120,14 @@ EOT;
             if ($this->__fields__) {
                 $this->__fields__->addCol($col);
             } else {
+                $displayer = $col->$name($arguments[0], $count > 1 ? $arguments[1] : '');
+                
                 $this->cols[$arguments[0]] = $col;
-                $this->headers[$arguments[0]] = $col->getLabel();
+                $this->headers[$arguments[0]] = $displayer->getLabel();
             }
-
+            
             $displayer = $col->$name($arguments[0], $count > 1 ? $arguments[1] : '');
+            
             $col->setLabel($displayer->getLabel());
 
             if ($displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
