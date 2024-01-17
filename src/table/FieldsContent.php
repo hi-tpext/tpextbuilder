@@ -68,7 +68,7 @@ class FieldsContent extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @return array
+     * @return TColumn[]
      */
     public function getCols()
     {

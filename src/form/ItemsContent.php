@@ -114,7 +114,7 @@ class ItemsContent extends FWrapper
     /**
      * Undocumented function
      *
-     * @return array
+     * @return FRow[]
      */
     public function getCols()
     {
