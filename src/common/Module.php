@@ -74,13 +74,6 @@ class Module extends baseModule
     protected $storageDrivers = [\tpext\builder\logic\LocalStorage::class => '本地'];
 
     /**
-     * UI驱动类列表
-     *
-     * @var array
-     */
-    protected $uiDrivers = [\tpext\builder\common\Builder::class => '默认（tpextbuilder）'];
-
-    /**
      * Undocumented function
      *
      * @param string $newPath
@@ -147,20 +140,6 @@ class Module extends baseModule
     }
 
     /**
-     * 添加UI驱动类
-     *
-     * @param string $class 驱动类名
-     * @param string $title 驱动名称
-     * @return $this
-     */
-    public function addUiDriver($class, $title)
-    {
-        $this->uiDrivers[$class] = $title;
-
-        return $this;
-    }
-
-    /**
      * Undocumented function
      *
      * @return string
@@ -220,18 +199,6 @@ class Module extends baseModule
         //可以监听此事件，调用addStorageDriver($class, $title)添加驱动
         ExtLoader::trigger('tpext_builder_find_storage_drivers');
         return $this->storageDrivers;
-    }
-
-    /**
-     * 获取存储驱动类列表
-     *
-     * @return array
-     */
-    public function getUiDrivers()
-    {
-        //可以监听此事件，调用addUiDriver($class, $title)添加驱动
-        ExtLoader::trigger('tpext_builder_find_ui_drivers');
-        return $this->uiDrivers;
     }
 
     public function loaded()

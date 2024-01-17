@@ -392,7 +392,7 @@ class Search extends SWrapper implements Renderable
             }
         } else {
             $this->addClass('form-empty');
-            $this->button('submit', __blang('bilder_button_submit'), '6 col-lg-6 col-sm-6 col-xs-6')->class('btn-info ' . $this->butonsSizeClass);
+            $this->button('submit', 'submit', '1')->getWrapper()->addClass('hidden');
         }
 
         $this->hidden('__page__')->value(1);
