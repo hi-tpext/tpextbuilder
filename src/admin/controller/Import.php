@@ -59,7 +59,7 @@ class Import extends Controller
 
         $token = $builder->getCsrfToken();
 
-        $uploadUrl = url(Module::getInstance()->getUploadUrl(), ['utype' => 'dropzone', 'token' => $token, 'driver' => $driver])->__toString();
+        $uploadUrl = (string)url(Module::getInstance()->getUploadUrl(), ['utype' => 'dropzone', 'token' => $token, 'driver' => $driver]);
 
         $builder->display('<div id="dropzone-elm" style="width: 220px; margin: 0 auto;" class="dropzone"></div>');
 

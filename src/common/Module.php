@@ -94,7 +94,7 @@ class Module extends baseModule
      */
     public function setUploadUrl($newUrl)
     {
-        $this->uploadUrl = $newUrl;
+        $this->uploadUrl = (string)$newUrl;
 
         return $this;
     }
@@ -107,7 +107,7 @@ class Module extends baseModule
      */
     public function setImportUrl($newUrl)
     {
-        $this->importUrl = $newUrl;
+        $this->importUrl = (string)$newUrl;
 
         return $this;
     }
@@ -120,7 +120,7 @@ class Module extends baseModule
      */
     public function setChooseUrl($newUrl)
     {
-        $this->chooseUrl = $newUrl;
+        $this->chooseUrl = (string)$newUrl;
 
         return $this;
     }

@@ -70,15 +70,15 @@ class Actions extends DropdownBtns
             }
             if (!isset($item['url']) || empty($item['url'])) {
                 if ($key == 'enable') {
-                    $item['url'] = url('enable', ['state' => 1])->__toString();
+                    $item['url'] = (string)url('enable', ['state' => 1]);
                 } else if ($key == 'disable') {
-                    $item['url'] = url('enable', ['state' => 0])->__toString();
+                    $item['url'] = (string)url('enable', ['state' => 0]);
                 } else {
-                    $item['url'] = url($key)->__toString();
+                    $item['url'] = (string)url($key);
                 }
             } else {
                 if (stripos($item['url'], '/') === false) {
-                    $item['url'] = url($item['url'])->__toString();
+                    $item['url'] = (string)url($item['url']);
                 }
             }
             $item['url'] = str_replace($keys, $replace, $item['url']);

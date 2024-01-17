@@ -298,18 +298,18 @@ class MultipleFile extends Field
 
             if (!isset($this->jsOptions['upload_url']) || empty($this->jsOptions['upload_url'])) {
                 $token = $this->getCsrfToken();
-                $this->jsOptions['upload_url'] = url($this->getUploadUrl(), [
+                $this->jsOptions['upload_url'] = (string)url($this->getUploadUrl(), [
                     'utype' => 'webuploader',
                     'token' => $token,
                     'driver' => $this->getStorageDriver(),
                     'is_rand_name' => $this->isRandName(),
                     'image_driver' => $this->getImageDriver(),
                     'image_commonds' => $this->getImageCommands()
-                ])->__toString();
+                ]);
             }
 
             if (!isset($this->jsOptions['chooseUrl']) || empty($this->jsOptions['chooseUrl'])) {
-                $this->jsOptions['chooseUrl'] = url(Module::getInstance()->getChooseUrl()) . '?';
+                $this->jsOptions['chooseUrl'] = (string)url(Module::getInstance()->getChooseUrl()) . '?';
             }
         }
 

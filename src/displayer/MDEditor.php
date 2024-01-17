@@ -66,14 +66,14 @@ class MDEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['imageUploadURL'] = url($this->getUploadUrl(), [
+            $this->jsOptions['imageUploadURL'] = (string)url($this->getUploadUrl(), [
                 'utype' => 'editormd',
                 'token' => $token,
                 'driver' => $this->getStorageDriver(),
                 'is_rand_name' => $this->isRandName(),
                 'image_driver' => $this->getImageDriver(),
                 'image_commonds' => $this->getImageCommands()
-            ])->__toString();
+            ]);
         }
 
         $configs = json_encode($this->jsOptions);

@@ -83,14 +83,14 @@ EOT;
 
             $token = $this->getCsrfToken();
 
-            $this->uploadUrl = url($this->getUploadUrl(), [
+            $this->uploadUrl = (string)url($this->getUploadUrl(), [
                 'utype' => 'ueditor',
                 'token' => $token,
                 'driver' => $this->getStorageDriver(),
                 'is_rand_name' => $this->isRandName(),
                 'image_driver' => $this->getImageDriver(),
                 'image_commonds' => $this->getImageCommands()
-            ])->__toString();
+            ]);
         }
 
         $vars = $this->commonVars();

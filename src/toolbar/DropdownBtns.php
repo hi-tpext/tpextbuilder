@@ -143,7 +143,7 @@ class DropdownBtns extends Bar
 
         foreach ($items as $key => $it) {
             if (is_string($it)) {
-                $it = ['label' => $it, 'url' => url($key)->__toString()];
+                $it = ['label' => $it, 'url' => (string)url($key)];
             }
             $data = array_merge(
                 [

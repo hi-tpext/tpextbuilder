@@ -48,14 +48,14 @@ class Tinymce extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['images_upload_url'] = url($this->getUploadUrl(), [
+            $this->jsOptions['images_upload_url'] = (string)url($this->getUploadUrl(), [
                 'utype' => 'tinymce',
                 'token' => $token,
                 'driver' => $this->getStorageDriver(),
                 'is_rand_name' => $this->isRandName(),
                 'image_driver' => $this->getImageDriver(),
                 'image_commonds' => $this->getImageCommands()
-            ])->__toString();
+            ]);
         }
 
         $this->jsOptions['selector'] = "#{$inputId}";

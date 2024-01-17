@@ -34,14 +34,14 @@ class WangEditor extends Field
 
             $token = $this->getCsrfToken();
 
-            $this->jsOptions['uploadImgServer'] = url($this->getUploadUrl(), [
+            $this->jsOptions['uploadImgServer'] = (string)url($this->getUploadUrl(), [
                 'utype' => 'wangeditor',
                 'token' => $token,
                 'driver' => $this->getStorageDriver(),
                 'is_rand_name' => $this->isRandName(),
                 'image_driver' => $this->getImageDriver(),
                 'image_commonds' => $this->getImageCommands()
-            ])->__toString();
+            ]);
         }
 
         $this->jsOptions['uploadImgParams'] = [];
