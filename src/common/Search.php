@@ -231,7 +231,6 @@ class Search extends SWrapper implements Renderable
         if (empty($this->tablink)) {
             $this->tablink = new TabLink();
             $this->tablink->key($key);
-            $this->tablink->searchId($this->getFormId());
         }
 
         return $this->tablink;
@@ -411,6 +410,7 @@ class Search extends SWrapper implements Renderable
         }
 
         if ($this->tablink) {
+            $this->tablink->searchId($this->getFormId());
             $this->tablink->beforRender();
         }
 
