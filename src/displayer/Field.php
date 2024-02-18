@@ -887,8 +887,12 @@ class Field implements Fillable
                         $hasVal = true;
                     }
                 } else {
+                    if (isset($data[$arr[1]])) { //尝试读取上一层级的值
+                        $value = $data[$arr[1]];
+                        $hasVal = true;
+                    }
                     // $data = ['name' => 'str1'];
-                    // 输出：''
+                    // 输出：'str1'
                 }
             } else if (isset($data[$this->name])) {
 
