@@ -103,6 +103,7 @@ class Attachment extends Controller
         $table = $this->table;
 
         $choose = input('choose', 0);
+        $limit = input('limit', 1);
 
         $table->show('id', 'ID');
         $table->text('name', __blang('bilder_attachment_name'))->autoPost();
@@ -128,44 +129,65 @@ class Attachment extends Controller
 
         unset($d);
 
-        $table->useCheckbox(false);
-
         if ($choose) {
-            $table->getActionbar()->btnPostRowid('choose', url('choose', ['id' => input('id'), 'limit' => input('limit')]), __blang('bilder_choose_file_button'), 'btn-success', 'mdi-note-plus-outline', '', false);
-        } else {
-            $table->useActionbar(false);
-        }
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @title 选中文件
-     * @return mixed
-     */
-    public function choose()
-    {
-        $id = input('id');
-        $limit = input('limit');
-        $ids = input('post.ids/d', '0');
-        if (empty($ids)) {
-            $this->error(__blang('bilder_parameter_error'));
-        }
-
-        $file = $this->dataModel->get($ids);
-
-        if ($file) {
-            $script = '';
-
-            if ($limit < 2) {
-                $script = "<script>parent.$('#{$id}').val('{$file['url']}').trigger('change');parent.layer.close(parent.layer.getFrameIndex(window.name));</script>";
+            $id = input('id');
+            if ($limit > 1) {
+                $table->getToolbar()
+                    ->btnOpenChecked('#', __blang('bilder_choose_multiple_files_button'), 'btn-success', 'mdi-note-plus-outline', 'onclick="chooseMultipleUrlsAndClose()"');
             } else {
-                $script = "<script>parent.$('#{$id}').val(parent.$('#{$id}').val()+(parent.$('#{$id}').val()?',':'')+'{$file['url']}').trigger('change');parent.layer.close(parent.layer.getFrameIndex(window.name));</script>";
+                $table->useCheckbox(false);
+            }
+            $table->getActionbar()
+                ->btnLink('choose', '#', __blang('bilder_choose_file_button'), 'btn-success', 'mdi-note-plus-outline', 'onclick="chooseUrlAndClose(this)"');
+
+            $script = <<<EOT
+
+            var chooseUrlLimit = {$limit};
+
+            window.chooseUrlAndClose = function(e) {
+                var url = $(e).parents('tr').find('.row-url-td').find('a').attr('href');
+                if(chooseUrlLimit > 1) {
+                    parent.$('#{$id}').val(parent.$('#{$id}').val().trim(',')+(parent.$('#{$id}').val()?',':'') + url).trigger('change');
+                }
+                else {
+                    parent.$('#{$id}').val(url).trigger('change');
+                }
+                
+                window.closeChoose();
             }
 
-            return json(['code' => 1, 'script' => $script]);
+            window.chooseMultipleUrlsAndClose = function() {
+                var chosen = parent.$('#{$id}').val().trim(',');
+                var urls = [];
+                if(chosen) {
+                    urls = chosen.split(',');
+                }
+                $("input.table-row:checked").each(function (i, e) {
+                    if(urls.length >= chooseUrlLimit) {
+                        parent.lightyear.notify(__blang.bilder_maximum_upload_files_num_is + chooseUrlLimit, 'danger');
+                        return false;
+                    }
+                    urls.push($(e).parents('tr').find('.row-url-td').find('a').attr('href'));
+                });
+
+                if(!urls.length){
+                    lightyear.notify(__blang.bilder_data_not_found);
+                    return;
+                }
+
+                parent.$('#{$id}').val(urls.join(',')).trigger('change');
+                window.closeChoose();
+            }
+
+            window.closeChoose = function() {
+                parent.layer.close(parent.layer.getFrameIndex(window.name));
+            }
+EOT;
+
+            $this->builder()->addScript($script);
         } else {
-            $this->error(__blang('bilder_data_not_found'));
+            $table->useCheckbox(false);
+            $table->useActionbar(false);
         }
     }
 
