@@ -106,6 +106,7 @@ return [
     'bilder_choose_uploaded_file'            => '选择已上传文件',
     'bilder_upload_file_button'              => '上传',
     'bilder_choose_file_button'              => '选择',
+    'bilder_choose_multiple_files_button'     => '多选',
     //export
     'bilder_generating_data'                 => '生成数据中...',
     'bilder_download_file'                   => '下载文件',

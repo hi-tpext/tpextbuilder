@@ -106,6 +106,7 @@ return [
     'bilder_choose_uploaded_file'            => 'Choose uploaded file',
     'bilder_upload_file_button'              => 'Upload',
     'bilder_choose_file_button'              => 'Choose',
+    'bilder_choose_multiple_files_button'    => 'Multiple Choose',
     //export
     'bilder_generating_data'                 => 'Generating data ...',
     'bilder_download_file'                   => 'Download file',
