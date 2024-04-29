@@ -875,7 +875,7 @@ window.refreshFiles = function (jsOptions, $file_list, $input_file) {
         var $img = $li.find('img');
         var $btn = $li.find('a.btn-link-pic');
         $li.find('.btn-remove-pic').attr('data-id', i).attr('data-url', src);
-        if (jsOptions.cover) {
+        if (jsOptions.cover && $file_list.find('li.pic-item-cover').size() > 0) {
             $file_list.find('li.pic-item-cover').before($li);
         }
         else {
