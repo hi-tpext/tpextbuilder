@@ -9,12 +9,12 @@ class Image extends File
         parent::created($fieldType);
         $this->jsOptions['fileSingleSizeLimit'] = 2 * 1024 * 1024;
     }
-    
+
     public function render()
     {
         $this->image();
 
-        $this->canUpload = !$this->readonly && $this->canUpload && (empty($this->extKey) || stripos($this->extKey, '-watch-') !== false);
+        $this->canUpload = !$this->readonly && $this->canUpload && ($this->isInTable || empty($this->extKey) || stripos($this->extKey, '-watch-') !== false);
 
         if (!$this->canUpload) {
             if (empty($this->default)) {
