@@ -326,6 +326,8 @@ class MultipleFile extends Field
             $this->files = is_array($this->value) ? $this->value : explode(',', $this->value);
         } else if (!empty($this->default)) {
             $this->files = is_array($this->default) ? $this->default : explode(',', $this->default);
+        } else {
+            $this->files = [];
         }
 
         $this->files = array_filter($this->files, 'strlen');
