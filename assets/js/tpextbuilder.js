@@ -594,6 +594,7 @@ window.renderFiles = function (elid) {
             var uploader = WebUploader.create({
                 auto: true,
                 chunked: true,
+                chunkSize: jsOptions.chunkSize,
                 prepareNextFile: true,
                 duplicate: jsOptions.duplicate ? true : false,
                 resize: jsOptions.resize ? true : false,
