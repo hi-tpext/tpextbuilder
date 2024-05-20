@@ -73,6 +73,7 @@ class MultipleFile extends Field
         'fileSizeLimit' => 0,
         'thumbnailWidth' => 80,
         'thumbnailHeight' => 80,
+        'chunkSize' => 10 * 1024 * 1024,
         'isImage' => false,
         'istable' => false,
     ];
