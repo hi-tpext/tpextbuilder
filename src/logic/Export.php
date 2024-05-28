@@ -126,12 +126,14 @@ class Export
         }
     }
 
-    private function replace($text)
+    protected function replace($text)
     {
-        $text = preg_replace('/<[bh]r\s*\/?>/im', ' | ', $text);
-        $text = preg_replace('/<i\s+[^<>]*?class=[\'\"]\w+\s+(\w+\-[\w\-]+)[\'\"][^<>]*?>(.*?)<\/i>/im', '$1', $text);
-        $text = preg_replace('/<([a-zA-z]+?)\s+[^<>]*?>(.*?)<\/\1>/im', '$2', $text);
-        $text = str_replace(['&nbsp;', '&gt;', '&lt;'], [' ', '>', '<'], $text);
+        if ($text === '' || $text === null) {
+            return '';
+        }
+        $text = strip_tags($text);
+        $text = str_replace(['\u00A0', '\u0020', '\u2800', '\u3000', '　'], '', $text);
+        $text = str_replace(['&nbsp;', '&gt;', '&lt;', '&eq;', '&egt;', '&elt;'], [' ', '>', '<', '=', '>=', '<='], $text);
 
         return $text;
     }
