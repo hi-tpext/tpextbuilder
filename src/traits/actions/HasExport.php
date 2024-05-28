@@ -152,7 +152,7 @@ trait HasExport
      * @param boolean $isInFields
      * @return array
      */
-    private function getDisplayers($cols, $displayers = [], $isInFields = false)
+    protected function getDisplayers($cols, $displayers = [], $isInFields = false)
     {
         $displayer = null;
 
