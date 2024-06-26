@@ -34,7 +34,7 @@ class SelectTree extends Tree
      *
      * @return string
      */
-    protected function s2ztreeScript()
+    protected function ztreeScript()
     {
         if (!($this->value === '' || $this->value === null || $this->value === [])) {
             $this->checked = is_array($this->value) ? $this->value : explode(',', $this->value);
@@ -90,7 +90,7 @@ EOT;
 
     public function beforRender()
     {
-        $this->s2ztreeScript();
+        $this->ztreeScript();
 
         return parent::beforRender();
     }

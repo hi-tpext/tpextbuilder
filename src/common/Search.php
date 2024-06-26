@@ -396,7 +396,7 @@ class Search extends SWrapper implements Renderable
 
         $this->hidden('__page__')->value(1);
         $this->hidden('__pagesize__');
-        $this->hidden('__search__')->value($this->id);
+        $this->hidden('__search__')->value($this->getFormId());
         $this->hidden('__table__')->value($this->tableId);
         $this->hidden('__sort__');
         $this->hidden('__columns__')->value(implode(',', $this->chooseColumns));

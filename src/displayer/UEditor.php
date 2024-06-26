@@ -15,10 +15,10 @@ class UEditor extends Field
     protected $minify = false;
 
     protected $js = [
-        '/assets/builderueditor/ueditor.config.js',
+        '/assets/builderueditor/ueditor.all.min.js',
     ];
 
-    protected $configJsPath = '/assets/builderueditor/ueditor.all.min.js';
+    protected $configJsPath = '/assets/builderueditor/ueditor.config.js';
 
     protected $uploadUrl = '';
 
@@ -68,7 +68,7 @@ EOT;
 
     public function beforRender()
     {
-        $this->js[] = $this->configJsPath;
+        $this->js = array_merge([$this->configJsPath], $this->js);
 
         if (!$this->readonly) {
             $this->editorScript();

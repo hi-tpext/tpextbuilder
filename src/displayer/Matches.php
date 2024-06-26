@@ -43,8 +43,6 @@ class Matches extends Raw
 
     public function renderValue()
     {
-        $this->checked = is_array($this->value) ? implode(',', $this->value) : '' . $this->value;
-
         $values = explode(',', $this->value);
         $texts = [];
 
@@ -61,8 +59,10 @@ class Matches extends Raw
 
     public function customVars()
     {
-        return array_merge(parent::customVars(), [
+        $this->checked = is_array($this->value) ? implode(',', $this->value) : (string)$this->value;
+
+        return [
             'checked' => $this->checked,
-        ]);
+        ];
     }
 }

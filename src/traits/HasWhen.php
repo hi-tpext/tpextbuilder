@@ -23,11 +23,13 @@ trait HasWhen
      */
     protected $__when__ = null;
 
+    protected $whenWrapper = false;
+
     /**
      * Undocumented function
      *
      * @param string|int|array $cases 如：'1' 或 '1 + 2' 或 ['1 + 2', '2 + 3']
-     * @param mixed ...$toggleFields
+     * @param array|\Closure|mixed ...$toggleFields
      * @return $this
      */
     public function when($cases, ...$toggleFields)
@@ -41,8 +43,15 @@ trait HasWhen
         if (count($toggleFields)) {
 
             if ($toggleFields[0] instanceof \Closure) { //如果是匿名回调
-                $toggleFields[0]($when);
+                //fields包围优化
+                $this->makeWhenWrapper();
+                $toggleFields[0]($form, $when);
             } else {
+                //->when('1',$field1,$field2)
+                //或
+                //->when('1',[$field1,$field2])
+
+                //无法fields包围优化，无多层次when时不影响
                 if (is_array($toggleFields[0])) {
                     $toggleFields = $toggleFields[0];
                 }
@@ -54,9 +63,24 @@ trait HasWhen
             $form->whenEnd();
             $this->whenEnd();
             //如果此处传入[toggleFields]参数，那么就结束，后面就不要再调用with($toggleFields)方法了。否则，后面可以继续调用with($toggleFields)方法;
+        } else {
+            //fields包围优化
+            $this->makeWhenWrapper();
         }
 
         return $this;
+    }
+
+    protected function makeWhenWrapper()
+    {
+        //创建一个fields把后面的 toggleFields装进去，解决多层when的嵌套的一些问题
+        $form = $this->getForm();
+        $whenWrapper = $form->fields(preg_replace('/\W/', '', $this->getName()) . '_when_' . count($this->whens))
+            ->showLabel(false)
+            ->addClass('when-wrapper')
+            ->size(0, 12);
+        $this->__when__->toggle($whenWrapper);
+        $this->whenWrapper = true;
     }
 
     /**
@@ -72,7 +96,7 @@ trait HasWhen
     /**
      * Undocumented function
      *
-     * @param mixed ...$toggleFields
+     * @param array|\Closure|mixed ...$toggleFields
      * @return $this
      */
     public function with(...$toggleFields)
@@ -86,17 +110,22 @@ trait HasWhen
         if (count($toggleFields)) {
             if ($toggleFields[0] instanceof \Closure) {
                 $toggleFields[0]($form);
-            } else {
-                if (is_array($toggleFields[0])) {
-                    $toggleFields = $toggleFields[0];
-                }
-                foreach ($toggleFields as $field) {
-                    $this->__when__->toggle($field);
-                }
             }
+            // else {
+            //     if (is_array($toggleFields[0])) {
+            //         $toggleFields = $toggleFields[0];
+            //     }
+            //     foreach ($toggleFields as $field) {
+            //         $this->__when__->toggle($field);
+            //     }
+            // }
         }
 
         $form->whenEnd();
+
+        if ($this->whenWrapper) {
+            $form->fieldsEnd();
+        }
 
         return $this;
     }
