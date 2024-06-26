@@ -139,7 +139,6 @@ class Map extends Text
     {
         return [
             'maptype' => $this->type,
-            'textTempl' => Module::getInstance()->getViewsPath() . 'displayer' . DIRECTORY_SEPARATOR . 'text.html',
             'mapStyle' => 'style="width: ' . $this->width . ';height: ' . $this->height . ';max-width: 100%;"',
         ];
     }

@@ -16,8 +16,6 @@ class Matche extends Raw
 
     public function renderValue()
     {
-        $this->checked = '' . $this->value;
-
         if (isset($this->options[$this->value])) {
             $this->value = $this->options[$this->value];
         } else if (isset($this->options['__default__'])) {
@@ -35,6 +33,8 @@ class Matche extends Raw
 
     public function customVars()
     {
+        $this->checked = (string)$this->value;
+
         return array_merge(parent::customVars(), [
             'checked' => $this->checked,
         ]);

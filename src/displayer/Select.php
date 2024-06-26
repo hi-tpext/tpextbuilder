@@ -90,7 +90,7 @@ class Select extends Field
      */
     public function disabledOptions($val)
     {
-        $this->disabledOptions = $val;
+        $this->disabledOptions = is_array($val) ? $val : explode(',', $val);
         return $this;
     }
 
@@ -305,9 +305,7 @@ EOT;
 EOT;
         }
 
-        if (empty($prev)) {
-            $this->script[] = $script;
-        }
+        $this->script[] = $script;
 
         return $script;
     }
@@ -429,10 +427,7 @@ EOT;
         if (!$this->group && !isset($this->options[''])) {
             $this->options = ['' => $this->jsOptions['placeholder']] + $this->options;
         }
-
-        if ($this->disabledOptions && !is_array($this->disabledOptions)) {
-            $this->disabledOptions = explode(',', $this->disabledOptions);
-        }
+        
         foreach ($this->disabledOptions as &$di) {
             $di = '-' . $di;
         }
@@ -449,5 +444,11 @@ EOT;
         $viewshow = $this->getViewInstance();
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function destroy()
+    {
+        $this->prevSelect = null;
+        parent::destroy();
     }
 }
