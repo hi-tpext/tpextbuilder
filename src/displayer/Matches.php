@@ -61,8 +61,8 @@ class Matches extends Raw
     {
         $this->checked = is_array($this->value) ? implode(',', $this->value) : (string)$this->value;
 
-        return [
+        return array_merge(parent::customVars(), [
             'checked' => $this->checked,
-        ];
+        ]);
     }
 }

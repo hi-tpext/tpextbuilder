@@ -100,7 +100,7 @@ class Import extends Controller
                 });
                 this.on("error", function (file, data) {
                     // 上传失败触发的事件
-                    parent.lightyear.notify(__blang.bilder_operation_succeeded + '-' + data, 'danger');
+                    parent.lightyear.notify(__blang.bilder_file_uploading_failed + '-' + data, 'danger');
                 });
             }
         });

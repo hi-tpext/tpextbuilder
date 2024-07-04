@@ -251,7 +251,7 @@ class Field implements Fillable
     public function autoPost($url = '', $refresh = false)
     {
         if (empty($url)) {
-            $url = url('autopost');
+            $url = (string)url('autopost');
         }
         $this->autoPost = $url;
         $this->autoPostRefresh = $refresh;
