@@ -40,7 +40,7 @@ class Form extends FWrapper implements Renderable
     /**
      * Undocumented variable
      *
-     * @var Field[] 
+     * @var FRow[] 
      */
     protected $rows = [];
 
@@ -766,6 +766,12 @@ class Form extends FWrapper implements Renderable
         if (!$this->botttomButtonsCalled && empty($this->step)) {
             $this->bottomButtons(true);
         }
+        
+        if (!in_array(strtolower($this->method), ['get', 'post'])) {
+            $this->hidden('_method')->value($this->method);
+            $this->method = 'post';
+        }
+
         foreach ($this->rows as $row) {
             $row->fill($this->data);
 
@@ -781,11 +787,6 @@ class Form extends FWrapper implements Renderable
             }
 
             $row->beforRender();
-        }
-
-        if (!in_array(strtolower($this->method), ['get', 'post'])) {
-            $this->hidden('_method')->value($this->method);
-            $this->method = 'post';
         }
 
         $this->validatorScript();
@@ -951,7 +952,9 @@ EOT;
             if ($this->__fields__) {
                 $this->__fields__->addRow($row);
             } else if ($this->__items__) {
-
+                if ($name == 'hidden') {
+                    throw new \InvalidArgumentException(__blang('bilder_not_allowed') . ' : ' . $name);
+                }
                 $row->class('text-center');
                 $this->__items__->addCol($arguments[0], $row);
             } else if ($this->__tabs__) {
@@ -1007,6 +1010,8 @@ EOT;
         foreach ($this->rows as $row) {
             $row->destroy();
         }
+        $this->tab = null;
+        $this->step = null;
         $this->rows = null;
         $this->data = null;
     }

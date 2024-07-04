@@ -4,6 +4,7 @@ namespace tpext\builder\common;
 
 use tpext\think\View;
 use tpext\builder\form\When;
+use tpext\builder\form\FRow;
 use tpext\builder\search\SRow;
 use tpext\builder\common\Module;
 use tpext\builder\form\Fillable;
@@ -33,7 +34,7 @@ class Search extends SWrapper implements Renderable
     /**
      * Undocumented variable
      *
-     * @var Field[] 
+     * @var FRow[] 
      */
     protected $rows = [];
 

@@ -213,8 +213,11 @@ class Items extends Field
             if (empty($idField)) {
                 $idField = $this->getPk($d);
             }
-
-            $list[$d[$idField == '_' ? $k : $idField]] = $d;
+            if ($idField != '_') {
+                $list[$d[$idField]] = $d;
+            } else {
+                $list[$k] = $d;
+            }
         }
         $this->data = $list;
 

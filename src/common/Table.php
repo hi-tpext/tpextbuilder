@@ -44,7 +44,7 @@ class Table extends TWrapper implements Renderable
     /**
      * Undocumented variable
      *
-     * @var Field[] 
+     * @var TColumn[] 
      */
     protected $cols = [];
 
