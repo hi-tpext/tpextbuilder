@@ -435,4 +435,10 @@ class ItemsContent extends FWrapper
 
         throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
     }
+
+    public function destroy()
+    {
+        $this->cols = null;
+        $this->list = null;
+    }
 }

@@ -161,4 +161,8 @@ return [
     'bilder_dropzone_file_too_big'           => 'The file size is too large, and the maximum supported upload file size is {fileSize} MB',
     'bilder_dropzone_remove_links'           => 'Remove',
     'bilder_dropzone_cancel_upload'          => 'Cancel',
+    //steps
+    'bilder_step_prev'                       => 'Prev',
+    'bilder_step_next'                       => 'Next',
+    'bilder_step_finish'                     => 'Finish',
 ];
