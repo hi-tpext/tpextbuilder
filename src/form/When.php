@@ -100,10 +100,23 @@ class When
             $matchCase = in_array($watchForValue, $this->cases);
         }
 
-        $field->extKey('-watch-' . $key) //防止id重复
-            ->addAttr('data-name="' . $field->getName() . ($field->isArrayValue() ? '[]' : '') . '"')
-            ->extNameKey('_' . $key) //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
-            ->getWrapper()->addClass($matchCase ? '' : 'hidden');
+        if ($field instanceof displayer\Fields) {
+            $field->extKey('-watch-' . $key) //防止id重复
+                ->getWrapper()->addClass($matchCase ? '' : 'hidden');
+            $rows = $field->getContent()->getRows();
+
+            foreach ($rows as $row) {
+                $sf = $row->getDisplayer();
+                $sf->extKey('-watch-' . $key) //防止id重复
+                    ->addAttr('data-name="' . $field->getName() . ($field->isArrayValue() ? '[]' : '') . '"')
+                    ->extNameKey('_' . $key); //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
+            }
+        } else {
+            $field->extKey('-watch-' . $key) //防止id重复
+                ->addAttr('data-name="' . $field->getName() . ($field->isArrayValue() ? '[]' : '') . '"')
+                ->extNameKey('_' . $key) //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
+                ->getWrapper()->addClass($matchCase ? '' : 'hidden');
+        }
 
         $this->fields[] = $field;
         //

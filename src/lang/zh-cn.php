@@ -161,4 +161,8 @@ return [
     'bilder_dropzone_file_too_big'           => '文件过大上传文件最大支持{fileSize}MB',
     'bilder_dropzone_remove_links'           => '删除',
     'bilder_dropzone_cancel_upload'          => '取消',
+    //steps
+    'bilder_step_prev'                       => '上一步',
+    'bilder_step_next'                       => '下一步',
+    'bilder_step_finish'                     => '完&nbsp;&nbsp;成',
 ];

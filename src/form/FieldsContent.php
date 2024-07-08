@@ -19,6 +19,8 @@ class FieldsContent extends FWrapper implements Renderable
 
     protected $data = [];
 
+    protected $readonly = false;
+
     /**
      * Undocumented variable
      *
@@ -134,6 +136,7 @@ class FieldsContent extends FWrapper implements Renderable
         foreach ($this->rows as $row) {
             $row->getDisplayer()->readonly($val);
         }
+        $this->readonly = $val;
         return $this;
     }
 
@@ -226,5 +229,10 @@ class FieldsContent extends FWrapper implements Renderable
         }
 
         throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
+    }
+
+    public function destroy()
+    {
+        $this->rows = null;
     }
 }

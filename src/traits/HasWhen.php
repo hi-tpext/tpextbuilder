@@ -45,16 +45,18 @@ trait HasWhen
             if ($toggleFields[0] instanceof \Closure) { //如果是匿名回调
                 //fields包围优化
                 $this->makeWhenWrapper();
-                $toggleFields[0]($form, $when);
+                $this->with(...$toggleFields);
+                return $this;
             } else {
-                //->when('1',$field1,$field2)
+                //无法fields包围优化，多层次when嵌套时不推荐：
+                //->when('1', $field1, $field2, ...)
                 //或
-                //->when('1',[$field1,$field2])
+                //->when('1', [$field1, $field2, ...])
 
-                //无法fields包围优化，无多层次when时不影响
                 if (is_array($toggleFields[0])) {
                     $toggleFields = $toggleFields[0];
                 }
+
                 foreach ($toggleFields as $field) {
                     $this->__when__->toggle($field);
                 }
@@ -102,7 +104,7 @@ trait HasWhen
     public function with(...$toggleFields)
     {
         if (!$this->__when__) {
-            throw new \LogicException('when(\$cases, ...\$toggleFields)第二个参数[toggleFields]已传入，后续不要继续');
+            throw new \LogicException('when($cases, ...$toggleFields)第二个参数[toggleFields]已传入，后续不要继续调用with');
         }
 
         $form = $this->getForm();
@@ -111,17 +113,10 @@ trait HasWhen
             if ($toggleFields[0] instanceof \Closure) {
                 $toggleFields[0]($form);
             }
-            // else {
-            //     if (is_array($toggleFields[0])) {
-            //         $toggleFields = $toggleFields[0];
-            //     }
-            //     foreach ($toggleFields as $field) {
-            //         $this->__when__->toggle($field);
-            //     }
-            // }
         }
 
         $form->whenEnd();
+        $this->whenEnd();
 
         if ($this->whenWrapper) {
             $form->fieldsEnd();

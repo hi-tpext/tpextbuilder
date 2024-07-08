@@ -30,6 +30,8 @@ class Step implements Renderable
 
     protected $mode = 'dots';
 
+    protected $readonly = false;
+
     /**
      * Undocumented variable
      *
@@ -102,6 +104,7 @@ class Step implements Renderable
         foreach ($this->__fields__ as $content) {
             $content->readonly($val);
         }
+        $this->readonly = $val;
         return $this;
     }
 
@@ -273,7 +276,7 @@ EOT;
      */
     public function render($partial = false)
     {
-        $template = Module::getInstance()->getViewsPath() . $this->view . '.html';
+        $template = Module::getInstance()->getViewsPath() . 'form' . DIRECTORY_SEPARATOR . $this->view . '.html';
 
         $names = array_keys($this->labels);
 
@@ -298,6 +301,7 @@ EOT;
             'mode' => $this->mode,
             'size' => $this->size,
             'attr' => $this->getAttrWithStyle(),
+            'readonly' => $this->readonly,
         ];
 
         $viewshow = new View($template);
@@ -307,5 +311,10 @@ EOT;
         }
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function destroy()
+    {
+        $this->rows = null;
     }
 }
