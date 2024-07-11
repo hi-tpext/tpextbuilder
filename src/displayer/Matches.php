@@ -41,8 +41,16 @@ class Matches extends Raw
         return $this;
     }
 
+    public function beforRender()
+    {
+        $this->checked = !($this->value === '' || $this->value === null || $this->value === []) ? $this->value : $this->default;
+        return parent::beforRender();
+    }
+
     public function renderValue()
     {
+        $this->value = !($this->value === '' || $this->value === null || $this->value === []) ? $this->value : $this->default;
+
         $values = explode(',', $this->value);
         $texts = [];
 
@@ -59,7 +67,7 @@ class Matches extends Raw
 
     public function customVars()
     {
-        $this->checked = is_array($this->value) ? implode(',', $this->value) : (string)$this->value;
+        $this->checked = is_array($this->checked) ? implode(',', $this->checked) : (string)$this->checked;
 
         return array_merge(parent::customVars(), [
             'checked' => $this->checked,

@@ -30,6 +30,12 @@ class When
     protected $fields = [];
 
     /**
+     * 
+     * @var bool|null
+     */
+    protected $matchCase = null;
+
+    /**
      * Undocumented variable
      *
      * @var Form|Search
@@ -47,7 +53,7 @@ class When
     {
         $this->watchFor = $watchFor;
         if (!is_array($cases)) {
-            $cases = ['' . $cases];
+            $cases = [(string)$cases];
         }
         $this->cases = $cases;
         //
@@ -55,15 +61,14 @@ class When
     }
 
     /**
-     * Undocumented function
-     *
-     * @param displayer\Field $field
-     * @return $this
+     * 判断是否匹配
+     * @return bool
      */
-    public function toggle($field)
+    public function judgeMatchCase()
     {
-        //防止不同case中有重复字段的一些问题，因为trigger('change')调用时机，js处理重name/id有局限。
-        $key = preg_replace('/[^\w\-]/', '-', $this->watchFor->getName()) . md5(json_encode($this->cases));
+        if (!is_null($this->matchCase)) {
+            return $this->matchCase;
+        }
 
         $watchForValue = $this->watchFor->renderValue();
 
@@ -100,23 +105,45 @@ class When
             $matchCase = in_array($watchForValue, $this->cases);
         }
 
-        if ($field instanceof displayer\Fields) {
-            $field->extKey('-watch-' . $key) //防止id重复
-                ->getWrapper()->addClass($matchCase ? '' : 'hidden');
-            $rows = $field->getContent()->getRows();
+        $this->matchCase = $matchCase;
 
-            foreach ($rows as $row) {
-                $sf = $row->getDisplayer();
-                $sf->extKey('-watch-' . $key) //防止id重复
+        return $this->matchCase;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param displayer\Field $field
+     * @return $this
+     */
+    public function toggle($field)
+    {
+        $that = $this;
+        //防止不同case中有重复字段的一些问题，因为trigger('change')调用时机，js处理重name/id有局限。
+        $key = preg_replace('/[^\w\-]/', '-', $that->watchFor->getName()) . md5(json_encode($that->cases));
+        $this->watchFor->rendering(function () use ($field, $that, $key) {
+            $matchCase = $that->judgeMatchCase();
+            if ($field instanceof displayer\Fields) {
+                $field->extKey('-watch-' . $key) //防止id重复
+                    ->getWrapper()->addClass($matchCase ? 'match-case' : 'hidden');
+                $rows = $field->getContent()->getRows();
+                $subFields = null;
+                foreach ($rows as $row) {
+                    $subFields = $row->getDisplayer();
+                    if ($subFields instanceof displayer\Fields) {
+                        continue;
+                    }
+                    $subFields->extKey('-watch-' . $key) //防止id重复
+                        ->addAttr('data-name="' . $subFields->getName() . ($subFields->isArrayValue() ? '[]' : '') . '"')
+                        ->extNameKey('_' . $key); //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
+                }
+            } else {
+                $field->extKey('-watch-' . $key) //防止id重复
                     ->addAttr('data-name="' . $field->getName() . ($field->isArrayValue() ? '[]' : '') . '"')
-                    ->extNameKey('_' . $key); //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
+                    ->extNameKey('_' . $key) //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
+                    ->getWrapper()->addClass($matchCase ? 'match-case' : 'hidden');
             }
-        } else {
-            $field->extKey('-watch-' . $key) //防止id重复
-                ->addAttr('data-name="' . $field->getName() . ($field->isArrayValue() ? '[]' : '') . '"')
-                ->extNameKey('_' . $key) //防止name重复。真实name放在[data-name]中，case选中时替换到name属性中
-                ->getWrapper()->addClass($matchCase ? '' : 'hidden');
-        }
+        });
 
         $this->fields[] = $field;
         //
