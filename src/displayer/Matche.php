@@ -14,8 +14,16 @@ class Matche extends Raw
 
     protected $checked = '';
 
+    public function beforRender()
+    {
+        $this->checked = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+        return parent::beforRender();
+    }
+
     public function renderValue()
     {
+        $this->value = !($this->value === '' || $this->value === null) ? $this->value : $this->default;
+
         if (isset($this->options[$this->value])) {
             $this->value = $this->options[$this->value];
         } else if (isset($this->options['__default__'])) {
@@ -33,7 +41,7 @@ class Matche extends Raw
 
     public function customVars()
     {
-        $this->checked = (string)$this->value;
+        $this->checked = (string)$this->checked;
 
         return array_merge(parent::customVars(), [
             'checked' => $this->checked,

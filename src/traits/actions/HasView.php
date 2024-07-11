@@ -72,6 +72,7 @@ trait HasView
             $displayer = $row->getDisplayer();
 
             $fieldName = $displayer->getOriginName();
+            $default = $displayer->getDefault();
 
             if (
                 $displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
@@ -112,18 +113,18 @@ trait HasView
             ) { // checkbox / multipleSelect(非ajax) / Transfer
 
                 $displayer->whenScript(true);
-                $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions());
+                $row->matches($fieldName, $row->getLabel())->options($displayer->getOptions())->default($default);
             } else if ($displayer instanceof displayer\Radio || $displayer instanceof displayer\Select) { // radio / select(非ajax)
 
                 $displayer->whenScript(true);
-                $row->match($fieldName, $row->getLabel())->options($displayer->getOptions());
+                $row->match($fieldName, $row->getLabel())->options($displayer->getOptions())->default($default);
             } else if ($displayer instanceof displayer\Tree) {
-                $row->matches($fieldName, $row->getLabel())->separator('<br/>')->optionsData($displayer->getOptions(), 'name');
+                $row->matches($fieldName, $row->getLabel())->separator('<br/>')->optionsData($displayer->getOptions(), 'name')->default($default);
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
                 $options = [$pair['on'] => __blang('bilder_option_on'), $pair['off'] => __blang('bilder_option_off')];
-                $row->match($fieldName, $row->getLabel())->options($options);
+                $row->match($fieldName, $row->getLabel())->options($options)->default($default);
             } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 

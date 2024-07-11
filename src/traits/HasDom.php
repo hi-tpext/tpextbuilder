@@ -104,7 +104,7 @@ trait HasDom
 
     public function getAttrWithStyle()
     {
-        return $this->attr . (empty($this->style) ? '' : ' style="' . $this->style . '"');
+        return implode(' ', array_unique(explode(' ', $this->attr))) . (empty($this->style) ? '' : ' style="' . $this->style . '"');
     }
 
     /**

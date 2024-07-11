@@ -76,9 +76,9 @@ class Field implements Fillable
     /**
      * Undocumented variable
      *
-     * @var \Closure
+     * @var \Closure[]
      */
-    protected $rendering = null;
+    protected $rendering = [];
 
     public function __construct($name, $label = '')
     {
@@ -1113,8 +1113,12 @@ EOT;
             Builder::getInstance()->addStyleSheet($this->stylesheet);
         }
 
-        if ($this->rendering && $this->rendering instanceof \Closure) {
-            $this->rendering->call($this, $this);
+        if (count($this->rendering)) {
+            foreach ($this->rendering as $rd) {
+                if ($rd instanceof \Closure) {
+                    $rd->call($this, $this);
+                }
+            }
         }
 
         ExtLoader::trigger('tpext_displayer_befor_render', $this);
@@ -1345,7 +1349,7 @@ EOT;
      */
     public function rendering($callback)
     {
-        $this->rendering = $callback;
+        $this->rendering[] = $callback;
         return $this;
     }
 
