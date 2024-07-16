@@ -150,6 +150,17 @@ class Row extends Widget
     }
 
     /**
+     * 获取一Swiper
+     *
+     * @param integer|string $size col大小
+     * @return Swiper
+     */
+    public function swiper($size = 12)
+    {
+        return $this->column($size)->swiper();
+    }
+
+    /**
      * Undocumented function
      *
      * @return array

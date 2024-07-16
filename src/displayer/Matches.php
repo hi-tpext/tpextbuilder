@@ -51,7 +51,7 @@ class Matches extends Raw
     {
         $this->value = !($this->value === '' || $this->value === null || $this->value === []) ? $this->value : $this->default;
 
-        $values = explode(',', $this->value);
+        $values = is_array($this->value) ? $this->value : explode(',', $this->value);
         $texts = [];
 
         foreach ($values as $value) {

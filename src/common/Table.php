@@ -48,6 +48,10 @@ class Table extends TWrapper implements Renderable
      */
     protected $cols = [];
 
+    /**
+     * Summary of displayers
+     * @var Field[]
+     */
     protected $displayers = [];
 
     protected $data = [];
@@ -1164,6 +1168,7 @@ EOT;
             $col->destroy();
         }
         $this->cols = null;
+        $this->displayers = null;
         $this->data = null;
         $this->tEmpty = null;
         if ($this->searchForm) {

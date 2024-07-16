@@ -20,6 +20,7 @@ class Widget
         'ZTree' => \tpext\builder\tree\ZTree::class,
         'Content' => \tpext\builder\common\Content::class,
         'Tab' => \tpext\builder\common\Tab::class,
+        'Swiper' => \tpext\builder\common\Swiper::class,
         'Row' => \tpext\builder\common\Row::class,
         'Column' => \tpext\builder\common\Column::class,
         //tools
