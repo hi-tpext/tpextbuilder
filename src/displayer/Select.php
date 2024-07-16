@@ -216,7 +216,6 @@ class Select extends Field
 
         var selected{$key} = $('#{$selectId}').data('selected');
         var readonly{$key} = $('#{$selectId}').attr('readonly') != undefined;
-        var disabled{$key} = $('#{$selectId}').data('disabled').split(',');
 
         if(selected{$key} !== '')
         {
@@ -249,29 +248,14 @@ class Select extends Field
                             texts.push(d.__text__ || d['{$text}'] || d.text);
                         }
 
-<<<<<<< Updated upstream
                         $('#{$selectId}-text').text(texts.length ? texts.join('{$separator}') : __blang.bilder_value_is_empty);
-=======
-                        $('#{$selectId}-text').text(texts.length ? texts.join('、') : __blang.bilder_value_is_empty);
->>>>>>> Stashed changes
                     }
                     else
                     {
-                        var val = '';
-
                         for(var i in list)
                         {
                             d = list[i];
-                            val = d.__id__ || d['{$id}'] || d.id;
-
-                            if(disabled{$key} && disabled{$key}.IndexOf(val) > -1)
-                            {
-                                $('#{$selectId}').append('<option selected disabled title="' + __blang.bilder_option_was_disabled + '" value="' + val + '">' + (d.__text__ || d['{$text}'] || d.text) + '</option>');
-                            }
-                            else
-                            {
-                                $('#{$selectId}').append('<option selected value="' + val + '">' + (d.__text__ || d['{$text}'] || d.text) + '</option>');
-                            }
+                            $('#{$selectId}').append('<option selected value="' + (d.__id__ || d['{$id}'] || d.id) + '">' + (d.__text__ || d['{$text}'] || d.text) + '</option>');
                         }
                         init{$key}();
                     }
@@ -297,11 +281,7 @@ class Select extends Field
         {
             if(readonly{$key})
             {
-<<<<<<< Updated upstream
                 $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">' + __blang.bilder_loading + '</span>');
-=======
-                $('#{$selectId}').replaceWith('<span style="line-height:33px;" id="{$selectId}-text">' + __blang.bilder_loading_error + '</span>');
->>>>>>> Stashed changes
                 $('#{$selectId}-text').parent('div').addClass('field-show');
             }
             else
@@ -455,7 +435,6 @@ EOT;
         $vars = array_merge($vars, [
             'checked' => '-' . $this->checked,
             'dataSelected' => $this->checked,
-            'dataDisabled' => implode(',', $this->disabledOptions),
             'select2' => $this->select2,
             'group' => $this->group,
             'options' => $this->options,
