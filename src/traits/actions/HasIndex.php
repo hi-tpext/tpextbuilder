@@ -6,6 +6,7 @@ use think\db\Query;
 use tpext\builder\logic\Filter;
 use tpext\builder\common\Search;
 use tpext\builder\common\Table;
+use tpext\builder\common\Builder;
 
 /**
  * 列表
@@ -99,6 +100,11 @@ trait HasIndex
         return $builder->render();
     }
 
+    /**
+     * Undocumented function
+     * @param Builder $builder
+     * @return void
+     */
     protected function createTable($builder)
     {
         if (

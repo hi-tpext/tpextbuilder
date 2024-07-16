@@ -35,13 +35,6 @@ class Html extends Field
     public function fetch($template = '', $vars = [])
     {
         $this->content = new View($template);
-
-        $value = $this->renderValue();
-
-        $vars = array_merge($vars, [
-            '__val__' => $value
-        ]);
-
         $this->content->assign($vars);
         return $this;
     }
@@ -56,28 +49,19 @@ class Html extends Field
     public function display($content = '', $vars = [])
     {
         $this->content = new View($content);
-
-        $value = $this->renderValue();
-
-        $vars = array_merge($vars, [
-            '__val__' => $value
-        ]);
-
         $this->content->assign($vars)->isContent(true);
         return $this;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return mixed
-     */
-    public function render()
+    public function renderValue()
     {
+        $value = parent::renderValue();
+
         if ($this->content) {
-            $this->value = $this->content->getContent();
+            $vars = ['__val__' => $value];
+            return $this->content->fetch($vars);
         }
 
-        return parent::render();
+        return $value;
     }
 }

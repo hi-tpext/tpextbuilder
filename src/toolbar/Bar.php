@@ -205,6 +205,11 @@ class Bar implements Renderable
         return $this->script;
     }
 
+    /**
+     * Undocumented function
+     * 
+     * @return $this
+     */
     public function beforRender()
     {
         if (!empty($this->script)) {
