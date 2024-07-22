@@ -6,11 +6,7 @@
         var success = '{$success}' == '1';
         var msg = '{$msg}';
         if (parent && parent.layer) {
-            if (success) {
-                parent.lightyear.notify(msg, 'success');
-            } else {
-                parent.lightyear.notify(msg, 'danger');
-            }
+            parent.lightyear.notify(msg, success ? 'success' : 'danger');
 
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             parent.layer.close(index);
@@ -19,7 +15,9 @@
         }
     </script>
 </head>
+
 <body>
 
 </body>
+
 </html>

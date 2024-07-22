@@ -15,6 +15,8 @@ class Builder implements Renderable
 {
     protected $view = '';
 
+    protected $layout = '';
+
     protected $title = '';
 
     protected $desc = '';
@@ -151,6 +153,18 @@ class Builder implements Renderable
     public function desc($val)
     {
         $this->desc = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     * 
+     * @param mixed $val
+     * @return $this
+     */
+    public function layout($val)
+    {
+        $this->layout = $val;
         return $this;
     }
 
@@ -771,7 +785,7 @@ class Builder implements Renderable
         unset($j);
 
         $__blang = include Module::getInstance()->getRoot() . 'src' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . App::getDefaultLang() . '.php';
-        
+
         $vars = [
             'title' => $this->title ? $this->title : '',
             'desc' => $this->desc,
@@ -782,6 +796,34 @@ class Builder implements Renderable
             'script' => implode('', array_unique($this->script)),
             '__blang' => json_encode($__blang, JSON_UNESCAPED_UNICODE),
         ];
+
+        $share = View::getShare();
+
+        if (empty($share['admin_layout'])) {
+            if (empty($this->layout)) {
+                $this->layout = Module::getInstance()->getViewsPath() . 'layout.html';
+            }
+
+            $vars = array_merge($vars, [
+                'admin_layout' => $this->layout,
+                'admin_js' => [
+                    '/assets/lightyearadmin/js/jquery.min.js',
+                    '/assets/lightyearadmin/js/bootstrap.min.js',
+                    '/assets/lightyearadmin/js/jquery.lyear.loading.js',
+                    '/assets/lightyearadmin/js/bootstrap-notify.min.js',
+                    '/assets/lightyearadmin/js/jconfirm/jquery-confirm.min.js',
+                    '/assets/lightyearadmin/js/lightyear.js',
+                    '/assets/lightyearadmin/js/main.min.js',
+                ],
+                'admin_css' => [
+                    '/assets/lightyearadmin/css/bootstrap.min.css',
+                    '/assets/lightyearadmin/css/materialdesignicons.min.css',
+                    '/assets/lightyearadmin/css/animate.css',
+                    '/assets/lightyearadmin/css/style.min.css',
+                    '/assets/lightyearadmin/js/jconfirm/jquery-confirm.min.css',
+                ]
+            ]);
+        }
 
         View::share([
             '__token__' => $this->getCsrfToken(),

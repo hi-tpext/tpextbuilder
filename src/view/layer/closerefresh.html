@@ -7,11 +7,8 @@
         var msg = '{$msg}';
 
         if (parent && parent.layer) {
-            if (success) {
-                parent.lightyear.notify(msg, 'success');
-            } else {
-                parent.lightyear.notify(msg, 'danger');
-            }
+            parent.lightyear.notify(msg, success ? 'success' : 'danger');
+            
             if (parent.$('.btn-refresh,.search-refresh').size()) {
                 parent.$('.btn-refresh,.search-refresh').eq(0).trigger('click');
             } else {
@@ -30,7 +27,9 @@
         }
     </script>
 </head>
+
 <body>
 
 </body>
+
 </html>

@@ -58,8 +58,7 @@ class Html extends Field
         $value = parent::renderValue();
 
         if ($this->content) {
-            $vars = ['__val__' => $value];
-            return $this->content->fetch($vars);
+            return $this->content->assign(['__val__' => $value])->getContent();
         }
 
         return $value;

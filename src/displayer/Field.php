@@ -23,6 +23,7 @@ class Field implements Fillable
 {
     use HasDom;
 
+    protected $id = '';
     protected $extKey = '';
     protected $extNameKey = '';
     protected $name = '';
@@ -151,7 +152,11 @@ class Field implements Fillable
      */
     public function getId()
     {
-        return 'form-' . preg_replace('/[^\w\-]/', '-', $this->name . $this->extKey);
+        if ($this->id) {
+            return $this->id;
+        }
+        $this->id = 'form-' . preg_replace('/[^\w\-]/', '-', $this->name . $this->extKey);
+        return $this->id;
     }
 
     /**
@@ -192,6 +197,7 @@ class Field implements Fillable
     public function arrayName($val)
     {
         $this->arrayName = $val;
+        $this->id = '';
         return $this;
     }
 
@@ -214,6 +220,7 @@ class Field implements Fillable
     public function extKey($val)
     {
         $this->extKey = $val;
+        $this->id = '';
         return $this;
     }
 
@@ -356,6 +363,7 @@ class Field implements Fillable
     public function name($val)
     {
         $this->name = $val;
+        $this->id = '';
         return $this;
     }
 

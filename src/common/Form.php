@@ -731,13 +731,13 @@ class Form extends FWrapper implements Renderable
      * @param string $label
      * @param array|Collection|\IteratorAggregate dataList
      * @param Closure|null $itemsCall
-     * @param array displayerSize 大小 [12, 12] 为上下结构，[2, 10]为左右结构
+     * @param array size 大小 [12, 12] 为上下结构，[2, 10]为左右结构
      * @return Items
      */
-    public function logs($label, $dataList, $itemsCall = null, $displayerSize = [12, 12])
+    public function logs($label, $dataList, $itemsCall = null, $size = [12, 12])
     {
         $this->itemsEnd();
-        $displayer =  $this->items('logs' . mt_rand(10, 99), $label, 12)->size($displayerSize[0], $displayerSize[1])->readonly();
+        $displayer =  $this->items('logs' . mt_rand(10, 99), $label, 12)->size($size[0], $size[1])->readonly();
 
         if (is_array($dataList)) {
             $displayer->fill($dataList);
@@ -746,10 +746,10 @@ class Form extends FWrapper implements Renderable
         }
         if ($itemsCall) {
             if (!($itemsCall instanceof \Closure)) {
-                throw new \InvalidArgumentException('Argument fieldsCall must be  `Closure` or `null` , if set to `null`, call `->with(...$fields) follow on .');
+                throw new \InvalidArgumentException('Argument itemsCall must be  `Closure` or `null` , if set to `null`, call `->with(...$fields) follow on .');
             }
             $itemsCall($this);
-            $this->fieldsEnd();
+            $this->itemsEnd();
         }
         return $displayer;
     }
@@ -766,7 +766,7 @@ class Form extends FWrapper implements Renderable
         if (!$this->botttomButtonsCalled && empty($this->step)) {
             $this->bottomButtons(true);
         }
-        
+
         if (!in_array(strtolower($this->method), ['get', 'post'])) {
             $this->hidden('_method')->value($this->method);
             $this->method = 'post';
@@ -968,7 +968,7 @@ EOT;
             $row->setForm($this);
 
             $displayer = $row->$name($arguments[0], $count > 1 ? $arguments[1] : '');
-            
+
             $row->setLabel($displayer->getLabel());
 
             if ($this->__when__) {
@@ -983,8 +983,13 @@ EOT;
                 $displayer->extKey('-' . $this->id . mt_rand(10, 99));
             }
 
-            if ($this->__items__ && $displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
-                $displayer->setIsInTable();
+            if ($this->__items__) {
+                $displayer->showLabel(false);
+                if ($displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
+                    $displayer->setIsInTable();
+                } else if ($displayer instanceof Fields) { //items的Fields
+                    $displayer->getContent()->hasWrapper(false);
+                }
             }
 
             return $displayer;

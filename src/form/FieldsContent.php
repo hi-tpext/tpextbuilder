@@ -21,12 +21,26 @@ class FieldsContent extends FWrapper implements Renderable
 
     protected $readonly = false;
 
+    protected $hasWrapper = true;
+
     /**
      * Undocumented variable
      *
      * @var Form|Search
      */
     protected $form;
+
+    /**
+     * Undocumented function
+     * 
+     * @param mixed $val
+     * @return $this
+     */
+    public function hasWrapper($val = true)
+    {
+        $this->hasWrapper = $val;
+        return $this;
+    }
 
     /**
      * Undocumented function
@@ -204,6 +218,7 @@ class FieldsContent extends FWrapper implements Renderable
 
         $vars = [
             'rows' => $this->rows,
+            'hasWrapper' => $this->hasWrapper,
         ];
 
         $customVars = $this->customVars();
