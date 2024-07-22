@@ -76,8 +76,8 @@ trait HasView
 
             if (
                 $displayer instanceof displayer\Button || $displayer instanceof displayer\Show || $displayer instanceof displayer\Raw
-                || $displayer instanceof displayer\Matche || $displayer instanceof displayer\Matches
-                || $displayer instanceof displayer\Load || $displayer instanceof displayer\Loads  || $displayer instanceof displayer\Map
+                || $displayer instanceof displayer\Matche || $displayer instanceof displayer\Matches || $displayer instanceof displayer\Load
+                || $displayer instanceof displayer\Loads  || $displayer instanceof displayer\Map || $displayer->isDisplayerType('Field')
             ) {
                 continue;
             } else if ($displayer instanceof displayer\Items) {

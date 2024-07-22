@@ -171,7 +171,7 @@ class Items extends Field
             } else {
                 //
             }
-        } else {
+        } else if (is_array($data)) {
             $this->data = $data;
         }
 
@@ -188,8 +188,8 @@ class Items extends Field
      */
     public function readonly($val = true)
     {
-        $this->canDelete(false);
-        $this->canAdd(false);
+        $this->canDelete(!$val);
+        $this->canAdd(!$val);
         $this->__items__->readonly($val);
         return $this;
     }
