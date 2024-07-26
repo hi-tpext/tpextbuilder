@@ -91,6 +91,13 @@ class JSTree extends Widget implements Renderable
      */
     public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id', $rootText = '全部')
     {
+        if (empty($idField)) {
+            $idField = 'id';
+        }
+        if (empty($pidField)) {
+            $pidField = 'parent_id';
+        }
+
         $tree = [];
 
         if ($rootText == '全部') {
@@ -113,6 +120,10 @@ class JSTree extends Widget implements Renderable
         $needReplace = isset($matches[1]) && count($matches[1]) > 0;
 
         foreach ($treeData as $k => $li) {
+
+            if (!isset($li[$pidField])) {
+                $li[$pidField] = $li['pid'] ?? 0;
+            }
 
             if ($li[$pidField] !== 0 && $li[$pidField] !== '') {
                 continue;
