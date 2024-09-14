@@ -44,7 +44,7 @@ trait HasView
         $this->error(__blang('bilder_not_allowed'));
     }
 
-    private function turn($rows)
+    protected function turn($rows)
     {
         $displayer = null;
 

@@ -275,7 +275,7 @@ class ImageHandler implements IImage
      * 
      * @return \Intervention\Image\AbstractDriver
      */
-    private function createDriver($driverType)
+    protected function createDriver($driverType)
     {
         if ($driverType) {
             $driverclass = sprintf('\\Intervention\\Image\\%s\\Driver', ucfirst($driverType));

@@ -14,7 +14,7 @@ class TabLink implements Renderable
     use HasDom;
     use HasOptions;
 
-    private $view = 'tab';
+    protected $view = 'tab';
 
     protected $active = '';
     protected $id = '';

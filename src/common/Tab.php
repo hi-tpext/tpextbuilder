@@ -12,7 +12,7 @@ class Tab extends Widget implements Renderable
 {
     use HasDom;
 
-    private $view = 'tab';
+    protected $view = 'tab';
 
     protected $rows = [];
 

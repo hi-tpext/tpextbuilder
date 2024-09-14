@@ -13,7 +13,7 @@ class Export
      *
      * @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|\PHPExcel_Worksheet
      */
-    private $worksheet = null;
+    protected $worksheet = null;
 
     /**
      * Undocumented function
