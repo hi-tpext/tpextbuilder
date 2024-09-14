@@ -14,7 +14,7 @@ class Step implements Renderable
 {
     use HasDom;
 
-    private $view = 'step';
+    protected $view = 'step';
 
     protected $navigateable = true;
 

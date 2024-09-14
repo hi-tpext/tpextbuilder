@@ -12,7 +12,7 @@ class Layer extends Widget
      *
      * @var View
      */
-    private $viewShow;
+    protected $viewShow;
 
     public function getViewShow()
     {
