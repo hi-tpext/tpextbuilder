@@ -16,6 +16,7 @@ use tpext\builder\traits\HasDom;
 use tpext\builder\common\Builder;
 use tpext\builder\displayer\Field;
 use tpext\builder\displayer\Items;
+use tpext\builder\displayer\Button;
 use tpext\builder\displayer\Fields;
 use tpext\builder\form\ItemsContent;
 use tpext\builder\inface\Renderable;
@@ -975,7 +976,7 @@ EOT;
                 $this->__when__->toggle($displayer);
             }
 
-            if ($this->defaultDisplayerSize) {
+            if ($this->defaultDisplayerSize && !($displayer instanceof Button)) {
                 $displayer->size($this->defaultDisplayerSize[0], $this->defaultDisplayerSize[1]);
             }
 
