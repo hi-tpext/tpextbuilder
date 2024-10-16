@@ -75,7 +75,7 @@ trait TreeModel
 
     protected $asTreeList = true;
 
-    protected $cacheKey = '';
+    protected $treeCacheKey = ''; //避免和 thinkorm-model中的属性[cacheKey]冲突
 
     /**
      * Undocumented variable
@@ -94,9 +94,9 @@ trait TreeModel
         return $this->asTreeList;
     }
 
-    public function getCacheKey()
+    public function getTreeCacheKey()
     {
-        return $this->cacheKey ?: 'tree_data_' . $this->getName();
+        return $this->treeCacheKey ?: 'tree_data_' . $this->getName();
     }
 
     /**
@@ -250,7 +250,7 @@ trait TreeModel
         $this->treeInit();
 
         if ($this->chacheTime !== false) {
-            $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->cache($this->getCacheKey(), $this->chacheTime)->select();
+            $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->cache($this->getTreeCacheKey(), $this->chacheTime)->select();
         } else {
             $this->allTreeData = $this->where($this->treeScope)->order($this->treeSortField)->select();
         }
