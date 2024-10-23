@@ -132,7 +132,9 @@
                     if (parent.$('.search-refresh').size()) {
                         parent.$('.search-refresh').trigger('click');
                     } else {
-                        parent.location.reload();
+                        setTimeout(function () {
+                            parent.location.reload();
+                        }, 2000);
                     }
                     if (parent.layer) {
                         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
