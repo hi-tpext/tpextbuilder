@@ -985,7 +985,9 @@ EOT;
             }
 
             if ($this->__items__) {
-                $displayer->showLabel(false);
+                if (!($displayer instanceof Items)) {
+                    $displayer->showLabel(false);
+                }
                 if ($displayer instanceof MultipleFile) { //表格中默认禁止直接上传图片
                     $displayer->setIsInTable();
                 } else if ($displayer instanceof Fields) { //items的Fields
