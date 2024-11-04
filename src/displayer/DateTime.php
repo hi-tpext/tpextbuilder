@@ -42,6 +42,21 @@ class DateTime extends Text
         ],
     ];
 
+    /**
+     * Undocumented function
+     *
+     * @param string $fieldType
+     * @return $this
+     */
+    public function created($fieldType = '')
+    {
+        parent::created($fieldType);
+        if (class_basename($fieldType) == 'DateTime') {
+            $this->jsOptions['viewDate'] = date('Y-m-d 00:00:00'); //默认值为空时，如果选择今天时间，会自带前的时分秒。通过此设置舍弃时分秒
+        }
+        return  $this;
+    }
+
     protected function dateTimeScript()
     {
         $inputId = $this->getId();
