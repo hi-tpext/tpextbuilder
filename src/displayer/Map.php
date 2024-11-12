@@ -114,6 +114,17 @@ class Map extends Text
         return $this;
     }
 
+    /**
+     * 自己实现的地图，或者地图jsapi更新后已不适用需要重写js
+     *
+     * @return $this
+     */
+    public function other()
+    {
+        $this->type = 'other';
+        return $this;
+    }
+
     public function beforRender()
     {
         $config = Module::getInstance()->getConfig();
@@ -128,6 +139,8 @@ class Map extends Text
         } else if ($this->type == 'yandex') {
             $this->js[] = $config['yandex_map_js_key'];
             $this->yandexScript();
+        } else if ($this->type == 'other') {
+            // 自己实现
         }
 
         $this->beforSymbol('<i class="mdi mdi-map"></i>');
