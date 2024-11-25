@@ -7,13 +7,18 @@
         var msg = '{$msg}';
 
         if (parent && parent.layer) {
-            parent.lightyear.notify(msg, success ? 'success' : 'danger');
-            
+            if (parent.lightyear) {
+                parent.lightyear.notify(msg, success ? 'success' : 'danger');
+            }
+            else {
+                parent.layer.msg(msg);
+            }
+
             if (parent.$('.btn-refresh,.search-refresh').size()) {
                 parent.$('.btn-refresh,.search-refresh').eq(0).trigger('click');
-            } else {
+            } else if (parent !== top) {
                 setTimeout(function () {
-                    parent.location.replace(parent.location.href);
+                    parent.location.reload();
                 }, 2000);
             }
 

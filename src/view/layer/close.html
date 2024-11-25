@@ -6,7 +6,12 @@
         var success = '{$success}' == '1';
         var msg = '{$msg}';
         if (parent && parent.layer) {
-            parent.lightyear.notify(msg, success ? 'success' : 'danger');
+            if (parent.lightyear) {
+                parent.lightyear.notify(msg, success ? 'success' : 'danger');
+            }
+            else {
+                parent.layer.msg(msg);
+            }
 
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             parent.layer.close(index);
