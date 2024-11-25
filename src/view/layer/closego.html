@@ -8,7 +8,12 @@
         var url = '{$url}';
 
         if (parent && parent.layer) {
-            parent.lightyear.notify(msg, success ? 'success' : 'danger');
+            if (parent.lightyear) {
+                parent.lightyear.notify(msg, success ? 'success' : 'danger');
+            }
+            else {
+                parent.layer.msg(msg);
+            }
 
             setTimeout(function () {
                 parent.location.replace(url);

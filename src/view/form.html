@@ -1,6 +1,6 @@
 <div id="{$id}" class="form-wrapper">
-    <form action="{$action}" method="{$method|default='POST'}" enctype="application/x-www-form-urlencoded" class="{$class}"
-        {$attr|raw}>
+    <form action="{$action}" method="{$method|default='POST'}" enctype="application/x-www-form-urlencoded"
+        class="{$class}" {$attr|raw}>
 
         {volist name="rows" id="row"}
         {if condition="$row instanceof tpext\builder\common\Tab"}
@@ -109,7 +109,7 @@
 
                 lightyear.loading('show');
 
-                setTimeout(function(){
+                setTimeout(function () {
                     lightyear.loading('hide');
                 }, 10000);
 
@@ -117,7 +117,12 @@
             },
             closeLayer: function (msg, style) {
                 if (parent) {
-                    parent.lightyear.notify(msg, style);
+                    if (parent.lightyear) {
+                        parent.lightyear.notify(msg, style);
+                    }
+                    else {
+                        parent.layer.msg(msg);
+                    }
                     if (parent.layer) {
                         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                         parent.layer.close(index);
@@ -128,10 +133,15 @@
             },
             closeLayerRefresh: function (msg, style) {
                 if (parent) {
-                    parent.lightyear.notify(msg, style);
+                    if (parent.lightyear) {
+                        parent.lightyear.notify(msg, style);
+                    }
+                    else {
+                        parent.layer.msg(msg);
+                    }
                     if (parent.$('.search-refresh').size()) {
                         parent.$('.search-refresh').trigger('click');
-                    } else {
+                    } else if (parent !== top) {
                         setTimeout(function () {
                             parent.location.reload();
                         }, 2000);
@@ -146,7 +156,12 @@
             },
             closeLayerGo: function (msg, url, style) {
                 if (parent) {
-                    parent.lightyear.notify(msg, style);
+                    if (parent.lightyear) {
+                        parent.lightyear.notify(msg, style);
+                    }
+                    else {
+                        parent.layer.msg(msg);
+                    }
                     if (parent.layer) {
                         parent.location.replace(url);
                         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
