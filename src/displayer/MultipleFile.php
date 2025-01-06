@@ -2,9 +2,11 @@
 
 namespace tpext\builder\displayer;
 
-use tpext\builder\traits\HasStorageDriver;
-use tpext\builder\traits\HasImageDriver;
+use tpext\think\App;
 use tpext\builder\common\Module;
+use tpext\builder\logic\ImageHandler;
+use tpext\builder\traits\HasImageDriver;
+use tpext\builder\traits\HasStorageDriver;
 
 /**
  * MultipleFile class
@@ -348,6 +350,7 @@ class MultipleFile extends Field
             'showUploadBtn' => $this->showUploadBtn,
             'isInTable' => $this->isInTable,
             'files' => $this->files,
+            'thumbs' => $this->thumbs(),
             'cover' => $this->cover,
             'inputType' => $this->showInput ? 'text' : 'hidden',
             'placeholder' => $this->placeholder ?: __blang('bilder_please_enter') . $this->label
@@ -381,5 +384,63 @@ class MultipleFile extends Field
         }
 
         throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
+    }
+
+    /**
+     * 获取缩略图
+     * @return array
+     */
+    protected function thumbs()
+    {
+        $handler = new ImageHandler();
+        $options = [
+            'width' => $this->jsOptions['thumbnailWidth'] * 2,
+            'height' => $this->jsOptions['thumbnailHeight'] * 2,
+        ];
+
+        if (!is_dir(App::getPublicPath() . '/thumb/')) {
+            mkdir(App::getPublicPath() . '/thumb/', 0777, true);
+        }
+
+        $thumbs = [];
+        foreach ($this->files as $file) {
+            if (strstr($file, '/assets/tpextbuilder/images/')) {
+                $thumbs[] = $file;
+                continue;
+            }
+
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if (!in_array($ext, ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'])) {
+                $thumbs[] = $file;
+                continue;
+            }
+
+            $thumbFile = './thumb/' . md5($file) . '-' . $options['width'] . 'x' . $options['height'] . '.' . $ext;
+
+            if (is_file($thumbFile)) {
+                $thumbs[] = ltrim($thumbFile, '.');
+                continue;
+            }
+
+            if (strstr($file, 'http')) {
+                $data = @file_get_contents($file);
+                if (!$data) {
+                    $thumbs[] = $file;
+                    continue;
+                }
+                if (!@file_put_contents($thumbFile, $data)) {
+                    $thumbs[] = $file;
+                    continue;
+                }
+                $file = $thumbFile;
+            } else if (!is_file(App::getPublicPath() . $file)) {
+                $thumbs[] = $file;
+                continue;
+            }
+            $options['to_path'] = $thumbFile;
+            $thumbs[] = $handler->resize($file, $options);
+        }
+
+        return $thumbs;
     }
 }
