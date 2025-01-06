@@ -542,7 +542,7 @@ window.renderFiles = function (elid) {
                     $img.attr('src', '/index/file/extimg?type=' + href.replace(/.+?\.(\w+)$/, '$1'));
                 }
                 else {
-                    $img.attr('src', href);
+                    $img.attr('src', $img.data('src'));
                 }
                 $img.css({
                     'display': 'block',

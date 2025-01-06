@@ -112,7 +112,7 @@ class ImageHandler implements IImage
             if (!isset($args['upsize']) || $args['upsize'] == 1 || $args['upsize'] == true) {
                 $constraint->upsize();
             }
-        })->save();
+        })->save($args['to_path'] ?? null);
 
         unset($imageInstance);
 
@@ -168,7 +168,7 @@ class ImageHandler implements IImage
             if ($this->driver instanceof \Intervention\Image\Imagick\Driver) {
                 $font->kerning($args['kerning'] ?? 0);
             }
-        })->save();
+        })->save($args['to_path'] ?? null);
 
         unset($imageInstance);
 
@@ -191,7 +191,7 @@ class ImageHandler implements IImage
         }
 
         $imageInstance->crop($args['width'], $args['height'], $args['x'] ?? 0, $args['y'] ?? 0)
-            ->save();
+            ->save($args['to_path'] ?? null);
 
         unset($imageInstance);
 
@@ -220,7 +220,7 @@ class ImageHandler implements IImage
         }
 
         $imageInstance->insert($args['imgPath'], $args['position'] ?? 'bottom-right', $args['x'] ?? 0, $args['y'] ?? 0)
-            ->save();
+            ->save($args['to_path'] ?? null);
 
         unset($imageInstance);
 
