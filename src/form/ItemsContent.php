@@ -321,6 +321,20 @@ class ItemsContent extends FWrapper
                     ->addAttr('data-label="' . $colunm->getLabel() . '"')
                     ->beforRender();
 
+                if (
+                    !empty($data['__readonly__fields__'])
+                    && (in_array($col, $data['__readonly__fields__']) || $data['__readonly__fields__'][0] == '*')
+                ) {
+                    $displayer->readonly();
+                }
+
+                if (
+                    !empty($data['__disabled__fields__'])
+                    && (in_array($col, $data['__disabled__fields__']) || $data['__disabled__fields__'][0] == '*')
+                ) {
+                    $displayer->disabled();
+                }
+
                 $this->list[$key][$col] = [
                     'displayer' => $displayer,
                     'value' => $displayer->render(),
