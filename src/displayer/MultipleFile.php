@@ -439,7 +439,6 @@ class MultipleFile extends Field
             }
             try {
                 $options['to_path'] = $thumbFile;
-                $handler->resize($file, $options);
                 $thumbs[] = $handler->resize($file, $options);
             } catch (\Exception $e) {
                 $thumbs[] = $file;
