@@ -79,13 +79,22 @@
                                         .layer_close_go, 'danger');
                                 }
                                 else if (data.url) {
-                                    lightyear.notify(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
+                                    if (parent.lightyear) {
+                                        parent.lightyear.notify(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
+                                    }
+                                    else if (parent.layer) {
+                                        parent.layer.msg(data.msg || data.message || "{:__blang('bilder_save_failed')}");
+                                    }
+                                    else {
+                                        layer.msg(data.msg || data.message || "{:__blang('bilder_save_failed')}");
+                                    }
+                                    
                                     setTimeout(function () {
                                         location.replace(data.url);
                                     }, data.wait * 1000 || 2000);
                                 }
                                 else {
-                                    lightyear.notify(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
+                                    layer.msg(data.msg || data.message || "{:__blang('bilder_save_failed')}", 'danger');
                                 }
                             }
                             if (data.script || (data.data && data.data.script)) {

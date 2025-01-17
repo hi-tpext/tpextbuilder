@@ -154,7 +154,7 @@ trait HasSelectPage
                 $where[] = [$idField, '=', $selected];
             } else {
                 $arr = array_filter(explode(',', $selected));
-                if (count($arr)) {
+                if (count($arr) > 1) {
                     $where[] = [$idField, 'in', $selected];
                 } else {
                     $where[] = [$idField, '=', $selected];
@@ -163,7 +163,7 @@ trait HasSelectPage
             $list = $this->dataModel->with($this->selectWith)->where($where)->order($sortOrder)->field($this->selectFields)->select();
             $hasMore = 0;
         } else {
-            $q = input('q', '');
+            $q = trim(input('q', ''));
             $page = input('page/d', 1);
 
             $page = $page < 1 ? 1 : $page;
